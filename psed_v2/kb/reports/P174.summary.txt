@@ -1,0 +1,41 @@
+P174: 0 provider calls. Two user decisions on the way: (1) the one resolution path only, no fallback; (2) the twelve's panels that a
+human verdict (missed_series 9, wrong_points 2) or F6 (2) kept out are imported, flagged.
+
+1. Figure labels (x, y, series axis, condition keys) resolve by compile.resolve_label (step a0's lookup: ids, names, aliases, this paper's
+   symbols; never an entry's label): one id, else other with the label kept; never.csv words (any paper) and symbols (own paper) marked
+   never; two ids: ambiguous. The key is the printed title inside a transform and without a trailing bracket that is a unit units.yaml
+   knows. compile.py writes each label left other as a row of field axis in kb/compiled/<pid>.unmapped.csv; propose sees it.
+   ontology/unmapped.csv deleted; its readers (figures_import, check.py check_figures_import, grow.py's ontology.html) read compile's rows;
+   history edit row. No panel is dropped: 122 -> 162 data panels imported (wer21 1 -> 15; gre23 8 -> 11, hei24 31 -> 32, mat23 4 -> 12,
+   yim20 15 -> 18, yim22 19 -> 23, zou23 9 -> 16; the rest unchanged); curves 435 -> 530, peaks 33 -> 49, sets 85 -> 97. Axis rows now
+   open: 371 over the thirteen (and 27 marked never). Against the importer's old resolver, the one path no longer resolves 96 (paper,
+   label) pairs of the twelve (288 occurrences: 37 pairs it had from the gold definitions, P89; 59 from entry labels read as symbols,
+   plurals, trailing symbols, head words, ratios), and resolves 11 it did not. P86 derived values 96 -> 12 (their profile axes are other).
+2. grow.py apply's sandbox lives under psed_v2/kb/tmp/, git-ignored by a new psed_v2/.gitignore (the repository's .gitignore is outside
+   psed_v2/). Failure test on a throwaway copy (P172's real failure replayed): the sandbox under the copy's kb/tmp/, 'APPLY FAILED ...
+   nothing was written' with the files it would have written (ontology.yaml, never.csv, pending.csv, vocab.py, the schema files and the
+   13 figures.json, rewritten then for their timestamp only), 0 of 309 files changed, no sandbox left. apply now imports the figures again
+   before it recompiles (a decision on a figure label takes effect), and commits exactly the files it moved (git-ignored ones left out);
+   since the test, an import that changes nothing keeps its file. The success path still
+   runs first at round 5's apply. ontology/gates.csv: column direction ('lower is worse' / 'higher is worse'); the gate reads it (tested).
+3. Recompiled the thirteen (0 calls). Scores of the twelve (R4 -> P174): T6 2075 -> 2044 (ela03 169 -> 159, yim20 435 -> 413, mat22
+   273 -> 274; the rest unchanged), gold rows 5357 unchanged; check.py 2181 -> 2237. wer21: units from curves 0 -> 37 (26 runs, 11 model
+   runs), consistency 0 unbound; pass-0 gate value 5.34 -> 18.51 units per 100 elements; none of the 37 has a pass-1 record about it (pass 1
+   ran in P173, before they existed). Audits 1-4: FAIL 6 / 1 / 6 / 15, every one A3 'candidate decided, but the row is still open': rows
+   P174 created that share the id of an earlier decision: 'H' (a never symbol of ela03 only) in yim20, yli18, yim22, zou23; 'Aspect Ratio
+   (L/D)', 'Composition', 'Mo', 'Si', 'Time' (round-0 entries whose printed label is no name or alias); and pending h_t, whose yim22 h_T
+   records joined the new candidate 'H' by the prefix merge. Reported, not changed (R3). While they fail, grow.py run stops before propose.
+4. Round 5: the user's three decisions written (integration_time never, Instrument settings; markov_chain_approach alias of
+   yanguas_gil_markov_chain, 'Markov chain approach' a wer21 paper-local symbol; spectroscopic_ellipsometer alias of
+   spectroscopic_ellipsometry). Re-proposed: 107 new candidates (110 rows of round 5 with the three decided): 92 with axis rows (90 axis
+   only), 1 model; rows from rounds 1-5 (carried rows of the twelve); never.csv matches the label of one (S: a symbol of yim22 only); 10
+   prefix merges, among them symbols of different papers ('t_p' into 'T', 'p_O', 'p_I', 'p_A0', 'p_A' into 'p', 'n_P0' into 'N').
+   pending.csv 131 rows; decide.html. To note for the apply: spectroscopic_ellipsometry is a method entry and the record is quantity
+   other; step a0 looks a quantity other up among quantities only, so the alias may show no effect in A1.
+5. wer21 inspection (kb/extract/inspection.py, 0 calls; grow.py run runs it for every paper after check.py, its sections in the RUN
+   report): 281 elements: covered 114, no record (NK) 164, records dropped 3; 7 drops; 43 open labels; 52 units (15 pass 0, 37 from
+   curves), 41 with no pass-1 record about them; 15 data panels; check.py 84 -> 242 (same statement as +58, same as +42, points_ref in a
+   facts file +37, gas_flow_rate without species +24: the new curves and the derived units' legend settings); 5g, the 52 ontology evidence
+   items citing wer21 read as elements: a fact of that entry there 32, other entries only 20, none 0; 5h: 6 values no other paper showed.
+6. Corpus index: 45 papers (58 in scope minus the thirteen; a 59th ingest folder is excluded in the manifest), by year; figures.json 0 of
+   45; abstract keyword hits: model/simulation 17, plasma 12, porous body/powder 16, lateral/trench 28.

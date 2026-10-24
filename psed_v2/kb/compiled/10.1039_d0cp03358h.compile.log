@@ -90,6 +90,7 @@ g: tab1.r16c0: mention_unmatched ['Series F']
 g: tab1.r18c0: mention_unmatched ['Series F']
 h: simulation sim_ylilammi ('Yilammi et al. diffusion–reaction model') -> model ylilammi_diffusion_reaction (alias 'Yilammi et al. diffusion–reaction model')
 h: tree from pass 0: run 12, simulation 1, specimen 16, model_run 9, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
+1c: 10 curves no pass-0 unit names, left out: yim20:fig8a#c1, yim20:fig8a#c2, yim20:fig8a#c3, yim20:fig8a#c4, yim20:fig9b#c1, yim20:fig9b#c2, yim20:fig9b#c3, yim20:fig9c#c1, yim20:fig9c#c2, yim20:fig9c#c3
 i: merged s5.p1 into abs.g2;s5.p1 (structure pillarhall_3)
 i: merged s5.p2 into abs.g2;s5.p2 (aspect_ratio 10000)
 i: merged s6.p1 into abs.g3;s6.p1 (material al2o3)
@@ -156,14 +157,14 @@ step f: {'species_resolved': 19, 'kept': 572}
 step g: {'mention_unmatched': 18}
 step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 21, 'place: about paper -> recipe': 61, 'place: definition -> paper': 102, 'place: cited -> paper': 45, 'place: setting about a run -> deposition': 12, 'place: about paper, method -> paper method activity': 19, 'place: model about a simulation -> simulation': 25, 'place: caveat -> paper': 5, 'place: result about a specimen -> its measurement': 186, 'place: setting about a specimen sharing its deposition -> specimen': 31, 'place: setting about a specimen -> deposition': 58, 'place: about unknown -> recipe (flagged)': 7}
 step m: {'statement filled from the quote': 492, 'label_as_printed filled with the quantity id': 13, 'links resolved': 21, 'links named elements without facts': 3}
-step 1c: {'curve -> observation': 28, 'data role measured': 28, 'curve -> model': 30, 'data role simulated': 30}
+step 1c: {'data_id_not_in_figures_json': 35, 'figure label other (condition)': 9, 'figure label other (series)': 1, 'figure label other (x)': 9, 'figure label other (y)': 13, 'figure label other (series), never': 2, 'curve -> observation': 28, 'data role measured': 28, 'curve -> model': 30, 'data role simulated': 30, 'curves no unit names (left out)': 10}
 step i: {'merged': 44, 'definition merged': 5, 'kept': 581}
 step n: {'comparison replicate': 2, 'comparison labelled from a series-name setting': 5, 'comparison series': 4, 'comparison grid': 4}
 step j: {'derived feature_width{stage=final}': 16, 'derived_needs_outside_fact': 25, 'derived cycle_time': 12, 'derived deposition_rate': 3}
 step k: {'statement from the record': 523, 'statement_copies_text (reported by check)': 94, 'statement assembled': 89}
-diff against the gold:
+diff against the gold (type, gold, compiled, matched, precision, recall):
   setting       206  164  107  0.65  0.52
-  observation   154  102   81  0.79  0.53
+  observation   154  102   59  0.58  0.38
   derived       108  140  101  0.72  0.94
   cited          92   32   28  0.88  0.30
   activity       75   49   47  0.96  0.63
@@ -177,4 +178,4 @@ diff against the gold:
   identity        1    0    0     -  0.00
 gold definitions with an eq* element in evidence: 0/66
 gold model rows with quantity and value: 20: {'other': 9, 'deposition_temperature': 1, 'pulse_time': 1, 'partial_pressure': 2, 'molar_mass': 1, 'b_film': 1, 'growth_per_cycle': 1, 'saturation_density': 1, 'initial_sticking_coefficient': 1, 'p_d': 1, 'film_density': 1}
-observations: gold 154, compiled 102, matched 81
+observations: gold 154, compiled 102, matched 59

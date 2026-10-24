@@ -1,0 +1,111 @@
+ERROR conda.cli.main_run:execute(127): `conda run python ontology/grow.py audit 3` failed. (See above for error)
+round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {'yes': 12, 'n/a': 4, 'no effect': 1}
+A2: 4 promotions: {'alias (user decision)': 1, 'symbol (user decision)': 3}
+A3: 64 open rows: {'other': 14, 'new': 49, 'pending': 1}; pending candidates accounted 24/24
+A3 new since apply → next round (P162, carried, not a failure): 49 rows
+  10.1021_acs.jpcc.9b08176:fig2B axis 'Distance / cavity height'
+  10.1021_acs.jpcc.9b08176:fig2B axis 'material and exposure time'
+  10.1021_acs.jpcc.9b08176:fig3 axis 'Plasma time'
+  10.1021_acs.jpcc.9b08176:fig3 axis 'PD^{50%} / cavity height'
+  10.1116_6.0002804:fig5.cap quantity 'O'
+  10.1116_6.0002804:fig5.cap quantity 'Cl'
+  10.1116_6.0002804:fig5.cap quantity 'C'
+  10.1116_6.0002804:fig5.cap quantity 'N'
+  10.1116_6.0002804:fig6.cap quantity 'O'
+  10.1116_6.0002804:fig6.cap quantity 'Cl'
+  10.1116_6.0002804:fig6.cap quantity 'N'
+  10.1116_6.0002804:fig6.cap quantity 'C'
+  10.1116_6.0002804:fig7.cap quantity 'ALD'
+  10.1116_6.0002804:fig7.cap quantity 'CVD'
+  10.1116_6.0002804:fig1a axis 'MoCl_{2}O_{2} pulse'
+  10.1116_6.0002804:fig1b axis 'at-H pulse'
+  10.1116_6.0002804:fig1c axis 'MoCl_{2}O_{2} purge'
+  10.1116_6.0002804:fig1d axis 'at-H purge'
+  10.1116_6.0002804:fig1e axis 'Hot-wire temperature'
+  10.1116_6.0002804:fig2 axis 'measurement technique and process'
+  10.1116_6.0002804:fig5a axis 'Depth (\times 10^{15} at/cm^{2})'
+  10.1116_6.0002804:fig5a axis 'element'
+  10.1116_6.0002804:fig5b axis 'element'
+  10.1116_6.0002804:fig6a axis 'Depth'
+  10.1116_6.0002804:fig6a axis 'Concentration'
+  10.1116_6.0002804:fig6a axis 'element'
+  10.1116_6.0002804:fig6b axis 'Concentration'
+  10.1116_6.0002804:fig6b axis 'element'
+  10.1116_6.0002804:fig8 axis '2Θ'
+  10.1116_6.0003182:fig2a axis 'p'
+  10.1116_6.0003182:fig2b axis 'p'
+  10.1116_6.0003182:fig2c axis 'p'
+  10.1116_6.0003182:fig2d axis 'T'
+  10.1116_6.0003182:fig3a axis 'Elapsed time, \delta t'
+  10.1116_6.0003182:fig3a axis 'Pressure change, \delta p'
+  10.1116_6.0003182:fig3b axis 'Net gain of gas moles, \Delta n_g'
+  10.1116_6.0003182:fig3c axis 'Terminal slope, TS'
+  10.1116_6.0003182:fig5 axis '2θ'
+  10.1116_6.0003182:fig5 axis 'Normalized counts'
+  10.1116_6.0003182:fig6d axis 'Normalized X-ray counts'
+  10.1116_6.0003182:fig6d axis 'Postion'
+  10.1116_6.0003182:fig6d axis 'element'
+  10.1116_6.0003182:fig6e axis 'Normalized X-ray counts'
+  10.1116_6.0003182:fig6e axis 'Postion'
+  10.1116_6.0003182:fig6e axis 'element'
+  10.1116_6.0003182:fig6f axis 'Normalized X-ray counts'
+  10.1116_6.0003182:fig6f axis 'Postion'
+  10.1116_6.0003182:fig6f unit 'temperature'
+  10.1116_6.0003182:fig6f axis 'element'
+result: FAIL (6)
+FAIL A3 10.1116_6.0002804:fig5.cap quantity 'Mo': candidate mo decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5.cap quantity 'H': candidate h decided in round 2 (never -> Model internals): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig6.cap quantity 'Si': candidate si decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig3 unit 'Time': candidate time decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5a axis 'Composition': candidate composition decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5b axis 'Composition': candidate composition decided in round 0 (add): decided, but the row is still open
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 414 history rows, 24 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+

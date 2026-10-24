@@ -52,16 +52,16 @@ step f: {'species_resolved': 24, 'kept': 214}
 step g: {'mention_unmatched': 5}
 step h: {'simulation linked to a model entry': 1, 'place: about paper -> recipe': 47, 'place: claim -> paper': 20, 'place: result about a specimen -> its measurement': 23, 'place: cited -> paper': 8, 'place: about paper, method -> paper method activity': 3, 'place: setting about a run -> deposition': 47, 'place: setting about a specimen -> deposition': 5, 'place: result about a run -> its specimen measurement': 1, 'place: caveat -> paper': 1, 'place: model about a simulation -> simulation': 13, 'place: model about a model run -> model run': 33, 'place: derived about a simulation -> simulation': 1, 'place: definition -> paper': 3, 'place: derived about a model run -> model run': 3, 'place: model about a model run -> simulation': 4, 'place: setting about a model run sharing its simulation -> model run': 2, 'specimen_created': 2}
 step m: {'statement filled from the quote': 172, 'label_as_printed filled with the quantity id': 4, 'links named elements without facts': 1, 'links resolved': 14}
-step 1c: {'curve -> observation': 12, 'data role measured': 12, 'curve -> model': 22, 'data role simulated': 20, 'data role fitted': 2}
+step 1c: {'data_id_not_in_figures_json': 30, 'figure label other (y)': 16, 'figure label other (series)': 6, 'figure label other (x)': 10, 'figure label other (condition)': 12, 'figure label other (condition), never': 2, 'curve -> observation': 12, 'data role measured': 12, 'curve -> model': 22, 'data role simulated': 20, 'data role fitted': 2}
 step i: {'merged': 14, 'kept': 234}
 step n: {'comparison replicate': 2, 'comparison series': 1, 'comparison grid': 1}
 step j: {'derived cycle_time': 16, 'derived exposure': 1}
 step k: {'statement from the record': 200, 'statement_copies_text (reported by check)': 56, 'statement assembled': 51}
-diff against the gold:
+diff against the gold (type, gold, compiled, matched, precision, recall):
   setting       277   82   57  0.70  0.21
-  model          57   74   35  0.47  0.61
+  model          57   74   34  0.46  0.60
   activity       46   31   15  0.48  0.33
-  observation    38   33   13  0.39  0.34
+  observation    38   33    4  0.12  0.11
   claim          37   20    9  0.45  0.24
   entity         34   36   13  0.36  0.38
   cited          21    8    7  0.88  0.33
@@ -72,4 +72,4 @@ diff against the gold:
   paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 0/10
 gold model rows with quantity and value: 6: {'other': 3, 'penetration_depth': 1, 'normalized_thickness': 1, 'surface_coverage': 1}
-observations: gold 38, compiled 33, matched 13
+observations: gold 38, compiled 33, matched 4

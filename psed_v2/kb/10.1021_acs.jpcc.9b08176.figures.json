@@ -3,7 +3,7 @@
  "key": "art19",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-19T23:46:44",
+ "imported_at": "2026-10-24T09:16:58",
  "inventory": [
   {
    "id": "art19:fig1A",
@@ -52,11 +52,50 @@
    "panel_type": "plot",
    "content": "Normalized thickness profiles along the cavity depth for SiO2, TiO2, Al2O3, and HfO2 films",
    "quantities": [
-    "dimensionless_distance",
     "normalized_thickness"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance / cavity height",
+     "key": "Distance / cavity height",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Normalized thickness",
+     "key": "Normalized thickness",
+     "unit": "",
+     "quantity": "normalized_thickness",
+     "how": "id 'normalized thickness'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "material and exposure time",
+     "key": "material and exposure time",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "art19:fig3",
@@ -64,14 +103,51 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Film penetration versus the natural logarithm of plasma exposure time for SiO2 and TiO2",
-   "quantities": [
-    "time",
-    "coated_aspect_ratio"
-   ],
+   "quantities": [],
    "flags": [
     "F4"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "ln(Plasma time (s))",
+     "key": "Plasma time",
+     "unit": "s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "PD^{50%} / cavity height",
+     "key": "PD^{50%} / cavity height",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "material",
+     "key": "material",
+     "unit": "",
+     "quantity": "material",
+     "how": "id 'material'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   }
  ],
  "curves": [
@@ -85,13 +161,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -99,8 +176,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -234,24 +312,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 4.4910000000000005,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -273,13 +340,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -287,8 +355,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -438,24 +507,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 6.667000000000001,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -477,13 +535,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -491,8 +550,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -650,24 +710,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 8.506,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -689,13 +738,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -703,8 +753,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -886,24 +937,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 9.77,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -925,13 +965,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -939,8 +980,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1082,24 +1124,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 5.575,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1121,13 +1152,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -1135,8 +1167,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1294,24 +1327,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 9.368,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1333,13 +1355,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -1347,8 +1370,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1442,24 +1466,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.149,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1481,13 +1494,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "dimensionless_distance",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "Distance / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -1495,8 +1509,9 @@
     "transform": "",
     "label_raw": "Normalized thickness",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1582,24 +1597,13 @@
      0.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 0.517,
+    "x": null,
     "y": 0.01
    },
    "set": "art19:cmp:fig2B",
@@ -1621,22 +1625,24 @@
     "species": "sio2"
    },
    "x": {
-    "quantity": "time",
+    "quantity": "other",
     "unit": "s",
     "transform": "ln",
     "label_raw": "ln(Plasma time (s))",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Plasma time",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "coated_aspect_ratio",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "PD^{50%} / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "PD^{50%} / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1674,18 +1680,7 @@
      870.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "y denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [
     "F4"
@@ -1693,7 +1688,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.174437175451523,
+    "x": null,
     "y": 5.4
    },
    "set": "art19:cmp:fig3",
@@ -1715,22 +1710,24 @@
     "species": "tio2"
    },
    "x": {
-    "quantity": "time",
+    "quantity": "other",
     "unit": "s",
     "transform": "ln",
     "label_raw": "ln(Plasma time (s))",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Plasma time",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "coated_aspect_ratio",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "PD^{50%} / cavity height",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "PD^{50%} / cavity height",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1752,18 +1749,7 @@
      790.0
     ]
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "y denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "conditions_raw": {},
    "flags": [
     "F4"
@@ -1771,7 +1757,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.0927819228257387,
+    "x": null,
     "y": 3.45
    },
    "set": "art19:cmp:fig3",
@@ -1803,18 +1789,7 @@
     "art19:fig2B#c7",
     "art19:fig2B#c8"
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "x denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "label": "Fig. 2B replicates (material and exposure time)"
   },
   {
@@ -1828,48 +1803,11 @@
     "art19:fig3#c1",
     "art19:fig3#c2"
    ],
-   "conditions": {
-    "feature_width": {
-     "key_raw": "y denominator",
-     "raw": "cavity height",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "cavity height"
-    }
-   },
+   "conditions": {},
    "label": "Fig. 3 series (material)"
   }
  ],
  "derived": [],
- "p89": [
-  {
-   "label": "cavity height",
-   "quantity": "feature_width",
-   "note": "the lateral trench's height",
-   "definition": "art19:s4.p10#3"
-  },
-  {
-   "label": "cavity height",
-   "quantity": "feature_width",
-   "note": "the lateral trench's height",
-   "definition": "art19:s4.p10#3"
-  },
-  {
-   "label": "cavity height",
-   "quantity": "feature_width",
-   "note": "the lateral trench's height",
-   "definition": "art19:s4.p10#3"
-  },
-  {
-   "label": "cavity height",
-   "quantity": "feature_width",
-   "note": "the lateral trench's height",
-   "definition": "art19:s4.p10#3"
-  }
- ],
  "report": {
   "inventory": 6,
   "data_panels": 2,
@@ -1877,7 +1815,6 @@
   "converted": 0,
   "curves": 10,
   "derived": 0,
-  "unmapped": 1,
-  "resolved_p89": 4
+  "labels_other": 4
  }
 }

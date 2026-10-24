@@ -3,9 +3,63 @@
 <pre>round 1 acceptance (grow.py audit_round)
 A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
 A2: 40 promotions: {&#x27;agree&#x27;: 36, &#x27;alias (user decision)&#x27;: 3, &#x27;symbol (user decision)&#x27;: 1}
-A3: 9 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 7}; pending candidates accounted 21/21
-A3 new since apply → next round (P162, carried, not a failure): 0 rows
-result: PASS
+A3: 69 open rows: {&#x27;other&#x27;: 14, &#x27;new&#x27;: 48, &#x27;pending&#x27;: 7}; pending candidates accounted 24/24
+A3 new since apply → next round (P162, carried, not a failure): 48 rows
+  10.1021_acs.chemmater.2c01154:fig2 axis &#x27;H₂ flow ratio&#x27;
+  10.1021_acs.chemmater.2c01154:fig2 axis &#x27;T_{deposition}&#x27;
+  10.1021_acs.chemmater.2c01154:fig4 axis &#x27;H₂ flow ratio&#x27;
+  10.1021_acs.chemmater.2c01154:fig4 axis &#x27;T_deposition&#x27;
+  10.1039_d0cp03358h:fig5b axis &#x27;growth cycles&#x27;
+  10.1039_d0cp03358h:fig5b axis &#x27;channel design height&#x27;
+  10.1039_d0cp03358h:fig5b axis &#x27;element&#x27;
+  10.1039_d0cp03358h:fig7 axis &#x27;Distance x&#x27;
+  10.1039_d0cp03358h:fig7 axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig8a axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig8a axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig8b axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig8b axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig8b axis &#x27;cycle count&#x27;
+  10.1039_d0cp03358h:fig9a axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig9a axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig9b axis &#x27;Thickness/cycles S/N&#x27;
+  10.1039_d0cp03358h:fig9d axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig9d axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig9e axis &#x27;Thickness/cycles S/N&#x27;
+  10.1039_d0cp03358h:fig10a axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig10a axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig10a axis &#x27;N&#x27;
+  10.1039_d0cp03358h:fig10b axis &#x27;Thickness/cycles S/N&#x27;
+  10.1039_d0cp03358h:fig10b axis &#x27;N&#x27;
+  10.1039_d0cp03358h:fig10c axis &#x27;N&#x27;
+  10.1039_d0cp03358h:fig10d axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig10d axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig10e axis &#x27;Thickness/cycles S/N&#x27;
+  10.1039_d0cp03358h:fig11a axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig11a axis &#x27;Film thickness S&#x27;
+  10.1039_d0cp03358h:fig11b axis &#x27;Distance inside the channel x&#x27;
+  10.1039_d0cp03358h:fig11b axis &#x27;Film thickness S&#x27;
+  10.1063_1.5028178:fig2 axis &#x27;Location x&#x27;
+  10.1063_1.5028178:fig2 axis &#x27;Pressure p_A&#x27;
+  10.1063_1.5028178:fig2 axis &#x27;gpc_{sat}&#x27;
+  10.1063_1.5028178:fig3 axis &#x27;Location x&#x27;
+  10.1063_1.5028178:fig3 axis &#x27;gpc_{sat}&#x27;
+  10.1063_1.5028178:fig4 axis &#x27;Location x&#x27;
+  10.1063_1.5028178:fig4 axis &#x27;cycle count&#x27;
+  10.1063_1.5028178:fig4 axis &#x27;reactant pulse length&#x27;
+  10.1063_1.5028178:fig4 axis &#x27;channel height H&#x27;
+  10.1063_1.5028178:fig5 axis &#x27;Penetration depth x_p&#x27;
+  10.1063_1.5028178:fig5 axis &#x27;t_p&#x27;
+  10.1063_1.5028178:fig5 axis &#x27;gpc_{sat}&#x27;
+  10.1063_1.5028178:fig6 axis &#x27;Location&#x27;
+  10.1063_1.5028178:fig6 axis &#x27;cycle count&#x27;
+  10.1063_1.5028178:fig7 axis &#x27;Location&#x27;
+result: FAIL (6)
+FAIL A3 10.1039_d0cp03358h:fig10d axis &#x27;H&#x27;: candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open
+FAIL A3 10.1039_d0cp03358h:fig10e axis &#x27;H&#x27;: candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open
+FAIL A3 10.1039_d0cp03358h:fig10f axis &#x27;H&#x27;: candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open
+FAIL A3 10.1063_1.5028178:fig2 axis &#x27;H&#x27;: candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open
+FAIL A3 10.1063_1.5028178:fig3 axis &#x27;H&#x27;: candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open
+FAIL A3 10.1063_1.5028178:fig5 axis &#x27;H&#x27;: candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open
 </pre>
 <h2>A1 decision trace: every decision, every row it covered, where it is now</h2><p>psed_v2/kb/reports/R1_apply.A1.csv</p>
 <table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
@@ -141,6 +195,10 @@ result: PASS
 <h2>A3 open rows, classified</h2><p>psed_v2/kb/reports/R1_apply.A3.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
 <tr><td>10.1021_acs.chemmater.2c01154</td><td>s5.p1</td><td>unit</td><td></td><td>MHz</td><td></td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>axis</td><td>H₂ flow ratio</td><td></td><td>h₂ flow ratio</td><td>new since apply → next round</td><td></td><td>candidate h_flow_ratio: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig2</td><td>axis</td><td>T_{deposition}</td><td>°C</td><td>tdeposition</td><td>new since apply → next round</td><td></td><td>candidate t_deposition: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig4</td><td>axis</td><td>H₂ flow ratio</td><td></td><td>h₂ flow ratio</td><td>new since apply → next round</td><td></td><td>candidate h_flow_ratio: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1021_acs.chemmater.2c01154</td><td>fig4</td><td>axis</td><td>T_deposition</td><td>°C</td><td>tdeposition</td><td>new since apply → next round</td><td></td><td>candidate t_deposition: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
 <tr><td>10.1039_d0cp03358h</td><td>s7.p1</td><td>quantity</td><td>top membrane removal</td><td></td><td>top membrane removal</td><td>other</td><td>top_membrane_removal</td><td>candidate top_membrane_removal decided in round 1 (reject): a rejected label is written nowhere (by design)</td></tr>
 <tr><td>10.1039_d0cp03358h</td><td>s16.p5</td><td>quantity</td><td>displacement</td><td>nm</td><td>displacement</td><td>pending candidate displacement</td><td>displacement</td><td></td></tr>
 <tr><td>10.1039_d0cp03358h</td><td>s16.p5</td><td>quantity</td><td>bent</td><td>nm</td><td>bent</td><td>pending candidate bent</td><td>bent</td><td></td></tr>
@@ -149,6 +207,62 @@ result: PASS
 <tr><td>10.1039_d0cp03358h</td><td>tabu1.r5c1</td><td>quantity</td><td></td><td></td><td>pillar diameter</td><td>pending candidate pillar_diameter</td><td>pillar_diameter</td><td>cell without printed label, keyed by its meaning</td></tr>
 <tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c0</td><td>quantity</td><td>l</td><td>µm</td><td>l</td><td>pending candidate distance_between_rows_of_pillars</td><td>distance_between_rows_of_pillars</td><td></td></tr>
 <tr><td>10.1039_d0cp03358h</td><td>tabu2.r7c1</td><td>quantity</td><td>Distance between rows of pillars</td><td>µm</td><td>distance between rows of pillars</td><td>pending candidate distance_between_rows_of_pillars</td><td>distance_between_rows_of_pillars</td><td></td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig5b</td><td>axis</td><td>growth cycles</td><td></td><td>growth cycles</td><td>new since apply → next round</td><td></td><td>candidate growth_cycles: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig5b</td><td>axis</td><td>channel design height</td><td>nm</td><td>channel design height</td><td>new since apply → next round</td><td></td><td>candidate channel_design_height: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig5b</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig7</td><td>axis</td><td>Distance x</td><td>µm</td><td>distance x</td><td>new since apply → next round</td><td></td><td>candidate distance_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig7</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig8a</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig8a</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig8b</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig8b</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig8b</td><td>axis</td><td>cycle count</td><td></td><td>cycle count</td><td>new since apply → next round</td><td></td><td>candidate cycle_count: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9a</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9a</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9b</td><td>axis</td><td>Thickness/cycles S/N</td><td>nm</td><td>thickness/cycles s/n</td><td>new since apply → next round</td><td></td><td>candidate thickness_cycles_s_n: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9d</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9d</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig9e</td><td>axis</td><td>Thickness/cycles S/N</td><td>nm</td><td>thickness/cycles s/n</td><td>new since apply → next round</td><td></td><td>candidate thickness_cycles_s_n: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10a</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10a</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10a</td><td>axis</td><td>N</td><td>cycles</td><td>n</td><td>new since apply → next round</td><td></td><td>candidate n: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10b</td><td>axis</td><td>Thickness/cycles S/N</td><td>nm</td><td>thickness/cycles s/n</td><td>new since apply → next round</td><td></td><td>candidate thickness_cycles_s_n: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10b</td><td>axis</td><td>N</td><td>cycles</td><td>n</td><td>new since apply → next round</td><td></td><td>candidate n: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10c</td><td>axis</td><td>N</td><td>cycles</td><td>n</td><td>new since apply → next round</td><td></td><td>candidate n: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10d</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10d</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10d</td><td>axis</td><td>H</td><td>nm</td><td>h</td><td>other</td><td></td><td>candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10e</td><td>axis</td><td>Thickness/cycles S/N</td><td>nm</td><td>thickness/cycles s/n</td><td>new since apply → next round</td><td></td><td>candidate thickness_cycles_s_n: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10e</td><td>axis</td><td>H</td><td>nm</td><td>h</td><td>other</td><td></td><td>candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig10f</td><td>axis</td><td>H</td><td>nm</td><td>h</td><td>other</td><td></td><td>candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig11a</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig11a</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig11b</td><td>axis</td><td>Distance inside the channel x</td><td>µm</td><td>distance inside the channel x</td><td>new since apply → next round</td><td></td><td>candidate distance_inside_the_channel_x: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1039_d0cp03358h</td><td>fig11b</td><td>axis</td><td>Film thickness S</td><td>nm</td><td>film thickness s</td><td>new since apply → next round</td><td></td><td>candidate film_thickness_s: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig2</td><td>axis</td><td>Location x</td><td>μm</td><td>location x</td><td>new since apply → next round</td><td></td><td>candidate location: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig2</td><td>axis</td><td>Pressure p_A</td><td>Pa</td><td>pressure pa</td><td>new since apply → next round</td><td></td><td>candidate pressure_p_a: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig2</td><td>axis</td><td>H</td><td>μm</td><td>h</td><td>other</td><td></td><td>candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig2</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig2</td><td>axis</td><td>K</td><td>Pa^-1</td><td>k</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig2</td><td>axis</td><td>gpc_{sat}</td><td>pm</td><td>gpcsat</td><td>new since apply → next round</td><td></td><td>candidate gpc_sat: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig3</td><td>axis</td><td>Location x</td><td>µm</td><td>location x</td><td>new since apply → next round</td><td></td><td>candidate location: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig3</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>other</td><td></td><td>candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig3</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig3</td><td>axis</td><td>K</td><td>Pa-1</td><td>k</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig3</td><td>axis</td><td>gpc_{sat}</td><td>pm</td><td>gpcsat</td><td>new since apply → next round</td><td></td><td>candidate gpc_sat: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig4</td><td>axis</td><td>Location x</td><td>μm</td><td>location x</td><td>new since apply → next round</td><td></td><td>candidate location: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig4</td><td>axis</td><td>cycle count</td><td></td><td>cycle count</td><td>new since apply → next round</td><td></td><td>candidate cycle_count: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig4</td><td>axis</td><td>reactant pulse length</td><td>s</td><td>reactant pulse length</td><td>new since apply → next round</td><td></td><td>candidate reactant_pulse_length: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig4</td><td>axis</td><td>channel height H</td><td></td><td>channel height h</td><td>new since apply → next round</td><td></td><td>candidate channel_height_h: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig5</td><td>axis</td><td>Penetration depth x_p</td><td>µm</td><td>penetration depth xp</td><td>new since apply → next round</td><td></td><td>candidate penetration_depth_x_p: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig5</td><td>axis</td><td>H</td><td>µm</td><td>h</td><td>other</td><td></td><td>candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig5</td><td>axis</td><td>W</td><td>mm</td><td>w</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig5</td><td>axis</td><td>K</td><td>Pa^-1</td><td>k</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig5</td><td>axis</td><td>t_p</td><td>s</td><td>tp</td><td>new since apply → next round</td><td></td><td>candidate t_p: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig5</td><td>axis</td><td>gpc_{sat}</td><td>pm</td><td>gpcsat</td><td>new since apply → next round</td><td></td><td>candidate gpc_sat: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig6</td><td>axis</td><td>Location</td><td>µm</td><td>location</td><td>new since apply → next round</td><td></td><td>candidate location: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig6</td><td>axis</td><td>cycle count</td><td></td><td>cycle count</td><td>new since apply → next round</td><td></td><td>candidate cycle_count: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1063_1.5028178</td><td>fig7</td><td>axis</td><td>Location</td><td>µm</td><td>location</td><td>new since apply → next round</td><td></td><td>candidate location: not in R1_apply.decision_rows.csv; carried into the next propose</td></tr>
 </table>
 <h2>A3 pending candidates of the round&#x27;s papers</h2><p>psed_v2/kb/reports/R1_apply.A3_pending.csv</p>
 <table><tr><th>candidate</th><th>first_round</th><th>pids</th><th>rows_at_snapshot</th><th>open_rows_now</th><th>accounted</th><th>detail</th></tr>
@@ -173,6 +287,9 @@ result: PASS
 <tr><td>q</td><td>4</td><td>10.1116_6.0002993</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002993 (its paper is not compiled)</td></tr>
 <tr><td>thiele_modulus</td><td>4</td><td>10.1039_d1cp04758b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d1cp04758b (its paper is not compiled)</td></tr>
 <tr><td>transmittance</td><td>4</td><td>10.1116_6.0002993</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002993 (its paper is not compiled)</td></tr>
+<tr><td>integration_time</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
+<tr><td>markov_chain_approach</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
+<tr><td>spectroscopic_ellipsometer</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
 </table>
 <h2>Snapshot: every row of the round before apply</h2><p>psed_v2/kb/reports/R1_apply.decision_rows.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>candidate</th><th>decision</th></tr>

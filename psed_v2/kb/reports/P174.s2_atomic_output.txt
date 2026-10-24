@@ -1,0 +1,56 @@
+fixture (copy only): integration_time (round 5) -> never (Model internals); kb/pilot/query.py of 64aff0b^ (before the P172 fix)
+$ grow.py apply   (exit 1)
+REES = {k: Tree(k) for k in KEY}
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/kb/pilot/query.py", line 394, in <dictcomp>
+    TREES = {k: Tree(k) for k in KEY}
+                ^^^^^^^
+  File "/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/kb/pilot/query.py", line 25, in __init__
+    self.rows = list(csv.DictReader((HERE / f"{KEY[key]}.facts.csv").open(encoding="utf-8")))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ftk3187/miniconda3/envs/psed310/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/kb/pilot/10.1116_6.0001094.facts.csv'
+Traceback (most recent call last):
+  File "/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/ontology/grow.py", line 1800, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/ontology/grow.py", line 1791, in main
+    out = {"init": cmd_init, "add": lambda: cmd_add(args.pids), "propose": cmd_propose, "apply": cmd_apply, "status": cmd_status, "report": report_page,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/ontology/grow.py", line 715, in cmd_apply
+    return apply_here()
+           ^^^^^^^^^^^^
+  File "/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/ontology/grow.py", line 884, in apply_here
+    subprocess.run([py, str(V2 / "kb" / "extract" / "compile.py"), pid], cwd=ROOT, check=True)
+  File "/home/ftk3187/miniconda3/envs/psed310/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/ftk3187/miniconda3/envs/psed310/bin/python', '/tmp/claude-1040/-home-ftk3187-github-PSED/f11a7f05-73cc-4485-aad2-d984ea626b83/scratchpad/atomic_test_p174/psed_v2/kb/tmp/grow_apply_q3f_zao4/psed_v2/kb/extract/compile.py', '10.1002_cvde.200390005']' returned non-zero exit status 1.
+
+APPLY FAILED in the sandbox: nothing was written. It would have written:
+  changed: ontology/never.csv
+  changed: ontology/ontology.yaml
+  changed: ontology/pending.csv
+  changed: kb/10.1002_cvde.200390005.figures.json
+  changed: kb/10.1021_acs.chemmater.2c01154.figures.json
+  changed: kb/10.1021_acs.jpcc.9b08176.figures.json
+  changed: kb/10.1021_cm0303080.figures.json
+  changed: kb/10.1039_d0cp03358h.figures.json
+  changed: kb/10.1039_d1cp04758b.figures.json
+  changed: kb/10.1039_d3cp05639b.figures.json
+  changed: kb/10.1063_1.5028178.figures.json
+  changed: kb/10.1116_1.4903941.figures.json
+  changed: kb/10.1116_6.0001094.figures.json
+  changed: kb/10.1116_6.0002804.figures.json
+  changed: kb/10.1116_6.0002993.figures.json
+  changed: kb/10.1116_6.0003182.figures.json
+  changed: kb/import_panels.csv
+  changed: kb/pilot/vocab.py
+  new: kb/reports/R5_apply.decision_rows.csv
+  new: kb/reports/R5_apply.written.csv
+  changed: kb/schema/CODEBOOK.md
+  changed: kb/schema/FORM.md
+  changed: kb/schema/form.json
+  changed: kb/schema/form_pass0.json
+STOPPED: apply failed (see above); ontology/, kb/compiled and pending.csv untouched

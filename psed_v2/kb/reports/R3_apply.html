@@ -3,9 +3,64 @@
 <pre>round 3 acceptance (grow.py audit_round)
 A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
 A2: 4 promotions: {&#x27;alias (user decision)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 3}
-A3: 6 open rows: {&#x27;other&#x27;: 5, &#x27;pending&#x27;: 1}; pending candidates accounted 21/21
-A3 new since apply → next round (P162, carried, not a failure): 0 rows
-result: PASS
+A3: 64 open rows: {&#x27;other&#x27;: 14, &#x27;new&#x27;: 49, &#x27;pending&#x27;: 1}; pending candidates accounted 24/24
+A3 new since apply → next round (P162, carried, not a failure): 49 rows
+  10.1021_acs.jpcc.9b08176:fig2B axis &#x27;Distance / cavity height&#x27;
+  10.1021_acs.jpcc.9b08176:fig2B axis &#x27;material and exposure time&#x27;
+  10.1021_acs.jpcc.9b08176:fig3 axis &#x27;Plasma time&#x27;
+  10.1021_acs.jpcc.9b08176:fig3 axis &#x27;PD^{50%} / cavity height&#x27;
+  10.1116_6.0002804:fig5.cap quantity &#x27;O&#x27;
+  10.1116_6.0002804:fig5.cap quantity &#x27;Cl&#x27;
+  10.1116_6.0002804:fig5.cap quantity &#x27;C&#x27;
+  10.1116_6.0002804:fig5.cap quantity &#x27;N&#x27;
+  10.1116_6.0002804:fig6.cap quantity &#x27;O&#x27;
+  10.1116_6.0002804:fig6.cap quantity &#x27;Cl&#x27;
+  10.1116_6.0002804:fig6.cap quantity &#x27;N&#x27;
+  10.1116_6.0002804:fig6.cap quantity &#x27;C&#x27;
+  10.1116_6.0002804:fig7.cap quantity &#x27;ALD&#x27;
+  10.1116_6.0002804:fig7.cap quantity &#x27;CVD&#x27;
+  10.1116_6.0002804:fig1a axis &#x27;MoCl_{2}O_{2} pulse&#x27;
+  10.1116_6.0002804:fig1b axis &#x27;at-H pulse&#x27;
+  10.1116_6.0002804:fig1c axis &#x27;MoCl_{2}O_{2} purge&#x27;
+  10.1116_6.0002804:fig1d axis &#x27;at-H purge&#x27;
+  10.1116_6.0002804:fig1e axis &#x27;Hot-wire temperature&#x27;
+  10.1116_6.0002804:fig2 axis &#x27;measurement technique and process&#x27;
+  10.1116_6.0002804:fig5a axis &#x27;Depth (\times 10^{15} at/cm^{2})&#x27;
+  10.1116_6.0002804:fig5a axis &#x27;element&#x27;
+  10.1116_6.0002804:fig5b axis &#x27;element&#x27;
+  10.1116_6.0002804:fig6a axis &#x27;Depth&#x27;
+  10.1116_6.0002804:fig6a axis &#x27;Concentration&#x27;
+  10.1116_6.0002804:fig6a axis &#x27;element&#x27;
+  10.1116_6.0002804:fig6b axis &#x27;Concentration&#x27;
+  10.1116_6.0002804:fig6b axis &#x27;element&#x27;
+  10.1116_6.0002804:fig8 axis &#x27;2Θ&#x27;
+  10.1116_6.0003182:fig2a axis &#x27;p&#x27;
+  10.1116_6.0003182:fig2b axis &#x27;p&#x27;
+  10.1116_6.0003182:fig2c axis &#x27;p&#x27;
+  10.1116_6.0003182:fig2d axis &#x27;T&#x27;
+  10.1116_6.0003182:fig3a axis &#x27;Elapsed time, \delta t&#x27;
+  10.1116_6.0003182:fig3a axis &#x27;Pressure change, \delta p&#x27;
+  10.1116_6.0003182:fig3b axis &#x27;Net gain of gas moles, \Delta n_g&#x27;
+  10.1116_6.0003182:fig3c axis &#x27;Terminal slope, TS&#x27;
+  10.1116_6.0003182:fig5 axis &#x27;2θ&#x27;
+  10.1116_6.0003182:fig5 axis &#x27;Normalized counts&#x27;
+  10.1116_6.0003182:fig6d axis &#x27;Normalized X-ray counts&#x27;
+  10.1116_6.0003182:fig6d axis &#x27;Postion&#x27;
+  10.1116_6.0003182:fig6d axis &#x27;element&#x27;
+  10.1116_6.0003182:fig6e axis &#x27;Normalized X-ray counts&#x27;
+  10.1116_6.0003182:fig6e axis &#x27;Postion&#x27;
+  10.1116_6.0003182:fig6e axis &#x27;element&#x27;
+  10.1116_6.0003182:fig6f axis &#x27;Normalized X-ray counts&#x27;
+  10.1116_6.0003182:fig6f axis &#x27;Postion&#x27;
+  10.1116_6.0003182:fig6f unit &#x27;temperature&#x27;
+  10.1116_6.0003182:fig6f axis &#x27;element&#x27;
+result: FAIL (6)
+FAIL A3 10.1116_6.0002804:fig5.cap quantity &#x27;Mo&#x27;: candidate mo decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5.cap quantity &#x27;H&#x27;: candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig6.cap quantity &#x27;Si&#x27;: candidate si decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig3 unit &#x27;Time&#x27;: candidate time decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5a axis &#x27;Composition&#x27;: candidate composition decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5b axis &#x27;Composition&#x27;: candidate composition decided in round 0 (add): decided, but the row is still open
 </pre>
 <h2>A1 decision trace: every decision, every row it covered, where it is now</h2><p>psed_v2/kb/reports/R3_apply.A1.csv</p>
 <table><tr><th>id</th><th>decision</th><th>covers</th><th>pid</th><th>element</th><th>field</th><th>row_label</th><th>now</th><th>effect</th><th>reason</th></tr>
@@ -37,11 +92,69 @@ result: PASS
 <h2>A3 open rows, classified</h2><p>psed_v2/kb/reports/R3_apply.A3.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>record_key</th><th>class</th><th>candidate_at_snapshot</th><th>why</th></tr>
 <tr><td>10.1021_acs.jpcc.9b08176</td><td>tab1.r0c0</td><td>material</td><td>material</td><td></td><td>material</td><td>other</td><td></td><td>the value row of the categorical material: propose makes no candidate of it (P168)</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>fig2B</td><td>axis</td><td>Distance / cavity height</td><td></td><td>distance / cavity height</td><td>new since apply → next round</td><td></td><td>candidate distance_cavity_height: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>fig2B</td><td>axis</td><td>material and exposure time</td><td></td><td>material and exposure time</td><td>new since apply → next round</td><td></td><td>candidate material_and_exposure_time: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>fig3</td><td>axis</td><td>Plasma time</td><td>s</td><td>plasma time</td><td>new since apply → next round</td><td></td><td>candidate plasma_time: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1021_acs.jpcc.9b08176</td><td>fig3</td><td>axis</td><td>PD^{50%} / cavity height</td><td></td><td>pd50% / cavity height</td><td>new since apply → next round</td><td></td><td>candidate pd_50_cavity_height: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5.cap</td><td>quantity</td><td>Mo</td><td></td><td>mo</td><td>other</td><td></td><td>candidate mo decided in round 0 (add): decided, but the row is still open</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5.cap</td><td>quantity</td><td>O</td><td></td><td>o</td><td>new since apply → next round</td><td></td><td>candidate o: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5.cap</td><td>quantity</td><td>Cl</td><td></td><td>cl</td><td>new since apply → next round</td><td></td><td>candidate cl: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5.cap</td><td>quantity</td><td>C</td><td></td><td>c</td><td>new since apply → next round</td><td></td><td>candidate c: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5.cap</td><td>quantity</td><td>N</td><td></td><td>n</td><td>new since apply → next round</td><td></td><td>candidate n: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5.cap</td><td>quantity</td><td>H</td><td></td><td>h</td><td>other</td><td></td><td>candidate h decided in round 2 (never -&gt; Model internals): decided, but the row is still open</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6.cap</td><td>quantity</td><td>O</td><td></td><td>o</td><td>new since apply → next round</td><td></td><td>candidate o: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6.cap</td><td>quantity</td><td>Cl</td><td></td><td>cl</td><td>new since apply → next round</td><td></td><td>candidate cl: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6.cap</td><td>quantity</td><td>N</td><td></td><td>n</td><td>new since apply → next round</td><td></td><td>candidate n: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6.cap</td><td>quantity</td><td>Si</td><td></td><td>si</td><td>other</td><td></td><td>candidate si decided in round 0 (add): decided, but the row is still open</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6.cap</td><td>quantity</td><td>C</td><td></td><td>c</td><td>new since apply → next round</td><td></td><td>candidate c: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig7.cap</td><td>quantity</td><td>ALD</td><td></td><td>ald</td><td>new since apply → next round</td><td></td><td>candidate ald: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig7.cap</td><td>quantity</td><td>CVD</td><td></td><td>cvd</td><td>new since apply → next round</td><td></td><td>candidate cvd: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig1a</td><td>axis</td><td>MoCl_{2}O_{2} pulse</td><td>s</td><td>mocl2o2 pulse</td><td>new since apply → next round</td><td></td><td>candidate mocl_2_o_2_pulse: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig1b</td><td>axis</td><td>at-H pulse</td><td>s</td><td>at-h pulse</td><td>new since apply → next round</td><td></td><td>candidate at_h_pulse: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig1c</td><td>axis</td><td>MoCl_{2}O_{2} purge</td><td>s</td><td>mocl2o2 purge</td><td>new since apply → next round</td><td></td><td>candidate mocl_2_o_2_purge: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig1d</td><td>axis</td><td>at-H purge</td><td>s</td><td>at-h purge</td><td>new since apply → next round</td><td></td><td>candidate at_h_purge: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig1e</td><td>axis</td><td>Hot-wire temperature</td><td>°C</td><td>hot-wire temperature</td><td>new since apply → next round</td><td></td><td>candidate hot_wire_temperature: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig2</td><td>axis</td><td>measurement technique and process</td><td></td><td>measurement technique and process</td><td>new since apply → next round</td><td></td><td>candidate measurement_technique_and_process: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig3</td><td>unit</td><td>Time</td><td>cycles</td><td>time</td><td>other</td><td></td><td>candidate time decided in round 0 (add): decided, but the row is still open</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig4</td><td>axis</td><td></td><td></td><td></td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5a</td><td>axis</td><td>Depth (\times 10^{15} at/cm^{2})</td><td>\times 10^{15} at/cm^{2}</td><td>depth (times 1015 at/cm2)</td><td>new since apply → next round</td><td></td><td>candidate depth: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5a</td><td>axis</td><td>Composition</td><td>at%</td><td>composition</td><td>other</td><td></td><td>candidate composition decided in round 0 (add): decided, but the row is still open</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5a</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5b</td><td>axis</td><td>Composition</td><td>at%</td><td>composition</td><td>other</td><td></td><td>candidate composition decided in round 0 (add): decided, but the row is still open</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig5b</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6a</td><td>axis</td><td>Depth</td><td>nm</td><td>depth</td><td>new since apply → next round</td><td></td><td>candidate depth: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6a</td><td>axis</td><td>Concentration</td><td>atoms/cm^{3}</td><td>concentration</td><td>new since apply → next round</td><td></td><td>candidate concentration: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6a</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6b</td><td>axis</td><td>Concentration</td><td>atoms/cm^{3}</td><td>concentration</td><td>new since apply → next round</td><td></td><td>candidate concentration: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig6b</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig7b</td><td>axis</td><td></td><td></td><td></td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1116_6.0002804</td><td>fig8</td><td>axis</td><td>2Θ</td><td>°</td><td>2θ</td><td>new since apply → next round</td><td></td><td>candidate 2: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
 <tr><td>10.1116_6.0003182</td><td>s9.p5</td><td>quantity</td><td>total isolated deposition volume</td><td>l</td><td>total isolated deposition volume</td><td>pending candidate total_isolated_deposition_volume</td><td>total_isolated_deposition_volume</td><td></td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig4b</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td></td><td>dose</td><td>other</td><td>dose</td><td>candidate dose decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig2a</td><td>axis</td><td>p</td><td>Torr</td><td>p</td><td>new since apply → next round</td><td></td><td>candidate p: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig2b</td><td>axis</td><td>p</td><td>Torr</td><td>p</td><td>new since apply → next round</td><td></td><td>candidate p: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig2c</td><td>axis</td><td>p</td><td>Torr</td><td>p</td><td>new since apply → next round</td><td></td><td>candidate p: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig2d</td><td>axis</td><td>T</td><td>°C</td><td>t</td><td>new since apply → next round</td><td></td><td>candidate t: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig3a</td><td>axis</td><td>Elapsed time, \delta t</td><td>min</td><td>elapsed time, δ t</td><td>new since apply → next round</td><td></td><td>candidate elapsed_time_delta_t: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig3a</td><td>axis</td><td>Pressure change, \delta p</td><td>Torr</td><td>pressure change, δ p</td><td>new since apply → next round</td><td></td><td>candidate pressure_change_delta_p: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig3a</td><td>axis</td><td>cycle</td><td></td><td>cycle</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig3b</td><td>axis</td><td>Net gain of gas moles, \Delta n_g</td><td>\mumol</td><td>net gain of gas moles, δ ng</td><td>new since apply → next round</td><td></td><td>candidate net_gain_of_gas_moles_delta_n_g: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig3c</td><td>axis</td><td>Terminal slope, TS</td><td>mTorr/min</td><td>terminal slope, ts</td><td>new since apply → next round</td><td></td><td>candidate terminal_slope_ts: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig5</td><td>axis</td><td>2θ</td><td>deg.</td><td>2θ</td><td>new since apply → next round</td><td></td><td>candidate 2: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig5</td><td>axis</td><td>Normalized counts</td><td></td><td>normalized counts</td><td>new since apply → next round</td><td></td><td>candidate normalized_counts: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6d</td><td>axis</td><td>Normalized X-ray counts</td><td></td><td>normalized x-ray counts</td><td>new since apply → next round</td><td></td><td>candidate normalized_x_ray_counts: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6d</td><td>axis</td><td>Postion</td><td>mm</td><td>postion</td><td>new since apply → next round</td><td></td><td>candidate postion: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6d</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6e</td><td>axis</td><td>Normalized X-ray counts</td><td></td><td>normalized x-ray counts</td><td>new since apply → next round</td><td></td><td>candidate normalized_x_ray_counts: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6e</td><td>axis</td><td>Postion</td><td>mm</td><td>postion</td><td>new since apply → next round</td><td></td><td>candidate postion: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6e</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6f</td><td>axis</td><td>Normalized X-ray counts</td><td></td><td>normalized x-ray counts</td><td>new since apply → next round</td><td></td><td>candidate normalized_x_ray_counts: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6f</td><td>axis</td><td>Postion</td><td>mm</td><td>postion</td><td>new since apply → next round</td><td></td><td>candidate postion: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6f</td><td>unit</td><td>temperature</td><td>/160 °C</td><td>temperature</td><td>new since apply → next round</td><td></td><td>candidate temperature: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
+<tr><td>10.1116_6.0003182</td><td>fig6f</td><td>axis</td><td>element</td><td></td><td>element</td><td>new since apply → next round</td><td></td><td>candidate element: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
 </table>
 <h2>A3 pending candidates of the round&#x27;s papers</h2><p>psed_v2/kb/reports/R3_apply.A3_pending.csv</p>
 <table><tr><th>candidate</th><th>first_round</th><th>pids</th><th>rows_at_snapshot</th><th>open_rows_now</th><th>accounted</th><th>detail</th></tr>
@@ -66,6 +179,9 @@ result: PASS
 <tr><td>q</td><td>4</td><td>10.1116_6.0002993</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002993 (its paper is not compiled)</td></tr>
 <tr><td>thiele_modulus</td><td>4</td><td>10.1039_d1cp04758b</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1039_d1cp04758b (its paper is not compiled)</td></tr>
 <tr><td>transmittance</td><td>4</td><td>10.1116_6.0002993</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0002993 (its paper is not compiled)</td></tr>
+<tr><td>integration_time</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
+<tr><td>markov_chain_approach</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
+<tr><td>spectroscopic_ellipsometer</td><td>5</td><td>10.1116_6.0001094</td><td>0</td><td>0</td><td>yes</td><td>no compiled output for 10.1116_6.0001094 (its paper is not compiled)</td></tr>
 </table>
 <h2>Snapshot: every row of the round before apply</h2><p>psed_v2/kb/reports/R3_apply.decision_rows.csv</p>
 <table><tr><th>pid</th><th>element</th><th>field</th><th>label</th><th>unit</th><th>candidate</th><th>decision</th></tr>

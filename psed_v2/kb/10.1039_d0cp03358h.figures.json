@@ -3,7 +3,7 @@
  "key": "yim20",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-19T23:46:44",
+ "imported_at": "2026-10-24T09:16:58",
  "inventory": [
   {
    "id": "yim20:fig1a",
@@ -146,7 +146,71 @@
     "signal_intensity"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance [µm]",
+     "key": "Distance",
+     "unit": "µm",
+     "quantity": "distance",
+     "how": "id 'distance'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Intensity [a.u.]",
+     "key": "Intensity",
+     "unit": "a.u.",
+     "quantity": "signal_intensity",
+     "how": "alias 'Intensity'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "growth cycles",
+     "key": "growth cycles",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "channel design height",
+     "key": "channel design height",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "element",
+     "key": "element",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig6",
@@ -164,14 +228,51 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Saturation profiles for ALD Al2O3 measured with different reflectometer spot sizes",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [
     "F1"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance x (µm)",
+     "key": "Distance x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "Magnification (spot size)",
+     "key": "Magnification (spot size)",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "Instrument settings",
+     "never_label": "Magnification (spot size) [µm]",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig8a",
@@ -183,7 +284,61 @@
    "flags": [
     "F2"
    ],
-   "status": "verdict missed_series"
+   "status": "imported",
+   "verdict": "missed_series",
+   "flagged": [
+    "verdict missed_series"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "nm",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "L",
+     "key": "L",
+     "unit": "",
+     "quantity": "feature_depth",
+     "how": "symbol 'L' of this paper",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig8b",
@@ -191,14 +346,75 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Reproducibility of ALD runs for Al2O3 films made in 500 cycles on various LHAR channels",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "cycle count",
+     "key": "cycle count",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "nm",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "Sample",
+     "key": "Sample",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "Equipment details and sample codes",
+     "never_label": "Sample; sample code",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig9a",
@@ -206,17 +422,78 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "As-measured saturation profile of Al2O3 in channels of varying height H",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [
     "F2",
     "F2",
     "F2",
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig9b",
@@ -224,14 +501,82 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Scaled saturation profile of Al2O3 in channels of varying height H",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance"
+   ],
    "flags": [
     "F2",
     "F2",
     "F2",
     "F2"
    ],
-   "status": "verdict wrong_points"
+   "status": "imported",
+   "verdict": "wrong_points",
+   "flagged": [
+    "verdict wrong_points"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Thickness/cycles S/N (nm)",
+     "key": "Thickness/cycles S/N",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig9c",
@@ -239,14 +584,83 @@
    "panel": "c",
    "panel_type": "plot",
    "content": "Type 1 normalized saturation profile of Al2O3 in channels of varying height H",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "normalized_thickness"
+   ],
    "flags": [
     "F2",
     "F2",
     "F2",
     "F2"
    ],
-   "status": "verdict wrong_points"
+   "status": "imported",
+   "verdict": "wrong_points",
+   "flagged": [
+    "verdict wrong_points"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Normalized thickness (-)",
+     "key": "Normalized thickness",
+     "unit": "-",
+     "quantity": "normalized_thickness",
+     "how": "id 'normalized thickness'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig9d",
@@ -254,17 +668,78 @@
    "panel": "d",
    "panel_type": "plot",
    "content": "As-measured saturation profile of Al2O3 with varying number of cycles N",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [
     "F2",
     "F2",
     "F2",
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "nm",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig9e",
@@ -273,8 +748,7 @@
    "panel_type": "plot",
    "content": "Scaled saturation profile of Al2O3 with varying number of cycles N",
    "quantities": [
-    "dimensionless_distance",
-    "growth_per_cycle"
+    "dimensionless_distance"
    ],
    "flags": [
     "F2",
@@ -282,7 +756,71 @@
     "F2",
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Thickness/cycles S/N (nm)",
+     "key": "Thickness/cycles S/N",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "nm",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig9f",
@@ -300,7 +838,71 @@
     "F2",
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Normalized thickness (-)",
+     "key": "Normalized thickness",
+     "unit": "-",
+     "quantity": "normalized_thickness",
+     "how": "id 'normalized thickness'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "nm",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig10a",
@@ -308,12 +910,73 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Simulated film thickness versus distance inside channel for different channel heights",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "N",
+     "key": "N",
+     "unit": "cycles",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "T",
+     "key": "T",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "symbol 'T' of this paper",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig10b",
@@ -322,11 +985,74 @@
    "panel_type": "plot",
    "content": "Simulated scaled thickness per cycle versus dimensionless distance for varying channel height",
    "quantities": [
-    "dimensionless_distance",
-    "growth_per_cycle"
+    "dimensionless_distance"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Thickness/cycles S/N (nm)",
+     "key": "Thickness/cycles S/N",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "N",
+     "key": "N",
+     "unit": "cycles",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "T",
+     "key": "T",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "symbol 'T' of this paper",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig10c",
@@ -339,7 +1065,71 @@
     "normalized_thickness"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Normalized thickness (-)",
+     "key": "Normalized thickness",
+     "unit": "-",
+     "quantity": "normalized_thickness",
+     "how": "id 'normalized thickness'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "N",
+     "key": "N",
+     "unit": "cycles",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "T",
+     "key": "T",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "symbol 'T' of this paper",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "channel height",
+     "key": "channel height",
+     "unit": "",
+     "quantity": "feature_width",
+     "how": "alias 'channel height'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig10d",
@@ -347,12 +1137,73 @@
    "panel": "d",
    "panel_type": "plot",
    "content": "Simulated film thickness versus distance inside channel for varying number of cycles",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "H",
+     "key": "H",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "T",
+     "key": "T",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "symbol 'T' of this paper",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig10e",
@@ -361,11 +1212,74 @@
    "panel_type": "plot",
    "content": "Simulated scaled thickness per cycle versus dimensionless distance for varying number of cycles",
    "quantities": [
-    "dimensionless_distance",
-    "growth_per_cycle"
+    "dimensionless_distance"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Thickness/cycles S/N (nm)",
+     "key": "Thickness/cycles S/N",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "H",
+     "key": "H",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "T",
+     "key": "T",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "symbol 'T' of this paper",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig10f",
@@ -378,7 +1292,71 @@
     "normalized_thickness"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Dimensionless distance x̃",
+     "key": "Dimensionless distance x̃",
+     "unit": "",
+     "quantity": "dimensionless_distance",
+     "how": "alias 'Dimensionless distance x̃'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Normalized thickness (-)",
+     "key": "Normalized thickness",
+     "unit": "-",
+     "quantity": "normalized_thickness",
+     "how": "id 'normalized thickness'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "H",
+     "key": "H",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "T",
+     "key": "T",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "symbol 'T' of this paper",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "number of cycles",
+     "key": "number of cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'Number of cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig11a",
@@ -386,16 +1364,65 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Al2O3 film thickness along the channel for different TMA pulse times",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [
     "F1",
     "F2",
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "TMA pulse",
+     "key": "TMA pulse",
+     "unit": "",
+     "quantity": "pulse_time",
+     "how": "alias 'TMA pulse'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "yim20:fig11b",
@@ -403,16 +1430,65 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Al2O3 film thickness along the channel for different purge times",
-   "quantities": [
-    "distance",
-    "film_thickness"
-   ],
+   "quantities": [],
    "flags": [
     "F1",
     "F2",
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Distance inside the channel x (µm)",
+     "key": "Distance inside the channel x",
+     "unit": "µm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Film thickness S (nm)",
+     "key": "Film thickness S",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "Purge",
+     "key": "Purge",
+     "unit": "",
+     "quantity": "purge_time",
+     "how": "name 'purge'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   }
  ],
  "curves": [
@@ -431,8 +1507,9 @@
     "transform": "",
     "label_raw": "Distance [µm]",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance",
+    "how": "id 'distance'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "signal_intensity",
@@ -440,8 +1517,9 @@
     "transform": "",
     "label_raw": "Intensity [a.u.]",
     "unit_raw": "a.u.",
-    "definition": "",
-    "definition_note": ""
+    "key": "Intensity",
+    "how": "alias 'Intensity'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -667,8 +1745,9 @@
     "transform": "",
     "label_raw": "Distance [µm]",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance",
+    "how": "id 'distance'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "signal_intensity",
@@ -676,8 +1755,9 @@
     "transform": "",
     "label_raw": "Intensity [a.u.]",
     "unit_raw": "a.u.",
-    "definition": "",
-    "definition_note": ""
+    "key": "Intensity",
+    "how": "alias 'Intensity'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -903,8 +1983,9 @@
     "transform": "",
     "label_raw": "Distance [µm]",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance",
+    "how": "id 'distance'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "signal_intensity",
@@ -912,8 +1993,9 @@
     "transform": "",
     "label_raw": "Intensity [a.u.]",
     "unit_raw": "a.u.",
-    "definition": "",
-    "definition_note": ""
+    "key": "Intensity",
+    "how": "alias 'Intensity'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1134,22 +2216,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1262,7 +2346,7 @@
     ],
     [
      102.4,
-     30.999999999999996
+     31.0
     ],
     [
      107.3,
@@ -1286,7 +2370,7 @@
     ],
     [
      131.9,
-     15.099999999999998
+     15.1
     ],
     [
      136.8,
@@ -1459,7 +2543,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.7089999999999999,
+    "x": null,
     "y": 0.452
    },
    "set": "yim20:cmp:fig7",
@@ -1481,22 +2565,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1657,7 +2743,7 @@
     ],
     [
      100.2,
-     30.299999999999997
+     30.3
     ],
     [
      103.5,
@@ -1684,11 +2770,11 @@
      7.1
     ],
     [
-     123.19999999999999,
+     123.2,
      5.3
     ],
     [
-     126.49999999999999,
+     126.5,
      3.7
     ],
     [
@@ -1950,7 +3036,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.992,
+    "x": null,
     "y": 0.588
    },
    "set": "yim20:cmp:fig7",
@@ -1972,22 +3058,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -2075,7 +3163,7 @@
      46.4
     ],
     [
-     61.699999999999996,
+     61.7,
      46.3
     ],
     [
@@ -2401,7 +3489,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.787,
+    "x": null,
     "y": 0.557
    },
    "set": "yim20:cmp:fig7",
@@ -2414,6 +3502,986 @@
    }
   },
   {
+   "id": "yim20:fig8a#c1",
+   "figure": "8",
+   "panel": "a",
+   "series": {
+    "label_raw": "0.1",
+    "cls": "numeric",
+    "quantity": "feature_depth",
+    "value": 0.1,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "Distance inside the channel x (µm)",
+    "unit_raw": "µm",
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "nm",
+    "transform": "",
+    "label_raw": "Film thickness S (nm)",
+    "unit_raw": "nm",
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     -3.2,
+     47.3
+    ],
+    [
+     2.6,
+     50.8
+    ],
+    [
+     7.2,
+     51.8
+    ],
+    [
+     25.8,
+     51.5
+    ],
+    [
+     55.2,
+     51.2
+    ],
+    [
+     80.2,
+     51.0
+    ],
+    [
+     94.2,
+     49.8
+    ],
+    [
+     101.4,
+     41.9
+    ],
+    [
+     108.5,
+     29.8
+    ],
+    [
+     113.8,
+     17.4
+    ],
+    [
+     118.5,
+     10.1
+    ],
+    [
+     124.6,
+     5.1
+    ],
+    [
+     130.3,
+     3.0
+    ],
+    [
+     136.7,
+     2.2
+    ],
+    [
+     145.4,
+     1.8
+    ],
+    [
+     158.0,
+     0.4
+    ],
+    [
+     165.7,
+     0.3
+    ],
+    [
+     172.8,
+     0.3
+    ],
+    [
+     185.0,
+     0.1
+    ]
+   ],
+   "points_raw": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     -3.2,
+     47.3
+    ],
+    [
+     2.6,
+     50.8
+    ],
+    [
+     7.2,
+     51.8
+    ],
+    [
+     25.8,
+     51.5
+    ],
+    [
+     55.2,
+     51.2
+    ],
+    [
+     80.2,
+     51.0
+    ],
+    [
+     94.2,
+     49.8
+    ],
+    [
+     101.4,
+     41.9
+    ],
+    [
+     108.5,
+     29.8
+    ],
+    [
+     113.8,
+     17.4
+    ],
+    [
+     118.5,
+     10.1
+    ],
+    [
+     124.6,
+     5.1
+    ],
+    [
+     130.3,
+     3.0
+    ],
+    [
+     136.7,
+     2.2
+    ],
+    [
+     145.4,
+     1.8
+    ],
+    [
+     158.0,
+     0.4
+    ],
+    [
+     165.7,
+     0.3
+    ],
+    [
+     172.8,
+     0.3
+    ],
+    [
+     185.0,
+     0.1
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "L",
+     "raw": "0.1",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "channel height": "500 nm"
+   },
+   "flags": [
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.517,
+    "note": "flagged (P174, kept): verdict missed_series"
+   },
+   "set": "yim20:cmp:fig8a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "8",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig8a#c2",
+   "figure": "8",
+   "panel": "a",
+   "series": {
+    "label_raw": "0.5",
+    "cls": "numeric",
+    "quantity": "feature_depth",
+    "value": 0.5,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "Distance inside the channel x (µm)",
+    "unit_raw": "µm",
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "nm",
+    "transform": "",
+    "label_raw": "Film thickness S (nm)",
+    "unit_raw": "nm",
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     -1.5,
+     48.5
+    ],
+    [
+     6.8,
+     51.5
+    ],
+    [
+     25.8,
+     51.3
+    ],
+    [
+     55.2,
+     51.2
+    ],
+    [
+     80.2,
+     50.8
+    ],
+    [
+     94.2,
+     49.5
+    ],
+    [
+     101.4,
+     40.5
+    ],
+    [
+     108.5,
+     28.5
+    ],
+    [
+     113.8,
+     16.5
+    ],
+    [
+     118.5,
+     9.5
+    ],
+    [
+     124.6,
+     4.5
+    ],
+    [
+     133.5,
+     0.2
+    ],
+    [
+     145.4,
+     0.3
+    ],
+    [
+     158.0,
+     0.2
+    ],
+    [
+     165.7,
+     0.2
+    ],
+    [
+     172.8,
+     0.2
+    ],
+    [
+     185.0,
+     0.0
+    ]
+   ],
+   "points_raw": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     -1.5,
+     48.5
+    ],
+    [
+     6.8,
+     51.5
+    ],
+    [
+     25.8,
+     51.3
+    ],
+    [
+     55.2,
+     51.2
+    ],
+    [
+     80.2,
+     50.8
+    ],
+    [
+     94.2,
+     49.5
+    ],
+    [
+     101.4,
+     40.5
+    ],
+    [
+     108.5,
+     28.5
+    ],
+    [
+     113.8,
+     16.5
+    ],
+    [
+     118.5,
+     9.5
+    ],
+    [
+     124.6,
+     4.5
+    ],
+    [
+     133.5,
+     0.2
+    ],
+    [
+     145.4,
+     0.3
+    ],
+    [
+     158.0,
+     0.2
+    ],
+    [
+     165.7,
+     0.2
+    ],
+    [
+     172.8,
+     0.2
+    ],
+    [
+     185.0,
+     0.0
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "L",
+     "raw": "0.5",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "channel height": "500 nm"
+   },
+   "flags": [
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.515,
+    "note": "flagged (P174, kept): verdict missed_series"
+   },
+   "set": "yim20:cmp:fig8a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "8",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig8a#c3",
+   "figure": "8",
+   "panel": "a",
+   "series": {
+    "label_raw": "1",
+    "cls": "numeric",
+    "quantity": "feature_depth",
+    "value": 1.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "Distance inside the channel x (µm)",
+    "unit_raw": "µm",
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "nm",
+    "transform": "",
+    "label_raw": "Film thickness S (nm)",
+    "unit_raw": "nm",
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     1.2,
+     49.5
+    ],
+    [
+     7.2,
+     51.6
+    ],
+    [
+     25.8,
+     51.5
+    ],
+    [
+     55.2,
+     51.3
+    ],
+    [
+     80.2,
+     51.0
+    ],
+    [
+     94.2,
+     49.8
+    ],
+    [
+     101.4,
+     42.0
+    ],
+    [
+     108.5,
+     30.0
+    ],
+    [
+     113.8,
+     17.8
+    ],
+    [
+     118.5,
+     10.5
+    ],
+    [
+     124.6,
+     5.3
+    ],
+    [
+     133.5,
+     1.5
+    ],
+    [
+     144.5,
+     1.7
+    ],
+    [
+     155.0,
+     1.2
+    ],
+    [
+     163.5,
+     7.0
+    ],
+    [
+     170.2,
+     14.5
+    ],
+    [
+     172.5,
+     17.1
+    ],
+    [
+     179.2,
+     17.2
+    ],
+    [
+     185.0,
+     0.5
+    ]
+   ],
+   "points_raw": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     1.2,
+     49.5
+    ],
+    [
+     7.2,
+     51.6
+    ],
+    [
+     25.8,
+     51.5
+    ],
+    [
+     55.2,
+     51.3
+    ],
+    [
+     80.2,
+     51.0
+    ],
+    [
+     94.2,
+     49.8
+    ],
+    [
+     101.4,
+     42.0
+    ],
+    [
+     108.5,
+     30.0
+    ],
+    [
+     113.8,
+     17.8
+    ],
+    [
+     118.5,
+     10.5
+    ],
+    [
+     124.6,
+     5.3
+    ],
+    [
+     133.5,
+     1.5
+    ],
+    [
+     144.5,
+     1.7
+    ],
+    [
+     155.0,
+     1.2
+    ],
+    [
+     163.5,
+     7.0
+    ],
+    [
+     170.2,
+     14.5
+    ],
+    [
+     172.5,
+     17.1
+    ],
+    [
+     179.2,
+     17.2
+    ],
+    [
+     185.0,
+     0.5
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "L",
+     "raw": "1",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 1.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "channel height": "500 nm"
+   },
+   "flags": [
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.511,
+    "note": "flagged (P174, kept): verdict missed_series"
+   },
+   "set": "yim20:cmp:fig8a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "8",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig8a#c4",
+   "figure": "8",
+   "panel": "a",
+   "series": {
+    "label_raw": "5",
+    "cls": "numeric",
+    "quantity": "feature_depth",
+    "value": 5.0,
+    "value_max": null,
+    "unit": "",
+    "unit_missing": true
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "µm",
+    "transform": "",
+    "label_raw": "Distance inside the channel x (µm)",
+    "unit_raw": "µm",
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "nm",
+    "transform": "",
+    "label_raw": "Film thickness S (nm)",
+    "unit_raw": "nm",
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     2.6,
+     51.0
+    ],
+    [
+     7.2,
+     51.6
+    ],
+    [
+     25.8,
+     51.4
+    ],
+    [
+     55.2,
+     51.2
+    ],
+    [
+     80.2,
+     50.8
+    ],
+    [
+     94.2,
+     49.5
+    ],
+    [
+     101.4,
+     41.2
+    ],
+    [
+     108.5,
+     28.8
+    ],
+    [
+     113.8,
+     16.8
+    ],
+    [
+     118.5,
+     9.8
+    ],
+    [
+     124.6,
+     4.8
+    ],
+    [
+     133.5,
+     0.5
+    ],
+    [
+     145.4,
+     0.3
+    ],
+    [
+     158.0,
+     0.5
+    ],
+    [
+     164.0,
+     5.0
+    ],
+    [
+     171.8,
+     14.2
+    ],
+    [
+     176.5,
+     10.0
+    ],
+    [
+     183.5,
+     2.0
+    ],
+    [
+     185.0,
+     0.5
+    ]
+   ],
+   "points_raw": [
+    [
+     -14.5,
+     47.0
+    ],
+    [
+     -7.8,
+     47.3
+    ],
+    [
+     2.6,
+     51.0
+    ],
+    [
+     7.2,
+     51.6
+    ],
+    [
+     25.8,
+     51.4
+    ],
+    [
+     55.2,
+     51.2
+    ],
+    [
+     80.2,
+     50.8
+    ],
+    [
+     94.2,
+     49.5
+    ],
+    [
+     101.4,
+     41.2
+    ],
+    [
+     108.5,
+     28.8
+    ],
+    [
+     113.8,
+     16.8
+    ],
+    [
+     118.5,
+     9.8
+    ],
+    [
+     124.6,
+     4.8
+    ],
+    [
+     133.5,
+     0.5
+    ],
+    [
+     145.4,
+     0.3
+    ],
+    [
+     158.0,
+     0.5
+    ],
+    [
+     164.0,
+     5.0
+    ],
+    [
+     171.8,
+     14.2
+    ],
+    [
+     176.5,
+     10.0
+    ],
+    [
+     183.5,
+     2.0
+    ],
+    [
+     185.0,
+     0.5
+    ]
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_depth": {
+     "key_raw": "L",
+     "raw": "5",
+     "quantity": "feature_depth",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "channel height": "500 nm"
+   },
+   "flags": [
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.513,
+    "note": "flagged (P174, kept): verdict missed_series"
+   },
+   "set": "yim20:cmp:fig8a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "8",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
    "id": "yim20:fig8b#c1",
    "figure": "8",
    "panel": "b",
@@ -2423,22 +4491,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -2494,7 +4564,7 @@
      53.8
     ],
     [
-     62.60000000000001,
+     62.6,
      53.7
     ],
     [
@@ -2551,7 +4621,7 @@
     ],
     [
      141.5,
-     30.000000000000004
+     30.0
     ],
     [
      144.9,
@@ -2733,15 +4803,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "feature_width": {
      "key_raw": "channel height",
      "raw": "500 nm",
@@ -2762,7 +4823,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.945,
+    "x": null,
     "y": 0.653
    },
    "set": "yim20:cmp:fig8b",
@@ -2784,22 +4845,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -2855,7 +4918,7 @@
      46.1
     ],
     [
-     62.10000000000001,
+     62.1,
      45.9
     ],
     [
@@ -2907,11 +4970,11 @@
      0.0
     ],
     [
-     124.00000000000001,
+     124.0,
      0.0
     ],
     [
-     127.89999999999999,
+     127.9,
      0.0
     ],
     [
@@ -3150,15 +5213,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "feature_width": {
      "key_raw": "channel height",
      "raw": "500 nm",
@@ -3179,7 +5233,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.9569999999999999,
+    "x": null,
     "y": 0.579
    },
    "set": "yim20:cmp:fig8b",
@@ -3201,22 +5255,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -3264,7 +5320,7 @@
      51.1
     ],
     [
-     62.10000000000001,
+     62.1,
      51.0
     ],
     [
@@ -3320,7 +5376,7 @@
      5.2
     ],
     [
-     126.29999999999998,
+     126.3,
      4.2
     ],
     [
@@ -3361,7 +5417,7 @@
     ],
     [
      167.6,
-     7.700000000000001
+     7.7
     ],
     [
      170.7,
@@ -3551,15 +5607,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "feature_width": {
      "key_raw": "channel height",
      "raw": "500 nm",
@@ -3580,7 +5627,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.9770000000000003,
+    "x": null,
     "y": 0.508
    },
    "set": "yim20:cmp:fig8b",
@@ -3602,22 +5649,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -3698,7 +5747,7 @@
     ],
     [
      94.5,
-     31.400000000000002
+     31.4
     ],
     [
      98.0,
@@ -3714,7 +5763,7 @@
     ],
     [
      108.3,
-     7.500000000000001
+     7.5
     ],
     [
      112.1,
@@ -3944,15 +5993,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "feature_width": {
      "key_raw": "channel height",
      "raw": "500 nm",
@@ -3973,7 +6013,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.881,
+    "x": null,
     "y": 0.469
    },
    "set": "yim20:cmp:fig8b",
@@ -3998,22 +6038,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -4182,7 +6224,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.1300000000000001,
+    "x": null,
     "y": 0.45400000000000007
    },
    "set": "yim20:cmp:fig9a",
@@ -4207,22 +6249,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -4274,7 +6318,7 @@
      8.5
     ],
     [
-     125.00000000000001,
+     125.0,
      1.8
     ],
     [
@@ -4415,7 +6459,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.93,
+    "x": null,
     "y": 0.508
    },
    "set": "yim20:cmp:fig9a",
@@ -4440,22 +6484,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -4487,7 +6533,7 @@
      48.5
     ],
     [
-     250.00000000000003,
+     250.0,
      48.0
     ],
     [
@@ -4632,7 +6678,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 3.9,
+    "x": null,
     "y": 0.3390000000000001
    },
    "set": "yim20:cmp:fig9a",
@@ -4643,6 +6689,1244 @@
     "figure": "9",
     "panel": "a"
    }
+  },
+  {
+   "id": "yim20:fig9b#c1",
+   "figure": "9",
+   "panel": "b",
+   "series": {
+    "label_raw": "100 nm",
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.10000000000000002,
+    "value_max": null,
+    "unit": "µm"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Dimensionless distance x̃",
+    "unit_raw": "",
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "nm",
+    "transform": "",
+    "label_raw": "Thickness/cycles S/N (nm)",
+    "unit_raw": "nm",
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0,
+     0.092
+    ],
+    [
+     42.0,
+     0.082
+    ],
+    [
+     60.0,
+     0.071
+    ],
+    [
+     80.0,
+     0.059
+    ],
+    [
+     100.0,
+     0.05
+    ],
+    [
+     120.0,
+     0.041
+    ],
+    [
+     140.0,
+     0.032
+    ],
+    [
+     160.0,
+     0.022
+    ],
+    [
+     180.0,
+     0.015
+    ],
+    [
+     200.0,
+     0.011
+    ],
+    [
+     250.0,
+     0.006
+    ],
+    [
+     300.0,
+     0.004
+    ],
+    [
+     350.0,
+     0.003
+    ],
+    [
+     400.0,
+     0.003
+    ],
+    [
+     420.0,
+     0.005
+    ],
+    [
+     440.0,
+     0.005
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     0.092
+    ],
+    [
+     42.0,
+     0.082
+    ],
+    [
+     60.0,
+     0.071
+    ],
+    [
+     80.0,
+     0.059
+    ],
+    [
+     100.0,
+     0.05
+    ],
+    [
+     120.0,
+     0.041
+    ],
+    [
+     140.0,
+     0.032
+    ],
+    [
+     160.0,
+     0.022
+    ],
+    [
+     180.0,
+     0.015
+    ],
+    [
+     200.0,
+     0.011
+    ],
+    [
+     250.0,
+     0.006
+    ],
+    [
+     300.0,
+     0.004
+    ],
+    [
+     350.0,
+     0.003
+    ],
+    [
+     400.0,
+     0.003
+    ],
+    [
+     420.0,
+     0.005
+    ],
+    [
+     440.0,
+     0.005
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "100 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.10000000000000002,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "temperature": "300 °C",
+    "number of cycles": "500"
+   },
+   "flags": [
+    "F2",
+    "F2",
+    "F2",
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 4.4,
+    "y": 0.00089,
+    "note": "flagged (P174, kept): verdict wrong_points"
+   },
+   "set": "yim20:cmp:fig9b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "9",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig9b#c2",
+   "figure": "9",
+   "panel": "b",
+   "series": {
+    "label_raw": "500 nm",
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.5000000000000001,
+    "value_max": null,
+    "unit": "µm"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Dimensionless distance x̃",
+    "unit_raw": "",
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "nm",
+    "transform": "",
+    "label_raw": "Thickness/cycles S/N (nm)",
+    "unit_raw": "nm",
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -15.0,
+     0.093
+    ],
+    [
+     10.0,
+     0.102
+    ],
+    [
+     50.0,
+     0.102
+    ],
+    [
+     100.0,
+     0.102
+    ],
+    [
+     150.0,
+     0.101
+    ],
+    [
+     180.0,
+     0.099
+    ],
+    [
+     200.0,
+     0.09
+    ],
+    [
+     212.0,
+     0.065
+    ],
+    [
+     220.0,
+     0.051
+    ],
+    [
+     230.0,
+     0.034
+    ],
+    [
+     240.0,
+     0.02
+    ],
+    [
+     250.0,
+     0.012
+    ],
+    [
+     270.0,
+     0.005
+    ],
+    [
+     300.0,
+     0.001
+    ],
+    [
+     345.0,
+     0.015
+    ],
+    [
+     370.0,
+     0.001
+    ]
+   ],
+   "points_raw": [
+    [
+     -15.0,
+     0.093
+    ],
+    [
+     10.0,
+     0.102
+    ],
+    [
+     50.0,
+     0.102
+    ],
+    [
+     100.0,
+     0.102
+    ],
+    [
+     150.0,
+     0.101
+    ],
+    [
+     180.0,
+     0.099
+    ],
+    [
+     200.0,
+     0.09
+    ],
+    [
+     212.0,
+     0.065
+    ],
+    [
+     220.0,
+     0.051
+    ],
+    [
+     230.0,
+     0.034
+    ],
+    [
+     240.0,
+     0.02
+    ],
+    [
+     250.0,
+     0.012
+    ],
+    [
+     270.0,
+     0.005
+    ],
+    [
+     300.0,
+     0.001
+    ],
+    [
+     345.0,
+     0.015
+    ],
+    [
+     370.0,
+     0.001
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "temperature": "300 °C",
+    "number of cycles": "500"
+   },
+   "flags": [
+    "F2",
+    "F2",
+    "F2",
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 3.85,
+    "y": 0.00101,
+    "note": "flagged (P174, kept): verdict wrong_points"
+   },
+   "set": "yim20:cmp:fig9b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "9",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig9b#c3",
+   "figure": "9",
+   "panel": "b",
+   "series": {
+    "label_raw": "2000 nm",
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 2.0000000000000004,
+    "value_max": null,
+    "unit": "µm"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Dimensionless distance x̃",
+    "unit_raw": "",
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "nm",
+    "transform": "",
+    "label_raw": "Thickness/cycles S/N (nm)",
+    "unit_raw": "nm",
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -10.0,
+     0.091
+    ],
+    [
+     0.0,
+     0.1
+    ],
+    [
+     50.0,
+     0.097
+    ],
+    [
+     100.0,
+     0.097
+    ],
+    [
+     150.0,
+     0.095
+    ],
+    [
+     175.0,
+     0.092
+    ],
+    [
+     183.0,
+     0.083
+    ],
+    [
+     188.0,
+     0.068
+    ],
+    [
+     192.0,
+     0.054
+    ],
+    [
+     194.0,
+     0.043
+    ],
+    [
+     195.0,
+     0.033
+    ]
+   ],
+   "points_raw": [
+    [
+     -10.0,
+     0.091
+    ],
+    [
+     0.0,
+     0.1
+    ],
+    [
+     50.0,
+     0.097
+    ],
+    [
+     100.0,
+     0.097
+    ],
+    [
+     150.0,
+     0.095
+    ],
+    [
+     175.0,
+     0.092
+    ],
+    [
+     183.0,
+     0.083
+    ],
+    [
+     188.0,
+     0.068
+    ],
+    [
+     192.0,
+     0.054
+    ],
+    [
+     194.0,
+     0.043
+    ],
+    [
+     195.0,
+     0.033
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "2000 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 2.0000000000000004,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "temperature": "300 °C",
+    "number of cycles": "500"
+   },
+   "flags": [
+    "F2",
+    "F2",
+    "F2",
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 2.05,
+    "y": 0.00067,
+    "note": "flagged (P174, kept): verdict wrong_points"
+   },
+   "set": "yim20:cmp:fig9b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "9",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig9c#c1",
+   "figure": "9",
+   "panel": "c",
+   "series": {
+    "label_raw": "100 nm",
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.10000000000000002,
+    "value_max": null,
+    "unit": "µm"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Dimensionless distance x̃",
+    "unit_raw": "",
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness (-)",
+    "unit_raw": "-",
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0,
+     0.92
+    ],
+    [
+     40.0,
+     0.86
+    ],
+    [
+     70.0,
+     0.75
+    ],
+    [
+     100.0,
+     0.63
+    ],
+    [
+     120.0,
+     0.52
+    ],
+    [
+     140.0,
+     0.42
+    ],
+    [
+     160.0,
+     0.32
+    ],
+    [
+     180.0,
+     0.23
+    ],
+    [
+     200.0,
+     0.17
+    ],
+    [
+     220.0,
+     0.11
+    ],
+    [
+     250.0,
+     0.05
+    ],
+    [
+     300.0,
+     0.02
+    ],
+    [
+     350.0,
+     0.03
+    ],
+    [
+     400.0,
+     0.04
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     0.92
+    ],
+    [
+     40.0,
+     0.86
+    ],
+    [
+     70.0,
+     0.75
+    ],
+    [
+     100.0,
+     0.63
+    ],
+    [
+     120.0,
+     0.52
+    ],
+    [
+     140.0,
+     0.42
+    ],
+    [
+     160.0,
+     0.32
+    ],
+    [
+     180.0,
+     0.23
+    ],
+    [
+     200.0,
+     0.17
+    ],
+    [
+     220.0,
+     0.11
+    ],
+    [
+     250.0,
+     0.05
+    ],
+    [
+     300.0,
+     0.02
+    ],
+    [
+     350.0,
+     0.03
+    ],
+    [
+     400.0,
+     0.04
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "100 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.10000000000000002,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "temperature": "300 °C",
+    "number of cycles": "500"
+   },
+   "flags": [
+    "F2",
+    "F2",
+    "F2",
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 4.0,
+    "y": 0.009000000000000001,
+    "note": "flagged (P174, kept): verdict wrong_points"
+   },
+   "set": "yim20:cmp:fig9c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "9",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig9c#c2",
+   "figure": "9",
+   "panel": "c",
+   "series": {
+    "label_raw": "500 nm",
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 0.5000000000000001,
+    "value_max": null,
+    "unit": "µm"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Dimensionless distance x̃",
+    "unit_raw": "",
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness (-)",
+    "unit_raw": "-",
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -15.0,
+     0.91
+    ],
+    [
+     10.0,
+     1.0
+    ],
+    [
+     50.0,
+     1.0
+    ],
+    [
+     100.0,
+     1.0
+    ],
+    [
+     150.0,
+     0.99
+    ],
+    [
+     180.0,
+     0.97
+    ],
+    [
+     200.0,
+     0.88
+    ],
+    [
+     212.0,
+     0.67
+    ],
+    [
+     220.0,
+     0.48
+    ],
+    [
+     230.0,
+     0.32
+    ],
+    [
+     240.0,
+     0.18
+    ],
+    [
+     250.0,
+     0.1
+    ],
+    [
+     270.0,
+     0.03
+    ],
+    [
+     300.0,
+     0.01
+    ],
+    [
+     345.0,
+     0.15
+    ],
+    [
+     370.0,
+     0.01
+    ]
+   ],
+   "points_raw": [
+    [
+     -15.0,
+     0.91
+    ],
+    [
+     10.0,
+     1.0
+    ],
+    [
+     50.0,
+     1.0
+    ],
+    [
+     100.0,
+     1.0
+    ],
+    [
+     150.0,
+     0.99
+    ],
+    [
+     180.0,
+     0.97
+    ],
+    [
+     200.0,
+     0.88
+    ],
+    [
+     212.0,
+     0.67
+    ],
+    [
+     220.0,
+     0.48
+    ],
+    [
+     230.0,
+     0.32
+    ],
+    [
+     240.0,
+     0.18
+    ],
+    [
+     250.0,
+     0.1
+    ],
+    [
+     270.0,
+     0.03
+    ],
+    [
+     300.0,
+     0.01
+    ],
+    [
+     345.0,
+     0.15
+    ],
+    [
+     370.0,
+     0.01
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "temperature": "300 °C",
+    "number of cycles": "500"
+   },
+   "flags": [
+    "F2",
+    "F2",
+    "F2",
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 3.85,
+    "y": 0.0099,
+    "note": "flagged (P174, kept): verdict wrong_points"
+   },
+   "set": "yim20:cmp:fig9c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "9",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "yim20:fig9c#c3",
+   "figure": "9",
+   "panel": "c",
+   "series": {
+    "label_raw": "2000 nm",
+    "cls": "numeric",
+    "quantity": "feature_width",
+    "value": 2.0000000000000004,
+    "value_max": null,
+    "unit": "µm"
+   },
+   "x": {
+    "quantity": "dimensionless_distance",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Dimensionless distance x̃",
+    "unit_raw": "",
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "normalized_thickness",
+    "unit": "1",
+    "transform": "",
+    "label_raw": "Normalized thickness (-)",
+    "unit_raw": "-",
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     -10.0,
+     0.92
+    ],
+    [
+     0.0,
+     1.03
+    ],
+    [
+     20.0,
+     0.99
+    ],
+    [
+     50.0,
+     1.0
+    ],
+    [
+     100.0,
+     0.99
+    ],
+    [
+     150.0,
+     0.97
+    ],
+    [
+     175.0,
+     0.94
+    ],
+    [
+     183.0,
+     0.82
+    ],
+    [
+     188.0,
+     0.68
+    ],
+    [
+     192.0,
+     0.49
+    ],
+    [
+     194.0,
+     0.39
+    ],
+    [
+     195.0,
+     0.33
+    ]
+   ],
+   "points_raw": [
+    [
+     -10.0,
+     0.92
+    ],
+    [
+     0.0,
+     1.03
+    ],
+    [
+     20.0,
+     0.99
+    ],
+    [
+     50.0,
+     1.0
+    ],
+    [
+     100.0,
+     0.99
+    ],
+    [
+     150.0,
+     0.97
+    ],
+    [
+     175.0,
+     0.94
+    ],
+    [
+     183.0,
+     0.82
+    ],
+    [
+     188.0,
+     0.68
+    ],
+    [
+     192.0,
+     0.49
+    ],
+    [
+     194.0,
+     0.39
+    ],
+    [
+     195.0,
+     0.33
+    ]
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "2000 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 2.0000000000000004,
+     "value_max": null,
+     "unit": "µm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "temperature": "300 °C",
+    "number of cycles": "500"
+   },
+   "flags": [
+    "F2",
+    "F2",
+    "F2",
+    "F2"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 2.05,
+    "y": 0.006999999999999999,
+    "note": "flagged (P174, kept): verdict wrong_points"
+   },
+   "set": "yim20:cmp:fig9c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "9",
+    "panel": "c"
+   },
+   "verdict": "flagged"
   },
   {
    "id": "yim20:fig9d#c1",
@@ -4657,22 +7941,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -4817,7 +8103,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.85,
+    "x": null,
     "y": 0.263
    },
    "set": "yim20:cmp:fig9d",
@@ -4842,22 +8128,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -4901,7 +8189,7 @@
      8.5
     ],
     [
-     125.00000000000001,
+     125.0,
      1.8
     ],
     [
@@ -5034,7 +8322,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 2.0,
+    "x": null,
     "y": 0.508
    },
    "set": "yim20:cmp:fig9d",
@@ -5059,22 +8347,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -5126,7 +8416,7 @@
      9.0
     ],
     [
-     125.00000000000001,
+     125.0,
      4.5
     ],
     [
@@ -5243,7 +8533,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.95,
+    "x": null,
     "y": 0.995
    },
    "set": "yim20:cmp:fig9d",
@@ -5273,17 +8563,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -5474,17 +8766,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -5691,17 +8985,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -5892,8 +9188,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -5901,8 +9198,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -6093,8 +9391,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -6102,8 +9401,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -6310,8 +9610,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -6319,8 +9620,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -6506,22 +9808,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -6584,15 +9888,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -6621,7 +9916,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 0.3,
+    "x": null,
     "y": 0.507
    },
    "set": "yim20:cmp:fig10a",
@@ -6646,22 +9941,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -6682,7 +9979,7 @@
     ],
     [
      48.0,
-     15.000000000000002
+     15.0
     ],
     [
      55.0,
@@ -6724,15 +10021,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -6761,7 +10049,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 0.65,
+    "x": null,
     "y": 0.507
    },
    "set": "yim20:cmp:fig10a",
@@ -6786,22 +10074,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -6872,15 +10162,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -6909,7 +10190,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 1.4000000000000001,
+    "x": null,
     "y": 0.507
    },
    "set": "yim20:cmp:fig10a",
@@ -6934,22 +10215,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -7020,15 +10303,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -7057,7 +10331,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 2.8000000000000003,
+    "x": null,
     "y": 0.507
    },
    "set": "yim20:cmp:fig10a",
@@ -7082,22 +10356,24 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -7114,11 +10390,11 @@
     ],
     [
      440.0,
-     30.000000000000004
+     30.0
     ],
     [
      465.0,
-     15.000000000000002
+     15.0
     ],
     [
      490.0,
@@ -7168,15 +10444,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -7205,7 +10472,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 5.7,
+    "x": null,
     "y": 0.507
    },
    "set": "yim20:cmp:fig10a",
@@ -7235,17 +10502,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -7364,15 +10633,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -7431,17 +10691,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -7536,15 +10798,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -7603,17 +10856,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -7692,15 +10947,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -7759,17 +11005,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -7840,15 +11088,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -7907,17 +11146,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -7988,15 +11229,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -8055,8 +11287,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -8064,8 +11297,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -8184,15 +11418,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -8251,8 +11476,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -8260,8 +11486,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -8356,15 +11583,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -8423,8 +11641,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -8432,8 +11651,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -8512,15 +11732,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -8579,8 +11790,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -8588,8 +11800,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -8660,15 +11873,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -8727,8 +11931,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -8736,8 +11941,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -8808,15 +12014,6 @@
     ]
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -8870,22 +12067,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -8956,15 +12155,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -8993,7 +12183,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 2.0,
+    "x": null,
     "y": 0.102
    },
    "set": "yim20:cmp:fig10d",
@@ -9018,22 +12208,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -9104,15 +12296,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -9141,7 +12324,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 2.0,
+    "x": null,
     "y": 0.254
    },
    "set": "yim20:cmp:fig10d",
@@ -9166,22 +12349,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -9205,7 +12390,7 @@
      14.0
     ],
     [
-     122.99999999999999,
+     123.0,
      4.2
     ],
     [
@@ -9252,15 +12437,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -9289,7 +12465,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 2.0,
+    "x": null,
     "y": 0.507
    },
    "set": "yim20:cmp:fig10d",
@@ -9314,22 +12490,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -9400,15 +12578,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -9437,7 +12606,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 2.0,
+    "x": null,
     "y": 1.014
    },
    "set": "yim20:cmp:fig10d",
@@ -9462,22 +12631,24 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -9564,15 +12735,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -9601,7 +12763,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": 2.0,
+    "x": null,
     "y": 2.0300000000000002
    },
    "set": "yim20:cmp:fig10d",
@@ -9631,17 +12793,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -9712,15 +12876,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -9779,17 +12934,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -9860,15 +13017,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -9927,17 +13075,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -10008,15 +13158,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -10075,17 +13216,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -10156,15 +13299,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -10223,17 +13357,19 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "growth_per_cycle",
-    "unit": "nm/cycle",
+    "quantity": "other",
+    "unit": "nm",
     "transform": "",
     "label_raw": "Thickness/cycles S/N (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness/cycles S/N",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -10312,15 +13448,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -10379,8 +13506,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -10388,8 +13516,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -10460,15 +13589,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -10527,8 +13647,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -10536,8 +13657,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -10608,15 +13730,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -10675,8 +13788,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -10684,8 +13798,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -10756,15 +13871,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -10823,8 +13929,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -10832,8 +13939,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -10904,15 +14012,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -10971,8 +14070,9 @@
     "transform": "",
     "label_raw": "Dimensionless distance x̃",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Dimensionless distance x̃",
+    "how": "alias 'Dimensionless distance x̃'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "normalized_thickness",
@@ -10980,8 +14080,9 @@
     "transform": "",
     "label_raw": "Normalized thickness (-)",
     "unit_raw": "-",
-    "definition": "",
-    "definition_note": ""
+    "key": "Normalized thickness",
+    "how": "id 'normalized thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -11060,15 +14161,6 @@
     ]
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -11122,22 +14214,24 @@
     "unit": "s"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -11201,7 +14295,7 @@
      6.0
     ],
     [
-     125.00000000000001,
+     125.0,
      6.0
     ],
     [
@@ -11383,7 +14477,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.1300000000000001,
+    "x": null,
     "y": 0.47500000000000003
    },
    "set": "yim20:cmp:fig11a",
@@ -11408,22 +14502,24 @@
     "unit": "s"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -11455,7 +14551,7 @@
      44.0
     ],
     [
-     125.00000000000001,
+     125.0,
      42.0
     ],
     [
@@ -11464,7 +14560,7 @@
     ],
     [
      130.0,
-     30.000000000000004
+     30.0
     ],
     [
      132.0,
@@ -11645,7 +14741,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 0.96,
+    "x": null,
     "y": 0.473
    },
    "set": "yim20:cmp:fig11a",
@@ -11670,22 +14766,24 @@
     "unit": "s"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -11770,7 +14868,7 @@
     ],
     [
      183.0,
-     30.999999999999996
+     31.0
     ],
     [
      190.0,
@@ -11790,7 +14888,7 @@
     ],
     [
      217.0,
-     15.000000000000002
+     15.0
     ],
     [
      224.0,
@@ -11805,7 +14903,7 @@
      8.5
     ],
     [
-     254.99999999999997,
+     255.0,
      8.0
     ],
     [
@@ -11826,7 +14924,7 @@
     ],
     [
      325.0,
-     7.500000000000001
+     7.5
     ],
     [
      340.0,
@@ -11834,7 +14932,7 @@
     ],
     [
      355.0,
-     7.500000000000001
+     7.5
     ],
     [
      370.0,
@@ -12035,7 +15133,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 3.95,
+    "x": null,
     "y": 0.44
    },
    "set": "yim20:cmp:fig11a",
@@ -12060,22 +15158,24 @@
     "unit": "s"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -12156,7 +15256,7 @@
     ],
     [
      122.0,
-     7.500000000000001
+     7.5
     ],
     [
      128.0,
@@ -12345,7 +15445,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.92,
+    "x": null,
     "y": 0.52
    },
    "set": "yim20:cmp:fig11b",
@@ -12370,22 +15470,24 @@
     "unit": "s"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -12679,7 +15781,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.95,
+    "x": null,
     "y": 0.48
    },
    "set": "yim20:cmp:fig11b",
@@ -12704,22 +15806,24 @@
     "unit": "s"
    },
    "x": {
-    "quantity": "distance",
+    "quantity": "other",
     "unit": "µm",
     "transform": "",
     "label_raw": "Distance inside the channel x (µm)",
     "unit_raw": "µm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Distance inside the channel x",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "film_thickness",
+    "quantity": "other",
     "unit": "nm",
     "transform": "",
     "label_raw": "Film thickness S (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Film thickness S",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -12799,7 +15903,7 @@
      24.0
     ],
     [
-     125.00000000000001,
+     125.0,
      18.5
     ],
     [
@@ -12820,7 +15924,7 @@
     ],
     [
      150.0,
-     7.500000000000001
+     7.5
     ],
     [
      156.0,
@@ -12840,7 +15944,7 @@
     ],
     [
      176.0,
-     15.000000000000002
+     15.0
     ],
     [
      179.0,
@@ -13021,7 +16125,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 1.97,
+    "x": null,
     "y": 0.43
    },
    "set": "yim20:cmp:fig11b",
@@ -13040,8 +16144,8 @@
    "id": "yim20:cmp:fig7",
    "figure": "7",
    "panel": "",
-   "kind": "series",
-   "varied": "objective_magnification",
+   "kind": "replicate",
+   "varied": "",
    "varied_raw": "Magnification (spot size)",
    "members": [
     "yim20:fig7#c1",
@@ -13049,7 +16153,33 @@
     "yim20:fig7#c3"
    ],
    "conditions": {},
-   "label": "Fig. 7 series (Magnification (spot size))"
+   "label": "Fig. 7 replicates (Magnification (spot size))"
+  },
+  {
+   "id": "yim20:cmp:fig8a",
+   "figure": "8",
+   "panel": "a",
+   "kind": "series",
+   "varied": "feature_depth",
+   "varied_raw": "L",
+   "members": [
+    "yim20:fig8a#c1",
+    "yim20:fig8a#c2",
+    "yim20:fig8a#c3",
+    "yim20:fig8a#c4"
+   ],
+   "conditions": {
+    "feature_width": {
+     "key_raw": "channel height",
+     "raw": "500 nm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5000000000000001,
+     "value_max": null,
+     "unit": "µm"
+    }
+   },
+   "label": "Fig. 8a series (L)"
   },
   {
    "id": "yim20:cmp:fig8b",
@@ -13065,15 +16195,6 @@
     "yim20:fig8b#c4"
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "feature_width": {
      "key_raw": "channel height",
      "raw": "500 nm",
@@ -13119,6 +16240,74 @@
     }
    },
    "label": "Fig. 9a series (channel height)"
+  },
+  {
+   "id": "yim20:cmp:fig9b",
+   "figure": "9",
+   "panel": "b",
+   "kind": "series",
+   "varied": "feature_width",
+   "varied_raw": "channel height",
+   "members": [
+    "yim20:fig9b#c1",
+    "yim20:fig9b#c2",
+    "yim20:fig9b#c3"
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "label": "Fig. 9b series (channel height)"
+  },
+  {
+   "id": "yim20:cmp:fig9c",
+   "figure": "9",
+   "panel": "c",
+   "kind": "series",
+   "varied": "feature_width",
+   "varied_raw": "channel height",
+   "members": [
+    "yim20:fig9c#c1",
+    "yim20:fig9c#c2",
+    "yim20:fig9c#c3"
+   ],
+   "conditions": {
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "300 °C",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "cycle_number": {
+     "key_raw": "number of cycles",
+     "raw": "500",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 500.0,
+     "value_max": null,
+     "unit": "cycle"
+    }
+   },
+   "label": "Fig. 9c series (channel height)"
   },
   {
    "id": "yim20:cmp:fig9d",
@@ -13184,16 +16373,6 @@
      "value": 300.0,
      "value_max": null,
      "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "y denominator",
-     "raw": "N",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "N"
     }
    },
    "label": "Fig. 9e series (number of cycles)"
@@ -13247,15 +16426,6 @@
     "yim20:fig10a#c5"
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -13283,15 +16453,6 @@
     "yim20:fig10b#c5"
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -13319,15 +16480,6 @@
     "yim20:fig10c#c5"
    ],
    "conditions": {
-    "cycle_number": {
-     "key_raw": "N",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -13355,15 +16507,6 @@
     "yim20:fig10d#c5"
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -13391,15 +16534,6 @@
     "yim20:fig10e#c5"
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -13408,16 +16542,6 @@
      "value": 300.0,
      "value_max": null,
      "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "y denominator",
-     "raw": "N",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "N"
     }
    },
    "label": "Fig. 10e series (number of cycles)"
@@ -13437,15 +16561,6 @@
     "yim20:fig10f#c5"
    ],
    "conditions": {
-    "feature_width": {
-     "key_raw": "H",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
     "deposition_temperature": {
      "key_raw": "T",
      "raw": "300 °C",
@@ -13511,282 +16626,12 @@
  ],
  "derived": [
   {
-   "id": "yim20:fig7#d1_1",
-   "source": "yim20:fig7#c1",
-   "quantity": "film_thickness",
+   "id": "yim20:fig9c#d2_1",
+   "source": "yim20:fig9c#c2",
+   "quantity": "normalized_thickness",
    "qualifiers": "position=plateau",
-   "value": 51.62222222222223,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {},
-   "figure": "7",
-   "panel": ""
-  },
-  {
-   "id": "yim20:fig7#d1_2",
-   "source": "yim20:fig7#c1",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 109.38444444444444,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {},
-   "figure": "7",
-   "panel": ""
-  },
-  {
-   "id": "yim20:fig7#d2_1",
-   "source": "yim20:fig7#c2",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 50.559999999999995,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {},
-   "figure": "7",
-   "panel": ""
-  },
-  {
-   "id": "yim20:fig7#d2_2",
-   "source": "yim20:fig7#c2",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 103.561875,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {},
-   "figure": "7",
-   "panel": ""
-  },
-  {
-   "id": "yim20:fig7#d3_1",
-   "source": "yim20:fig7#c3",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 51.857142857142854,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {},
-   "figure": "7",
-   "panel": ""
-  },
-  {
-   "id": "yim20:fig7#d3_2",
-   "source": "yim20:fig7#c3",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 103.56378737541529,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {},
-   "figure": "7",
-   "panel": ""
-  },
-  {
-   "id": "yim20:fig8b#d1_1",
-   "source": "yim20:fig8b#c1",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 58.05,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    }
-   },
-   "figure": "8",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig8b#d1_2",
-   "source": "yim20:fig8b#c1",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 142.50454545454545,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    }
-   },
-   "figure": "8",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig8b#d3_1",
-   "source": "yim20:fig8b#c3",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 50.5875,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    }
-   },
-   "figure": "8",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig8b#d3_2",
-   "source": "yim20:fig8b#c3",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 107.08613505747127,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    }
-   },
-   "figure": "8",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig8b#d4_1",
-   "source": "yim20:fig8b#c4",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 50.019999999999996,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    }
-   },
-   "figure": "8",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig8b#d4_2",
-   "source": "yim20:fig8b#c4",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 96.13248175182481,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "cycle count",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    }
-   },
-   "figure": "8",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig9a#d2_1",
-   "source": "yim20:fig9a#c2",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 49.9,
-   "unit": "nm",
+   "value": 0.9783333333333334,
+   "unit": "1",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
    "conditions": {
@@ -13820,57 +16665,15 @@
     }
    },
    "figure": "9",
-   "panel": "a"
+   "panel": "c"
   },
   {
-   "id": "yim20:fig9a#d2_2",
-   "source": "yim20:fig9a#c2",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 105.93617021276596,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "a"
-  },
-  {
-   "id": "yim20:fig9a#d3_1",
-   "source": "yim20:fig9a#c3",
-   "quantity": "film_thickness",
+   "id": "yim20:fig9c#d3_1",
+   "source": "yim20:fig9c#c3",
+   "quantity": "normalized_thickness",
    "qualifiers": "position=plateau",
-   "value": 48.3,
-   "unit": "nm",
+   "value": 0.9860000000000001,
+   "unit": "1",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
    "conditions": {
@@ -13904,434 +16707,14 @@
     }
    },
    "figure": "9",
-   "panel": "a"
-  },
-  {
-   "id": "yim20:fig9a#d3_2",
-   "source": "yim20:fig9a#c3",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 379.41,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "500",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle"
-    },
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "2000 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 2.0000000000000004,
-     "value_max": null,
-     "unit": "µm",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "a"
-  },
-  {
-   "id": "yim20:fig9d#d1_1",
-   "source": "yim20:fig9d#c1",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 25.65,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "250 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 250.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "d"
-  },
-  {
-   "id": "yim20:fig9d#d1_2",
-   "source": "yim20:fig9d#c1",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 114.45,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "250 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 250.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "d"
-  },
-  {
-   "id": "yim20:fig9d#d2_1",
-   "source": "yim20:fig9d#c2",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 49.9,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "d"
-  },
-  {
-   "id": "yim20:fig9d#d2_2",
-   "source": "yim20:fig9d#c2",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 105.92268041237114,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "d"
-  },
-  {
-   "id": "yim20:fig9d#d3_1",
-   "source": "yim20:fig9d#c3",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 97.34,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "1000 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 1000.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "d"
-  },
-  {
-   "id": "yim20:fig9d#d3_2",
-   "source": "yim20:fig9d#c3",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 97.40338983050847,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "1000 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 1000.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "d"
-  },
-  {
-   "id": "yim20:fig9e#d1_1",
-   "source": "yim20:fig9e#c1",
-   "quantity": "growth_per_cycle",
-   "qualifiers": "position=plateau",
-   "value": 0.1025,
-   "unit": "nm/cycle",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "250 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 250.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "e"
-  },
-  {
-   "id": "yim20:fig9e#d2_1",
-   "source": "yim20:fig9e#c2",
-   "quantity": "growth_per_cycle",
-   "qualifiers": "position=plateau",
-   "value": 0.09983333333333333,
-   "unit": "nm/cycle",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "500 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 500.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "e"
-  },
-  {
-   "id": "yim20:fig9e#d3_1",
-   "source": "yim20:fig9e#c3",
-   "quantity": "growth_per_cycle",
-   "qualifiers": "position=plateau",
-   "value": 0.0975,
-   "unit": "nm/cycle",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "feature_width": {
-     "key_raw": "channel height",
-     "raw": "500 nm",
-     "quantity": "feature_width",
-     "role": "condition",
-     "value": 0.5000000000000001,
-     "value_max": null,
-     "unit": "µm"
-    },
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "cycle_number": {
-     "key_raw": "number of cycles",
-     "raw": "1000 cycles",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 1000.0,
-     "value_max": null,
-     "unit": "cycle",
-     "from_series_label": true
-    }
-   },
-   "figure": "9",
-   "panel": "e"
+   "panel": "c"
   },
   {
    "id": "yim20:fig9f#d1_1",
    "source": "yim20:fig9f#c1",
    "quantity": "normalized_thickness",
    "qualifiers": "position=plateau",
-   "value": 0.995,
+   "value": 0.9950000000000001,
    "unit": "1",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
@@ -14415,7 +16798,7 @@
    "source": "yim20:fig9f#c3",
    "quantity": "normalized_thickness",
    "qualifiers": "position=plateau",
-   "value": 0.975,
+   "value": 0.9749999999999999,
    "unit": "1",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
@@ -14451,347 +16834,15 @@
    },
    "figure": "9",
    "panel": "f"
-  },
-  {
-   "id": "yim20:fig11a#d2_1",
-   "source": "yim20:fig11a#c2",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 49.279999999999994,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "pulse_time": {
-     "key_raw": "TMA pulse",
-     "raw": "0.2 s",
-     "quantity": "pulse_time",
-     "role": "condition",
-     "value": 0.2,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "a"
-  },
-  {
-   "id": "yim20:fig11a#d2_2",
-   "source": "yim20:fig11a#c2",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 133.416,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "pulse_time": {
-     "key_raw": "TMA pulse",
-     "raw": "0.2 s",
-     "quantity": "pulse_time",
-     "role": "condition",
-     "value": 0.2,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "a"
-  },
-  {
-   "id": "yim20:fig11a#d3_1",
-   "source": "yim20:fig11a#c3",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 49.62,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "pulse_time": {
-     "key_raw": "TMA pulse",
-     "raw": "0.4 s",
-     "quantity": "pulse_time",
-     "role": "condition",
-     "value": 0.4,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "a"
-  },
-  {
-   "id": "yim20:fig11a#d3_2",
-   "source": "yim20:fig11a#c3",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 196.27666666666667,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "pulse_time": {
-     "key_raw": "TMA pulse",
-     "raw": "0.4 s",
-     "quantity": "pulse_time",
-     "role": "condition",
-     "value": 0.4,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "a"
-  },
-  {
-   "id": "yim20:fig11b#d1_1",
-   "source": "yim20:fig11b#c1",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 52.1625,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "purge_time": {
-     "key_raw": "Purge",
-     "raw": "1 s",
-     "quantity": "purge_time",
-     "role": "condition",
-     "value": 1.0,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig11b#d1_2",
-   "source": "yim20:fig11b#c1",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 100.77083333333333,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "purge_time": {
-     "key_raw": "Purge",
-     "raw": "1 s",
-     "quantity": "purge_time",
-     "role": "condition",
-     "value": 1.0,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig11b#d2_1",
-   "source": "yim20:fig11b#c2",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 49.975,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "purge_time": {
-     "key_raw": "Purge",
-     "raw": "4 s",
-     "quantity": "purge_time",
-     "role": "condition",
-     "value": 4.0,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig11b#d2_2",
-   "source": "yim20:fig11b#c2",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 100.27105263157895,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "purge_time": {
-     "key_raw": "Purge",
-     "raw": "4 s",
-     "quantity": "purge_time",
-     "role": "condition",
-     "value": 4.0,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig11b#d3_1",
-   "source": "yim20:fig11b#c3",
-   "quantity": "film_thickness",
-   "qualifiers": "position=plateau",
-   "value": 47.92307692307692,
-   "unit": "nm",
-   "method": "plateau",
-   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "purge_time": {
-     "key_raw": "Purge",
-     "raw": "10 s",
-     "quantity": "purge_time",
-     "role": "condition",
-     "value": 10.0,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "b"
-  },
-  {
-   "id": "yim20:fig11b#d3_2",
-   "source": "yim20:fig11b#c3",
-   "quantity": "penetration_depth",
-   "qualifiers": "level=50%",
-   "value": 120.03496503496504,
-   "unit": "µm",
-   "method": "half_value_crossing",
-   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
-   "conditions": {
-    "deposition_temperature": {
-     "key_raw": "temperature",
-     "raw": "300 °C",
-     "quantity": "deposition_temperature",
-     "role": "condition",
-     "value": 300.0,
-     "value_max": null,
-     "unit": "°C"
-    },
-    "purge_time": {
-     "key_raw": "Purge",
-     "raw": "10 s",
-     "quantity": "purge_time",
-     "role": "condition",
-     "value": 10.0,
-     "value_max": null,
-     "unit": "s",
-     "from_series_label": true
-    }
-   },
-   "figure": "11",
-   "panel": "b"
   }
  ],
- "p89": [],
  "report": {
   "inventory": 32,
   "data_panels": 18,
   "converted": 0,
-  "curves": 58,
-  "sets": 14,
-  "derived": 38,
-  "unmapped": 4,
-  "resolved_p89": 0
+  "curves": 68,
+  "sets": 17,
+  "derived": 5,
+  "labels_other": 34
  }
 }

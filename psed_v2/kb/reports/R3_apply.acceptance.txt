@@ -1,6 +1,61 @@
 round 3 acceptance (grow.py audit_round)
 A1: 14 decisions, 17 rows: effect {'yes': 12, 'n/a': 4, 'no effect': 1}
 A2: 4 promotions: {'alias (user decision)': 1, 'symbol (user decision)': 3}
-A3: 6 open rows: {'other': 5, 'pending': 1}; pending candidates accounted 21/21
-A3 new since apply → next round (P162, carried, not a failure): 0 rows
-result: PASS
+A3: 64 open rows: {'other': 14, 'new': 49, 'pending': 1}; pending candidates accounted 24/24
+A3 new since apply → next round (P162, carried, not a failure): 49 rows
+  10.1021_acs.jpcc.9b08176:fig2B axis 'Distance / cavity height'
+  10.1021_acs.jpcc.9b08176:fig2B axis 'material and exposure time'
+  10.1021_acs.jpcc.9b08176:fig3 axis 'Plasma time'
+  10.1021_acs.jpcc.9b08176:fig3 axis 'PD^{50%} / cavity height'
+  10.1116_6.0002804:fig5.cap quantity 'O'
+  10.1116_6.0002804:fig5.cap quantity 'Cl'
+  10.1116_6.0002804:fig5.cap quantity 'C'
+  10.1116_6.0002804:fig5.cap quantity 'N'
+  10.1116_6.0002804:fig6.cap quantity 'O'
+  10.1116_6.0002804:fig6.cap quantity 'Cl'
+  10.1116_6.0002804:fig6.cap quantity 'N'
+  10.1116_6.0002804:fig6.cap quantity 'C'
+  10.1116_6.0002804:fig7.cap quantity 'ALD'
+  10.1116_6.0002804:fig7.cap quantity 'CVD'
+  10.1116_6.0002804:fig1a axis 'MoCl_{2}O_{2} pulse'
+  10.1116_6.0002804:fig1b axis 'at-H pulse'
+  10.1116_6.0002804:fig1c axis 'MoCl_{2}O_{2} purge'
+  10.1116_6.0002804:fig1d axis 'at-H purge'
+  10.1116_6.0002804:fig1e axis 'Hot-wire temperature'
+  10.1116_6.0002804:fig2 axis 'measurement technique and process'
+  10.1116_6.0002804:fig5a axis 'Depth (\times 10^{15} at/cm^{2})'
+  10.1116_6.0002804:fig5a axis 'element'
+  10.1116_6.0002804:fig5b axis 'element'
+  10.1116_6.0002804:fig6a axis 'Depth'
+  10.1116_6.0002804:fig6a axis 'Concentration'
+  10.1116_6.0002804:fig6a axis 'element'
+  10.1116_6.0002804:fig6b axis 'Concentration'
+  10.1116_6.0002804:fig6b axis 'element'
+  10.1116_6.0002804:fig8 axis '2Θ'
+  10.1116_6.0003182:fig2a axis 'p'
+  10.1116_6.0003182:fig2b axis 'p'
+  10.1116_6.0003182:fig2c axis 'p'
+  10.1116_6.0003182:fig2d axis 'T'
+  10.1116_6.0003182:fig3a axis 'Elapsed time, \delta t'
+  10.1116_6.0003182:fig3a axis 'Pressure change, \delta p'
+  10.1116_6.0003182:fig3b axis 'Net gain of gas moles, \Delta n_g'
+  10.1116_6.0003182:fig3c axis 'Terminal slope, TS'
+  10.1116_6.0003182:fig5 axis '2θ'
+  10.1116_6.0003182:fig5 axis 'Normalized counts'
+  10.1116_6.0003182:fig6d axis 'Normalized X-ray counts'
+  10.1116_6.0003182:fig6d axis 'Postion'
+  10.1116_6.0003182:fig6d axis 'element'
+  10.1116_6.0003182:fig6e axis 'Normalized X-ray counts'
+  10.1116_6.0003182:fig6e axis 'Postion'
+  10.1116_6.0003182:fig6e axis 'element'
+  10.1116_6.0003182:fig6f axis 'Normalized X-ray counts'
+  10.1116_6.0003182:fig6f axis 'Postion'
+  10.1116_6.0003182:fig6f unit 'temperature'
+  10.1116_6.0003182:fig6f axis 'element'
+result: FAIL (6)
+FAIL A3 10.1116_6.0002804:fig5.cap quantity 'Mo': candidate mo decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5.cap quantity 'H': candidate h decided in round 2 (never -> Model internals): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig6.cap quantity 'Si': candidate si decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig3 unit 'Time': candidate time decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5a axis 'Composition': candidate composition decided in round 0 (add): decided, but the row is still open
+FAIL A3 10.1116_6.0002804:fig5b axis 'Composition': candidate composition decided in round 0 (add): decided, but the row is still open

@@ -3,7 +3,7 @@
  "key": "wer21",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T02:32:50",
+ "imported_at": "2026-10-24T09:16:58",
  "inventory": [
   {
    "id": "wer21:fig2",
@@ -12,8 +12,7 @@
    "panel_type": "plot",
    "content": "OES parameter space explored in terms of RF power and pressure for various oxygen gas flows",
    "quantities": [
-    "process_pressure",
-    "plasma_power"
+    "process_pressure"
    ],
    "flags": [
     "F3",
@@ -25,7 +24,73 @@
     "F2"
    ],
    "status": "imported",
-   "verdict": "rule: flagged"
+   "verdict": "rule: flagged",
+   "flagged": [
+    "F3",
+    "F2"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Pressure (mbar)",
+     "key": "Pressure",
+     "unit": "mbar",
+     "quantity": "process_pressure",
+     "how": "name 'pressure'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Power (W)",
+     "key": "Power",
+     "unit": "W",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "Integration time",
+     "key": "Integration time",
+     "unit": "s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "RF frequency",
+     "key": "RF frequency",
+     "unit": "MHz",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "gas flow",
+     "key": "gas flow",
+     "unit": "",
+     "quantity": "gas_flow_rate",
+     "how": "name 'gas flow'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig3",
@@ -45,8 +110,47 @@
    "content": "Optical emission spectra of oxygen plasma at different RF powers",
    "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Wavelength (nm)",
+     "key": "Wavelength",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Counts/s",
+     "key": "Counts/s",
+     "unit": "Counts/s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "pressure",
+     "key": "pressure",
+     "unit": "mbar",
+     "quantity": "process_pressure",
+     "how": "name 'pressure'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig5",
@@ -56,8 +160,47 @@
    "content": "Infrared spectra at different RF powers and a gas flow of 200 sccm",
    "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Wavelength (nm)",
+     "key": "Wavelength",
+     "unit": "nm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Counts/s",
+     "key": "Counts/s",
+     "unit": "Counts/s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "flow",
+     "key": "flow",
+     "unit": "sccm",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig6a",
@@ -65,9 +208,7 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Total intensity as a function of plasma power for various oxygen flow rates",
-   "quantities": [
-    "plasma_power"
-   ],
+   "quantities": [],
    "flags": [
     "F3",
     "F3",
@@ -75,8 +216,49 @@
     "F3",
     "F3"
    ],
-   "status": "unresolved axis",
-   "verdict": "rule: flagged"
+   "status": "imported",
+   "verdict": "rule: flagged",
+   "flagged": [
+    "F3"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Power",
+     "key": "Power",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "I_total",
+     "key": "I_total",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "Plasma internals",
+     "never_label": "Itotal",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "flow rate",
+     "key": "flow rate",
+     "unit": "",
+     "quantity": "gas_flow_rate",
+     "how": "alias 'flow rate'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig6b",
@@ -92,8 +274,49 @@
     "F3",
     "F3"
    ],
-   "status": "unresolved axis",
-   "verdict": "rule: flagged"
+   "status": "imported",
+   "verdict": "rule: flagged",
+   "flagged": [
+    "F3"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "I_O/I_total",
+     "key": "I_O/I_total",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "Plasma internals",
+     "never_label": "IO/Itotal",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "I_O2+/I_total",
+     "key": "I_O2+/I_total",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "Plasma internals",
+     "never_label": "IO2+/Itotal (symbol in 10.1116_6.0001094)",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "flow rate",
+     "key": "flow rate",
+     "unit": "",
+     "quantity": "gas_flow_rate",
+     "how": "alias 'flow rate'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig6c",
@@ -101,9 +324,7 @@
    "panel": "c",
    "panel_type": "plot",
    "content": "Intensity of the ionic line scaled with total intensity as a function of power",
-   "quantities": [
-    "plasma_power"
-   ],
+   "quantities": [],
    "flags": [
     "F3",
     "F3",
@@ -111,8 +332,49 @@
     "F3",
     "F3"
    ],
-   "status": "unresolved axis",
-   "verdict": "rule: flagged"
+   "status": "imported",
+   "verdict": "rule: flagged",
+   "flagged": [
+    "F3"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Power",
+     "key": "Power",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "I_O2+/I_total",
+     "key": "I_O2+/I_total",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "Plasma internals",
+     "never_label": "IO2+/Itotal (symbol in 10.1116_6.0001094)",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "flow rate",
+     "key": "flow rate",
+     "unit": "",
+     "quantity": "gas_flow_rate",
+     "how": "alias 'flow rate'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig6d",
@@ -120,9 +382,7 @@
    "panel": "d",
    "panel_type": "plot",
    "content": "Intensity of the atomic line scaled with total intensity as a function of power",
-   "quantities": [
-    "plasma_power"
-   ],
+   "quantities": [],
    "flags": [
     "F3",
     "F3",
@@ -130,8 +390,49 @@
     "F3",
     "F3"
    ],
-   "status": "unresolved axis",
-   "verdict": "rule: flagged"
+   "status": "imported",
+   "verdict": "rule: flagged",
+   "flagged": [
+    "F3"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Power",
+     "key": "Power",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "I_O/I_total",
+     "key": "I_O/I_total",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "Plasma internals",
+     "never_label": "IO/Itotal",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "flow rate",
+     "key": "flow rate",
+     "unit": "",
+     "quantity": "gas_flow_rate",
+     "how": "alias 'flow rate'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig7a",
@@ -141,8 +442,35 @@
    "content": "Energy spectra of atomic oxygen ions (O+) across various pressures and RF powers",
    "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Energy (eV)",
+     "key": "Energy",
+     "unit": "eV",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "m/z = +16 (O⁺)\nCounts/s",
+     "key": "m/z = +16 (O⁺)\nCounts/s",
+     "unit": "Counts/s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig7b",
@@ -152,8 +480,35 @@
    "content": "Energy spectra of molecular oxygen ions (O2+) across various pressures and RF powers",
    "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Energy (eV)",
+     "key": "Energy",
+     "unit": "eV",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "m/z = +32 (O₂⁺)\nCounts/s",
+     "key": "m/z = +32 (O₂⁺)\nCounts/s",
+     "unit": "Counts/s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig8a",
@@ -163,8 +518,35 @@
    "content": "Energy spectra of atomic negative ions (O⁻) at various oxygen pressures/flows and RF powers",
    "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Energy (eV)",
+     "key": "Energy",
+     "unit": "eV",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "m/z = -16 (O⁻)\nCounts/s",
+     "key": "m/z = -16 (O⁻)\nCounts/s",
+     "unit": "Counts/s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig8b",
@@ -174,8 +556,35 @@
    "content": "Energy spectra of molecular negative ions (O₂⁻) at various oxygen pressures/flows and RF powers",
    "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Energy (eV)",
+     "key": "Energy",
+     "unit": "eV",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "m/z = -32 (O₂⁻)\nCounts/s",
+     "key": "m/z = -32 (O₂⁻)\nCounts/s",
+     "unit": "Counts/s",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig9a",
@@ -223,12 +632,61 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Normalized deposition thickness profiles and simulated conformality profiles for varying power and pulse time",
-   "quantities": [
-    "distance"
-   ],
+   "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Depth (m)",
+     "key": "Depth",
+     "unit": "m",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Coverage",
+     "key": "Coverage",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "pressure",
+     "key": "pressure",
+     "unit": "mbar",
+     "quantity": "process_pressure",
+     "how": "name 'pressure'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "power and pulse time",
+     "key": "power and pulse time",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig12",
@@ -236,12 +694,73 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Normalized deposition thickness profiles and simulated conformality profiles for varying pressures",
-   "quantities": [
-    "distance"
-   ],
+   "quantities": [],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Depth (m)",
+     "key": "Depth",
+     "unit": "m",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Coverage",
+     "key": "Coverage",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "power",
+     "key": "power",
+     "unit": "W",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "pulse time",
+     "key": "pulse time",
+     "unit": "s",
+     "quantity": "pulse_time",
+     "how": "id 'pulse time'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "pressure",
+     "key": "pressure",
+     "unit": "",
+     "quantity": "process_pressure",
+     "how": "name 'pressure'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig13",
@@ -249,14 +768,53 @@
    "panel": "",
    "panel_type": "plot",
    "content": "Partial pressure of active species and activated gas fraction versus plasma power",
-   "quantities": [
-    "plasma_power"
-   ],
+   "quantities": [],
    "flags": [
     "F3"
    ],
-   "status": "unresolved axis",
-   "verdict": "rule: flagged"
+   "status": "imported",
+   "verdict": "rule: flagged",
+   "flagged": [
+    "F3"
+   ],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Power (W)",
+     "key": "Power",
+     "unit": "W",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "p_O (mbar)",
+     "key": "p_O",
+     "unit": "mbar",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "pressure",
+     "key": "pressure",
+     "unit": "",
+     "quantity": "process_pressure",
+     "how": "name 'pressure'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig14",
@@ -268,8 +826,47 @@
     "process_pressure"
    ],
    "flags": [],
-   "status": "unresolved axis",
-   "verdict": "rule: pass"
+   "status": "imported",
+   "verdict": "rule: pass",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Pressure (mbar)",
+     "key": "Pressure",
+     "unit": "mbar",
+     "quantity": "process_pressure",
+     "how": "name 'pressure'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "p_O (mbar)",
+     "key": "p_O",
+     "unit": "mbar",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "power",
+     "key": "power",
+     "unit": "W",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "wer21:fig15",
@@ -321,17 +918,19 @@
     "transform": "",
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
-    "definition": "",
-    "definition_note": ""
+    "key": "Pressure",
+    "how": "name 'pressure'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "plasma_power",
+    "quantity": "other",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
-    "definition": "",
-    "definition_note": ""
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -530,15 +1129,6 @@
     ]
    ],
    "conditions": {
-    "time": {
-     "key_raw": "Integration time",
-     "raw": "50 s",
-     "quantity": "time",
-     "role": "coordinate",
-     "value": 50.0,
-     "value_max": null,
-     "unit": "s"
-    },
     "gas_flow_rate": {
      "key_raw": "gas flow",
      "raw": "10.0 sccm",
@@ -598,17 +1188,19 @@
     "transform": "",
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
-    "definition": "",
-    "definition_note": ""
+    "key": "Pressure",
+    "how": "name 'pressure'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "plasma_power",
+    "quantity": "other",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
-    "definition": "",
-    "definition_note": ""
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -791,15 +1383,6 @@
     ]
    ],
    "conditions": {
-    "time": {
-     "key_raw": "Integration time",
-     "raw": "50 s",
-     "quantity": "time",
-     "role": "coordinate",
-     "value": 50.0,
-     "value_max": null,
-     "unit": "s"
-    },
     "gas_flow_rate": {
      "key_raw": "gas flow",
      "raw": "20.0 sccm",
@@ -859,17 +1442,19 @@
     "transform": "",
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
-    "definition": "",
-    "definition_note": ""
+    "key": "Pressure",
+    "how": "name 'pressure'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "plasma_power",
+    "quantity": "other",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
-    "definition": "",
-    "definition_note": ""
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1076,15 +1661,6 @@
     ]
    ],
    "conditions": {
-    "time": {
-     "key_raw": "Integration time",
-     "raw": "50 s",
-     "quantity": "time",
-     "role": "coordinate",
-     "value": 50.0,
-     "value_max": null,
-     "unit": "s"
-    },
     "gas_flow_rate": {
      "key_raw": "gas flow",
      "raw": "50.0 sccm",
@@ -1144,17 +1720,19 @@
     "transform": "",
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
-    "definition": "",
-    "definition_note": ""
+    "key": "Pressure",
+    "how": "name 'pressure'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "plasma_power",
+    "quantity": "other",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
-    "definition": "",
-    "definition_note": ""
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1401,15 +1979,6 @@
     ]
    ],
    "conditions": {
-    "time": {
-     "key_raw": "Integration time",
-     "raw": "50 s",
-     "quantity": "time",
-     "role": "coordinate",
-     "value": 50.0,
-     "value_max": null,
-     "unit": "s"
-    },
     "gas_flow_rate": {
      "key_raw": "gas flow",
      "raw": "100.0 sccm",
@@ -1469,17 +2038,19 @@
     "transform": "",
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
-    "definition": "",
-    "definition_note": ""
+    "key": "Pressure",
+    "how": "name 'pressure'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "plasma_power",
+    "quantity": "other",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
-    "definition": "",
-    "definition_note": ""
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1862,15 +2433,6 @@
     ]
    ],
    "conditions": {
-    "time": {
-     "key_raw": "Integration time",
-     "raw": "50 s",
-     "quantity": "time",
-     "role": "coordinate",
-     "value": 50.0,
-     "value_max": null,
-     "unit": "s"
-    },
     "gas_flow_rate": {
      "key_raw": "gas flow",
      "raw": "200.0 sccm",
@@ -1930,17 +2492,19 @@
     "transform": "",
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
-    "definition": "",
-    "definition_note": ""
+    "key": "Pressure",
+    "how": "name 'pressure'",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "plasma_power",
+    "quantity": "other",
     "unit": "W",
     "transform": "",
     "label_raw": "Power (W)",
     "unit_raw": "W",
-    "definition": "",
-    "definition_note": ""
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -2187,15 +2751,6 @@
     ]
    ],
    "conditions": {
-    "time": {
-     "key_raw": "Integration time",
-     "raw": "50 s",
-     "quantity": "time",
-     "role": "coordinate",
-     "value": 50.0,
-     "value_max": null,
-     "unit": "s"
-    },
     "gas_flow_rate": {
      "key_raw": "gas flow",
      "raw": "400.0 sccm",
@@ -2236,9 +2791,6972 @@
     "panel": ""
    },
    "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6a#c1",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "10.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 10.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_total",
+    "unit_raw": "",
+    "key": "I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     150.0,
+     580000.0
+    ],
+    [
+     175.0,
+     580000.0
+    ],
+    [
+     200.0,
+     570000.0
+    ],
+    [
+     200.0,
+     620000.0
+    ],
+    [
+     225.0,
+     460000.0
+    ],
+    [
+     225.0,
+     650000.0
+    ],
+    [
+     250.0,
+     1020000.0
+    ],
+    [
+     250.0,
+     1040000.0
+    ],
+    [
+     300.0,
+     970000.0
+    ]
+   ],
+   "points_raw": [
+    [
+     150.0,
+     580000.0
+    ],
+    [
+     175.0,
+     580000.0
+    ],
+    [
+     200.0,
+     570000.0
+    ],
+    [
+     200.0,
+     620000.0
+    ],
+    [
+     225.0,
+     460000.0
+    ],
+    [
+     225.0,
+     650000.0
+    ],
+    [
+     250.0,
+     1020000.0
+    ],
+    [
+     250.0,
+     1040000.0
+    ],
+    [
+     300.0,
+     970000.0
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "10.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 5800.0,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6a#c2",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "20.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 20.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_total",
+    "unit_raw": "",
+    "key": "I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     260000.0
+    ],
+    [
+     75.0,
+     290000.0
+    ],
+    [
+     100.0,
+     390000.0
+    ],
+    [
+     125.0,
+     660000.0
+    ],
+    [
+     150.0,
+     990000.0
+    ],
+    [
+     175.0,
+     1380000.0
+    ],
+    [
+     200.0,
+     1490000.0
+    ],
+    [
+     225.0,
+     1750000.0
+    ],
+    [
+     250.0,
+     1660000.0
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     260000.0
+    ],
+    [
+     75.0,
+     290000.0
+    ],
+    [
+     100.0,
+     390000.0
+    ],
+    [
+     125.0,
+     660000.0
+    ],
+    [
+     150.0,
+     990000.0
+    ],
+    [
+     175.0,
+     1380000.0
+    ],
+    [
+     200.0,
+     1490000.0
+    ],
+    [
+     225.0,
+     1750000.0
+    ],
+    [
+     250.0,
+     1660000.0
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "20.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 20.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 14900.0,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6a#c3",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "50.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 50.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_total",
+    "unit_raw": "",
+    "key": "I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     210000.0
+    ],
+    [
+     75.0,
+     230000.0
+    ],
+    [
+     100.0,
+     350000.0
+    ],
+    [
+     125.0,
+     700000.0
+    ],
+    [
+     150.0,
+     1150000.0
+    ],
+    [
+     175.0,
+     1400000.0
+    ],
+    [
+     200.0,
+     1680000.0
+    ],
+    [
+     225.0,
+     2020000.0
+    ],
+    [
+     250.0,
+     2770000.0
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     210000.0
+    ],
+    [
+     75.0,
+     230000.0
+    ],
+    [
+     100.0,
+     350000.0
+    ],
+    [
+     125.0,
+     700000.0
+    ],
+    [
+     150.0,
+     1150000.0
+    ],
+    [
+     175.0,
+     1400000.0
+    ],
+    [
+     200.0,
+     1680000.0
+    ],
+    [
+     225.0,
+     2020000.0
+    ],
+    [
+     250.0,
+     2770000.0
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "50.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 50.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 25600.0,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6a#c4",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "100.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 100.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_total",
+    "unit_raw": "",
+    "key": "I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     150000.0
+    ],
+    [
+     75.0,
+     270000.0
+    ],
+    [
+     100.0,
+     450000.0
+    ],
+    [
+     125.0,
+     760000.0
+    ],
+    [
+     150.0,
+     1130000.0
+    ],
+    [
+     175.0,
+     1430000.0
+    ],
+    [
+     200.0,
+     1860000.0
+    ],
+    [
+     225.0,
+     2530000.0
+    ],
+    [
+     250.0,
+     3000000.0
+    ],
+    [
+     300.0,
+     3970000.0
+    ],
+    [
+     300.0,
+     4190000.0
+    ],
+    [
+     300.0,
+     4360000.0
+    ],
+    [
+     300.0,
+     4840000.0
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     150000.0
+    ],
+    [
+     75.0,
+     270000.0
+    ],
+    [
+     100.0,
+     450000.0
+    ],
+    [
+     125.0,
+     760000.0
+    ],
+    [
+     150.0,
+     1130000.0
+    ],
+    [
+     175.0,
+     1430000.0
+    ],
+    [
+     200.0,
+     1860000.0
+    ],
+    [
+     225.0,
+     2530000.0
+    ],
+    [
+     250.0,
+     3000000.0
+    ],
+    [
+     300.0,
+     3970000.0
+    ],
+    [
+     300.0,
+     4190000.0
+    ],
+    [
+     300.0,
+     4360000.0
+    ],
+    [
+     300.0,
+     4840000.0
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "100.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 46900.0,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6a#c5",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "200.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 200.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_total",
+    "unit_raw": "",
+    "key": "I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     150000.0
+    ],
+    [
+     75.0,
+     790000.0
+    ],
+    [
+     100.0,
+     310000.0
+    ],
+    [
+     125.0,
+     600000.0
+    ],
+    [
+     150.0,
+     870000.0
+    ],
+    [
+     175.0,
+     1360000.0
+    ],
+    [
+     200.0,
+     1930000.0
+    ],
+    [
+     225.0,
+     2440000.0
+    ],
+    [
+     250.0,
+     3370000.0
+    ],
+    [
+     300.0,
+     3670000.0
+    ],
+    [
+     300.0,
+     4540000.0
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     150000.0
+    ],
+    [
+     75.0,
+     790000.0
+    ],
+    [
+     100.0,
+     310000.0
+    ],
+    [
+     125.0,
+     600000.0
+    ],
+    [
+     150.0,
+     870000.0
+    ],
+    [
+     175.0,
+     1360000.0
+    ],
+    [
+     200.0,
+     1930000.0
+    ],
+    [
+     225.0,
+     2440000.0
+    ],
+    [
+     250.0,
+     3370000.0
+    ],
+    [
+     300.0,
+     3670000.0
+    ],
+    [
+     300.0,
+     4540000.0
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "200.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 200.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 43900.0,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6a#c6",
+   "figure": "6",
+   "panel": "a",
+   "series": {
+    "label_raw": "400.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 400.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_total",
+    "unit_raw": "",
+    "key": "I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     100000.0
+    ],
+    [
+     75.0,
+     140000.0
+    ],
+    [
+     100.0,
+     190000.0
+    ],
+    [
+     125.0,
+     290000.0
+    ],
+    [
+     150.0,
+     450000.0
+    ],
+    [
+     175.0,
+     980000.0
+    ],
+    [
+     175.0,
+     1100000.0
+    ],
+    [
+     200.0,
+     1260000.0
+    ],
+    [
+     200.0,
+     1430000.0
+    ],
+    [
+     225.0,
+     1870000.0
+    ],
+    [
+     250.0,
+     2340000.0
+    ],
+    [
+     300.0,
+     3250000.0
+    ],
+    [
+     300.0,
+     4680000.0
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     100000.0
+    ],
+    [
+     75.0,
+     140000.0
+    ],
+    [
+     100.0,
+     190000.0
+    ],
+    [
+     125.0,
+     290000.0
+    ],
+    [
+     150.0,
+     450000.0
+    ],
+    [
+     175.0,
+     980000.0
+    ],
+    [
+     175.0,
+     1100000.0
+    ],
+    [
+     200.0,
+     1260000.0
+    ],
+    [
+     200.0,
+     1430000.0
+    ],
+    [
+     225.0,
+     1870000.0
+    ],
+    [
+     250.0,
+     2340000.0
+    ],
+    [
+     300.0,
+     3250000.0
+    ],
+    [
+     300.0,
+     4680000.0
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "400.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 400.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 45800.0,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6a",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "a"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6b#c1",
+   "figure": "6",
+   "panel": "b",
+   "series": {
+    "label_raw": "10.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 10.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.041,
+     0.228
+    ],
+    [
+     0.043,
+     0.226
+    ],
+    [
+     0.045,
+     0.224
+    ],
+    [
+     0.046,
+     0.221
+    ],
+    [
+     0.047,
+     0.218
+    ],
+    [
+     0.048,
+     0.214
+    ],
+    [
+     0.047,
+     0.217
+    ]
+   ],
+   "points_raw": [
+    [
+     0.041,
+     0.228
+    ],
+    [
+     0.043,
+     0.226
+    ],
+    [
+     0.045,
+     0.224
+    ],
+    [
+     0.046,
+     0.221
+    ],
+    [
+     0.047,
+     0.218
+    ],
+    [
+     0.048,
+     0.214
+    ],
+    [
+     0.047,
+     0.217
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "10.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00014000000000000012,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6b#c2",
+   "figure": "6",
+   "panel": "b",
+   "series": {
+    "label_raw": "20.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 20.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.01,
+     0.076
+    ],
+    [
+     0.052,
+     0.222
+    ],
+    [
+     0.057,
+     0.218
+    ],
+    [
+     0.088,
+     0.194
+    ],
+    [
+     0.092,
+     0.187
+    ],
+    [
+     0.106,
+     0.182
+    ],
+    [
+     0.108,
+     0.178
+    ],
+    [
+     0.111,
+     0.175
+    ],
+    [
+     0.123,
+     0.169
+    ]
+   ],
+   "points_raw": [
+    [
+     0.01,
+     0.076
+    ],
+    [
+     0.052,
+     0.222
+    ],
+    [
+     0.057,
+     0.218
+    ],
+    [
+     0.088,
+     0.194
+    ],
+    [
+     0.092,
+     0.187
+    ],
+    [
+     0.106,
+     0.182
+    ],
+    [
+     0.108,
+     0.178
+    ],
+    [
+     0.111,
+     0.175
+    ],
+    [
+     0.123,
+     0.169
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "20.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 20.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0014600000000000001,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6b#c3",
+   "figure": "6",
+   "panel": "b",
+   "series": {
+    "label_raw": "50.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 50.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.068,
+     0.211
+    ],
+    [
+     0.07,
+     0.203
+    ],
+    [
+     0.098,
+     0.187
+    ],
+    [
+     0.129,
+     0.171
+    ],
+    [
+     0.155,
+     0.158
+    ],
+    [
+     0.161,
+     0.154
+    ],
+    [
+     0.17,
+     0.149
+    ],
+    [
+     0.185,
+     0.145
+    ],
+    [
+     0.198,
+     0.137
+    ]
+   ],
+   "points_raw": [
+    [
+     0.068,
+     0.211
+    ],
+    [
+     0.07,
+     0.203
+    ],
+    [
+     0.098,
+     0.187
+    ],
+    [
+     0.129,
+     0.171
+    ],
+    [
+     0.155,
+     0.158
+    ],
+    [
+     0.161,
+     0.154
+    ],
+    [
+     0.17,
+     0.149
+    ],
+    [
+     0.185,
+     0.145
+    ],
+    [
+     0.198,
+     0.137
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "50.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 50.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0007399999999999999,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6b#c4",
+   "figure": "6",
+   "panel": "b",
+   "series": {
+    "label_raw": "100.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 100.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.08,
+     0.2
+    ],
+    [
+     0.107,
+     0.185
+    ],
+    [
+     0.154,
+     0.163
+    ],
+    [
+     0.191,
+     0.149
+    ],
+    [
+     0.215,
+     0.138
+    ],
+    [
+     0.238,
+     0.131
+    ],
+    [
+     0.256,
+     0.122
+    ],
+    [
+     0.272,
+     0.114
+    ],
+    [
+     0.289,
+     0.107
+    ],
+    [
+     0.311,
+     0.097
+    ]
+   ],
+   "points_raw": [
+    [
+     0.08,
+     0.2
+    ],
+    [
+     0.107,
+     0.185
+    ],
+    [
+     0.154,
+     0.163
+    ],
+    [
+     0.191,
+     0.149
+    ],
+    [
+     0.215,
+     0.138
+    ],
+    [
+     0.238,
+     0.131
+    ],
+    [
+     0.256,
+     0.122
+    ],
+    [
+     0.272,
+     0.114
+    ],
+    [
+     0.289,
+     0.107
+    ],
+    [
+     0.311,
+     0.097
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "100.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00103,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6b#c5",
+   "figure": "6",
+   "panel": "b",
+   "series": {
+    "label_raw": "200.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 200.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.063,
+     0.189
+    ],
+    [
+     0.146,
+     0.155
+    ],
+    [
+     0.245,
+     0.131
+    ],
+    [
+     0.288,
+     0.117
+    ],
+    [
+     0.318,
+     0.112
+    ],
+    [
+     0.342,
+     0.108
+    ],
+    [
+     0.358,
+     0.088
+    ],
+    [
+     0.373,
+     0.082
+    ],
+    [
+     0.395,
+     0.074
+    ]
+   ],
+   "points_raw": [
+    [
+     0.063,
+     0.189
+    ],
+    [
+     0.146,
+     0.155
+    ],
+    [
+     0.245,
+     0.131
+    ],
+    [
+     0.288,
+     0.117
+    ],
+    [
+     0.318,
+     0.112
+    ],
+    [
+     0.342,
+     0.108
+    ],
+    [
+     0.358,
+     0.088
+    ],
+    [
+     0.373,
+     0.082
+    ],
+    [
+     0.395,
+     0.074
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "200.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 200.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00115,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6b#c6",
+   "figure": "6",
+   "panel": "b",
+   "series": {
+    "label_raw": "400.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 400.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.136,
+     0.178
+    ],
+    [
+     0.145,
+     0.17
+    ],
+    [
+     0.19,
+     0.153
+    ],
+    [
+     0.257,
+     0.131
+    ],
+    [
+     0.33,
+     0.107
+    ],
+    [
+     0.34,
+     0.096
+    ],
+    [
+     0.38,
+     0.09
+    ],
+    [
+     0.414,
+     0.078
+    ],
+    [
+     0.435,
+     0.071
+    ],
+    [
+     0.45,
+     0.065
+    ],
+    [
+     0.47,
+     0.057
+    ]
+   ],
+   "points_raw": [
+    [
+     0.136,
+     0.178
+    ],
+    [
+     0.145,
+     0.17
+    ],
+    [
+     0.19,
+     0.153
+    ],
+    [
+     0.257,
+     0.131
+    ],
+    [
+     0.33,
+     0.107
+    ],
+    [
+     0.34,
+     0.096
+    ],
+    [
+     0.38,
+     0.09
+    ],
+    [
+     0.414,
+     0.078
+    ],
+    [
+     0.435,
+     0.071
+    ],
+    [
+     0.45,
+     0.065
+    ],
+    [
+     0.47,
+     0.057
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "400.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 400.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00121,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6b",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "b"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6c#c1",
+   "figure": "6",
+   "panel": "c",
+   "series": {
+    "label_raw": "10.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 10.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.228
+    ],
+    [
+     75.0,
+     0.227
+    ],
+    [
+     100.0,
+     0.226
+    ],
+    [
+     125.0,
+     0.224
+    ],
+    [
+     150.0,
+     0.221
+    ],
+    [
+     175.0,
+     0.219
+    ],
+    [
+     200.0,
+     0.217
+    ],
+    [
+     225.0,
+     0.215
+    ],
+    [
+     250.0,
+     0.214
+    ],
+    [
+     300.0,
+     0.217
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.228
+    ],
+    [
+     75.0,
+     0.227
+    ],
+    [
+     100.0,
+     0.226
+    ],
+    [
+     125.0,
+     0.224
+    ],
+    [
+     150.0,
+     0.221
+    ],
+    [
+     175.0,
+     0.219
+    ],
+    [
+     200.0,
+     0.217
+    ],
+    [
+     225.0,
+     0.215
+    ],
+    [
+     250.0,
+     0.214
+    ],
+    [
+     300.0,
+     0.217
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "10.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00014000000000000012,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6c#c2",
+   "figure": "6",
+   "panel": "c",
+   "series": {
+    "label_raw": "20.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 20.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.076
+    ],
+    [
+     75.0,
+     0.222
+    ],
+    [
+     100.0,
+     0.218
+    ],
+    [
+     125.0,
+     0.214
+    ],
+    [
+     150.0,
+     0.213
+    ],
+    [
+     175.0,
+     0.194
+    ],
+    [
+     200.0,
+     0.182
+    ],
+    [
+     225.0,
+     0.178
+    ],
+    [
+     250.0,
+     0.173
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.076
+    ],
+    [
+     75.0,
+     0.222
+    ],
+    [
+     100.0,
+     0.218
+    ],
+    [
+     125.0,
+     0.214
+    ],
+    [
+     150.0,
+     0.213
+    ],
+    [
+     175.0,
+     0.194
+    ],
+    [
+     200.0,
+     0.182
+    ],
+    [
+     225.0,
+     0.178
+    ],
+    [
+     250.0,
+     0.173
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "20.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 20.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0014600000000000001,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6c#c3",
+   "figure": "6",
+   "panel": "c",
+   "series": {
+    "label_raw": "50.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 50.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.211
+    ],
+    [
+     75.0,
+     0.203
+    ],
+    [
+     100.0,
+     0.187
+    ],
+    [
+     125.0,
+     0.171
+    ],
+    [
+     150.0,
+     0.16
+    ],
+    [
+     175.0,
+     0.156
+    ],
+    [
+     200.0,
+     0.15
+    ],
+    [
+     225.0,
+     0.144
+    ],
+    [
+     250.0,
+     0.138
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.211
+    ],
+    [
+     75.0,
+     0.203
+    ],
+    [
+     100.0,
+     0.187
+    ],
+    [
+     125.0,
+     0.171
+    ],
+    [
+     150.0,
+     0.16
+    ],
+    [
+     175.0,
+     0.156
+    ],
+    [
+     200.0,
+     0.15
+    ],
+    [
+     225.0,
+     0.144
+    ],
+    [
+     250.0,
+     0.138
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "50.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 50.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0007299999999999999,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6c#c4",
+   "figure": "6",
+   "panel": "c",
+   "series": {
+    "label_raw": "100.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 100.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.2
+    ],
+    [
+     75.0,
+     0.185
+    ],
+    [
+     100.0,
+     0.163
+    ],
+    [
+     125.0,
+     0.149
+    ],
+    [
+     150.0,
+     0.138
+    ],
+    [
+     175.0,
+     0.13
+    ],
+    [
+     200.0,
+     0.122
+    ],
+    [
+     225.0,
+     0.114
+    ],
+    [
+     250.0,
+     0.107
+    ],
+    [
+     300.0,
+     0.097
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.2
+    ],
+    [
+     75.0,
+     0.185
+    ],
+    [
+     100.0,
+     0.163
+    ],
+    [
+     125.0,
+     0.149
+    ],
+    [
+     150.0,
+     0.138
+    ],
+    [
+     175.0,
+     0.13
+    ],
+    [
+     200.0,
+     0.122
+    ],
+    [
+     225.0,
+     0.114
+    ],
+    [
+     250.0,
+     0.107
+    ],
+    [
+     300.0,
+     0.097
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "100.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00103,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6c#c5",
+   "figure": "6",
+   "panel": "c",
+   "series": {
+    "label_raw": "200.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 200.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.189
+    ],
+    [
+     75.0,
+     0.111
+    ],
+    [
+     125.0,
+     0.114
+    ],
+    [
+     150.0,
+     0.116
+    ],
+    [
+     175.0,
+     0.104
+    ],
+    [
+     200.0,
+     0.096
+    ],
+    [
+     225.0,
+     0.088
+    ],
+    [
+     250.0,
+     0.082
+    ],
+    [
+     300.0,
+     0.076
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.189
+    ],
+    [
+     75.0,
+     0.111
+    ],
+    [
+     125.0,
+     0.114
+    ],
+    [
+     150.0,
+     0.116
+    ],
+    [
+     175.0,
+     0.104
+    ],
+    [
+     200.0,
+     0.096
+    ],
+    [
+     225.0,
+     0.088
+    ],
+    [
+     250.0,
+     0.082
+    ],
+    [
+     300.0,
+     0.076
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "200.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 200.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0011300000000000001,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6c#c6",
+   "figure": "6",
+   "panel": "c",
+   "series": {
+    "label_raw": "400.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 400.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O2+/I_total",
+    "unit_raw": "",
+    "key": "I_O2+/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.178
+    ],
+    [
+     75.0,
+     0.17
+    ],
+    [
+     100.0,
+     0.155
+    ],
+    [
+     125.0,
+     0.131
+    ],
+    [
+     150.0,
+     0.107
+    ],
+    [
+     175.0,
+     0.09
+    ],
+    [
+     200.0,
+     0.078
+    ],
+    [
+     225.0,
+     0.071
+    ],
+    [
+     250.0,
+     0.065
+    ],
+    [
+     300.0,
+     0.057
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.178
+    ],
+    [
+     75.0,
+     0.17
+    ],
+    [
+     100.0,
+     0.155
+    ],
+    [
+     125.0,
+     0.131
+    ],
+    [
+     150.0,
+     0.107
+    ],
+    [
+     175.0,
+     0.09
+    ],
+    [
+     200.0,
+     0.078
+    ],
+    [
+     225.0,
+     0.071
+    ],
+    [
+     250.0,
+     0.065
+    ],
+    [
+     300.0,
+     0.057
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "400.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 400.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00121,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6c",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "c"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6d#c1",
+   "figure": "6",
+   "panel": "d",
+   "series": {
+    "label_raw": "10.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 10.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.041
+    ],
+    [
+     75.0,
+     0.043
+    ],
+    [
+     100.0,
+     0.043
+    ],
+    [
+     125.0,
+     0.043
+    ],
+    [
+     150.0,
+     0.045
+    ],
+    [
+     175.0,
+     0.046
+    ],
+    [
+     200.0,
+     0.047
+    ],
+    [
+     225.0,
+     0.049
+    ],
+    [
+     250.0,
+     0.051
+    ],
+    [
+     300.0,
+     0.047
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.041
+    ],
+    [
+     75.0,
+     0.043
+    ],
+    [
+     100.0,
+     0.043
+    ],
+    [
+     125.0,
+     0.043
+    ],
+    [
+     150.0,
+     0.045
+    ],
+    [
+     175.0,
+     0.046
+    ],
+    [
+     200.0,
+     0.047
+    ],
+    [
+     225.0,
+     0.049
+    ],
+    [
+     250.0,
+     0.051
+    ],
+    [
+     300.0,
+     0.047
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "10.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 10.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 9.999999999999995e-05,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6d",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "d"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6d#c2",
+   "figure": "6",
+   "panel": "d",
+   "series": {
+    "label_raw": "20.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 20.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.01
+    ],
+    [
+     75.0,
+     0.052
+    ],
+    [
+     100.0,
+     0.053
+    ],
+    [
+     125.0,
+     0.057
+    ],
+    [
+     150.0,
+     0.088
+    ],
+    [
+     175.0,
+     0.092
+    ],
+    [
+     200.0,
+     0.106
+    ],
+    [
+     225.0,
+     0.111
+    ],
+    [
+     250.0,
+     0.123
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.01
+    ],
+    [
+     75.0,
+     0.052
+    ],
+    [
+     100.0,
+     0.053
+    ],
+    [
+     125.0,
+     0.057
+    ],
+    [
+     150.0,
+     0.088
+    ],
+    [
+     175.0,
+     0.092
+    ],
+    [
+     200.0,
+     0.106
+    ],
+    [
+     225.0,
+     0.111
+    ],
+    [
+     250.0,
+     0.123
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "20.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 20.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0011300000000000001,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6d",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "d"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6d#c3",
+   "figure": "6",
+   "panel": "d",
+   "series": {
+    "label_raw": "50.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 50.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.068
+    ],
+    [
+     75.0,
+     0.07
+    ],
+    [
+     100.0,
+     0.098
+    ],
+    [
+     125.0,
+     0.129
+    ],
+    [
+     150.0,
+     0.152
+    ],
+    [
+     175.0,
+     0.161
+    ],
+    [
+     200.0,
+     0.171
+    ],
+    [
+     225.0,
+     0.185
+    ],
+    [
+     250.0,
+     0.198
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.068
+    ],
+    [
+     75.0,
+     0.07
+    ],
+    [
+     100.0,
+     0.098
+    ],
+    [
+     125.0,
+     0.129
+    ],
+    [
+     150.0,
+     0.152
+    ],
+    [
+     175.0,
+     0.161
+    ],
+    [
+     200.0,
+     0.171
+    ],
+    [
+     225.0,
+     0.185
+    ],
+    [
+     250.0,
+     0.198
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "50.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 50.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0013000000000000002,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6d",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "d"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6d#c4",
+   "figure": "6",
+   "panel": "d",
+   "series": {
+    "label_raw": "100.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 100.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.08
+    ],
+    [
+     75.0,
+     0.107
+    ],
+    [
+     100.0,
+     0.154
+    ],
+    [
+     125.0,
+     0.191
+    ],
+    [
+     150.0,
+     0.215
+    ],
+    [
+     175.0,
+     0.238
+    ],
+    [
+     200.0,
+     0.256
+    ],
+    [
+     225.0,
+     0.272
+    ],
+    [
+     250.0,
+     0.289
+    ],
+    [
+     300.0,
+     0.311
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.08
+    ],
+    [
+     75.0,
+     0.107
+    ],
+    [
+     100.0,
+     0.154
+    ],
+    [
+     125.0,
+     0.191
+    ],
+    [
+     150.0,
+     0.215
+    ],
+    [
+     175.0,
+     0.238
+    ],
+    [
+     200.0,
+     0.256
+    ],
+    [
+     225.0,
+     0.272
+    ],
+    [
+     250.0,
+     0.289
+    ],
+    [
+     300.0,
+     0.311
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "100.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00231,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6d",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "d"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6d#c5",
+   "figure": "6",
+   "panel": "d",
+   "series": {
+    "label_raw": "200.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 200.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.063
+    ],
+    [
+     75.0,
+     0.301
+    ],
+    [
+     125.0,
+     0.245
+    ],
+    [
+     150.0,
+     0.288
+    ],
+    [
+     175.0,
+     0.318
+    ],
+    [
+     200.0,
+     0.342
+    ],
+    [
+     225.0,
+     0.358
+    ],
+    [
+     250.0,
+     0.373
+    ],
+    [
+     300.0,
+     0.395
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.063
+    ],
+    [
+     75.0,
+     0.301
+    ],
+    [
+     125.0,
+     0.245
+    ],
+    [
+     150.0,
+     0.288
+    ],
+    [
+     175.0,
+     0.318
+    ],
+    [
+     200.0,
+     0.342
+    ],
+    [
+     225.0,
+     0.358
+    ],
+    [
+     250.0,
+     0.373
+    ],
+    [
+     300.0,
+     0.395
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "200.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 200.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.00332,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6d",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "d"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig6d#c6",
+   "figure": "6",
+   "panel": "d",
+   "series": {
+    "label_raw": "400.0 sccm",
+    "cls": "numeric",
+    "quantity": "gas_flow_rate",
+    "value": 400.0,
+    "value_max": null,
+    "unit": "sccm"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Power",
+    "unit_raw": "",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "I_O/I_total",
+    "unit_raw": "",
+    "key": "I_O/I_total",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     0.136
+    ],
+    [
+     75.0,
+     0.145
+    ],
+    [
+     100.0,
+     0.19
+    ],
+    [
+     125.0,
+     0.257
+    ],
+    [
+     150.0,
+     0.33
+    ],
+    [
+     175.0,
+     0.38
+    ],
+    [
+     200.0,
+     0.414
+    ],
+    [
+     225.0,
+     0.435
+    ],
+    [
+     250.0,
+     0.45
+    ],
+    [
+     300.0,
+     0.47
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     0.136
+    ],
+    [
+     75.0,
+     0.145
+    ],
+    [
+     100.0,
+     0.19
+    ],
+    [
+     125.0,
+     0.257
+    ],
+    [
+     150.0,
+     0.33
+    ],
+    [
+     175.0,
+     0.38
+    ],
+    [
+     200.0,
+     0.414
+    ],
+    [
+     225.0,
+     0.435
+    ],
+    [
+     250.0,
+     0.45
+    ],
+    [
+     300.0,
+     0.47
+    ]
+   ],
+   "conditions": {
+    "gas_flow_rate": {
+     "key_raw": "flow rate",
+     "raw": "400.0 sccm",
+     "quantity": "gas_flow_rate",
+     "role": "condition",
+     "value": 400.0,
+     "value_max": null,
+     "unit": "sccm",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {},
+   "flags": [
+    "F3",
+    "F3",
+    "F3",
+    "F3",
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 0.0033399999999999997,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "wer21:cmp:fig6d",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "6",
+    "panel": "d"
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig11#c1",
+   "figure": "11",
+   "panel": "",
+   "series": {
+    "label_raw": "50 W - 15s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0002,
+     1.03
+    ],
+    [
+     0.0012,
+     1.02
+    ],
+    [
+     0.0022,
+     1.01
+    ],
+    [
+     0.0032,
+     1.0
+    ],
+    [
+     0.0042,
+     0.99
+    ],
+    [
+     0.0052,
+     0.98
+    ],
+    [
+     0.0062,
+     0.97
+    ],
+    [
+     0.0072,
+     0.96
+    ],
+    [
+     0.0082,
+     0.92
+    ],
+    [
+     0.0092,
+     0.88
+    ],
+    [
+     0.0102,
+     0.81
+    ],
+    [
+     0.0112,
+     0.72
+    ],
+    [
+     0.0121,
+     0.62
+    ],
+    [
+     0.0132,
+     0.54
+    ],
+    [
+     0.0142,
+     0.47
+    ],
+    [
+     0.0151,
+     0.4
+    ],
+    [
+     0.0161,
+     0.35
+    ],
+    [
+     0.0172,
+     0.32
+    ],
+    [
+     0.0182,
+     0.29
+    ],
+    [
+     0.0191,
+     0.28
+    ],
+    [
+     0.0201,
+     0.28
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0002,
+     1.03
+    ],
+    [
+     0.0012,
+     1.02
+    ],
+    [
+     0.0022,
+     1.01
+    ],
+    [
+     0.0032,
+     1.0
+    ],
+    [
+     0.0042,
+     0.99
+    ],
+    [
+     0.0052,
+     0.98
+    ],
+    [
+     0.0062,
+     0.97
+    ],
+    [
+     0.0072,
+     0.96
+    ],
+    [
+     0.0082,
+     0.92
+    ],
+    [
+     0.0092,
+     0.88
+    ],
+    [
+     0.0102,
+     0.81
+    ],
+    [
+     0.0112,
+     0.72
+    ],
+    [
+     0.0121,
+     0.62
+    ],
+    [
+     0.0132,
+     0.54
+    ],
+    [
+     0.0142,
+     0.47
+    ],
+    [
+     0.0151,
+     0.4
+    ],
+    [
+     0.0161,
+     0.35
+    ],
+    [
+     0.0172,
+     0.32
+    ],
+    [
+     0.0182,
+     0.29
+    ],
+    [
+     0.0191,
+     0.28
+    ],
+    [
+     0.0201,
+     0.28
+    ]
+   ],
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "conditions_raw": {
+    "pressure": "5 x 10^-3 mbar"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.0075
+   },
+   "set": "wer21:cmp:fig11",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "11",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig11#c2",
+   "figure": "11",
+   "panel": "",
+   "series": {
+    "label_raw": "75 W - 5s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0002,
+     1.01
+    ],
+    [
+     0.0012,
+     1.01
+    ],
+    [
+     0.0022,
+     1.0
+    ],
+    [
+     0.0032,
+     0.99
+    ],
+    [
+     0.0042,
+     0.98
+    ],
+    [
+     0.0052,
+     0.96
+    ],
+    [
+     0.0062,
+     0.94
+    ],
+    [
+     0.0072,
+     0.92
+    ],
+    [
+     0.0082,
+     0.88
+    ],
+    [
+     0.0092,
+     0.83
+    ],
+    [
+     0.0102,
+     0.67
+    ],
+    [
+     0.0112,
+     0.57
+    ],
+    [
+     0.0121,
+     0.51
+    ],
+    [
+     0.0132,
+     0.45
+    ],
+    [
+     0.0142,
+     0.4
+    ],
+    [
+     0.0151,
+     0.34
+    ],
+    [
+     0.0161,
+     0.3
+    ],
+    [
+     0.0172,
+     0.27
+    ],
+    [
+     0.0182,
+     0.25
+    ],
+    [
+     0.0191,
+     0.24
+    ],
+    [
+     0.0201,
+     0.23
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0002,
+     1.01
+    ],
+    [
+     0.0012,
+     1.01
+    ],
+    [
+     0.0022,
+     1.0
+    ],
+    [
+     0.0032,
+     0.99
+    ],
+    [
+     0.0042,
+     0.98
+    ],
+    [
+     0.0052,
+     0.96
+    ],
+    [
+     0.0062,
+     0.94
+    ],
+    [
+     0.0072,
+     0.92
+    ],
+    [
+     0.0082,
+     0.88
+    ],
+    [
+     0.0092,
+     0.83
+    ],
+    [
+     0.0102,
+     0.67
+    ],
+    [
+     0.0112,
+     0.57
+    ],
+    [
+     0.0121,
+     0.51
+    ],
+    [
+     0.0132,
+     0.45
+    ],
+    [
+     0.0142,
+     0.4
+    ],
+    [
+     0.0151,
+     0.34
+    ],
+    [
+     0.0161,
+     0.3
+    ],
+    [
+     0.0172,
+     0.27
+    ],
+    [
+     0.0182,
+     0.25
+    ],
+    [
+     0.0191,
+     0.24
+    ],
+    [
+     0.0201,
+     0.23
+    ]
+   ],
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "conditions_raw": {
+    "pressure": "5 x 10^-3 mbar"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.0078000000000000005
+   },
+   "set": "wer21:cmp:fig11",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "11",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig11#c3",
+   "figure": "11",
+   "panel": "",
+   "series": {
+    "label_raw": "75 W - 10s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0002,
+     1.05
+    ],
+    [
+     0.0012,
+     1.04
+    ],
+    [
+     0.0022,
+     1.03
+    ],
+    [
+     0.0032,
+     1.02
+    ],
+    [
+     0.0042,
+     1.01
+    ],
+    [
+     0.0052,
+     1.0
+    ],
+    [
+     0.0062,
+     1.0
+    ],
+    [
+     0.0072,
+     0.99
+    ],
+    [
+     0.0082,
+     0.98
+    ],
+    [
+     0.0092,
+     0.97
+    ],
+    [
+     0.0102,
+     0.96
+    ],
+    [
+     0.0112,
+     0.94
+    ],
+    [
+     0.0121,
+     0.91
+    ],
+    [
+     0.0132,
+     0.87
+    ],
+    [
+     0.0142,
+     0.81
+    ],
+    [
+     0.0151,
+     0.73
+    ],
+    [
+     0.0161,
+     0.66
+    ],
+    [
+     0.0172,
+     0.62
+    ],
+    [
+     0.0182,
+     0.57
+    ],
+    [
+     0.0191,
+     0.53
+    ],
+    [
+     0.0201,
+     0.49
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0002,
+     1.05
+    ],
+    [
+     0.0012,
+     1.04
+    ],
+    [
+     0.0022,
+     1.03
+    ],
+    [
+     0.0032,
+     1.02
+    ],
+    [
+     0.0042,
+     1.01
+    ],
+    [
+     0.0052,
+     1.0
+    ],
+    [
+     0.0062,
+     1.0
+    ],
+    [
+     0.0072,
+     0.99
+    ],
+    [
+     0.0082,
+     0.98
+    ],
+    [
+     0.0092,
+     0.97
+    ],
+    [
+     0.0102,
+     0.96
+    ],
+    [
+     0.0112,
+     0.94
+    ],
+    [
+     0.0121,
+     0.91
+    ],
+    [
+     0.0132,
+     0.87
+    ],
+    [
+     0.0142,
+     0.81
+    ],
+    [
+     0.0151,
+     0.73
+    ],
+    [
+     0.0161,
+     0.66
+    ],
+    [
+     0.0172,
+     0.62
+    ],
+    [
+     0.0182,
+     0.57
+    ],
+    [
+     0.0191,
+     0.53
+    ],
+    [
+     0.0201,
+     0.49
+    ]
+   ],
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "conditions_raw": {
+    "pressure": "5 x 10^-3 mbar"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.005600000000000001
+   },
+   "set": "wer21:cmp:fig11",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "11",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig11#c4",
+   "figure": "11",
+   "panel": "",
+   "series": {
+    "label_raw": "125 W - 5s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0002,
+     1.14
+    ],
+    [
+     0.0012,
+     1.09
+    ],
+    [
+     0.0022,
+     1.05
+    ],
+    [
+     0.0032,
+     1.04
+    ],
+    [
+     0.0042,
+     1.02
+    ],
+    [
+     0.0052,
+     1.01
+    ],
+    [
+     0.0062,
+     1.01
+    ],
+    [
+     0.0072,
+     1.0
+    ],
+    [
+     0.0082,
+     0.99
+    ],
+    [
+     0.0092,
+     0.98
+    ],
+    [
+     0.0102,
+     0.97
+    ],
+    [
+     0.0112,
+     0.95
+    ],
+    [
+     0.0121,
+     0.92
+    ],
+    [
+     0.0132,
+     0.87
+    ],
+    [
+     0.0142,
+     0.81
+    ],
+    [
+     0.0151,
+     0.74
+    ],
+    [
+     0.0161,
+     0.68
+    ],
+    [
+     0.0172,
+     0.61
+    ],
+    [
+     0.0182,
+     0.57
+    ],
+    [
+     0.0191,
+     0.54
+    ],
+    [
+     0.0201,
+     0.49
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0002,
+     1.14
+    ],
+    [
+     0.0012,
+     1.09
+    ],
+    [
+     0.0022,
+     1.05
+    ],
+    [
+     0.0032,
+     1.04
+    ],
+    [
+     0.0042,
+     1.02
+    ],
+    [
+     0.0052,
+     1.01
+    ],
+    [
+     0.0062,
+     1.01
+    ],
+    [
+     0.0072,
+     1.0
+    ],
+    [
+     0.0082,
+     0.99
+    ],
+    [
+     0.0092,
+     0.98
+    ],
+    [
+     0.0102,
+     0.97
+    ],
+    [
+     0.0112,
+     0.95
+    ],
+    [
+     0.0121,
+     0.92
+    ],
+    [
+     0.0132,
+     0.87
+    ],
+    [
+     0.0142,
+     0.81
+    ],
+    [
+     0.0151,
+     0.74
+    ],
+    [
+     0.0161,
+     0.68
+    ],
+    [
+     0.0172,
+     0.61
+    ],
+    [
+     0.0182,
+     0.57
+    ],
+    [
+     0.0191,
+     0.54
+    ],
+    [
+     0.0201,
+     0.49
+    ]
+   ],
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "conditions_raw": {
+    "pressure": "5 x 10^-3 mbar"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.006499999999999999
+   },
+   "set": "wer21:cmp:fig11",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "11",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig11#c5",
+   "figure": "11",
+   "panel": "",
+   "series": {
+    "label_raw": "150 W - 4s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0002,
+     1.06
+    ],
+    [
+     0.0012,
+     1.04
+    ],
+    [
+     0.0022,
+     1.03
+    ],
+    [
+     0.0032,
+     1.02
+    ],
+    [
+     0.0042,
+     1.01
+    ],
+    [
+     0.0052,
+     1.0
+    ],
+    [
+     0.0062,
+     0.99
+    ],
+    [
+     0.0072,
+     0.98
+    ],
+    [
+     0.0082,
+     0.97
+    ],
+    [
+     0.0092,
+     0.96
+    ],
+    [
+     0.0102,
+     0.94
+    ],
+    [
+     0.0112,
+     0.91
+    ],
+    [
+     0.0121,
+     0.88
+    ],
+    [
+     0.0132,
+     0.83
+    ],
+    [
+     0.0142,
+     0.78
+    ],
+    [
+     0.0151,
+     0.71
+    ],
+    [
+     0.0161,
+     0.63
+    ],
+    [
+     0.0172,
+     0.58
+    ],
+    [
+     0.0182,
+     0.53
+    ],
+    [
+     0.0191,
+     0.49
+    ],
+    [
+     0.0201,
+     0.43
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0002,
+     1.06
+    ],
+    [
+     0.0012,
+     1.04
+    ],
+    [
+     0.0022,
+     1.03
+    ],
+    [
+     0.0032,
+     1.02
+    ],
+    [
+     0.0042,
+     1.01
+    ],
+    [
+     0.0052,
+     1.0
+    ],
+    [
+     0.0062,
+     0.99
+    ],
+    [
+     0.0072,
+     0.98
+    ],
+    [
+     0.0082,
+     0.97
+    ],
+    [
+     0.0092,
+     0.96
+    ],
+    [
+     0.0102,
+     0.94
+    ],
+    [
+     0.0112,
+     0.91
+    ],
+    [
+     0.0121,
+     0.88
+    ],
+    [
+     0.0132,
+     0.83
+    ],
+    [
+     0.0142,
+     0.78
+    ],
+    [
+     0.0151,
+     0.71
+    ],
+    [
+     0.0161,
+     0.63
+    ],
+    [
+     0.0172,
+     0.58
+    ],
+    [
+     0.0182,
+     0.53
+    ],
+    [
+     0.0191,
+     0.49
+    ],
+    [
+     0.0201,
+     0.43
+    ]
+   ],
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "conditions_raw": {
+    "pressure": "5 x 10^-3 mbar"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.006300000000000001
+   },
+   "set": "wer21:cmp:fig11",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "11",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig11#c6",
+   "figure": "11",
+   "panel": "",
+   "series": {
+    "label_raw": "200 W - 4s",
+    "cls": "replicate",
+    "series_structure": "replicate"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0002,
+     1.13
+    ],
+    [
+     0.0012,
+     1.07
+    ],
+    [
+     0.0022,
+     1.03
+    ],
+    [
+     0.0032,
+     1.0
+    ],
+    [
+     0.0042,
+     0.98
+    ],
+    [
+     0.0052,
+     0.97
+    ],
+    [
+     0.0062,
+     0.96
+    ],
+    [
+     0.0072,
+     0.96
+    ],
+    [
+     0.0082,
+     0.95
+    ],
+    [
+     0.0092,
+     0.95
+    ],
+    [
+     0.0102,
+     0.94
+    ],
+    [
+     0.0112,
+     0.93
+    ],
+    [
+     0.0121,
+     0.92
+    ],
+    [
+     0.0132,
+     0.9
+    ],
+    [
+     0.0142,
+     0.87
+    ],
+    [
+     0.0151,
+     0.84
+    ],
+    [
+     0.0161,
+     0.81
+    ],
+    [
+     0.0172,
+     0.77
+    ],
+    [
+     0.0182,
+     0.74
+    ],
+    [
+     0.0191,
+     0.71
+    ],
+    [
+     0.0201,
+     0.66
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0002,
+     1.13
+    ],
+    [
+     0.0012,
+     1.07
+    ],
+    [
+     0.0022,
+     1.03
+    ],
+    [
+     0.0032,
+     1.0
+    ],
+    [
+     0.0042,
+     0.98
+    ],
+    [
+     0.0052,
+     0.97
+    ],
+    [
+     0.0062,
+     0.96
+    ],
+    [
+     0.0072,
+     0.96
+    ],
+    [
+     0.0082,
+     0.95
+    ],
+    [
+     0.0092,
+     0.95
+    ],
+    [
+     0.0102,
+     0.94
+    ],
+    [
+     0.0112,
+     0.93
+    ],
+    [
+     0.0121,
+     0.92
+    ],
+    [
+     0.0132,
+     0.9
+    ],
+    [
+     0.0142,
+     0.87
+    ],
+    [
+     0.0151,
+     0.84
+    ],
+    [
+     0.0161,
+     0.81
+    ],
+    [
+     0.0172,
+     0.77
+    ],
+    [
+     0.0182,
+     0.74
+    ],
+    [
+     0.0191,
+     0.71
+    ],
+    [
+     0.0201,
+     0.66
+    ]
+   ],
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "conditions_raw": {
+    "pressure": "5 x 10^-3 mbar"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.0046999999999999984
+   },
+   "set": "wer21:cmp:fig11",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "11",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig12#c1",
+   "figure": "12",
+   "panel": "",
+   "series": {
+    "label_raw": "1.1×10⁻² mbar",
+    "cls": "numeric",
+    "quantity": "process_pressure",
+    "value": 1.1,
+    "value_max": null,
+    "unit": "Pa"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.11
+    ],
+    [
+     0.001,
+     1.07
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     1.01
+    ],
+    [
+     0.004,
+     0.99
+    ],
+    [
+     0.005,
+     0.98
+    ],
+    [
+     0.006,
+     0.97
+    ],
+    [
+     0.007,
+     0.96
+    ],
+    [
+     0.008,
+     0.95
+    ],
+    [
+     0.009,
+     0.94
+    ],
+    [
+     0.01,
+     0.93
+    ],
+    [
+     0.011,
+     0.93
+    ],
+    [
+     0.012,
+     0.91
+    ],
+    [
+     0.013,
+     0.9
+    ],
+    [
+     0.014,
+     0.87
+    ],
+    [
+     0.015,
+     0.84
+    ],
+    [
+     0.016,
+     0.81
+    ],
+    [
+     0.017,
+     0.78
+    ],
+    [
+     0.018,
+     0.74
+    ],
+    [
+     0.019,
+     0.7
+    ],
+    [
+     0.02,
+     0.65
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.11
+    ],
+    [
+     0.001,
+     1.07
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     1.01
+    ],
+    [
+     0.004,
+     0.99
+    ],
+    [
+     0.005,
+     0.98
+    ],
+    [
+     0.006,
+     0.97
+    ],
+    [
+     0.007,
+     0.96
+    ],
+    [
+     0.008,
+     0.95
+    ],
+    [
+     0.009,
+     0.94
+    ],
+    [
+     0.01,
+     0.93
+    ],
+    [
+     0.011,
+     0.93
+    ],
+    [
+     0.012,
+     0.91
+    ],
+    [
+     0.013,
+     0.9
+    ],
+    [
+     0.014,
+     0.87
+    ],
+    [
+     0.015,
+     0.84
+    ],
+    [
+     0.016,
+     0.81
+    ],
+    [
+     0.017,
+     0.78
+    ],
+    [
+     0.018,
+     0.74
+    ],
+    [
+     0.019,
+     0.7
+    ],
+    [
+     0.02,
+     0.65
+    ]
+   ],
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "1.1×10⁻² mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 1.1,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "power": "150 W",
+    "pulse time": "5 s"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.004600000000000001
+   },
+   "set": "wer21:cmp:fig12",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "12",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig12#c2",
+   "figure": "12",
+   "panel": "",
+   "series": {
+    "label_raw": "9.4×10⁻³ mbar",
+    "cls": "numeric",
+    "quantity": "process_pressure",
+    "value": 0.9400000000000001,
+    "value_max": null,
+    "unit": "Pa"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.1
+    ],
+    [
+     0.001,
+     1.06
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     1.0
+    ],
+    [
+     0.004,
+     0.99
+    ],
+    [
+     0.005,
+     0.98
+    ],
+    [
+     0.006,
+     0.97
+    ],
+    [
+     0.007,
+     0.96
+    ],
+    [
+     0.008,
+     0.94
+    ],
+    [
+     0.009,
+     0.93
+    ],
+    [
+     0.01,
+     0.92
+    ],
+    [
+     0.011,
+     0.91
+    ],
+    [
+     0.012,
+     0.89
+    ],
+    [
+     0.013,
+     0.88
+    ],
+    [
+     0.014,
+     0.85
+    ],
+    [
+     0.015,
+     0.83
+    ],
+    [
+     0.016,
+     0.79
+    ],
+    [
+     0.017,
+     0.76
+    ],
+    [
+     0.018,
+     0.72
+    ],
+    [
+     0.019,
+     0.68
+    ],
+    [
+     0.02,
+     0.65
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.1
+    ],
+    [
+     0.001,
+     1.06
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     1.0
+    ],
+    [
+     0.004,
+     0.99
+    ],
+    [
+     0.005,
+     0.98
+    ],
+    [
+     0.006,
+     0.97
+    ],
+    [
+     0.007,
+     0.96
+    ],
+    [
+     0.008,
+     0.94
+    ],
+    [
+     0.009,
+     0.93
+    ],
+    [
+     0.01,
+     0.92
+    ],
+    [
+     0.011,
+     0.91
+    ],
+    [
+     0.012,
+     0.89
+    ],
+    [
+     0.013,
+     0.88
+    ],
+    [
+     0.014,
+     0.85
+    ],
+    [
+     0.015,
+     0.83
+    ],
+    [
+     0.016,
+     0.79
+    ],
+    [
+     0.017,
+     0.76
+    ],
+    [
+     0.018,
+     0.72
+    ],
+    [
+     0.019,
+     0.68
+    ],
+    [
+     0.02,
+     0.65
+    ]
+   ],
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "9.4×10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.9400000000000001,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "power": "150 W",
+    "pulse time": "5 s"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.0045000000000000005
+   },
+   "set": "wer21:cmp:fig12",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "12",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig12#c3",
+   "figure": "12",
+   "panel": "",
+   "series": {
+    "label_raw": "5.7×10⁻³ mbar",
+    "cls": "numeric",
+    "quantity": "process_pressure",
+    "value": 0.5700000000000001,
+    "value_max": null,
+    "unit": "Pa"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.06
+    ],
+    [
+     0.001,
+     1.05
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     0.99
+    ],
+    [
+     0.004,
+     0.98
+    ],
+    [
+     0.005,
+     0.96
+    ],
+    [
+     0.006,
+     0.95
+    ],
+    [
+     0.007,
+     0.94
+    ],
+    [
+     0.008,
+     0.93
+    ],
+    [
+     0.009,
+     0.9
+    ],
+    [
+     0.01,
+     0.88
+    ],
+    [
+     0.011,
+     0.86
+    ],
+    [
+     0.012,
+     0.83
+    ],
+    [
+     0.013,
+     0.79
+    ],
+    [
+     0.014,
+     0.76
+    ],
+    [
+     0.015,
+     0.72
+    ],
+    [
+     0.016,
+     0.69
+    ],
+    [
+     0.017,
+     0.65
+    ],
+    [
+     0.018,
+     0.62
+    ],
+    [
+     0.019,
+     0.59
+    ],
+    [
+     0.02,
+     0.55
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.06
+    ],
+    [
+     0.001,
+     1.05
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     0.99
+    ],
+    [
+     0.004,
+     0.98
+    ],
+    [
+     0.005,
+     0.96
+    ],
+    [
+     0.006,
+     0.95
+    ],
+    [
+     0.007,
+     0.94
+    ],
+    [
+     0.008,
+     0.93
+    ],
+    [
+     0.009,
+     0.9
+    ],
+    [
+     0.01,
+     0.88
+    ],
+    [
+     0.011,
+     0.86
+    ],
+    [
+     0.012,
+     0.83
+    ],
+    [
+     0.013,
+     0.79
+    ],
+    [
+     0.014,
+     0.76
+    ],
+    [
+     0.015,
+     0.72
+    ],
+    [
+     0.016,
+     0.69
+    ],
+    [
+     0.017,
+     0.65
+    ],
+    [
+     0.018,
+     0.62
+    ],
+    [
+     0.019,
+     0.59
+    ],
+    [
+     0.02,
+     0.55
+    ]
+   ],
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5.7×10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5700000000000001,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "power": "150 W",
+    "pulse time": "5 s"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.0051
+   },
+   "set": "wer21:cmp:fig12",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "12",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig12#c4",
+   "figure": "12",
+   "panel": "",
+   "series": {
+    "label_raw": "1.0×10⁻³ mbar",
+    "cls": "numeric",
+    "quantity": "process_pressure",
+    "value": 0.1,
+    "value_max": null,
+    "unit": "Pa"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.1
+    ],
+    [
+     0.001,
+     1.07
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     1.0
+    ],
+    [
+     0.004,
+     0.99
+    ],
+    [
+     0.005,
+     0.97
+    ],
+    [
+     0.006,
+     0.96
+    ],
+    [
+     0.007,
+     0.95
+    ],
+    [
+     0.008,
+     0.93
+    ],
+    [
+     0.009,
+     0.9
+    ],
+    [
+     0.01,
+     0.89
+    ],
+    [
+     0.011,
+     0.87
+    ],
+    [
+     0.012,
+     0.83
+    ],
+    [
+     0.013,
+     0.8
+    ],
+    [
+     0.014,
+     0.76
+    ],
+    [
+     0.015,
+     0.72
+    ],
+    [
+     0.016,
+     0.68
+    ],
+    [
+     0.017,
+     0.64
+    ],
+    [
+     0.018,
+     0.6
+    ],
+    [
+     0.019,
+     0.57
+    ],
+    [
+     0.02,
+     0.54
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.1
+    ],
+    [
+     0.001,
+     1.07
+    ],
+    [
+     0.002,
+     1.03
+    ],
+    [
+     0.003,
+     1.0
+    ],
+    [
+     0.004,
+     0.99
+    ],
+    [
+     0.005,
+     0.97
+    ],
+    [
+     0.006,
+     0.96
+    ],
+    [
+     0.007,
+     0.95
+    ],
+    [
+     0.008,
+     0.93
+    ],
+    [
+     0.009,
+     0.9
+    ],
+    [
+     0.01,
+     0.89
+    ],
+    [
+     0.011,
+     0.87
+    ],
+    [
+     0.012,
+     0.83
+    ],
+    [
+     0.013,
+     0.8
+    ],
+    [
+     0.014,
+     0.76
+    ],
+    [
+     0.015,
+     0.72
+    ],
+    [
+     0.016,
+     0.68
+    ],
+    [
+     0.017,
+     0.64
+    ],
+    [
+     0.018,
+     0.6
+    ],
+    [
+     0.019,
+     0.57
+    ],
+    [
+     0.02,
+     0.54
+    ]
+   ],
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "1.0×10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "power": "150 W",
+    "pulse time": "5 s"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.005600000000000001
+   },
+   "set": "wer21:cmp:fig12",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "12",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig12#c5",
+   "figure": "12",
+   "panel": "",
+   "series": {
+    "label_raw": "6×10⁻⁴ mbar",
+    "cls": "numeric",
+    "quantity": "process_pressure",
+    "value": 0.060000000000000005,
+    "value_max": null,
+    "unit": "Pa"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "m",
+    "transform": "",
+    "label_raw": "Depth (m)",
+    "unit_raw": "m",
+    "key": "Depth",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "",
+    "transform": "",
+    "label_raw": "Coverage",
+    "unit_raw": "",
+    "key": "Coverage",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.0,
+     1.1
+    ],
+    [
+     0.001,
+     1.05
+    ],
+    [
+     0.002,
+     1.01
+    ],
+    [
+     0.003,
+     0.98
+    ],
+    [
+     0.004,
+     0.97
+    ],
+    [
+     0.005,
+     0.95
+    ],
+    [
+     0.006,
+     0.94
+    ],
+    [
+     0.007,
+     0.92
+    ],
+    [
+     0.008,
+     0.88
+    ],
+    [
+     0.009,
+     0.86
+    ],
+    [
+     0.01,
+     0.84
+    ],
+    [
+     0.011,
+     0.8
+    ],
+    [
+     0.012,
+     0.76
+    ],
+    [
+     0.013,
+     0.71
+    ],
+    [
+     0.014,
+     0.67
+    ],
+    [
+     0.015,
+     0.63
+    ],
+    [
+     0.016,
+     0.59
+    ],
+    [
+     0.017,
+     0.55
+    ],
+    [
+     0.018,
+     0.52
+    ],
+    [
+     0.019,
+     0.49
+    ],
+    [
+     0.02,
+     0.47
+    ]
+   ],
+   "points_raw": [
+    [
+     0.0,
+     1.1
+    ],
+    [
+     0.001,
+     1.05
+    ],
+    [
+     0.002,
+     1.01
+    ],
+    [
+     0.003,
+     0.98
+    ],
+    [
+     0.004,
+     0.97
+    ],
+    [
+     0.005,
+     0.95
+    ],
+    [
+     0.006,
+     0.94
+    ],
+    [
+     0.007,
+     0.92
+    ],
+    [
+     0.008,
+     0.88
+    ],
+    [
+     0.009,
+     0.86
+    ],
+    [
+     0.01,
+     0.84
+    ],
+    [
+     0.011,
+     0.8
+    ],
+    [
+     0.012,
+     0.76
+    ],
+    [
+     0.013,
+     0.71
+    ],
+    [
+     0.014,
+     0.67
+    ],
+    [
+     0.015,
+     0.63
+    ],
+    [
+     0.016,
+     0.59
+    ],
+    [
+     0.017,
+     0.55
+    ],
+    [
+     0.018,
+     0.52
+    ],
+    [
+     0.019,
+     0.49
+    ],
+    [
+     0.02,
+     0.47
+    ]
+   ],
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "s"
+    },
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "6×10⁻⁴ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.060000000000000005,
+     "value_max": null,
+     "unit": "Pa",
+     "from_series_label": true
+    }
+   },
+   "conditions_raw": {
+    "power": "150 W",
+    "pulse time": "5 s"
+   },
+   "flags": [],
+   "kind": "simulated",
+   "uncertainty": {
+    "basis": "",
+    "x": null,
+    "y": 0.006300000000000001
+   },
+   "set": "wer21:cmp:fig12",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "12",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig13#c1",
+   "figure": "13",
+   "panel": "",
+   "series": {
+    "label_raw": "",
+    "cls": "empty"
+   },
+   "x": {
+    "quantity": "other",
+    "unit": "W",
+    "transform": "",
+    "label_raw": "Power (W)",
+    "unit_raw": "W",
+    "key": "Power",
+    "how": "",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "mbar",
+    "transform": "",
+    "label_raw": "p_O (mbar)",
+    "unit_raw": "mbar",
+    "key": "p_O",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     50.0,
+     1.31e-05
+    ],
+    [
+     75.0,
+     2.72e-05
+    ],
+    [
+     75.0,
+     3.54e-05
+    ],
+    [
+     125.0,
+     5.78e-05
+    ],
+    [
+     150.0,
+     6.67e-05
+    ],
+    [
+     200.0,
+     8.04e-05
+    ]
+   ],
+   "points_raw": [
+    [
+     50.0,
+     1.31e-05
+    ],
+    [
+     75.0,
+     2.72e-05
+    ],
+    [
+     75.0,
+     3.54e-05
+    ],
+    [
+     125.0,
+     5.78e-05
+    ],
+    [
+     150.0,
+     6.67e-05
+    ],
+    [
+     200.0,
+     8.04e-05
+    ]
+   ],
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 \times 10^{-3} mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "5 \times 10^{-3} mbar"
+    }
+   },
+   "conditions_raw": {
+    "pressure": "5 \times 10^{-3} mbar"
+   },
+   "flags": [
+    "F3"
+   ],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": null,
+    "y": 6.730000000000001e-07,
+    "note": "figure-stage flags: F3"
+   },
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "13",
+    "panel": ""
+   },
+   "verdict": "flagged"
+  },
+  {
+   "id": "wer21:fig14#c1",
+   "figure": "14",
+   "panel": "",
+   "series": {
+    "label_raw": "",
+    "cls": "empty"
+   },
+   "x": {
+    "quantity": "process_pressure",
+    "unit": "Pa",
+    "transform": "",
+    "label_raw": "Pressure (mbar)",
+    "unit_raw": "mbar",
+    "key": "Pressure",
+    "how": "name 'pressure'",
+    "unit_reason": ""
+   },
+   "y": {
+    "quantity": "other",
+    "unit": "mbar",
+    "transform": "",
+    "label_raw": "p_O (mbar)",
+    "unit_raw": "mbar",
+    "key": "p_O",
+    "how": "",
+    "unit_reason": ""
+   },
+   "points": [
+    [
+     0.055999999999999994,
+     5.77e-05
+    ],
+    [
+     0.096,
+     6.1e-05
+    ],
+    [
+     0.52,
+     6e-05
+    ],
+    [
+     0.91,
+     6.8e-05
+    ],
+    [
+     1.0999999999999999,
+     6.93e-05
+    ]
+   ],
+   "points_raw": [
+    [
+     0.00056,
+     5.77e-05
+    ],
+    [
+     0.00096,
+     6.1e-05
+    ],
+    [
+     0.0052,
+     6e-05
+    ],
+    [
+     0.0091,
+     6.8e-05
+    ],
+    [
+     0.011,
+     6.93e-05
+    ]
+   ],
+   "conditions": {},
+   "conditions_raw": {
+    "power": "150 W"
+   },
+   "flags": [],
+   "kind": "read_from_figure",
+   "uncertainty": {
+    "basis": "digitized",
+    "x": 0.010439999999999998,
+    "y": 1.1600000000000005e-07
+   },
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "14",
+    "panel": ""
+   }
   }
  ],
- "values": [],
+ "values": [
+  {
+   "id": "wer21:fig4#k1",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 437.0,
+   "value_raw": 437.0,
+   "unit": "nm",
+   "label": "4p(³P) -3s(³S⁰)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k2",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 465.0,
+   "value_raw": 465.0,
+   "unit": "nm",
+   "label": "7d(⁵D⁰) -3p(⁵P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k3",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 500.0,
+   "value_raw": 500.0,
+   "unit": "nm",
+   "label": "6d(⁵D⁰) -3p(⁵P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k4",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 533.0,
+   "value_raw": 533.0,
+   "unit": "nm",
+   "label": "5d(⁵D⁰) -3p(⁵P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k5",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 560.0,
+   "value_raw": 560.0,
+   "unit": "nm",
+   "label": "b⁴Σ⁻_g-a⁴Π_u",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k6",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 616.0,
+   "value_raw": 616.0,
+   "unit": "nm",
+   "label": "4d(⁵D⁰) -3p(⁵P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k7",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 645.0,
+   "value_raw": 645.0,
+   "unit": "nm",
+   "label": "5s(⁵S⁰) -3p(⁵P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k8",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 700.0,
+   "value_raw": 700.0,
+   "unit": "nm",
+   "label": "4d(³D⁰) -3p(³P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k9",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 716.0,
+   "value_raw": 716.0,
+   "unit": "nm",
+   "label": "3p'(¹D) -3s'(¹D⁰)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k10",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 725.0,
+   "value_raw": 725.0,
+   "unit": "nm",
+   "label": "4d(³D⁰) -3p(³P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k11",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 777.0,
+   "value_raw": 777.0,
+   "unit": "nm",
+   "label": "3p(⁵P) - 3s(⁵S⁰)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k12",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 823.0,
+   "value_raw": 823.0,
+   "unit": "nm",
+   "label": "3p'(³D) - 3s'(³D⁰)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k13",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 845.0,
+   "value_raw": 845.0,
+   "unit": "nm",
+   "label": "3p(³P) - 3s(³S⁰)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k14",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 882.0,
+   "value_raw": 882.0,
+   "unit": "nm",
+   "label": "3p'(¹F)-3s'(¹D⁰)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k15",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 926.0,
+   "value_raw": 926.0,
+   "unit": "nm",
+   "label": "4d(⁵D⁰) -3p(⁵P)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  },
+  {
+   "id": "wer21:fig4#k16",
+   "figure": "4",
+   "panel": "",
+   "kind": "peak",
+   "quantity": "other",
+   "value": 955.0,
+   "value_raw": 955.0,
+   "unit": "nm",
+   "label": "3d'(³G⁰) - 3p'(³F)",
+   "conditions": {
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "2 × 10⁻³ mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.2,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "flags": [],
+   "data_kind": "read_from_figure",
+   "basis": "printed",
+   "set": "",
+   "provenance": {
+    "extractor": "vlm",
+    "model": "gemini-3.8-flash",
+    "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
+    "figure": "4",
+    "panel": ""
+   }
+  }
+ ],
  "sets": [
   {
    "id": "wer21:cmp:fig2",
@@ -2255,30 +9773,146 @@
     "wer21:fig2#c5",
     "wer21:fig2#c6"
    ],
+   "conditions": {},
+   "label": "Fig. 2 series (gas flow)"
+  },
+  {
+   "id": "wer21:cmp:fig6a",
+   "figure": "6",
+   "panel": "a",
+   "kind": "series",
+   "varied": "gas_flow_rate",
+   "varied_raw": "flow rate",
+   "members": [
+    "wer21:fig6a#c1",
+    "wer21:fig6a#c2",
+    "wer21:fig6a#c3",
+    "wer21:fig6a#c4",
+    "wer21:fig6a#c5",
+    "wer21:fig6a#c6"
+   ],
+   "conditions": {},
+   "label": "Fig. 6a series (flow rate)"
+  },
+  {
+   "id": "wer21:cmp:fig6b",
+   "figure": "6",
+   "panel": "b",
+   "kind": "series",
+   "varied": "gas_flow_rate",
+   "varied_raw": "flow rate",
+   "members": [
+    "wer21:fig6b#c1",
+    "wer21:fig6b#c2",
+    "wer21:fig6b#c3",
+    "wer21:fig6b#c4",
+    "wer21:fig6b#c5",
+    "wer21:fig6b#c6"
+   ],
+   "conditions": {},
+   "label": "Fig. 6b series (flow rate)"
+  },
+  {
+   "id": "wer21:cmp:fig6c",
+   "figure": "6",
+   "panel": "c",
+   "kind": "series",
+   "varied": "gas_flow_rate",
+   "varied_raw": "flow rate",
+   "members": [
+    "wer21:fig6c#c1",
+    "wer21:fig6c#c2",
+    "wer21:fig6c#c3",
+    "wer21:fig6c#c4",
+    "wer21:fig6c#c5",
+    "wer21:fig6c#c6"
+   ],
+   "conditions": {},
+   "label": "Fig. 6c series (flow rate)"
+  },
+  {
+   "id": "wer21:cmp:fig6d",
+   "figure": "6",
+   "panel": "d",
+   "kind": "series",
+   "varied": "gas_flow_rate",
+   "varied_raw": "flow rate",
+   "members": [
+    "wer21:fig6d#c1",
+    "wer21:fig6d#c2",
+    "wer21:fig6d#c3",
+    "wer21:fig6d#c4",
+    "wer21:fig6d#c5",
+    "wer21:fig6d#c6"
+   ],
+   "conditions": {},
+   "label": "Fig. 6d series (flow rate)"
+  },
+  {
+   "id": "wer21:cmp:fig11",
+   "figure": "11",
+   "panel": "",
+   "kind": "replicate",
+   "varied": "",
+   "varied_raw": "power and pulse time",
+   "members": [
+    "wer21:fig11#c1",
+    "wer21:fig11#c2",
+    "wer21:fig11#c3",
+    "wer21:fig11#c4",
+    "wer21:fig11#c5",
+    "wer21:fig11#c6"
+   ],
    "conditions": {
-    "time": {
-     "key_raw": "Integration time",
-     "raw": "50 s",
-     "quantity": "time",
-     "role": "coordinate",
-     "value": 50.0,
+    "process_pressure": {
+     "key_raw": "pressure",
+     "raw": "5 x 10^-3 mbar",
+     "quantity": "process_pressure",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "Pa"
+    }
+   },
+   "label": "Fig. 11 replicates (power and pulse time)"
+  },
+  {
+   "id": "wer21:cmp:fig12",
+   "figure": "12",
+   "panel": "",
+   "kind": "series",
+   "varied": "process_pressure",
+   "varied_raw": "pressure",
+   "members": [
+    "wer21:fig12#c1",
+    "wer21:fig12#c2",
+    "wer21:fig12#c3",
+    "wer21:fig12#c4",
+    "wer21:fig12#c5"
+   ],
+   "conditions": {
+    "pulse_time": {
+     "key_raw": "pulse time",
+     "raw": "5 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 5.0,
      "value_max": null,
      "unit": "s"
     }
    },
-   "label": "Fig. 2 series (gas flow)"
+   "label": "Fig. 12 series (pressure)"
   }
  ],
  "derived": [],
- "p89": [],
  "report": {
   "inventory": 23,
   "data_panels": 15,
-  "sets": 1,
+  "sets": 7,
   "converted": 0,
-  "curves": 6,
+  "curves": 43,
+  "peaks": 16,
   "derived": 0,
-  "unmapped": 25,
-  "resolved_p89": 0
+  "labels_other": 34
  }
 }

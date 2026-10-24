@@ -3,7 +3,7 @@
  "key": "mat22",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-19T23:46:44",
+ "imported_at": "2026-10-24T09:16:58",
  "inventory": [
   {
    "id": "mat22:fig1a",
@@ -30,7 +30,47 @@
    "flags": [
     "F4"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Raman shift (cm⁻¹)",
+     "key": "Raman shift",
+     "unit": "cm⁻¹",
+     "quantity": "raman_shift",
+     "how": "id 'raman shift'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Intensity (Normalized to Si)",
+     "key": "Intensity (Normalized to Si)",
+     "unit": "",
+     "quantity": "signal_intensity",
+     "how": "alias 'Intensity (Normalized to Si)'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "mat22:fig1c",
@@ -62,14 +102,63 @@
    "panel": "",
    "panel_type": "map",
    "content": "Effect of H2 flow ratio and deposition temperature on film crystallinity",
-   "quantities": [
-    "plasma_gas_ratio",
-    "deposition_temperature"
-   ],
+   "quantities": [],
    "flags": [
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "H₂ flow ratio",
+     "key": "H₂ flow ratio",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "T_{deposition} (°C)",
+     "key": "T_{deposition}",
+     "unit": "°C",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "ALD cycles",
+     "key": "ALD cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'ALD cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "Crystallinity",
+     "key": "Crystallinity",
+     "unit": "",
+     "quantity": "crystallinity",
+     "how": "id 'crystallinity'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "mat22:fig3a",
@@ -97,14 +186,51 @@
    "panel": "",
    "panel_type": "map",
    "content": "Heat map of XPS S/Mo ratio as a function of H2 flow ratio and deposition temperature",
-   "quantities": [
-    "plasma_gas_ratio",
-    "deposition_temperature"
-   ],
+   "quantities": [],
    "flags": [
     "F2"
    ],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "H₂ flow ratio",
+     "key": "H₂ flow ratio",
+     "unit": "",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "T_deposition (°C)",
+     "key": "T_deposition",
+     "unit": "°C",
+     "quantity": "other",
+     "how": "",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "cycles",
+     "key": "cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "name 'cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "mat22:fig5a",
@@ -117,7 +243,59 @@
     "signal_intensity"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Binding energy (eV)",
+     "key": "Binding energy",
+     "unit": "eV",
+     "quantity": "binding_energy",
+     "how": "id 'binding energy'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Intensity (arb. units)",
+     "key": "Intensity",
+     "unit": "arb. units",
+     "quantity": "signal_intensity",
+     "how": "alias 'Intensity'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "cycles",
+     "key": "cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "name 'cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "mat22:fig5b",
@@ -130,7 +308,59 @@
     "signal_intensity"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Binding energy (eV)",
+     "key": "Binding energy",
+     "unit": "eV",
+     "quantity": "binding_energy",
+     "how": "id 'binding energy'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Intensity (arb. units)",
+     "key": "Intensity",
+     "unit": "arb. units",
+     "quantity": "signal_intensity",
+     "how": "alias 'Intensity'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "cycles",
+     "key": "cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "name 'cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "mat22:fig6a",
@@ -163,7 +393,59 @@
     "film_thickness"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Number of ALD cycles",
+     "key": "Number of ALD cycles",
+     "unit": "",
+     "quantity": "cycle_number",
+     "how": "alias 'number of ALD cycles'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Thickness (nm)",
+     "key": "Thickness",
+     "unit": "nm",
+     "quantity": "film_thickness",
+     "how": "name 'thickness'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "H2 flow ratio",
+     "key": "H2 flow ratio",
+     "unit": "",
+     "quantity": "plasma_gas_ratio",
+     "how": "name 'H2 flow ratio'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "mat22:fig7b",
@@ -196,7 +478,47 @@
     "signal_intensity"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Raman shift (cm$^{-1}$)",
+     "key": "Raman shift",
+     "unit": "cm$^{-1}$",
+     "quantity": "raman_shift",
+     "how": "id 'raman shift'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Intensity (Arb. units)",
+     "key": "Intensity",
+     "unit": "Arb. units",
+     "quantity": "signal_intensity",
+     "how": "alias 'Intensity'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   },
   {
    "id": "mat22:fig9b",
@@ -209,7 +531,47 @@
     "signal_intensity"
    ],
    "flags": [],
-   "status": "imported"
+   "status": "imported",
+   "verdict": "ok",
+   "flagged": [],
+   "labels": [
+    {
+     "axis": "x",
+     "label_raw": "Raman shift (cm$^{-1}$)",
+     "key": "Raman shift",
+     "unit": "cm$^{-1}$",
+     "quantity": "raman_shift",
+     "how": "id 'raman shift'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "y",
+     "label_raw": "Intensity (Arb. units)",
+     "key": "Intensity",
+     "unit": "Arb. units",
+     "quantity": "signal_intensity",
+     "how": "alias 'Intensity'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "condition",
+     "label_raw": "temperature",
+     "key": "temperature",
+     "unit": "°C",
+     "quantity": "deposition_temperature",
+     "how": "name 'temperature'",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    }
+   ]
   }
  ],
  "curves": [
@@ -223,22 +585,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "plasma_gas_ratio",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "H₂ flow ratio",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "H₂ flow ratio",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "deposition_temperature",
+    "quantity": "other",
     "unit": "°C",
     "transform": "",
     "label_raw": "T_{deposition} (°C)",
     "unit_raw": "°C",
-    "definition": "",
-    "definition_note": ""
+    "key": "T_{deposition}",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -376,7 +740,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 0.008,
+    "x": null,
     "y": 2.0
    },
    "set": "mat22:cmp:fig2",
@@ -398,22 +762,24 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "plasma_gas_ratio",
-    "unit": "1",
+    "quantity": "other",
+    "unit": "",
     "transform": "",
     "label_raw": "H₂ flow ratio",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "H₂ flow ratio",
+    "how": "",
+    "unit_reason": ""
    },
    "y": {
-    "quantity": "deposition_temperature",
+    "quantity": "other",
     "unit": "°C",
     "transform": "",
     "label_raw": "T_{deposition} (°C)",
     "unit_raw": "°C",
-    "definition": "",
-    "definition_note": ""
+    "key": "T_{deposition}",
+    "how": "",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -583,7 +949,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": 0.0074,
+    "x": null,
     "y": 3.5
    },
    "set": "mat22:cmp:fig2",
@@ -613,8 +979,9 @@
     "transform": "",
     "label_raw": "Number of ALD cycles",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Number of ALD cycles",
+    "how": "alias 'number of ALD cycles'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "film_thickness",
@@ -622,8 +989,9 @@
     "transform": "",
     "label_raw": "Thickness (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness",
+    "how": "name 'thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -807,8 +1175,9 @@
     "transform": "",
     "label_raw": "Number of ALD cycles",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Number of ALD cycles",
+    "how": "alias 'number of ALD cycles'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "film_thickness",
@@ -816,8 +1185,9 @@
     "transform": "",
     "label_raw": "Thickness (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness",
+    "how": "name 'thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1001,8 +1371,9 @@
     "transform": "",
     "label_raw": "Number of ALD cycles",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Number of ALD cycles",
+    "how": "alias 'number of ALD cycles'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "film_thickness",
@@ -1010,8 +1381,9 @@
     "transform": "",
     "label_raw": "Thickness (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness",
+    "how": "name 'thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1195,8 +1567,9 @@
     "transform": "",
     "label_raw": "Number of ALD cycles",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Number of ALD cycles",
+    "how": "alias 'number of ALD cycles'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "film_thickness",
@@ -1204,8 +1577,9 @@
     "transform": "",
     "label_raw": "Thickness (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness",
+    "how": "name 'thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1389,8 +1763,9 @@
     "transform": "",
     "label_raw": "Number of ALD cycles",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Number of ALD cycles",
+    "how": "alias 'number of ALD cycles'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "film_thickness",
@@ -1398,8 +1773,9 @@
     "transform": "",
     "label_raw": "Thickness (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness",
+    "how": "name 'thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1583,8 +1959,9 @@
     "transform": "",
     "label_raw": "Number of ALD cycles",
     "unit_raw": "",
-    "definition": "",
-    "definition_note": ""
+    "key": "Number of ALD cycles",
+    "how": "alias 'number of ALD cycles'",
+    "unit_reason": ""
    },
    "y": {
     "quantity": "film_thickness",
@@ -1592,8 +1969,9 @@
     "transform": "",
     "label_raw": "Thickness (nm)",
     "unit_raw": "nm",
-    "definition": "",
-    "definition_note": ""
+    "key": "Thickness",
+    "how": "name 'thickness'",
+    "unit_reason": ""
    },
    "points": [
     [
@@ -1780,16 +2158,6 @@
      "value": 150.0,
      "value_max": null,
      "unit": "°C"
-    },
-    "film_thickness": {
-     "key_raw": "y denominator",
-     "raw": "Si",
-     "quantity": "film_thickness",
-     "role": "output",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "Si"
     }
    },
    "flags": [
@@ -1825,16 +2193,6 @@
      "value": 150.0,
      "value_max": null,
      "unit": "°C"
-    },
-    "film_thickness": {
-     "key_raw": "y denominator",
-     "raw": "Si",
-     "quantity": "film_thickness",
-     "role": "output",
-     "value": null,
-     "value_max": null,
-     "unit": "",
-     "text": "Si"
     }
    },
    "flags": [
@@ -1860,9 +2218,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.0,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.0,
+    "other:T_{deposition}": 150.0
    },
    "at_raw": {
     "x": 0.0,
@@ -1884,7 +2243,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -1902,9 +2261,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.0,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.0,
+    "other:T_{deposition}": 200.0
    },
    "at_raw": {
     "x": 0.0,
@@ -1926,7 +2286,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -1944,9 +2304,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.0,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.0,
+    "other:T_{deposition}": 250.0
    },
    "at_raw": {
     "x": 0.0,
@@ -1968,7 +2329,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -1986,9 +2347,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 50.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 50.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2010,7 +2372,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2028,9 +2390,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 100.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2052,7 +2415,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2070,9 +2433,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 150.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2094,7 +2458,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2112,9 +2476,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 200.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2136,7 +2501,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2154,9 +2519,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 250.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2178,7 +2544,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2196,9 +2562,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 300.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 300.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2220,7 +2587,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2238,9 +2605,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 350.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 350.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2262,7 +2630,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2280,9 +2648,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 450.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_{deposition}": 450.0
    },
    "at_raw": {
     "x": 0.2,
@@ -2304,7 +2673,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2322,9 +2691,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.35,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.35,
+    "other:T_{deposition}": 250.0
    },
    "at_raw": {
     "x": 0.35,
@@ -2346,7 +2716,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2364,9 +2734,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_{deposition}": 100.0
    },
    "at_raw": {
     "x": 0.5,
@@ -2388,7 +2759,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2406,9 +2777,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_{deposition}": 150.0
    },
    "at_raw": {
     "x": 0.5,
@@ -2430,7 +2802,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2448,9 +2820,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_{deposition}": 200.0
    },
    "at_raw": {
     "x": 0.5,
@@ -2472,7 +2845,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2490,9 +2863,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_{deposition}": 250.0
    },
    "at_raw": {
     "x": 0.5,
@@ -2514,7 +2888,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2532,9 +2906,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 350.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_{deposition}": 350.0
    },
    "at_raw": {
     "x": 0.5,
@@ -2556,7 +2931,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2574,9 +2949,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_{deposition}": 100.0
    },
    "at_raw": {
     "x": 0.65,
@@ -2598,7 +2974,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2616,9 +2992,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_{deposition}": 150.0
    },
    "at_raw": {
     "x": 0.65,
@@ -2640,7 +3017,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2658,9 +3035,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_{deposition}": 200.0
    },
    "at_raw": {
     "x": 0.65,
@@ -2682,7 +3060,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2700,9 +3078,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_{deposition}": 250.0
    },
    "at_raw": {
     "x": 0.65,
@@ -2724,7 +3103,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2742,9 +3121,10 @@
    "value": null,
    "value_text": "Amorphous",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 50.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_{deposition}": 50.0
    },
    "at_raw": {
     "x": 0.8,
@@ -2766,7 +3146,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2784,9 +3164,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_{deposition}": 100.0
    },
    "at_raw": {
     "x": 0.8,
@@ -2808,7 +3189,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2826,9 +3207,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_{deposition}": 150.0
    },
    "at_raw": {
     "x": 0.8,
@@ -2850,7 +3232,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2868,9 +3250,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_{deposition}": 200.0
    },
    "at_raw": {
     "x": 0.8,
@@ -2892,7 +3275,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2910,9 +3293,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_{deposition}": 250.0
    },
    "at_raw": {
     "x": 0.8,
@@ -2934,7 +3318,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2952,9 +3336,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 350.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_{deposition}": 350.0
    },
    "at_raw": {
     "x": 0.8,
@@ -2976,7 +3361,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -2994,9 +3379,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 450.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_{deposition}": 450.0
    },
    "at_raw": {
     "x": 0.8,
@@ -3018,7 +3404,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3036,9 +3422,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_{deposition}": 100.0
    },
    "at_raw": {
     "x": 0.94,
@@ -3060,7 +3447,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3078,9 +3465,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_{deposition}": 150.0
    },
    "at_raw": {
     "x": 0.94,
@@ -3102,7 +3490,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3120,9 +3508,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_{deposition}": 200.0
    },
    "at_raw": {
     "x": 0.94,
@@ -3144,7 +3533,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3162,9 +3551,10 @@
    "value": null,
    "value_text": "Crystalline",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_{deposition}": 250.0
    },
    "at_raw": {
     "x": 0.94,
@@ -3186,7 +3576,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig2:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3204,9 +3594,10 @@
    "value": 2.8,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.0,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.0,
+    "other:T_deposition": 250.0
    },
    "at_raw": {
     "x": 0.0,
@@ -3228,7 +3619,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3246,9 +3637,10 @@
    "value": 3.1,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.0,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.0,
+    "other:T_deposition": 200.0
    },
    "at_raw": {
     "x": 0.0,
@@ -3270,7 +3662,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3288,9 +3680,10 @@
    "value": 3.6,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.0,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.0,
+    "other:T_deposition": 150.0
    },
    "at_raw": {
     "x": 0.0,
@@ -3312,7 +3705,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3330,9 +3723,10 @@
    "value": 2.0,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 450.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 450.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3354,7 +3748,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3372,9 +3766,10 @@
    "value": 2.1,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 350.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 350.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3396,7 +3791,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3414,9 +3809,10 @@
    "value": 2.3,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 300.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 300.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3438,7 +3834,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3456,9 +3852,10 @@
    "value": 2.7,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 250.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3480,7 +3877,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3498,9 +3895,10 @@
    "value": 3.0,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 200.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3522,7 +3920,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3540,9 +3938,10 @@
    "value": 3.5,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 150.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3564,7 +3963,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3582,9 +3981,10 @@
    "value": 4.6,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 100.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3606,7 +4006,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3624,9 +4024,10 @@
    "value": 7.3,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.2,
-    "deposition_temperature": 50.0
+    "other:H₂ flow ratio": 0.2,
+    "other:T_deposition": 50.0
    },
    "at_raw": {
     "x": 0.2,
@@ -3648,7 +4049,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3666,9 +4067,10 @@
    "value": 2.5,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.35,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.35,
+    "other:T_deposition": 250.0
    },
    "at_raw": {
     "x": 0.35,
@@ -3690,7 +4092,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3708,9 +4110,10 @@
    "value": 2.2,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 350.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_deposition": 350.0
    },
    "at_raw": {
     "x": 0.5,
@@ -3732,7 +4135,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3750,9 +4153,10 @@
    "value": 2.2,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_deposition": 250.0
    },
    "at_raw": {
     "x": 0.5,
@@ -3774,7 +4178,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3792,9 +4196,10 @@
    "value": 2.5,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_deposition": 200.0
    },
    "at_raw": {
     "x": 0.5,
@@ -3816,7 +4221,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3834,9 +4239,10 @@
    "value": 3.0,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_deposition": 150.0
    },
    "at_raw": {
     "x": 0.5,
@@ -3858,7 +4264,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3876,9 +4282,10 @@
    "value": 3.6,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.5,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.5,
+    "other:T_deposition": 100.0
    },
    "at_raw": {
     "x": 0.5,
@@ -3900,7 +4307,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3918,9 +4325,10 @@
    "value": 2.1,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_deposition": 250.0
    },
    "at_raw": {
     "x": 0.65,
@@ -3942,7 +4350,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -3960,9 +4368,10 @@
    "value": 2.2,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_deposition": 200.0
    },
    "at_raw": {
     "x": 0.65,
@@ -3984,7 +4393,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4002,9 +4411,10 @@
    "value": 2.1,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_deposition": 150.0
    },
    "at_raw": {
     "x": 0.65,
@@ -4026,7 +4436,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4044,9 +4454,10 @@
    "value": 2.2,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.65,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.65,
+    "other:T_deposition": 100.0
    },
    "at_raw": {
     "x": 0.65,
@@ -4068,7 +4479,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4086,9 +4497,10 @@
    "value": 1.9,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 450.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_deposition": 450.0
    },
    "at_raw": {
     "x": 0.8,
@@ -4110,7 +4522,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4128,9 +4540,10 @@
    "value": 1.9,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 350.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_deposition": 350.0
    },
    "at_raw": {
     "x": 0.8,
@@ -4152,7 +4565,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4170,9 +4583,10 @@
    "value": 1.9,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_deposition": 250.0
    },
    "at_raw": {
     "x": 0.8,
@@ -4194,7 +4608,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4212,9 +4626,10 @@
    "value": 1.9,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_deposition": 200.0
    },
    "at_raw": {
     "x": 0.8,
@@ -4236,7 +4651,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4254,9 +4669,10 @@
    "value": 1.9,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_deposition": 150.0
    },
    "at_raw": {
     "x": 0.8,
@@ -4278,7 +4694,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4296,9 +4712,10 @@
    "value": 1.8,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_deposition": 100.0
    },
    "at_raw": {
     "x": 0.8,
@@ -4320,7 +4737,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4338,9 +4755,10 @@
    "value": 2.0,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.8,
-    "deposition_temperature": 50.0
+    "other:H₂ flow ratio": 0.8,
+    "other:T_deposition": 50.0
    },
    "at_raw": {
     "x": 0.8,
@@ -4362,7 +4780,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4380,9 +4798,10 @@
    "value": 1.3,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 250.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_deposition": 250.0
    },
    "at_raw": {
     "x": 0.94,
@@ -4404,7 +4823,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4422,9 +4841,10 @@
    "value": 1.3,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 200.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_deposition": 200.0
    },
    "at_raw": {
     "x": 0.94,
@@ -4446,7 +4866,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4464,9 +4884,10 @@
    "value": 1.3,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 150.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_deposition": 150.0
    },
    "at_raw": {
     "x": 0.94,
@@ -4488,7 +4909,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -4506,9 +4927,10 @@
    "value": 1.4,
    "value_text": "",
    "unit": "",
+   "label": "",
    "at": {
-    "plasma_gas_ratio": 0.94,
-    "deposition_temperature": 100.0
+    "other:H₂ flow ratio": 0.94,
+    "other:T_deposition": 100.0
    },
    "at_raw": {
     "x": 0.94,
@@ -4530,7 +4952,7 @@
    ],
    "data_kind": "read_from_figure",
    "basis": "printed",
-   "set": "mat22:cmp:fig4:grid",
+   "set": "",
    "provenance": {
     "extractor": "vlm",
     "model": "gemini-3.8-flash",
@@ -5442,118 +5864,6 @@
    "label": "Fig. 2 series (Crystallinity)"
   },
   {
-   "id": "mat22:cmp:fig2:grid",
-   "figure": "2",
-   "panel": "",
-   "kind": "grid",
-   "varied": "plasma_gas_ratio;deposition_temperature",
-   "varied_raw": "H₂ flow ratio × T_{deposition} (°C)",
-   "members": [
-    "mat22:fig2#v1",
-    "mat22:fig2#v2",
-    "mat22:fig2#v3",
-    "mat22:fig2#v4",
-    "mat22:fig2#v5",
-    "mat22:fig2#v6",
-    "mat22:fig2#v7",
-    "mat22:fig2#v8",
-    "mat22:fig2#v9",
-    "mat22:fig2#v10",
-    "mat22:fig2#v11",
-    "mat22:fig2#v12",
-    "mat22:fig2#v13",
-    "mat22:fig2#v14",
-    "mat22:fig2#v15",
-    "mat22:fig2#v16",
-    "mat22:fig2#v17",
-    "mat22:fig2#v18",
-    "mat22:fig2#v19",
-    "mat22:fig2#v20",
-    "mat22:fig2#v21",
-    "mat22:fig2#v22",
-    "mat22:fig2#v23",
-    "mat22:fig2#v24",
-    "mat22:fig2#v25",
-    "mat22:fig2#v26",
-    "mat22:fig2#v27",
-    "mat22:fig2#v28",
-    "mat22:fig2#v29",
-    "mat22:fig2#v30",
-    "mat22:fig2#v31",
-    "mat22:fig2#v32"
-   ],
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "ALD cycles",
-     "raw": "100–140",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 100.0,
-     "value_max": 140.0,
-     "unit": "cycle"
-    }
-   },
-   "label": "Fig. 2 grid",
-   "cell_quantity": "crystallinity",
-   "cell_quantity_raw": "Crystallinity"
-  },
-  {
-   "id": "mat22:cmp:fig4:grid",
-   "figure": "4",
-   "panel": "",
-   "kind": "grid",
-   "varied": "plasma_gas_ratio;deposition_temperature",
-   "varied_raw": "H₂ flow ratio × T_deposition (°C)",
-   "members": [
-    "mat22:fig4#v1",
-    "mat22:fig4#v2",
-    "mat22:fig4#v3",
-    "mat22:fig4#v4",
-    "mat22:fig4#v5",
-    "mat22:fig4#v6",
-    "mat22:fig4#v7",
-    "mat22:fig4#v8",
-    "mat22:fig4#v9",
-    "mat22:fig4#v10",
-    "mat22:fig4#v11",
-    "mat22:fig4#v12",
-    "mat22:fig4#v13",
-    "mat22:fig4#v14",
-    "mat22:fig4#v15",
-    "mat22:fig4#v16",
-    "mat22:fig4#v17",
-    "mat22:fig4#v18",
-    "mat22:fig4#v19",
-    "mat22:fig4#v20",
-    "mat22:fig4#v21",
-    "mat22:fig4#v22",
-    "mat22:fig4#v23",
-    "mat22:fig4#v24",
-    "mat22:fig4#v25",
-    "mat22:fig4#v26",
-    "mat22:fig4#v27",
-    "mat22:fig4#v28",
-    "mat22:fig4#v29",
-    "mat22:fig4#v30",
-    "mat22:fig4#v31",
-    "mat22:fig4#v32"
-   ],
-   "conditions": {
-    "cycle_number": {
-     "key_raw": "cycles",
-     "raw": "100–140",
-     "quantity": "cycle_number",
-     "role": "condition",
-     "value": 100.0,
-     "value_max": 140.0,
-     "unit": "cycle"
-    }
-   },
-   "label": "Fig. 4 grid",
-   "cell_quantity": "",
-   "cell_quantity_raw": ""
-  },
-  {
    "id": "mat22:cmp:fig7a",
    "figure": "7",
    "panel": "a",
@@ -5656,7 +5966,7 @@
    "source": "mat22:fig7a#c3",
    "quantity": "growth_per_cycle",
    "qualifiers": "",
-   "value": 0.08046428571428571,
+   "value": 0.08046428571428575,
    "unit": "nm/cycle",
    "method": "linear_slope",
    "rule": "P86: linear slope of film thickness against cycle number (R² 0.999 ≥ 0.98, 15 points)",
@@ -5754,17 +6064,15 @@
    "panel": "a"
   }
  ],
- "p89": [],
  "report": {
   "inventory": 17,
   "data_panels": 8,
   "converted": 0,
   "curves": 8,
   "peaks": 25,
-  "sets": 4,
+  "sets": 2,
   "cells": 64,
   "derived": 5,
-  "unmapped": 1,
-  "resolved_p89": 0
+  "labels_other": 4
  }
 }
