@@ -1,0 +1,90 @@
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index df4d423..f7a1515 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -373,6 +373,9 @@ def candidate_of(row):
+         return cands[row["id"]]
+     ev = sorted(evidence_items(row))
+     hits = [c for c in cands.values() if sorted(c["evidence"].values()) == ev]
++    if len(hits) != 1:                                                          # P171: the evidence edited too (two papers merged): the
++        m = re.search(r"proposed id was ([a-z0-9_]+)", row["decision_note"])     # note's 'proposed id was <id>' names the candidate
++        hits = [cands[m.group(1)]] if m and m.group(1) in cands else hits
+     return hits[0] if len(hits) == 1 else None
+ 
+ 
+@@ -659,6 +662,27 @@ def model_fields(row):
+     return (cls.group(1) if cls else ""), ([t.strip() for t in pm.group(1).split(",")] if pm else []), bool(re.search(r"printed name:?\s*paper-local symbol", note))
+ 
+ 
++def entry_fields(row, categories, classes):
++    """P171 (user): an accepted entry's category and structure-class slot from its decision note: '<category> leaf' (a category the
++    quantity entries use) -> category; 'slot of the <class> class' -> the entry joins that structure class's slots. Returns (category or '',
++    class or '')."""
++    note = row["decision_note"]
++    cat = next((c for c in sorted(categories, key=len, reverse=True) if re.search(rf"\b{re.escape(c)} leaf\b", note)), "")
++    cl = re.search(r"slot of the ([a-z_]+) class", note)
++    return cat, (cl.group(1) if cl and cl.group(1) in classes else "")
++
++
++def add_slot(text, cls, eid):
++    """P171: append an entry id to a structure class's slots (its one-line flow mapping under structure_classes)."""
++    m = re.search(rf"(?m)^  - \{{id: {re.escape(cls)}, .*slots: \[([^\]]*)\]\}}$", text)
++    if not m:
++        raise Stop(f"structure class {cls}: no one-line entry with slots")
++    have = [x.strip() for x in m.group(1).split(",") if x.strip()]
++    if eid in have:
++        return text
++    return text[:m.start(1)] + ", ".join(have + [eid]) + text[m.end(1):]
++
++
+ def split_labels(row, labels):
+     """P164 (user): a decision's printed labels as (word labels, symbols [(text, pid)]): a symbol-like label is a symbol of each paper
+     that prints it, never a word."""
+@@ -682,6 +706,8 @@ def cmd_apply():
+     rows = rd(PENDING)
+     decided = [x for x in rows if x["decision"]]
+     stops = []
++    cats = {e.get("category") for e in o["entries"] if e["type"] in ("quantity", "categorical") and e.get("category")}   # P171
++    classes = {c["id"] for c in o.get("structure_classes", [])}
+     for x in decided:
+         if x["decision"] not in X.DECISIONS:
+             stops.append(f"{x['id']}: decision {x['decision']!r}")
+@@ -693,6 +719,8 @@ def cmd_apply():
+             stops.append(f"{x['id']}: alias target {x['alias_target']!r} is not an entry, nor accepted in this round")
+         if x["decision"] == "never" and not x["never_category"].strip():
+             stops.append(f"{x['id']}: never without a never_category")
++        if x["decision"] == "accept" and re.search(r"slot of the ([a-z_]+) class", x["decision_note"]) and not entry_fields(x, cats, classes)[1]:
++            stops.append(f"{x['id']}: the note names a structure class that does not exist")
+         if x["decision"] == "accept" and x["kind"] == "model":                 # P168: a model's class and parameters (model_fields)
+             mt, params, _ = model_fields(x)
+             if not mt:
+@@ -706,7 +734,7 @@ def cmd_apply():
+     if not late:                                                                # a late decision's rows are in the round's snapshot already
+         snapshot(n, r["pids"].split(";"), rows)                                 # P157d: the rows each candidate covers, before anything changes
+     text = ONTO.read_text(encoding="utf-8")
+-    new, hist, nev, applied = [], [], X.never_rows(), []
++    new, hist, nev, applied, slots = [], [], X.never_rows(), [], []
+     order = {"accept": 0, "alias": 1}                                          # P164: accepts first (an alias may target an entry of this round)
+     for x in sorted(decided, key=lambda x: order.get(x["decision"], 2)):
+         labels, syms = printed_labels(x), candidate_symbols(x)
+@@ -718,6 +746,11 @@ def cmd_apply():
+             e = X.pending_entry(x, words, list(dict.fromkeys(syms + lsyms)))
+             if x["kind"] == "model":
+                 e.update(model_type=mt, parameters=params)
++            cat, slot = entry_fields(x, cats, classes)                          # P171: a category and a structure-class slot from the note
++            if cat:
++                e["category"] = cat
++            if slot:
++                slots.append((slot, x["id"]))
+             e.update(origin=f"round {n}", source_pids=[p for p in x["pids"].split(";") if p], evidence=evidence_items(x))
+             new.append({k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)})
+             applied.append(dict(id=x["id"], decision="accept", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(e.get("aliases") or []),
+@@ -753,6 +786,8 @@ def cmd_apply():
+         head, tail = text.split(mark)
+         text = head.rstrip("\n") + f"\n\n  # ---------------------------------------------------------------- grow.py round {n}: accepted\n" \
+             + "".join(block(e) for e in new).rstrip("\n") + "\n" + mark + tail
++    for cls, eid in slots:                                                      # P171
++        text = add_slot(text, cls, eid)
+     ONTO.write_text(text, encoding="utf-8")
+     yaml.safe_load(ONTO.read_text(encoding="utf-8"))                            # still parses
+     X.stamp_header()
