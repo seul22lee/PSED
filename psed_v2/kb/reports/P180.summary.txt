@@ -1,0 +1,19 @@
+P180: read-only, 0 calls, no file changed but this report's own. Copies are verbatim; no fix and no proposal.
+
+1. CODEBOOK.md (the one in the yli18 form-test prompt: the rebuilt prompt has the step-7 line's request hash): the step qualifier row, the
+   pulse_time / purge_time / exposure rows, the whole Form rules section (rule 1 is the step rule; the species rule follows rule 5), and the
+   species rule (it appears once).
+2. ontology.yaml: the step block (one meaning sentence naming the eight values); no value has a definition text of its own (all eight);
+   reactant_A and reactant_B are also categorical entries (the recipe's reactants), copied.
+3. The pass-1 prompt gives the model PASS-0 UNITS lines of id | role | name | parent | data only: the recipe's reactant_A / reactant_B /
+   carrier species and the step sequence are not given. The prompt's EXAMPLES hold 22 records, none with a step key, none of pulse_time /
+   purge_time / exposure.
+4. The six s8.p24 records of the yli18 form test without step: pulse_time / purge_time 0.1 / 4.0 s for tma, h2o, ticl4, each with species
+   and nine other qualifiers (stage, stat, between, relative_to, over, mode, x, specimen_class, structure_class) but no step. The P178
+   records of the same values have no step either: that P178 line carries no form version (written before the freeze), so compile
+   validates it without the P158 rules; the P179 line is validated with them and rule 1 drops the six.
+5. P178 lines of the thirteen: 108 pulse_time / purge_time / exposure settings: step filled 47, empty 61;
+   species filled 55, empty 53 (per paper in the table).
+6. Form failures of every pass-1 line in kb/records, by form version and rule (validated as compile validates: a line with a version
+   against form.json, a line without one without the P158 rules): rule 1 (step) 17 records in P158 lines, 8 in
+   P163 lines, 6 in P179 lines; the lines without a version are not held to rule 1; every rule with its count and one example in the table.

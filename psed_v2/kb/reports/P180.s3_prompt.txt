@@ -1,0 +1,35 @@
+What the pass-1 prompt tells the model about the paper's units (kb/extract/pass1_elements.py: RULES and the PASS-0 UNITS block of prefix(); copied from the yli18 prompt of the form test, the one with the step-7 line's request hash).
+
+RULES lines that name PASS-0 UNITS:
+
+- about: the PASS-0 UNITS id of the run, specimen, simulation or model run the record is about; "paper" when it is about none of them.
+- mentions: only names from PASS-0 UNITS (name as printed), exactly as listed.
+
+The PASS-0 UNITS block as sent (yli18):
+
+PASS-0 UNITS (id | role | name | parent | data id:role): about takes an id; mentions take a name
+run_al2o3 | run | Al2O3 | - | -
+specimen_al2o3 | specimen | Al2O3 | run_al2o3 | yli18:fig6#c2:measured yli18:fig6#c1:fitted
+run_tio2 | run | TiO2 | - | -
+specimen_tio2 | specimen | TiO2 | run_tio2 | yli18:fig7#c2:measured yli18:fig7#c1:fitted
+sim_ylilammi | simulation | diffusion model | - | -
+sim_gordon | simulation | Gordon model | - | -
+mr_tp_0_1s | model_run | 0.1 s | sim_ylilammi | yli18:fig2#c1:simulated yli18:fig2#c2:simulated yli18:fig2#c9:simulated yli18:fig2#c10:simulated yli18:fig3#c1:simulated yli18:fig3#c2:simulated
+mr_tp_0_05s | model_run | 0.05 s | sim_ylilammi | yli18:fig2#c3:simulated yli18:fig2#c4:simulated yli18:fig3#c3:simulated yli18:fig3#c4:simulated
+mr_tp_0_02s | model_run | 0.02 s | sim_ylilammi | yli18:fig2#c5:simulated yli18:fig2#c6:simulated yli18:fig3#c5:simulated yli18:fig3#c6:simulated
+mr_tp_0_01s | model_run | 0.01 s | sim_ylilammi | yli18:fig2#c7:simulated yli18:fig2#c8:simulated yli18:fig3#c7:simulated yli18:fig3#c8:simulated
+mr_fig4_h2 | model_run | 2 µm | sim_ylilammi | yli18:fig4#c1:simulated
+mr_fig4_h1 | model_run | 1 µm | sim_ylilammi | yli18:fig4#c2:simulated
+mr_fig4_h05 | model_run | 0.5 µm | sim_ylilammi | yli18:fig4#c3:simulated
+mr_fig4_h02 | model_run | 0.2 µm | sim_ylilammi | yli18:fig4#c4:simulated
+mr_fig5_ylilammi | model_run | Approximation | sim_ylilammi | yli18:fig5#c2:simulated yli18:fig5#c3:simulated
+mr_fig5_gordon | model_run | Gordon model | sim_gordon | yli18:fig5#c1:simulated
+Element ids that may be linked: eq1, eq2, eq3, eq4, eq5, eq6, eq7, eq8, eq9, eq10, eq11, eq12, eq13, eq14, eq15, eq16, eq17, eq18, eq19, eq20, eq21, eq22, eq23, eq24, eq25, eq26, eq27, eq28, eq29, eq30, eq31, eq32, eq33, eq34, eq35, eq36, eq37, eq38, eq39, eq40, eq41, eq42, eq43, eq44, eq45, eq46, fig1.cap, fig1, fig2.cap, fig2, fig3.cap, fig3, fig4.cap, fig4, fig5.cap, fig5, fig6.cap, fig6, fig7.cap, fig7, tabI.cap
+
+pass1_elements.units_block() docstring (verbatim from the source):
+
+    """P148 (A5): PASS-0 UNITS, one line per unit of the latest pass-0 line: id | role | name | parent | data (id:role ...). P161: then
+    the units compile.bind() derives (P177b) for the items no pass-0 unit holds, each line ending | <origin>; none, no line."""
+
+Answer to item 3: the recipe's reactant_A / reactant_B / carrier species and the step sequence are NOT given to the model in pass 1. A PASS-0 UNITS line carries id, role, name as printed, parent and data ids with their roles only; pass 0 records no reactant, carrier or step field for a run, and the P179 process_mode fill is not in the block either.
+EXAMPLES section of the same prompt: 22 example records, 0 with a step key, 0 of quantity pulse_time / purge_time / exposure.

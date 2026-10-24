@@ -1,0 +1,38 @@
+The step qualifier definition block (ontology.yaml qualifiers:, line 3542):
+
+  step:      {meaning: "which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific).", values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
+
+Definition text of each value: none of the eight values (reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none) has a definition text of its own in ontology.yaml; the block's one meaning sentence (above) names them: 'the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific)'. The values without definition text: all eight.
+
+reactant_A and reactant_B are also entries (type categorical: the reactant species of the recipe, not step values); their blocks (lines 189-218):
+
+  - id: reactant_A
+    type: categorical
+    label: "A"
+    name: "reactant A"
+    origin: base
+    role: condition
+    category: ald_process
+    values_from: "species with kind = molecule"
+    definition: "The first reactant of the ALD cycle, which reacts in a self-terminating way with the surface in step 1 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant A'); value is a species id."
+    dimension: categorical
+    aliases: [Precursor, "Reactant A", "first reactant"]
+    base: {source: schema_miner, path: ReactantSelection/Precursor}
+    deviation: {type: renamed, reason: "Popov Table I and Cremers Sec. I name the reactants A and B"}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+
+  - id: reactant_B
+    type: categorical
+    label: "B"
+    name: "reactant B"
+    origin: base
+    role: condition
+    category: ald_process
+    values_from: "species with kind = molecule"
+    definition: "The second reactant of the ALD cycle, which reacts in a self-terminating way with the adsorbed species in step 3 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant B'); value is a species id."
+    dimension: categorical
+    aliases: [CoReactant, "Reactant B", "second reactant"]
+    base: {source: schema_miner, path: ReactantSelection/CoReactant}
+    deviation: {type: renamed, reason: "Popov Table I and Cremers Sec. I name the reactants A and B"}
+    evidence: ["Yim2020 Sec. C.B", "Ylilammi2018 Sec. VII", "Werbrouck2021 Sec. II D"]
+

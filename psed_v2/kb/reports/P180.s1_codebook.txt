@@ -1,0 +1,31 @@
+(a) the step qualifier row (CODEBOOK.md section e, line 252, with the table header lines 249-250):
+
+| key | meaning (meaning, else log) | values | source | log (citation only) |
+|---|---|---|---|---|
+| step | which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific). | reactant_A; purge_A; reactant_B; purge_B; plasma; hold_A; hold_B; none | Cremers Sec. I four steps; Popov Reactant A/B |  |
+
+(b) the pulse_time, purge_time and exposure entry rows (CODEBOOK.md section d, lines 150, 151, 162, with the table header lines 133-134):
+
+| id | name | definition | aliases | symbols (paper) | canonical unit | dimension | note | role | setting-only | substance-scoped | default definition key |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| pulse_time | pulse | Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time. | DosingTime; pulse time; Pulse length (s); Length of the reactant pulse; TMA pulse; plasma pulse length; pulse length; at-H pulse; DEZ exposure time; exposure time; Exposure Times; Minimum Exposure Time; MoCl_{2}O_{2} pulse; Plasma time; reactant exposure duration; reactant pulse length; SiCl4 Exposure Time; TMA Exposure Time | t_1 (only in 10.1039_d1cp04758b); t_hold (only in 10.1116_6.0003182); t_p (only in 10.1063_1.5028178) | s | time |  | condition | yes | yes |  |
+| purge_time | purge | Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps 2 and 4 of the ALD cycle, Cremers 2019, Sec. I). | PurgeTime; purge time; Purge; pump time; at-H purge; MoCl_{2}O_{2} purge |  | s | time |  | condition | yes |  |  |
+| exposure | exposure | The product of the reactant partial pressure and the pulse time (Cremers 2019, Sec. II D). | reactant exposure; Pt; Exposure, in Langmuirs |  | Pa·s | exposure |  | condition |  | yes |  |
+
+(c) the whole 'Form rules' section (CODEBOOK.md lines 103-111):
+
+Form rules (P158, rule 1 scoped in P163; form version P179, frozen; form.json allOf "P158 rule n"):
+
+- rule 1, step: a setting or observation of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163).
+- rule 2, cited: a cited record carries no observation role: its kind is cited or null (measured, fitted, simulated are the roles of other records, never of a cited one).
+- rule 3, cited: kind cited only on a cited record (one field, one value: the record's type).
+- rule 4, definition and cited: quantity is never null: the entry the term or value stands for, else other with label_as_printed.
+- rule 5, other: label_as_printed is required (the label as printed, else the record's own meaning); nearest = the closest ontology id, or null.
+- species (form version P179, P179): On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty.
+- nearest (a field of every record): for quantity other, the closest ontology id, else null; null for any other record.
+
+(d) every sentence of the P179 species rule as it appears in CODEBOOK.md (it appears once, line 110):
+
+- species (form version P179, P179): On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty.
+
+The CODEBOOK.md copied here is the one in the yli18 form-test prompt: the pass-1 prompt rebuilt from the current files has the request hash of the P179 step-7 line of group s7+s8+s9 (66b4dd65fd5bfae4...).
