@@ -98,6 +98,11 @@ psed_v2/
 - Round plan (P165, user): round 1 = yli18, yim20, mat22 (applied); round 2 = ela03, hei24, gor03 (applied); round 3 = gre23 10.1116_6.0003182,
   art19 10.1021_acs.jpcc.9b08176, zou23 10.1116_6.0002804; round 4 = gao15 10.1116_1.4903941, yim22 10.1039_d1cp04758b, mat23 10.1116_6.0002993;
   then wer21 10.1116_6.0001094 (no gold) alone. grow.py add opens a round once its papers have pass 0 and pass 1 (it refuses before).
+- Papers 14+ (P172, user): 3 per round. `grow.py run <paper> <paper> <paper>` (resolve: paper key in kb/pilot/paper_keys.csv, elements, the
+  figure stage and its import when figures.json is missing; pass 0; derived units and checks; GATE; pass 1; compile; check.py; add; propose)
+  prints the planned calls and dollars and asks y/n (--yes skips, --plan stops after the plan); then the user's decisions in decide.html;
+  then `grow.py apply`. The gates read ontology/gates.csv (the worst of the twelve development papers, `kb/extract/gates.py reference`);
+  every run writes kb/reports/RUN_<keys>.html.
 - A unit is done when its report carries the gold row comparison.
 - Models are pinned by name; the cost is stated before any provider call.
 

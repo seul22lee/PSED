@@ -1520,7 +1520,9 @@ def gold_rows(pid):
 
 def diff(run):
     """Gold kb/pilot/<pid>.facts.csv (gold_rows, P165) against the compiled rows by matches() (P134 key, canonical units, D13); one gold
-    row per compiled row, first come."""
+    row per compiled row, first come. P172: a paper without a gold file (wer21, papers 14+) has an empty diff."""
+    if not (C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").exists():
+        return [], [f"no gold: kb/pilot/{run.pid}.facts.csv absent (not scored)"]
     gold = gold_rows(run.pid)
     comp = run.rows
     free = list(range(len(gold)))

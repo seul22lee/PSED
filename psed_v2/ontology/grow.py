@@ -9,6 +9,7 @@
     python3 psed_v2/ontology/grow.py status                # the open round, pending counts by decision, the last history rows
     python3 psed_v2/ontology/grow.py report                # ontology.html only
     python3 psed_v2/ontology/grow.py audit <round>         # P157d: A1-A3 of a round and its acceptance (apply runs it after every round)
+    python3 psed_v2/ontology/grow.py run <paper> [<paper> <paper>] [--plan] [--yes]   # P172: papers 14+ end to end with gates, to decide.html
 
 Files in ontology/: rounds.csv (one row per round), history.csv (append-only, one row per decision), pending.csv (export.PENDING_COLUMNS),
 never.csv (the never-an-entry labels), decide.html (the decision form propose writes), ontology.html (the one report).
@@ -47,6 +48,7 @@ import export as X  # noqa: E402
 ONTO = HERE / "ontology.yaml"
 ROUNDS, HISTORY, PENDING, NEVER = HERE / "rounds.csv", HERE / "history.csv", HERE / "pending.csv", HERE / "never.csv"
 DECIDE, REPORT, UNMAPPED = HERE / "decide.html", HERE / "ontology.html", HERE / "unmapped.csv"
+GATES_CSV = HERE / "gates.csv"                                                  # P172: written by kb/extract/gates.py reference
 COMPILED, RECORDS, FINAL = V2 / "kb" / "compiled", V2 / "kb" / "records", V2 / "ingest" / "final"
 ROUND_COLS = ["round", "opened", "applied", "pids", "dois", "status", "n_candidates", "n_accepted", "n_alias", "n_rejected", "n_never"]
 HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"]
@@ -1182,6 +1184,151 @@ def cmd_audit(n):
     return fails
 
 
+# ---------------------------------------------------------------- P172: grow.py run, papers 14+ end to end with gates
+EXTRACT, PILOT = V2 / "kb" / "extract", V2 / "kb" / "pilot"
+
+
+def paper_index():
+    """The paper index (kb/pilot/elements.py PAPERS with kb/pilot/paper_keys.csv), read in a subprocess (grow.py imports nothing of the
+    project but export)."""
+    code = f"import sys, json; sys.path.insert(0, {str(PILOT)!r}); import elements; print(json.dumps(elements.PAPERS))"
+    return json.loads(subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True).stdout)
+
+
+def new_key(pid, index):
+    """A paper key from corpus/manifest.csv: the first author's surname, its first three letters (ASCII, lower case), and the year's last two
+    digits (Werbrouck 2021 -> wer21); a key already taken gets b, c, ..."""
+    import unicodedata
+    row = next((r for r in rd(V2 / "corpus" / "manifest.csv") if r["paper_id"] == pid), None)
+    if not row or not row["authors"] or not row["year"]:
+        raise Stop(f"{pid}: no authors or year in corpus/manifest.csv; give it a key by hand (kb/pilot/paper_keys.csv)")
+    sur = re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", row["authors"].split(";")[0].strip().split()[-1]).encode("ascii", "ignore").decode().lower())
+    key, taken = f"{sur[:3]}{row['year'][-2:]}", set(index.values())
+    for suf in [""] + list("bcdefgh"):
+        if key + suf not in taken:
+            return key + suf
+    raise Stop(f"{pid}: no free key for {key}")
+
+
+def cmd_run(args, yes=False, plan_only=False):
+    """P172 (user): papers 14+ end to end, 3 per round: resolve the papers (paper key: kb/pilot/paper_keys.csv; elements.csv; the figure
+    stage and its import when figures.json is missing) -> pass 0 -> units from curves + the consistency, model-named and measurement-named
+    checks (printed by pass 0) -> GATE -> pass 1 -> compile -> check.py -> gates after pass 1 -> the audits of the applied rounds and export
+    --check -> grow.py add + propose -> decide.html -> stop. The planned provider calls and dollars are printed before the first call; a y/n is
+    asked unless --yes; --plan stops after the plan. GATE (gates.py, ontology/gates.csv: the worst of the twelve development papers):
+    a. pass 0 lists no run and no simulation, or fewer than 3 units; b. a pass-0 value worse than the worst development value; c. a provider
+    error or a cached-prefix failure (any non-zero exit of a provider step); d. (before pass 0) data panels with no verdict in
+    ingest/answers/figures.json, so the figures import (P84) imports nothing. After pass 1 (before propose): form failures or quotes not found
+    worse than the worst development value; an earlier round's audit FAIL; export --check FAIL. Every run writes kb/reports/RUN_<keys>.html
+    with its plan, its gate tables and its steps."""
+    if not 1 <= len(args) <= 3:
+        raise Stop("grow.py run takes 1 to 3 papers (one round)")
+    py, steps, stopped = sys.executable, [], ""
+    manifest = {r["paper_id"] for r in rd(V2 / "corpus" / "manifest.csv")}
+    index = paper_index()
+    by_key = {k: p for p, k in index.items()}
+    pids, added = [], []
+    for a in args:
+        pid = by_key.get(a, a)
+        if pid not in manifest:
+            raise Stop(f"{a}: not a paper_id of corpus/manifest.csv nor a paper key")
+        if not (FINAL / pid / "document.md").exists():
+            raise Stop(f"{pid}: no ingest/final/{pid}/document.md (ingest first)")
+        if pid not in index:
+            key = new_key(pid, index)
+            index[pid] = key
+            added.append(dict(paper_id=pid, key=key))
+        pids.append(pid)
+    if added:
+        kf = PILOT / "paper_keys.csv"
+        write(kf, ["paper_id", "key"], rd(kf) + added)
+    keys = [index[p] for p in pids]
+    tag = "_".join(keys)
+
+    def step(name, cmd):
+        p = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
+        out = (p.stdout + p.stderr).strip()
+        steps.append(dict(step=name, command=" ".join(str(c).replace(str(ROOT) + "/", "") for c in cmd), exit=p.returncode, output=out[-3000:]))
+        print(f"== {name}: exit {p.returncode}\n{out[-1500:]}")
+        return p.returncode, out
+
+    def finish(msg=""):
+        R_ = REPORTS / f"RUN_{tag}"
+        write(Path(f"{R_}.steps.csv"), ["step", "command", "exit", "output"], steps)
+        Path(f"{R_}.summary.txt").write_text((f"STOPPED: {msg}\n" if msg else "") + "\n".join(f"{s['step']}: exit {s['exit']}" for s in steps) + "\n", encoding="utf-8")
+        parts = [f"Summary={R_}.summary.txt", f"Plan (calls and dollars per step)={R_}.plan.csv", f"Gates (ontology/gates.csv: the worst development values)={GATES_CSV}"]
+        parts += [f"Gate {g} ({k})={REPORTS / f'RUN_{k}.gate_{g}.csv'}" for k in keys for g in ("pass0", "pass1") if (REPORTS / f"RUN_{k}.gate_{g}.csv").exists()]
+        parts += [f"Steps={R_}.steps.csv"]
+        subprocess.run([sys.executable, str(V2 / "kb" / "report.py"), f"{R_}.html", *parts], cwd=ROOT, check=True, capture_output=True)
+        print(f"run report: {R_}.html" + (f"; STOPPED: {msg}" if msg else ""))
+        if msg:
+            raise Stop(msg)
+
+    need = [p for p in pids if not (PILOT / f"{p}.elements.csv").exists()]
+    if need:
+        step("elements (0 calls)", [py, PILOT / "elements.py", "--ids", *need])
+    rc, out = step("plan (0 calls)", [py, EXTRACT / "gates.py", "plan", *keys])
+    plan = json.loads(out.strip().splitlines()[-1]) if rc == 0 else []
+    write(Path(f"{REPORTS / f'RUN_{tag}'}.plan.csv"), ["paper", "pid", "figure_calls", "figure_usd", "pass0_calls", "pass0_usd", "pass1_calls", "pass1_usd", "note"], plan)
+    calls = sum(x["figure_calls"] + x["pass0_calls"] + x["pass1_calls"] for x in plan)
+    usd = sum(x["figure_usd"] + x["pass0_usd"] + x["pass1_usd"] for x in plan)
+    for x in plan:
+        print(f"{x['paper']}: figure stage {x['figure_calls']} calls (${x['figure_usd']}), pass 0 {x['pass0_calls']} (${x['pass0_usd']}), pass 1 {x['pass1_calls']} (${x['pass1_usd']})")
+    print(f"planned: {calls} provider calls, about ${usd:.2f}")
+    if plan_only:
+        return finish()
+    if calls and not yes:
+        try:
+            ok = input(f"make these {calls} provider calls (about ${usd:.2f})? [y/N] ").strip().lower() == "y"
+        except EOFError:
+            ok = False
+        if not ok:
+            return finish("no y given: no call made")
+    for x in plan:
+        if x["figure_calls"]:
+            if step(f"figure stage {x['paper']} ({x['figure_calls']} vision calls)", [py, V2 / "ingest" / "figures.py", "--ids", x["pid"]])[0]:
+                return finish(f"gate c: the figure stage of {x['paper']} failed")
+            step(f"figures import {x['paper']} (0 calls)", [py, V2 / "kb" / "figures_import.py", x["pid"]])
+            step(f"elements {x['paper']} again, with the figure stage's panels (0 calls)", [py, PILOT / "elements.py", "--ids", x["pid"]])
+    ans = json.loads((V2 / "ingest" / "answers" / "figures.json").read_text(encoding="utf-8")).get("items", [])
+    for k, pid in zip(keys, pids):                                              # P172: the import gate (P84) needs the panels' verdicts
+        f = FINAL / pid / "figures.json"
+        data = [x for g in (json.loads(f.read_text(encoding="utf-8")).get("figures", []) if f.exists() else []) for x in g.get("panels") or []
+                if x.get("panel_type") in ("plot", "spectrum", "map")]
+        if data and not any(v.get("paper_id") == pid for v in ans):
+            return finish(f"gate d: {k} has {len(data)} data panels and no verdicts in ingest/answers/figures.json: the figures import (P84) imports "
+                          "nothing; the verdicts (or a rule for them) come before pass 0")
+    for k in keys:
+        if step(f"pass 0 {k}", [py, EXTRACT / "pass0_paper.py", k])[0]:
+            return finish(f"gate c: pass 0 of {k} failed (provider error)")
+    bad = [k for k in keys if step(f"gate pass 0 {k}", [py, EXTRACT / "gates.py", "pass0", k])[0]]
+    if bad:
+        return finish(f"pass-0 gate: {', '.join(bad)} (see the gate table)")
+    for k in keys:
+        if step(f"pass 1 {k}", [py, EXTRACT / "pass1_elements.py", k])[0]:
+            return finish(f"gate c: pass 1 of {k} failed (provider error or cached-prefix failure)")
+    for k, pid in zip(keys, pids):
+        if step(f"compile {k} (0 calls)", [py, EXTRACT / "compile.py", k])[0]:
+            return finish(f"compile of {k} failed")
+        step(f"check.py {k} (0 calls)", [py, "-c", f"import sys; sys.path.insert(0, {str(EXTRACT)!r}); import score; e, _ = score.check_dir({pid!r}); print(len(e), 'check.py problems')"])
+    bad = [k for k in keys if step(f"gate pass 1 {k}", [py, EXTRACT / "gates.py", "pass1", k])[0]]
+    if bad:
+        return finish(f"pass-1 gate: {', '.join(bad)} (see the gate table); stopped before propose")
+    for r in rounds():
+        if r["status"] == "applied" and (REPORTS / f"R{r['round']}_apply.decision_rows.csv").exists():
+            fails = audit_round(int(r["round"]))
+            steps.append(dict(step=f"audit round {r['round']}", command="grow.py audit", exit=len(fails), output="; ".join(fails)[:3000]))
+            if fails:
+                return finish(f"round {r['round']} audit FAIL ({len(fails)}); stopped before propose")
+    if step("export --check (0 calls)", [py, HERE / "export.py", "--check"])[0]:
+        return finish("export --check failed; stopped before propose")
+    cmd_add(pids)
+    steps.append(dict(step="grow.py add", command="cmd_add", exit=0, output=", ".join(keys)))
+    cmd_propose()
+    steps.append(dict(step="grow.py propose", command="cmd_propose", exit=0, output=str(DECIDE.relative_to(ROOT))))
+    return finish()
+
+
 def cmd_status():
     r = current()
     print(f"open round: {r['round']} ({r['status']}; {r['pids']})" if r else "no open round")
@@ -1565,10 +1712,14 @@ def main(argv=None):
     au.add_argument("round")
     for c in ("propose", "apply", "status", "report"):
         sub.add_parser(c)
+    rn = sub.add_parser("run")                                                  # P172: papers 14+ end to end with gates
+    rn.add_argument("papers", nargs="+")
+    rn.add_argument("--yes", action="store_true")
+    rn.add_argument("--plan", action="store_true")
     args = ap.parse_args(argv)
     try:
         out = {"init": cmd_init, "add": lambda: cmd_add(args.pids), "propose": cmd_propose, "apply": cmd_apply, "status": cmd_status, "report": report_page,
-               "audit": lambda: cmd_audit(args.round)}[args.cmd]()
+               "audit": lambda: cmd_audit(args.round), "run": lambda: cmd_run(args.papers, yes=args.yes, plan_only=args.plan)}[args.cmd]()
     except Stop as e:
         print(f"STOPPED: {e}")
         return 1

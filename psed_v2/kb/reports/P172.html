@@ -1,0 +1,809 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P172</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P172</h1>
+<h2>Summary</h2><p>kb/reports/P172.summary.txt</p>
+<pre>P172: 15 provider calls (wer21&#x27;s figure stage), $0.165. wer21 stopped after its figures import: the import gate (P84) imports a panel only
+with a verdict in ingest/answers/figures.json, and wer21 has none, so pass 0 and pass 1 did not run (the user&#x27;s decision: verdicts, or a rule).
+
+1. Late decisions (round 4): gamma never (its printed label &#x27;\gamma&#x27; from the row&#x27;s evidence: the yim22 symbol row was there already, not
+   written twice); model_a -&gt; alias of ylilammi_diffusion_reaction, the printed &#x27;Model A&#x27; a yim22 symbol; model_b -&gt; accept
+   yanguas_gil_elam_diffusion_reaction (computational; parameters initial_sticking_coefficient, saturation_density,
+   knudsen_diffusion_coefficient, feature_width, feature_depth, partial_pressure, pulse_time; &#x27;Model B&#x27; a yim22 symbol; category models).
+   yim22: Model A -&gt; ylilammi_diffusion_reaction, Model B -&gt; yanguas_gil_elam_diffusion_reaction; the 72 model runs stay under Model A
+   (the known pass-0 error, recorded in the decision note). Round audits 1-4 PASS; export.py --check 15 of 15; scores and check.py counts of
+   the twelve papers unchanged.
+   Three mistakes on the way, all of mine: (1) apply read &#x27;paper-local symbol&#x27; only in the form &#x27;printed name: paper-local symbol&#x27; (now
+   anywhere in a note); (2) adding wer21 to the paper index (P171) made kb/pilot/query.py build a gold tree for a paper without gold, so the
+   first late apply failed in compile after writing ontology.yaml and pending.csv and before history.csv: the written files were restored from
+   HEAD, pending.csv rebuilt from HEAD with the user&#x27;s three decisions as printed at the start of this unit, and apply re-run (64aff0b);
+   query.py now builds trees only for papers with a gold file; (3) the &#x27;Model A&#x27; / &#x27;Model B&#x27; records of yim22 s9.p1 (quantity other, label =
+   the model&#x27;s name) stayed open: a record whose label names one model entry is now &#x27;kept (names the model X)&#x27;: no candidate, A3 other, A1
+   an effect of a decision on X.
+2. wer21: figure stage (ingest/figures.py): 15 calls (one per numbered figure; the 23 planned counted captions without a number), $0.165,
+   15 figures, panels plot 9, spectrum 6, micrograph 4, schematic 4; 653 points; flags F3 12, F2 1. Figures import: 15 data panels, 0
+   imported (no verdicts). elements.csv built again with the figure stage&#x27;s panels (elements.panels_of): 273 -&gt; 281 elements (panels 15 -&gt;
+   23). Not run: pass 0 (1 call), pass 1 (21 groups), compile, check.py, grow.py add / propose.
+3. grow.py run &lt;paper&gt; [&lt;paper&gt; &lt;paper&gt;] [--plan] [--yes]: paper key (kb/pilot/paper_keys.csv, from the manifest&#x27;s first author and year),
+   elements, the figure stage and import when figures.json is missing, plan (calls and dollars, y/n), pass 0, gate, pass 1, compile, check.py,
+   gate, earlier rounds&#x27; audits, export --check, add, propose; every run writes kb/reports/RUN_&lt;keys&gt;.html. Gates (kb/extract/gates.py,
+   ontology/gates.csv, the worst of the twelve): units per 100 elements 3.37 (gre23), unbound items 0, units named after a measurement 0,
+   panels with no layout 0.867 (gao15, a share), form failures 0.091 (gor03), quotes not found 0.163 (mat22); gate a (no run and no
+   simulation, or fewer than 3 units), c (a provider step&#x27;s non-zero exit). Added, not in the directive: gate d, data panels with no verdict
+   stop the run before pass 0 (what stopped wer21). Dry run on wer21 (--plan): 22 calls, about $0.60 (pass 0 1, $0.152; pass 1 21, $0.45).
+   CLAUDE.md: the round plan for papers 14+.
+</pre>
+<h2>1: late decisions, dry run</h2><p>kb/reports/P172.late_dry_run.csv</p>
+<table><tr><th>model_fields</th><th>id</th><th>decision</th><th>target</th><th>candidate</th><th>printed</th><th>word_labels</th><th>symbol_labels</th><th>table_symbols</th><th>category</th><th>slot_of</th></tr>
+<tr><td>(&#x27;&#x27;, [], False)</td><td>gamma</td><td>never</td><td>Model internals</td><td>(none)</td><td>\gamma</td><td></td><td>\gamma (yim22)</td><td></td><td></td><td></td></tr>
+<tr><td>(&#x27;&#x27;, [], True)</td><td>model_a</td><td>alias</td><td>ylilammi_diffusion_reaction</td><td>model_a</td><td>Model A</td><td>Model A</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>(&#x27;computational&#x27;, [&#x27;initial_sticking_coefficient&#x27;, &#x27;saturation_density&#x27;, &#x27;knudsen_diffusion_coefficient&#x27;, &#x27;feature_width&#x27;, &#x27;feature_depth&#x27;, &#x27;partial_pressure&#x27;, &#x27;pulse_time&#x27;], True)</td><td>yanguas_gil_elam_diffusion_reaction</td><td>accept</td><td></td><td>model_b</td><td>Model B</td><td>Model B</td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>1: what apply wrote in round 4 (both applies)</h2><p>kb/reports/R4_apply.written.csv</p>
+<table><tr><th>id</th><th>decision</th><th>candidate</th><th>aliases</th><th>symbols</th><th>note</th></tr>
+<tr><td>pillar_spacing</td><td>accept</td><td>distance_between_pillars</td><td>Distance between pillars</td><td>a (10.1039_d0cp03358h)</td><td></td></tr>
+<tr><td>ald_process_temperature</td><td>alias -&gt; deposition_temperature</td><td>ald_process_temperature</td><td>ALD process temperature</td><td></td><td></td></tr>
+<tr><td>distance_between_the_oxide_pillars</td><td>alias -&gt; pillar_spacing</td><td>distance_between_the_oxide_pillars</td><td>distance between the oxide pillars</td><td></td><td></td></tr>
+<tr><td>absolute_tolerance</td><td>never (Model internals)</td><td>absolute_tolerance</td><td>absolute tolerance</td><td></td><td></td></tr>
+<tr><td>afm_scan_area</td><td>never (Instrument settings)</td><td>afm_scan_area</td><td>AFM scan area</td><td></td><td></td></tr>
+<tr><td>avogadro_s_constant</td><td>never (Model internals)</td><td>avogadro_s_constant</td><td>Avogadro&#x27;s constant</td><td>N_0 (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>c_text_ext_c</td><td>never (Model internals)</td><td>c_text_ext_c</td><td></td><td>c_{\text{ext}}/c (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>collision_cross_section_between_the_molecules_i_and_j</td><td>never (Model internals)</td><td>collision_cross_section_between_the_molecules_i_and_j</td><td>Collision cross section between the molecules i and j</td><td>\sigma_{ij} (10.1039_d1cp04758b); \sigma_{i,j} (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>collision_frequency</td><td>never (Model internals)</td><td>collision_frequency</td><td>collision frequency</td><td>z_A (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>collision_rate_with_surface_at_unit_pressure_in_the_ylilammi_et_al_18_model</td><td>Collision rate with surface at unit pressure in the Ylilammi et al.18 model</td><td>Q (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>difference_between_those_two_discretisation_points</td><td>never (Model internals)</td><td>difference_between_those_two_discretisation_points</td><td>difference between those two discretisation points</td><td></td><td></td></tr>
+<tr><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>distance_of_the_linear_part_of_the_reactant_pressure_distribution_in_the_ylilammi_et_al_18_model</td><td>Distance of the linear part of the reactant pressure distribution in the Ylilammi et al.^18 model</td><td>x_t (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>distance_where_the_extrapolated_linear_part_of_the_reactant_pressure_is_zero_in_the_ylilammi_et_al_18_model</td><td>Distance where the extrapolated linear part of the reactant pressure is zero in the Ylilammi et al.^18 model</td><td>x_s (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>never (Model internals)</td><td>excess_number_in_the_yanguas_gil_and_elam_20_model</td><td>Excess number in the Yanguas-Gil and Elam^20 model</td><td>\gamma (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>relative_tolerance</td><td>never (Model internals)</td><td>relative_tolerance</td><td>relative tolerance</td><td></td><td></td></tr>
+<tr><td>surface_area_of_the_microchannel</td><td>never (Model internals)</td><td>surface_area_of_the_microchannel</td><td>Surface area of the microchannel</td><td>S (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>thermal_velocity</td><td>never (Model internals)</td><td>thermal_velocity</td><td>thermal velocity</td><td></td><td></td></tr>
+<tr><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>never (Model internals)</td><td>velocity_of_gas_front_in_the_ylilammi_et_al_18_model</td><td>Velocity of gas front in the Ylilammi et al.^18 model</td><td>\nu (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>volume_of_the_microchannel</td><td>never (Model internals)</td><td>volume_of_the_microchannel</td><td>Volume of the microchannel</td><td>V (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>wall_collision_rate_at_unit_pressure</td><td>never (Model internals)</td><td>wall_collision_rate_at_unit_pressure</td><td>wall-collision rate at unit pressure</td><td></td><td></td></tr>
+<tr><td>x_ray_beam_energy</td><td>never (Instrument settings)</td><td>x_ray_beam_energy</td><td>x-ray beam energy</td><td></td><td></td></tr>
+<tr><td>yanguas_gil_elam_diffusion_reaction</td><td>accept</td><td>model_b</td><td></td><td>Model B (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>model_a</td><td>alias -&gt; ylilammi_diffusion_reaction</td><td>model_a</td><td></td><td>Model A (10.1039_d1cp04758b)</td><td></td></tr>
+<tr><td>gamma</td><td>never (Model internals)</td><td></td><td></td><td>\gamma (10.1039_d1cp04758b)</td><td></td></tr>
+</table>
+<h2>1: yim22 simulation names and model records</h2><p>kb/reports/P172.s1_yim22_models.csv</p>
+<table><tr><th>paper</th><th>printed</th><th>model_entry</th><th>lookup</th></tr>
+<tr><td>yim22</td><td>Model A</td><td>ylilammi_diffusion_reaction</td><td>model: symbol &#x27;Model A&#x27; of this paper</td></tr>
+<tr><td>yim22</td><td>Model B</td><td>yanguas_gil_elam_diffusion_reaction</td><td>model: symbol &#x27;Model B&#x27; of this paper</td></tr>
+<tr><td>yim22</td><td>Model A</td><td>kept (names the model ylilammi_diffusion_reaction)</td><td>pass-1 record of quantity other (element s9.p1)</td></tr>
+<tr><td>yim22</td><td>Model B</td><td>kept (names the model yanguas_gil_elam_diffusion_reaction)</td><td>pass-1 record of quantity other (element s9.p1)</td></tr>
+</table>
+<h2>1: score before -&gt; after, every column, twelve papers</h2><p>kb/reports/P172.s1_score_before_after.csv</p>
+<table><tr><th>paper</th><th>column</th><th>before</th><th>after</th><th>same</th></tr>
+<tr><td>gor03</td><td>check_dir_problems</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>gor03</td><td>matched_T6</td><td>55</td><td>55</td><td>yes</td></tr>
+<tr><td>gor03</td><td>gold_rows</td><td>157</td><td>157</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gor03</td><td>parent_flagged_no</td><td>58</td><td>58</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_setting</td><td>21/52</td><td>21/52</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_model</td><td>13/21</td><td>13/21</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_claim</td><td>7/18</td><td>7/18</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_activity</td><td>6/11</td><td>6/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_cited</td><td>0/11</td><td>0/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_observation</td><td>5/11</td><td>5/11</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_derived</td><td>7/10</td><td>7/10</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_definition</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_entity</td><td>4/6</td><td>4/6</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gor03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>mat22</td><td>check_dir_problems</td><td>267</td><td>267</td><td>yes</td></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>273</td><td>273</td><td>yes</td></tr>
+<tr><td>mat22</td><td>gold_rows</td><td>1071</td><td>1071</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat22</td><td>parent_flagged_no</td><td>342</td><td>342</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>67/251</td><td>67/251</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_model</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>27/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>135/249</td><td>135/249</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_cited</td><td>6/58</td><td>6/58</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_observation</td><td>109/313</td><td>109/313</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_derived</td><td>0/4</td><td>0/4</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_definition</td><td>0/14</td><td>0/14</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_caveat</td><td>1/54</td><td>1/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>42/54</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>2/12</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>art19</td><td>check_dir_problems</td><td>62</td><td>62</td><td>yes</td></tr>
+<tr><td>art19</td><td>matched_T6</td><td>78</td><td>78</td><td>yes</td></tr>
+<tr><td>art19</td><td>gold_rows</td><td>214</td><td>214</td><td>yes</td></tr>
+<tr><td>art19</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>art19</td><td>parent_flagged_no</td><td>114</td><td>114</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_setting</td><td>16/50</td><td>16/50</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_model</td><td>10/22</td><td>10/22</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_claim</td><td>7/13</td><td>7/13</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_activity</td><td>11/22</td><td>11/22</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_cited</td><td>8/23</td><td>8/23</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_observation</td><td>14/36</td><td>14/36</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_derived</td><td>5/7</td><td>5/7</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_definition</td><td>2/16</td><td>2/16</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_caveat</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_entity</td><td>8/12</td><td>8/12</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_comparison</td><td>1/4</td><td>1/4</td><td>yes</td></tr>
+<tr><td>art19</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>ela03</td><td>check_dir_problems</td><td>159</td><td>159</td><td>yes</td></tr>
+<tr><td>ela03</td><td>matched_T6</td><td>169</td><td>169</td><td>yes</td></tr>
+<tr><td>ela03</td><td>gold_rows</td><td>561</td><td>561</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>ela03</td><td>parent_flagged_no</td><td>192</td><td>192</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_setting</td><td>57/277</td><td>57/277</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_model</td><td>35/57</td><td>35/57</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_claim</td><td>9/37</td><td>9/37</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_activity</td><td>15/46</td><td>15/46</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_cited</td><td>7/21</td><td>7/21</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_observation</td><td>13/38</td><td>13/38</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_derived</td><td>4/17</td><td>4/17</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_definition</td><td>1/10</td><td>1/10</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_caveat</td><td>1/15</td><td>1/15</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_entity</td><td>13/34</td><td>13/34</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_comparison</td><td>0/8</td><td>0/8</td><td>yes</td></tr>
+<tr><td>ela03</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>yim20</td><td>check_dir_problems</td><td>318</td><td>318</td><td>yes</td></tr>
+<tr><td>yim20</td><td>matched_T6</td><td>435</td><td>435</td><td>yes</td></tr>
+<tr><td>yim20</td><td>gold_rows</td><td>900</td><td>900</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim20</td><td>parent_flagged_no</td><td>522</td><td>522</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_setting</td><td>107/206</td><td>107/206</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_model</td><td>45/73</td><td>45/73</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_claim</td><td>15/40</td><td>15/40</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_activity</td><td>47/75</td><td>47/75</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_cited</td><td>28/92</td><td>28/92</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_observation</td><td>81/154</td><td>81/154</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_derived</td><td>101/108</td><td>101/108</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_definition</td><td>24/66</td><td>24/66</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_caveat</td><td>3/45</td><td>3/45</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_entity</td><td>25/31</td><td>25/31</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_comparison</td><td>1/8</td><td>1/8</td><td>yes</td></tr>
+<tr><td>yim20</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yim22</td><td>check_dir_problems</td><td>199</td><td>199</td><td>yes</td></tr>
+<tr><td>yim22</td><td>matched_T6</td><td>318</td><td>318</td><td>yes</td></tr>
+<tr><td>yim22</td><td>gold_rows</td><td>608</td><td>608</td><td>yes</td></tr>
+<tr><td>yim22</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yim22</td><td>parent_flagged_no</td><td>350</td><td>350</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_model</td><td>147/215</td><td>147/215</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_derived</td><td>24/84</td><td>24/84</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_claim</td><td>19/77</td><td>19/77</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_entity</td><td>59/68</td><td>59/68</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_setting</td><td>0/67</td><td>0/67</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_definition</td><td>31/62</td><td>31/62</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_comparison</td><td>0/15</td><td>0/15</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_caveat</td><td>4/8</td><td>4/8</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_activity</td><td>0/7</td><td>0/7</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_cited</td><td>1/4</td><td>1/4</td><td>yes</td></tr>
+<tr><td>yim22</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>check_dir_problems</td><td>553</td><td>553</td><td>yes</td></tr>
+<tr><td>hei24</td><td>matched_T6</td><td>276</td><td>276</td><td>yes</td></tr>
+<tr><td>hei24</td><td>gold_rows</td><td>549</td><td>549</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>parent_flagged_no</td><td>290</td><td>290</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_setting</td><td>73/172</td><td>73/172</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_model</td><td>167/189</td><td>167/189</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_claim</td><td>15/20</td><td>15/20</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_activity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_cited</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_observation</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_derived</td><td>0/16</td><td>0/16</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_definition</td><td>17/35</td><td>17/35</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_entity</td><td>80/83</td><td>80/83</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_comparison</td><td>6/24</td><td>6/24</td><td>yes</td></tr>
+<tr><td>hei24</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>check_dir_problems</td><td>156</td><td>156</td><td>yes</td></tr>
+<tr><td>yli18</td><td>matched_T6</td><td>138</td><td>138</td><td>yes</td></tr>
+<tr><td>yli18</td><td>gold_rows</td><td>243</td><td>243</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>yli18</td><td>parent_flagged_no</td><td>154</td><td>154</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_setting</td><td>31/63</td><td>31/63</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_model</td><td>61/67</td><td>61/67</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_claim</td><td>8/13</td><td>8/13</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_activity</td><td>4/11</td><td>4/11</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_cited</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_observation</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_derived</td><td>7/15</td><td>7/15</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_definition</td><td>23/38</td><td>23/38</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_caveat</td><td>2/7</td><td>2/7</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_entity</td><td>6/12</td><td>6/12</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>yli18</td><td>diff_identity</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gao15</td><td>check_dir_problems</td><td>54</td><td>54</td><td>yes</td></tr>
+<tr><td>gao15</td><td>matched_T6</td><td>81</td><td>81</td><td>yes</td></tr>
+<tr><td>gao15</td><td>gold_rows</td><td>225</td><td>225</td><td>yes</td></tr>
+<tr><td>gao15</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gao15</td><td>parent_flagged_no</td><td>96</td><td>96</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_setting</td><td>28/92</td><td>28/92</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_model</td><td></td><td></td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_claim</td><td>6/13</td><td>6/13</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_activity</td><td>13/25</td><td>13/25</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_cited</td><td>4/12</td><td>4/12</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_observation</td><td>16/44</td><td>16/44</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_derived</td><td>0/6</td><td>0/6</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_definition</td><td>0/5</td><td>0/5</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_caveat</td><td>1/7</td><td>1/7</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_entity</td><td>4/15</td><td>4/15</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_comparison</td><td>1/5</td><td>1/5</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>check_dir_problems</td><td>94</td><td>94</td><td>yes</td></tr>
+<tr><td>zou23</td><td>matched_T6</td><td>53</td><td>53</td><td>yes</td></tr>
+<tr><td>zou23</td><td>gold_rows</td><td>164</td><td>164</td><td>yes</td></tr>
+<tr><td>zou23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>parent_flagged_no</td><td>62</td><td>62</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_setting</td><td>14/47</td><td>14/47</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_model</td><td></td><td></td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_claim</td><td>10/19</td><td>10/19</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_activity</td><td>21/23</td><td>21/23</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_cited</td><td>1/11</td><td>1/11</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_observation</td><td>25/45</td><td>25/45</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_derived</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_definition</td><td>0/0</td><td>0/0</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_caveat</td><td>0/6</td><td>0/6</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_entity</td><td>4/8</td><td>4/8</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_comparison</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+<tr><td>zou23</td><td>diff_identity</td><td></td><td></td><td>yes</td></tr>
+<tr><td>mat23</td><td>check_dir_problems</td><td>135</td><td>135</td><td>yes</td></tr>
+<tr><td>mat23</td><td>matched_T6</td><td>63</td><td>63</td><td>yes</td></tr>
+<tr><td>mat23</td><td>gold_rows</td><td>191</td><td>191</td><td>yes</td></tr>
+<tr><td>mat23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>mat23</td><td>parent_flagged_no</td><td>77</td><td>77</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_setting</td><td>18/54</td><td>18/54</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_model</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_claim</td><td>4/13</td><td>4/13</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_activity</td><td>27/30</td><td>27/30</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_cited</td><td>4/9</td><td>4/9</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_observation</td><td>29/51</td><td>29/51</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_derived</td><td>2/4</td><td>2/4</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_definition</td><td></td><td></td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_caveat</td><td>2/5</td><td>2/5</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_entity</td><td>13/14</td><td>13/14</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_paper</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_comparison</td><td>0/7</td><td>0/7</td><td>yes</td></tr>
+<tr><td>mat23</td><td>diff_identity</td><td>0/2</td><td>0/2</td><td>yes</td></tr>
+<tr><td>gre23</td><td>check_dir_problems</td><td>130</td><td>130</td><td>yes</td></tr>
+<tr><td>gre23</td><td>matched_T6</td><td>136</td><td>136</td><td>yes</td></tr>
+<tr><td>gre23</td><td>gold_rows</td><td>474</td><td>474</td><td>yes</td></tr>
+<tr><td>gre23</td><td>parent_flagged_yes</td><td>0</td><td>0</td><td>yes</td></tr>
+<tr><td>gre23</td><td>parent_flagged_no</td><td>184</td><td>184</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_setting</td><td>21/89</td><td>21/89</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_model</td><td>8/18</td><td>8/18</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_claim</td><td>11/57</td><td>11/57</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_activity</td><td>29/41</td><td>29/41</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_cited</td><td>3/57</td><td>3/57</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_observation</td><td>20/89</td><td>20/89</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_derived</td><td>21/31</td><td>21/31</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_definition</td><td>2/16</td><td>2/16</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_caveat</td><td>7/53</td><td>7/53</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_entity</td><td>0/18</td><td>0/18</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_paper</td><td>1/1</td><td>1/1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_comparison</td><td>0/1</td><td>0/1</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_identity</td><td>0/3</td><td>0/3</td><td>yes</td></tr>
+</table>
+<h2>1: round-4 audit</h2><p>kb/reports/P172.audit_round4.txt</p>
+<pre>round 4 acceptance (grow.py audit_round)
+A1: 24 decisions, 48 rows: effect {&#x27;yes&#x27;: 48}
+A2: 6 promotions: {&#x27;alias (user decision)&#x27;: 2, &#x27;agree&#x27;: 2, &#x27;symbol (user decision)&#x27;: 2}
+A3: 24 open rows: {&#x27;other&#x27;: 12, &#x27;pending&#x27;: 12}; pending candidates accounted 21/21
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 414 history rows, 21 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: round-3 audit</h2><p>kb/reports/P172.audit_round3.txt</p>
+<pre>round 3 acceptance (grow.py audit_round)
+A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
+A2: 4 promotions: {&#x27;alias (user decision)&#x27;: 1, &#x27;symbol (user decision)&#x27;: 3}
+A3: 6 open rows: {&#x27;other&#x27;: 5, &#x27;pending&#x27;: 1}; pending candidates accounted 21/21
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 414 history rows, 21 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: round-2 audit</h2><p>kb/reports/P172.audit_round2.txt</p>
+<pre>round 2 acceptance (grow.py audit_round)
+A1: 28 decisions, 92 rows: effect {&#x27;n/a&#x27;: 8, &#x27;yes&#x27;: 84}
+A2: 180 promotions: {&#x27;symbol (user decision)&#x27;: 81, &#x27;agree&#x27;: 45, &#x27;alias (user decision)&#x27;: 14, &#x27;symbol (paper-local)&#x27;: 40}
+A3: 36 open rows: {&#x27;pending&#x27;: 28, &#x27;other&#x27;: 7, &#x27;unit&#x27;: 1}; pending candidates accounted 21/21
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 414 history rows, 21 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: round-1 audit</h2><p>kb/reports/P172.audit_round1.txt</p>
+<pre>round 1 acceptance (grow.py audit_round)
+A1: 42 decisions, 85 rows: effect {&#x27;n/a&#x27;: 2, &#x27;yes&#x27;: 83}
+A2: 40 promotions: {&#x27;agree&#x27;: 36, &#x27;alias (user decision)&#x27;: 3, &#x27;symbol (user decision)&#x27;: 1}
+A3: 9 open rows: {&#x27;other&#x27;: 2, &#x27;pending&#x27;: 7}; pending candidates accounted 21/21
+A3 new since apply → next round (P162, carried, not a failure): 0 rows
+result: PASS
+/home/ftk3187/github/PSED/psed_v2/ontology/ontology.html: 242 entries, 414 history rows, 21 pending, checks 15/15
+entries 242
+├─ quantity 98   [split by hierarchy leaf]
+│  ├─ process_parameters 16
+│  │  ├─ cycle_step 8
+│  │  └─ deposition_run 8
+│  ├─ ald_reactor 1
+│  ├─ test_structure 19
+│  ├─ deposited_film 33
+│  │  ├─ growth 11
+│  │  ├─ conformality 6
+│  │  └─ film_properties 16
+│  ├─ modelling 10
+│  │  ├─ surface_kinetics 8
+│  │  └─ transport 2
+│  ├─ reaction_monitoring 6
+│  └─ measurement 13
+├─ categorical 15   [split by hierarchy leaf]
+│  ├─ ald_process 4
+│  ├─ process_parameters 1
+│  │  └─ deposition_run 1
+│  ├─ ald_reactor 4
+│  ├─ test_structure 4
+│  └─ deposited_film 2
+│     └─ film_properties 2
+├─ model 7   [split by hierarchy leaf]
+│  └─ modelling 7
+│     └─ models 7
+├─ species 38   [split by species kind]
+│  ├─ molecule 21
+│  ├─ material 16
+│  └─ atom 1
+├─ structure 12   [split by structure class]
+│  ├─ planar 1
+│  ├─ har_feature 6
+│  │  ├─ trench 1
+│  │  ├─ via_hole 1
+│  │  └─ lateral_channel 4
+│  └─ porous_body 5
+│     ├─ nanoparticle_compact 1
+│     ├─ nanopore_membrane 1
+│     └─ porous_body itself 3
+├─ mechanism 37   [no grouping field: a flat list]: residual_water, surface_hydroxyl, desorption, self_limiting_growth, surface_chemistry, excess_sulfur, fin_growth, metallic_zinc, plasma_chemistry, hydrogen_incorporation, sulfur_vacancy, thiol_groups, edge_reactivity, surface_oxidation, precursor_adsorption, membrane_sagging, channel_plugging, feature_narrowing, pillar_effect, entrance_nanostep, native_oxide, optical_model, scan_angle, interaction_volume, scan_averaging, channel_length, run_variation, gas_diffusion, gas_generation, leak, reaction_diffusion, percolation, cracks, side_reaction, cvd_growth, xray_reabsorption, surface_recombination
+└─ method 35   [split by the measurement field]
+   ├─ measurement yes 30
+   └─ measurement no 5
+sum check: pass (every parent equals the sum of its children, at every level)
+unplaced: none
+
+</pre>
+<h2>1: export.py --check</h2><p>kb/reports/P172.s1_export_check.txt</p>
+<pre>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 21 rows: undecided 21
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)
+
+</pre>
+<h2>1: code fixes</h2><p>kb/reports/P172.s1_code_fix.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 41c6fdd..5cb8511 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -502,6 +502,10 @@ class Run:
+                     self.note(f&quot;a0: {r[&#x27;eid&#x27;]}: {field} {text!r} ambiguous: {sorted(hits)}&quot;)
+             if rec.get(&quot;quantity&quot;) == &quot;other&quot;:
+                 text = C.X.record_text(rec)
++                mh = vocab_hits(self.pid, &quot;model&quot;, text) if text.strip() else {}
++                if len(mh) == 1:                                                # P172: a record of quantity other whose label names one model
++                    r[&quot;names_model&quot;] = next(iter(mh))                           # entry (its name, alias or a symbol of this paper): no quantity
++                    self.count(&quot;a0&quot;, &quot;quantity other naming a model entry (kept)&quot;)
+                 hit = (NEVER.get(C.X.norm_label(text)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(text)))) if text.strip() else None
+                 if hit:
+                     r[&quot;never&quot;], r[&quot;never_label&quot;] = hit[&quot;category&quot;], hit[&quot;label&quot;] + (f&quot; (symbol in {hit[&#x27;paper&#x27;]})&quot; if hit.get(&quot;symbol&quot;) == &quot;yes&quot; else &quot;&quot;)
+@@ -636,7 +640,8 @@ class Run:
+                     self.once.add(r[&quot;once&quot;])
+                 self.unmapped.append(dict(element=eid, field=&quot;quantity&quot;, id=&quot;other&quot;, label_as_printed=rec.get(&quot;label_as_printed&quot;, &quot;&quot;), unit=rec.get(&quot;unit&quot;, &quot;&quot;),
+                                           candidate=json.dumps(rec.get(&quot;candidate&quot;, {}), ensure_ascii=False),
+-                                          action=f&quot;kept (never: {r[&#x27;never_label&#x27;]})&quot; if r.get(&quot;never&quot;) else f&quot;kept (ambiguous: {&#x27;, &#x27;.join(r[&#x27;ambiguous&#x27;])})&quot; if r.get(&quot;ambiguous&quot;) else &quot;kept&quot;,
++                                          action=f&quot;kept (never: {r[&#x27;never_label&#x27;]})&quot; if r.get(&quot;never&quot;) else f&quot;kept (ambiguous: {&#x27;, &#x27;.join(r[&#x27;ambiguous&#x27;])})&quot; if r.get(&quot;ambiguous&quot;)
++                                          else f&quot;kept (names the model {r[&#x27;names_model&#x27;]})&quot; if r.get(&quot;names_model&quot;) else &quot;kept&quot;,   # P172
+                                           never=r.get(&quot;never&quot;, &quot;&quot;), nearest=rec.get(&quot;nearest&quot;, &quot;&quot;) or &quot;&quot;))
+                 self.count(&quot;c&quot;, &quot;quantity_other never (kept)&quot; if r.get(&quot;never&quot;) else &quot;quantity_other (kept)&quot;)
+             out.append(r)
+diff --git a/psed_v2/kb/pilot/query.py b/psed_v2/kb/pilot/query.py
+index 9e55c08..42a62fb 100644
+--- a/psed_v2/kb/pilot/query.py
++++ b/psed_v2/kb/pilot/query.py
+@@ -391,7 +391,7 @@ def g(x, d=3):
+     return f&quot;{x:.{d}g}&quot;
+ 
+ 
+-TREES = {k: Tree(k) for k in KEY}
++TREES = {k: Tree(k) for k in KEY if (HERE / f&quot;{KEY[k]}.facts.csv&quot;).exists()}   # P172: a paper without a gold file (wer21) has no gold tree
+ USER = list(csv.DictReader((HERE / &quot;user.facts.csv&quot;).open(encoding=&quot;utf-8&quot;)))
+ 
+ 
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 26bc784..9b88f8d 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -151,7 +151,7 @@ def unmapped_rows(pid):
+         cand = json.loads(r[&quot;candidate&quot;]) if r[&quot;candidate&quot;].startswith(&quot;{&quot;) else {}
+         d = &quot; &quot;.join((cand.get(&quot;definition_quote&quot;) or &quot;&quot;).split())
+         out.append(dict(pid=pid, element=r[&quot;element&quot;], field=r[&quot;field&quot;], label=r[&quot;label_as_printed&quot;].strip(), unit=r[&quot;unit&quot;], symbol=(cand.get(&quot;symbol&quot;) or &quot;&quot;).strip(),
+-                        definition=d, quote=d or r[&quot;label_as_printed&quot;].strip() or r[&quot;unit&quot;], never=r.get(&quot;never&quot;, &quot;&quot;), text=X.record_text(r)))
++                        definition=d, quote=d or r[&quot;label_as_printed&quot;].strip() or r[&quot;unit&quot;], never=r.get(&quot;never&quot;, &quot;&quot;), text=X.record_text(r), action=r.get(&quot;action&quot;, &quot;&quot;)))
+     return out
+ 
+ 
+@@ -214,7 +214,7 @@ def candidates(pids, extra=()):
+        field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
+     Returns ({id: group}, log).&quot;&quot;&quot;
+     spell = unit_spellings()
+-    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], categorical=[])
++    log = dict(table_groups=[], symbol_merges=[], label_merges=[], ambiguous=[], never=[], values=[], categorical=[], model_names=[])
+     categ = {e[&quot;id&quot;] for e in onto()[&quot;entries&quot;] if e.get(&quot;type&quot;) == &quot;categorical&quot;}   # P168: a categorical&#x27;s value row is no candidate
+     tables, rest = defaultdict(list), []
+     carried = defaultdict(list)
+@@ -227,6 +227,9 @@ def candidates(pids, extra=()):
+             if u[&quot;field&quot;] in categ:                                             # P168 (user): its unit is nothing; no &quot;unit&quot; candidate
+                 log[&quot;categorical&quot;].append(u)
+                 continue
++            if u.get(&quot;action&quot;, &quot;&quot;).startswith(&quot;kept (names the model &quot;):        # P172: a record naming a model entry is no quantity candidate
++                log[&quot;model_names&quot;].append(u)
++                continue
+             if u[&quot;field&quot;] == &quot;unit&quot; and not u[&quot;symbol&quot;]:                       # a unit row follows the quantity row of its cell and label
+                 u[&quot;symbol&quot;] = own.get((u[&quot;element&quot;], u[&quot;label&quot;]), &quot;&quot;)
+             m = re.match(r&quot;^(tab\w*)\.(r\d+)c\d+$&quot;, u[&quot;element&quot;])
+@@ -380,9 +383,14 @@ def candidate_of(row):
+ 
+ 
+ def printed_labels(row):
+-    &quot;&quot;&quot;The printed labels behind a pending row: its candidate&#x27;s label, then its aliases (the symbols); a pilot row: its id.&quot;&quot;&quot;
++    &quot;&quot;&quot;The printed labels behind a pending row: its candidate&#x27;s label, then its aliases (the symbols); a pilot row: its id. P172: a row of a
++    round whose candidate is gone (its rows closed meanwhile) and whose evidence is one &#x27;pid:element — &lt;printed&gt;&#x27; item: that printed label.&quot;&quot;&quot;
+     c = candidate_of(row)
+-    return [c[&quot;label&quot;]] + c[&quot;aliases&quot;] if c else [row[&quot;id&quot;].replace(&quot;_&quot;, &quot; &quot;)]
++    if c:
++        return [c[&quot;label&quot;]] + c[&quot;aliases&quot;]
++    ev = evidence_items(row)
++    m = re.match(r&quot;^[^:]+:\S+ — (.+)$&quot;, ev[0]) if row[&quot;first_round&quot;] not in (&quot;&quot;, &quot;0&quot;) and len(ev) == 1 else None
++    return [m.group(1).strip()] if m else [row[&quot;id&quot;].replace(&quot;_&quot;, &quot; &quot;)]
+ 
+ 
+ def candidate_symbols(row):
+@@ -648,18 +656,19 @@ def add_symbols(text, eid, pairs):
+     return text[:s] + blk + text[e:], add
+ 
+ 
++PAPER_LOCAL = r&quot;\bpaper-local symbol\b(?!s)&quot;                                  # P172: &#x27;paper-local symbol&#x27; anywhere in a note (not &#x27;symbols&#x27;)
+ MODEL_PARAMS = r&quot;\bparameters:?\s*([a-z][a-z0-9_]*(?:\s*,\s*[a-z][a-z0-9_]*)*)&quot;
+ 
+ 
+ def model_fields(row):
+     &quot;&quot;&quot;P168 (user): an accepted model&#x27;s class, parameters and the scope of its printed name, from its pending row: &#x27;class analytical&#x27; or
+-    &#x27;class computational&#x27; in the decision note; &#x27;parameters &lt;id&gt;, &lt;id&gt;, ...&#x27; in the note, else in the proposed definition; &#x27;printed name:
+-    paper-local symbol&#x27; in the note keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
++    &#x27;class computational&#x27; in the decision note; &#x27;parameters &lt;id&gt;, &lt;id&gt;, ...&#x27; in the note, else in the proposed definition; &#x27;paper-local
++    symbol&#x27; in the note (PAPER_LOCAL, P172: anywhere) keeps the printed name a symbol of its paper (a generic phrase), never an alias. Returns (model_type,
+     parameters, paper_local).&quot;&quot;&quot;
+     note = row[&quot;decision_note&quot;]
+     cls = re.search(r&quot;\bclass:?\s*(analytical|computational)\b&quot;, note)
+     pm = re.search(MODEL_PARAMS, note) or re.search(MODEL_PARAMS, row[&quot;proposed_definition&quot;])
+-    return (cls.group(1) if cls else &quot;&quot;), ([t.strip() for t in pm.group(1).split(&quot;,&quot;)] if pm else []), bool(re.search(r&quot;printed name:?\s*paper-local symbol&quot;, note))
++    return (cls.group(1) if cls else &quot;&quot;), ([t.strip() for t in pm.group(1).split(&quot;,&quot;)] if pm else []), bool(re.search(PAPER_LOCAL, note))
+ 
+ 
+ def entry_fields(row, categories, classes):
+@@ -757,7 +766,7 @@ def cmd_apply():
+             applied.append(dict(id=x[&quot;id&quot;], decision=&quot;accept&quot;, candidate=(candidate_of(x) or {}).get(&quot;id&quot;, &quot;&quot;), aliases=&quot;; &quot;.join(e.get(&quot;aliases&quot;) or []),
+                                 symbols=&quot;; &quot;.join(f&quot;{s_[&#x27;text&#x27;]} ({s_[&#x27;paper&#x27;]})&quot; for s_ in e.get(&quot;symbols&quot;) or []), note=&quot;&quot;))
+         elif x[&quot;decision&quot;] == &quot;alias&quot;:                                         # P156: the label only (a candidate&#x27;s table symbols stay out);
+-            if re.search(r&quot;printed name:?\s*paper-local symbol&quot;, x[&quot;decision_note&quot;]):   # P169: the printed name a symbol of its paper
++            if re.search(PAPER_LOCAL, x[&quot;decision_note&quot;]):                       # P169: the printed name a symbol of its paper
+                 lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
+             t_new = next((e for e in new if e[&quot;id&quot;] == x[&quot;alias_target&quot;]), None)   # P164: a symbol-like label goes to the target&#x27;s symbols
+             if t_new is not None:
+@@ -776,7 +785,8 @@ def cmd_apply():
+         elif x[&quot;decision&quot;] == &quot;never&quot;:                                         # P157d: the label (any paper) and each symbol (its paper only);
+             nev += [dict(label=w, category=x[&quot;never_category&quot;], paper=x[&quot;pids&quot;], source=f&quot;round {n}: {x[&#x27;id&#x27;]}&quot;, symbol=&quot;&quot;) for w in words]
+             nev += [dict(label=t, category=x[&quot;never_category&quot;], paper=p, source=f&quot;round {n}: &quot; + (&quot;symbol of &quot; if t not in labels[:1] else &quot;&quot;) + x[&quot;id&quot;],
+-                         symbol=&quot;yes&quot;) for t, p in dict.fromkeys(lsyms + syms)]    # P164: a symbol-like label is a symbol row of its paper
++                         symbol=&quot;yes&quot;) for t, p in dict.fromkeys(lsyms + syms)    # P164: a symbol-like label is a symbol row of its paper
++                    if not any(r[&quot;label&quot;] == t and r[&quot;paper&quot;] == p and r.get(&quot;symbol&quot;) == &quot;yes&quot; for r in nev)]   # P172: not twice
+             applied.append(dict(id=x[&quot;id&quot;], decision=f&quot;never ({x[&#x27;never_category&#x27;]})&quot;, candidate=(candidate_of(x) or {}).get(&quot;id&quot;, &quot;&quot;), aliases=&quot;; &quot;.join(words),
+                                 symbols=&quot;; &quot;.join(f&quot;{t} ({p})&quot; for t, p in dict.fromkeys(lsyms + syms)), note=&quot;&quot;))
+     old_w = rd(REPORTS / f&quot;R{n}_apply.written.csv&quot;) if late else []             # P169: late decisions add to the round&#x27;s rows
+@@ -924,6 +934,8 @@ def open_rows(n, compiled, unm, snap):
+                 cls, why = &quot;other&quot;, &quot;a value without a quantity: no record key, or the label is only a units.yaml spelling&quot;
+             elif k in cats:
+                 cls, why = &quot;other&quot;, f&quot;the value row of the categorical {u[&#x27;field&#x27;]}: propose makes no candidate of it (P168)&quot;
++            elif u.get(&quot;action&quot;, &quot;&quot;).startswith(&quot;kept (names the model &quot;):
++                cls, why = &quot;other&quot;, f&quot;a record of no quantity that names a model entry: {u[&#x27;action&#x27;][6:-1]} (P172)&quot;
+             elif cid in decided_ids:
+                 h = decided_ids[cid]
+                 cls, why = &quot;other&quot;, f&quot;candidate {cid} decided in round {h[&#x27;round&#x27;]} ({h[&#x27;action&#x27;]}&quot; + (f&quot; -&gt; {h[&#x27;target&#x27;]}&quot; if h[&quot;target&quot;] else &quot;&quot;) + &quot;): &quot; + (
+@@ -1090,6 +1102,10 @@ def audit_round(n):
+             if u[&quot;field&quot;] == &quot;unit&quot; and act in (&quot;alias&quot;, &quot;add&quot;):
+                 a1.append(dict(row, now=&quot;unmapped (open): unit row&quot;, effect=&quot;n/a&quot;, reason=&quot;the record is promoted; its unit is not in units.yaml&quot;))
+                 continue
++            mm = re.match(r&quot;kept \(names the model (\S+)\)&quot;, u[&quot;action&quot;])
++            if mm and mm.group(1) == (h[&quot;target&quot;] if act == &quot;alias&quot; else cid):      # P172: the record names the decision&#x27;s model
++                a1.append(dict(row, now=f&quot;unmapped: {u[&#x27;action&#x27;]}&quot;, effect=&quot;yes&quot;, reason=&quot;a record of no quantity naming the decided model entry&quot;))
++                continue
+             key = X.record_key(u)
+             a1.append(dict(row, now=&quot;unmapped (open)&quot; + (f&quot;: {u[&#x27;action&#x27;]}&quot; if u[&quot;action&quot;] != &quot;kept&quot; else &quot;&quot;), effect=&quot;no effect&quot;,
+                            reason=f&quot;record key &#x27;{key}&#x27; (symbol key &#x27;{X.symbol_key(X.record_text(u))}&#x27;) matches none of: {covers}&quot;))
+</pre>
+<h2>2: wer21 figure stage</h2><p>kb/reports/P172.s2_figure_stage.txt</p>
+<pre>[figures] 10.1116_6.0001094 (gemini-3.8-flash) ...
+  fig 2: 1 panels, 178 points, tokens in 3184 out 8312, flags F3,F3,F3,F3,F3,F3,F2
+  fig 3: 1 panels, 0 points, tokens in 3083 out 352, flags -
+  fig 4: 1 panels, 0 points, tokens in 3208 out 2438, flags -
+  fig 5: 1 panels, 0 points, tokens in 3093 out 1072, flags -
+  fig 6: 4 panels, 233 points, tokens in 3216 out 4807, flags F3,F3,F3,F3,F3
+  fig 7: 2 panels, 0 points, tokens in 3152 out 2250, flags -
+  fig 8: 2 panels, 0 points, tokens in 3152 out 2155, flags -
+  fig 9: 4 panels, 0 points, tokens in 3143 out 676, flags -
+  fig 11: 1 panels, 126 points, tokens in 3107 out 3489, flags -
+  fig 12: 1 panels, 105 points, tokens in 3066 out 2619, flags -
+  fig 13: 1 panels, 6 points, tokens in 3092 out 1678, flags F3
+  fig 14: 1 panels, 5 points, tokens in 3085 out 3715, flags -
+  fig 15: 1 panels, 0 points, tokens in 3071 out 405, flags -
+  fig 1: 1 panels, 0 points, tokens in 3114 out 331, flags -
+  fig 10: 1 panels, 0 points, tokens in 3129 out 180, flags -
+  15 figures, panels {&#x27;plot&#x27;: 9, &#x27;spectrum&#x27;: 6, &#x27;micrograph&#x27;: 4, &#x27;schematic&#x27;: 4}, 653 points, tokens in 46,895 out 34,479, flags {&#x27;F2&#x27;: 1, &#x27;F3&#x27;: 12}
+[figures] total tokens in 46,895 out 34,479 for 1 papers
+</pre>
+<h2>2: wer21 figures import</h2><p>kb/reports/P172.s2_figures_import.txt</p>
+<pre>10.1116_6.0001094: 15 data panels, 0 imported; 0 curves, 0 cells, 0 peaks, 0 sets, 0 derived, 0 converted, 23 inventory; 0 unmapped; 0 fields through the paper&#x27;s definitions (P89)
+unmapped rows 0: {}
+</pre>
+<h2>3: gates.csv (the worst of the twelve development papers)</h2><p>ontology/gates.csv</p>
+<table><tr><th>metric</th><th>stage</th><th>worse</th><th>worst_dev_value</th><th>paper</th></tr>
+<tr><td>units per 100 elements</td><td>pass0</td><td>lower</td><td>3.37</td><td>gre23</td></tr>
+<tr><td>unbound items</td><td>pass0</td><td>higher</td><td>0</td><td>yim20</td></tr>
+<tr><td>units named after a measurement</td><td>pass0</td><td>higher</td><td>0</td><td>yim20</td></tr>
+<tr><td>panels with no layout (share)</td><td>pass0</td><td>higher</td><td>0.867</td><td>gao15</td></tr>
+<tr><td>form failures (share of records)</td><td>pass1</td><td>higher</td><td>0.091</td><td>gor03</td></tr>
+<tr><td>quotes not found (share of records)</td><td>pass1</td><td>higher</td><td>0.163</td><td>mat22</td></tr>
+</table>
+<h2>3: every development paper&#x27;s gate values</h2><p>kb/reports/gates_dev_values.csv</p>
+<table><tr><th>paper</th><th>stage</th><th>metric</th><th>value</th></tr>
+<tr><td>yim20</td><td>pass0</td><td>units per 100 elements</td><td>6.25</td></tr>
+<tr><td>yim20</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>yim20</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>yim20</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>yim20</td><td>pass1</td><td>form failures (share of records)</td><td>0.036</td></tr>
+<tr><td>yim20</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.015</td></tr>
+<tr><td>mat22</td><td>pass0</td><td>units per 100 elements</td><td>20.47</td></tr>
+<tr><td>mat22</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>mat22</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>mat22</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>mat22</td><td>pass1</td><td>form failures (share of records)</td><td>0.0</td></tr>
+<tr><td>mat22</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.163</td></tr>
+<tr><td>gre23</td><td>pass0</td><td>units per 100 elements</td><td>3.37</td></tr>
+<tr><td>gre23</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>gre23</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>gre23</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>gre23</td><td>pass1</td><td>form failures (share of records)</td><td>0.025</td></tr>
+<tr><td>gre23</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.065</td></tr>
+<tr><td>ela03</td><td>pass0</td><td>units per 100 elements</td><td>24.29</td></tr>
+<tr><td>ela03</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>ela03</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>ela03</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>ela03</td><td>pass1</td><td>form failures (share of records)</td><td>0.02</td></tr>
+<tr><td>ela03</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.141</td></tr>
+<tr><td>gor03</td><td>pass0</td><td>units per 100 elements</td><td>8.0</td></tr>
+<tr><td>gor03</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>gor03</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>gor03</td><td>pass0</td><td>panels with no layout (share)</td><td>0.75</td></tr>
+<tr><td>gor03</td><td>pass1</td><td>form failures (share of records)</td><td>0.091</td></tr>
+<tr><td>gor03</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.03</td></tr>
+<tr><td>yli18</td><td>pass0</td><td>units per 100 elements</td><td>5.1</td></tr>
+<tr><td>yli18</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>yli18</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>yli18</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>yli18</td><td>pass1</td><td>form failures (share of records)</td><td>0.049</td></tr>
+<tr><td>yli18</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.007</td></tr>
+<tr><td>gao15</td><td>pass0</td><td>units per 100 elements</td><td>6.06</td></tr>
+<tr><td>gao15</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>gao15</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>gao15</td><td>pass0</td><td>panels with no layout (share)</td><td>0.867</td></tr>
+<tr><td>gao15</td><td>pass1</td><td>form failures (share of records)</td><td>0.019</td></tr>
+<tr><td>gao15</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.117</td></tr>
+<tr><td>art19</td><td>pass0</td><td>units per 100 elements</td><td>19.79</td></tr>
+<tr><td>art19</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>art19</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>art19</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>art19</td><td>pass1</td><td>form failures (share of records)</td><td>0.0</td></tr>
+<tr><td>art19</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.03</td></tr>
+<tr><td>yim22</td><td>pass0</td><td>units per 100 elements</td><td>12.69</td></tr>
+<tr><td>yim22</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>yim22</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>yim22</td><td>pass0</td><td>panels with no layout (share)</td><td>0.115</td></tr>
+<tr><td>yim22</td><td>pass1</td><td>form failures (share of records)</td><td>0.023</td></tr>
+<tr><td>yim22</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.085</td></tr>
+<tr><td>hei24</td><td>pass0</td><td>units per 100 elements</td><td>65.18</td></tr>
+<tr><td>hei24</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>hei24</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>hei24</td><td>pass0</td><td>panels with no layout (share)</td><td>0.086</td></tr>
+<tr><td>hei24</td><td>pass1</td><td>form failures (share of records)</td><td>0.051</td></tr>
+<tr><td>hei24</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.024</td></tr>
+<tr><td>mat23</td><td>pass0</td><td>units per 100 elements</td><td>18.18</td></tr>
+<tr><td>mat23</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>mat23</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>mat23</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>mat23</td><td>pass1</td><td>form failures (share of records)</td><td>0.0</td></tr>
+<tr><td>mat23</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.008</td></tr>
+<tr><td>zou23</td><td>pass0</td><td>units per 100 elements</td><td>12.4</td></tr>
+<tr><td>zou23</td><td>pass0</td><td>unbound items</td><td>0</td></tr>
+<tr><td>zou23</td><td>pass0</td><td>units named after a measurement</td><td>0</td></tr>
+<tr><td>zou23</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td></tr>
+<tr><td>zou23</td><td>pass1</td><td>form failures (share of records)</td><td>0.018</td></tr>
+<tr><td>zou23</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.063</td></tr>
+</table>
+<h2>3: grow.py run wer21 --plan (no calls)</h2><p>kb/reports/P172.s3_run_plan.txt</p>
+<pre>== plan (0 calls): exit 0
+[{&quot;paper&quot;: &quot;wer21&quot;, &quot;pid&quot;: &quot;10.1116_6.0001094&quot;, &quot;figure_calls&quot;: 0, &quot;figure_usd&quot;: 0.0, &quot;pass0_calls&quot;: 1, &quot;pass0_usd&quot;: 0.152, &quot;pass1_calls&quot;: 21, &quot;pass1_usd&quot;: 0.45, &quot;note&quot;: &quot;pass-1 groups from elements.csv as it stands (built again after the figure stage)&quot;}]
+wer21: figure stage 0 calls ($0.0), pass 0 1 ($0.152), pass 1 21 ($0.45)
+planned: 22 provider calls, about $0.60
+run report: /home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.html
+
+</pre>
+<h2>3: the run&#x27;s plan</h2><p>kb/reports/RUN_wer21.plan.csv</p>
+<table><tr><th>paper</th><th>pid</th><th>figure_calls</th><th>figure_usd</th><th>pass0_calls</th><th>pass0_usd</th><th>pass1_calls</th><th>pass1_usd</th><th>note</th></tr>
+<tr><td>wer21</td><td>10.1116_6.0001094</td><td>0</td><td>0.0</td><td>1</td><td>0.152</td><td>21</td><td>0.45</td><td>pass-1 groups from elements.csv as it stands (built again after the figure stage)</td></tr>
+</table>
+</body></html>

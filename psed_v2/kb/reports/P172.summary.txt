@@ -1,0 +1,29 @@
+P172: 15 provider calls (wer21's figure stage), $0.165. wer21 stopped after its figures import: the import gate (P84) imports a panel only
+with a verdict in ingest/answers/figures.json, and wer21 has none, so pass 0 and pass 1 did not run (the user's decision: verdicts, or a rule).
+
+1. Late decisions (round 4): gamma never (its printed label '\gamma' from the row's evidence: the yim22 symbol row was there already, not
+   written twice); model_a -> alias of ylilammi_diffusion_reaction, the printed 'Model A' a yim22 symbol; model_b -> accept
+   yanguas_gil_elam_diffusion_reaction (computational; parameters initial_sticking_coefficient, saturation_density,
+   knudsen_diffusion_coefficient, feature_width, feature_depth, partial_pressure, pulse_time; 'Model B' a yim22 symbol; category models).
+   yim22: Model A -> ylilammi_diffusion_reaction, Model B -> yanguas_gil_elam_diffusion_reaction; the 72 model runs stay under Model A
+   (the known pass-0 error, recorded in the decision note). Round audits 1-4 PASS; export.py --check 15 of 15; scores and check.py counts of
+   the twelve papers unchanged.
+   Three mistakes on the way, all of mine: (1) apply read 'paper-local symbol' only in the form 'printed name: paper-local symbol' (now
+   anywhere in a note); (2) adding wer21 to the paper index (P171) made kb/pilot/query.py build a gold tree for a paper without gold, so the
+   first late apply failed in compile after writing ontology.yaml and pending.csv and before history.csv: the written files were restored from
+   HEAD, pending.csv rebuilt from HEAD with the user's three decisions as printed at the start of this unit, and apply re-run (64aff0b);
+   query.py now builds trees only for papers with a gold file; (3) the 'Model A' / 'Model B' records of yim22 s9.p1 (quantity other, label =
+   the model's name) stayed open: a record whose label names one model entry is now 'kept (names the model X)': no candidate, A3 other, A1
+   an effect of a decision on X.
+2. wer21: figure stage (ingest/figures.py): 15 calls (one per numbered figure; the 23 planned counted captions without a number), $0.165,
+   15 figures, panels plot 9, spectrum 6, micrograph 4, schematic 4; 653 points; flags F3 12, F2 1. Figures import: 15 data panels, 0
+   imported (no verdicts). elements.csv built again with the figure stage's panels (elements.panels_of): 273 -> 281 elements (panels 15 ->
+   23). Not run: pass 0 (1 call), pass 1 (21 groups), compile, check.py, grow.py add / propose.
+3. grow.py run <paper> [<paper> <paper>] [--plan] [--yes]: paper key (kb/pilot/paper_keys.csv, from the manifest's first author and year),
+   elements, the figure stage and import when figures.json is missing, plan (calls and dollars, y/n), pass 0, gate, pass 1, compile, check.py,
+   gate, earlier rounds' audits, export --check, add, propose; every run writes kb/reports/RUN_<keys>.html. Gates (kb/extract/gates.py,
+   ontology/gates.csv, the worst of the twelve): units per 100 elements 3.37 (gre23), unbound items 0, units named after a measurement 0,
+   panels with no layout 0.867 (gao15, a share), form failures 0.091 (gor03), quotes not found 0.163 (mat22); gate a (no run and no
+   simulation, or fewer than 3 units), c (a provider step's non-zero exit). Added, not in the directive: gate d, data panels with no verdict
+   stop the run before pass 0 (what stopped wer21). Dry run on wer21 (--plan): 22 calls, about $0.60 (pass 0 1, $0.152; pass 1 21, $0.45).
+   CLAUDE.md: the round plan for papers 14+.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Stage 1: <paper_id>.elements.csv for each pilot paper, from ingest/final/<paper_id>/ (document.md, structure.json).
 
-    python3 psed_v2/pilot/elements.py [--text DIR]
+    python3 psed_v2/pilot/elements.py [--text DIR] [--ids <paper_id> ...]
 
 Columns: element_id, kind (abstract | heading | paragraph | caption | panel | table_cell | equation), section, locator,
 n_numbers, n_chars, crop (figure image under ingest/final/<paper_id>/). No paper text goes into the tracked file; with
@@ -25,6 +25,10 @@ PAPERS = {"10.1039_d0cp03358h": "yim20", "10.1021_acs.chemmater.2c01154": "mat22
           "10.1039_d1cp04758b": "yim22", "10.1039_d3cp05639b": "hei24", "10.1116_6.0002993": "mat23",
           "10.1116_6.0002804": "zou23",
           "10.1116_6.0001094": "wer21"}   # Directive 7′: the nine papers join one by one; P171: wer21, development paper 13 (no gold)
+KEYS_FILE = HERE / "paper_keys.csv"   # P172: the keys grow.py run gives papers 14+ (paper_id, key), added to the index above
+if KEYS_FILE.exists():
+    for _r in csv.DictReader(KEYS_FILE.open(encoding="utf-8")):
+        PAPERS.setdefault(_r["paper_id"], _r["key"])
 # lettered panels per figure, read from the crops ("" = the figure is one panel)
 PANELS = {
     "10.1039_d0cp03358h": {"1": "abc", "2": "abcd", "3": "ab", "4": "abc", "5": "ab", "6": "", "7": "", "8": "ab",
@@ -54,6 +58,22 @@ def numbers(t):
 
 def table_lines(md):
     return [l for l in (md or "").splitlines() if l.strip().startswith("|") and not re.match(r"^\|[\s:|-]+\|$", l.strip())]
+
+
+def panels_of(pid):
+    """P172: a paper's lettered panels per figure number: PANELS (read from the crops) for the pilot papers; else the figure stage's own
+    panels (ingest/final/<pid>/figures.json: the one-letter panel names of each numbered figure); none (one panel per figure) when the figure
+    stage has not run."""
+    if pid in PANELS:
+        return PANELS[pid]
+    p = V2 / "ingest" / "final" / pid / "figures.json"
+    if not p.exists():
+        return {}
+    out = {}
+    for f in json.loads(p.read_text(encoding="utf-8")).get("figures", []):
+        ls = [str(x.get("panel") or "").strip() for x in f.get("panels") or []]
+        out[str(f.get("number"))] = "".join(dict.fromkeys(x for x in ls if len(x) == 1 and x.isalpha()))
+    return out
 
 
 def build(pid):
@@ -106,8 +126,7 @@ def build(pid):
         if c["kind"] == "figure" and n:
             crop = (c.get("images") or [""])[0]
             add(f"fig{n}.cap", "caption", "figures", f"Fig. {n} caption", c["caption"], crop)
-            for p in PANELS.get(pid, {}).get(n, "") or [""]:                # panels follow their caption; P171: a paper with no PANELS entry
-                                                                                # (wer21: its crops not read) has one panel per figure
+            for p in panels_of(pid).get(n, "") or [""]:                     # panels follow their caption; P171/P172: panels_of()
                 add(f"fig{n}{p}", "panel", "figures", f"Fig. {n}{p}", f"[panel {p or '(whole)'} of Fig. {n}; see the crop] " + c["caption"],
                     crop, count=False)
             done.add(n)
@@ -141,7 +160,8 @@ def load(pid):
 
 if __name__ == "__main__":
     tdir = Path(sys.argv[sys.argv.index("--text") + 1]) if "--text" in sys.argv else None
-    for pid in PAPERS:
+    ids = [a for a in sys.argv[sys.argv.index("--ids") + 1:] if not a.startswith("--")] if "--ids" in sys.argv else list(PAPERS)   # P172
+    for pid in ids:
         rows, tx = build(pid)
         with (HERE / f"{pid}.elements.csv").open("w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=FIELDS); w.writeheader(); w.writerows(rows)
