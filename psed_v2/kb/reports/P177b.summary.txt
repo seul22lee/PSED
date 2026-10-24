@@ -1,0 +1,40 @@
+P177b: 0 provider calls. Figure binding is one rule, compile.bind(); the acceptance is the user's expected_outcome of the 281 rows
+(kb/reports/P177a_panels.csv, copied from the user's P177a_panels_expected.csv): 247 match, 34 do not, 27 of them data panels. The unit is
+not done; no apply.
+
+0. ontology.yaml layouts: (curve_per_unit, point_per_unit, panel_one_unit; row_per_unit, not_units) with item, conditions_from,
+   results_from and the P143 text; export.py prints them into the pass-0 instruction, form_pass0.json (enum + 'other' + description) and
+   CODEBOOK.md (the P143 constants gone; grow.py's symbol-table rule reads them too). A pass-0 layout 'other' -> an unmapped row of field
+   layout -> a candidate of kind layout; apply refuses to accept one (a layout kind goes into ontology.yaml by hand). export --check 15/15.
+1. compile.bind() replaces curve_units, panel_items, legend_conditions (now parse_legend, which classes each part by what it resolves
+   to: value, species, name, qualifier, quantity, model, data role, method, never, other), method_panels, the role fallbacks and the unit
+   merge. Items per layout (schematic none; image panel one image item with its crop; a data panel with nothing read one panel item; a
+   map with cells its cells; no layout unbound). Unit: pass 0's data ref; a panel or image item the layout's unit, else the one unit the
+   panel, else the figure names; a model name a model run under the model's simulation; else the one pass-0 unit whose conditions (the
+   pass-1 settings about it and its parent) contain the item's resolved conditions; else a derived unit (role from an explicit simulated /
+   fit mark, else the unit list, else null flagged). Results: compile.figures reads bind's items (a curve its y or the legend's quantity
+   with its qualifiers and method; a point its value; a panel its curves; an image a statement-only observation under the measurement).
+   Every item bound or unbound with a reason (binding_check; pass0_paper.consistency and the gate count the unbound: reference 0 -> 11,
+   the new count; the pass-1 references kept, see 3).
+   Beyond the directive, my choices: (a) pass 0's data ref binds first (the 'as now' rows); (b) the vector match runs only over the units
+   the figure names when it names any (else ela03 fig5b's 1 s point binds silently to the Al2O3 specimen) and an ancestor yields to its
+   descendant; (c) one derived unit per (role, model, vector) within a panel, not across the paper: across panels hei24's legends repeat
+   for runs that differ in the caption, and the paper-wide merge dropped hei24 diff_entity 83 -> 56 and diff_setting 73 -> 42 (no column
+   may fall); an id merged in a panel stays its unit's alias (pass 1's records name it); (d) a species name with no axis is a species
+   qualifier (zou23 fig4 'H2O'); (e) a repeated panel id (gao15 fig1 x3, zou23 fig4 x2) keeps its panels apart (pel~2).
+2. Deleted: the P162 per-point rule, the P161/P176 role fallbacks, the method-legend special case, dedupe_units / merge_units.
+3. Acceptance mismatches (every row with its cause in table 3): ambiguous naming (ela03 fig3, gor03 fig2, art19 fig2A, gre23 fig5, mat23
+   fig3a, fig3b, fig4a: the figure names several units); data (ela03 fig5b-11b and zou23 fig1a/c/d: an origin point x = 0 and conditions
+   pass 1 never recorded; zou23 fig5b: 350 °C is the run and four specimens); vocabulary (zou23 fig2: 'SE' no method alias; yim20 fig7:
+   'X5' names nothing; yim22 fig6a: 'D_A' is the never word 'dA; dB'; yim22 fig6b-d: 'cext' is a yim22 symbol of initial_sticking_coefficient);
+   rule (mat23 fig4b: '@' joins name and value); premise (wer21 fig4-8: the figure stage holds no curve; fig4 16 peaks); artifacts (ela03
+   'fig41 s' maps: image items, not 'no layout'; zou23's second fig4 panel holds no data).
+   Scores of the twelve (R5 -> P177b): no column fell; T6 2074 -> 2115, gold rows 5357; check.py 2212 -> 2512 (points_ref in a facts file
+   +154: every point and image fact carries points_ref; same statement +55; growth_per_cycle without over= +47; value without quantity +36;
+   zou23 +186). Audits 1-5 PASS. Cards: the thirteen pages, 0 errors (zou23 72 compiled cards, ela03 50). Gate pass 1: zou23's form
+   failures share rose to 0.145 (its new point settings of pulse_time / purge_time lack the step qualifier form.json requires, dropped at
+   step a); the reference kept at 0.091, so a run would stop on such a paper. kb/reports/binding_regression.csv: 798 items; grow.py apply
+   re-checks it (kb/extract/binding.py --check: an item it binds must keep its unit) and writes it anew.
+4. The five hand-checked panels: mat22 fig2 32 cells -> the 32 run_grid units, 0 derived (match); hei24 fig5a 5 derived model runs by
+   tortuosity_over_porosity (match); wer21 fig6a 6 curves -> run_fig2_c1..c6 by gas_flow_rate, 0 derived (match); gao15 fig3a-i 9 image
+   items unbound 'no unit named' (match); ela03 fig10b mismatch (the origin point and the second curve 'y ∝ t^1/2').
