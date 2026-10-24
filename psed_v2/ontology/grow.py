@@ -666,9 +666,14 @@ def split_labels(row, labels):
 
 
 def cmd_apply():
-    r = current(("proposed",))
-    if not r:
-        raise Stop("no proposed round")
+    r, late = current(("proposed",)), False
+    if not r:                                                                   # P169: late decisions of an applied round (no new snapshot)
+        dec = [x for x in rd(PENDING) if x["decision"]]
+        rnd = {x["first_round"] for x in dec}
+        r = next((y for y in rounds() if len(rnd) == 1 and y["round"] in rnd and y["status"] == "applied"), None)
+        if not dec or r is None:
+            raise Stop("no proposed round (and no decided pending rows of one applied round)")
+        late = True
     n = int(r["round"])
     o = onto()
     have = {e["id"]: e for e in o["entries"]}
@@ -696,7 +701,8 @@ def cmd_apply():
     if stops:
         raise Stop("nothing written:\n  " + "\n  ".join(stops))
     backup = {p: p.read_bytes() for p in (ONTO, PENDING, NEVER, HISTORY, ROUNDS) if p.exists()}
-    snapshot(n, r["pids"].split(";"), rows)                                     # P157d: the rows each candidate covers, before anything changes
+    if not late:                                                                # a late decision's rows are in the round's snapshot already
+        snapshot(n, r["pids"].split(";"), rows)                                 # P157d: the rows each candidate covers, before anything changes
     text = ONTO.read_text(encoding="utf-8")
     new, hist, nev, applied = [], [], X.never_rows(), []
     order = {"accept": 0, "alias": 1}                                          # P164: accepts first (an alias may target an entry of this round)
@@ -715,6 +721,8 @@ def cmd_apply():
             applied.append(dict(id=x["id"], decision="accept", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(e.get("aliases") or []),
                                 symbols="; ".join(f"{s_['text']} ({s_['paper']})" for s_ in e.get("symbols") or []), note=""))
         elif x["decision"] == "alias":                                         # P156: the label only (a candidate's table symbols stay out);
+            if re.search(r"printed name:?\s*paper-local symbol", x["decision_note"]):   # P169: the printed name a symbol of its paper
+                lsyms, words = lsyms + [(t, p) for t in words for p in label_papers(x, t)], []
             t_new = next((e for e in new if e["id"] == x["alias_target"]), None)   # P164: a symbol-like label goes to the target's symbols
             if t_new is not None:
                 al = [w for w in words if X.norm_label(w) not in {X.norm_label(a) for a in t_new.get("aliases", [])}]
@@ -772,12 +780,14 @@ def cmd_apply():
                          ontology_sha256_after=after))
     append(HISTORY, HISTORY_COLS, hist)
     c = Counter(x["decision"] for x in decided)
-    set_round(n, status="applied", applied=today(), n_accepted=c["accept"], n_alias=c["alias"], n_rejected=c["reject"], n_never=c["never"])
+    plus = lambda k, v: int(r.get(k) or 0) + v if late else v                 # noqa: E731  P169: late decisions add to the round's counts
+    set_round(n, status="applied", applied=today(), n_accepted=plus("n_accepted", c["accept"]), n_alias=plus("n_alias", c["alias"]),
+              n_rejected=plus("n_rejected", c["reject"]), n_never=plus("n_never", c["never"]))
     fails = audit_round(n)                                                      # P157d: A1-A3 and their acceptance, every round
     report_page()
     files = [ONTO, PENDING, NEVER, HISTORY, ROUNDS, REPORT, V2 / "kb" / "pilot" / "vocab.py", V2 / "kb" / "schema", COMPILED, V2 / "kb" / "reports"]
     subprocess.run(["git", "add", "--", *map(str, files)], cwd=ROOT, check=True)
-    subprocess.run(["git", "commit", "-q", "-m", f"grow round {n} applied: {c['accept']} accepted, {c['alias']} aliases, {c['reject']} rejected, "
+    subprocess.run(["git", "commit", "-q", "-m", f"grow round {n} {'late decisions ' if late else ''}applied: {c['accept']} accepted, {c['alias']} aliases, {c['reject']} rejected, "
                     f"{c['never']} never; recompiled {len(extracted)} papers, scored {len(gold)} (0 calls)"], cwd=ROOT, check=True)
     print(f"round {n} applied: {dict(c)}; {len(rows) - len(decided)} rows stay pending; ontology.yaml sha256 {after[:12]}; committed")
     for f in fails:
@@ -790,7 +800,7 @@ REPORTS = V2 / "kb" / "reports"
 SNAP_COLS = ["pid", "element", "field", "label", "unit", "candidate", "decision"]
 A1_COLS = ["id", "decision", "covers", "pid", "element", "field", "row_label", "now", "effect", "reason"]
 A2_COLS = ["pid", "element", "field", "printed", "record_meaning", "lookup", "entry", "entry_name", "entry_definition", "head_record", "head_entry_name",
-           "head_entry_definition", "verdict", "symbol", "outcome"]
+           "head_entry_definition", "verdict", "symbol", "history", "outcome"]
 A3_COLS = ["pid", "element", "field", "label", "unit", "record_key", "class", "candidate_at_snapshot", "why"]
 A3P_COLS = ["candidate", "first_round", "pids", "rows_at_snapshot", "open_rows_now", "accounted", "detail"]
 HEAD_STOPS = r"\b(of|at|in|for|with|between|without|per|from|on|to|by|where|that|which|during|when|as|under|over)\b|[,;:(\[$]| - | – "
@@ -912,6 +922,30 @@ def carried_rows(exclude=()):
     return out
 
 
+def user_labels(entries):
+    """P169 (user): {(entry id, 'alias' | 'symbol', key): the history row} of every alias and symbol a user decision wrote: an entry a user
+    accepted (history add, decided_by user): its aliases and symbols; a user's alias decision: what R<n>_apply.written.csv says it wrote
+    (P164 on), else the target's aliases whose snake form is the decision's id. Keys: export.norm_label / export.symbol_key."""
+    out = {}
+    for row_no, h in enumerate(rd(HISTORY), 2):
+        if h["decided_by"] != "user" or h["action"] not in ("add", "alias"):
+            continue
+        ref = f"history.csv row {row_no} (round {h['round']}, {h['action']} {h['id']})"
+        eid = h["id"] if h["action"] == "add" else h["target"]
+        e = entries.get(eid, {})
+        if h["action"] == "add":
+            als, sys_ = list(e.get("aliases") or []), [x["text"] for x in e.get("symbols") or []]
+        else:
+            ws = [x for x in rd(REPORTS / f"R{h['round']}_apply.written.csv") if x["id"] == h["id"]]
+            als = [a for w in ws for a in w["aliases"].split("; ") if a] if ws else [a for a in e.get("aliases") or [] if snake(a) == h["id"]]
+            sys_ = [re.sub(r" \([^()]*\)$", "", t) for w in ws for t in w["symbols"].split("; ") if t]
+        for a in als:
+            out.setdefault((eid, "alias", X.norm_label(a)), ref)
+        for t in sys_:
+            out.setdefault((eid, "symbol", X.symbol_key(t)), ref)
+    return out
+
+
 def audit_round(n):
     """P157d: A1-A3 of round n (the P157c audit), written to kb/reports/R<n>_apply.{A1,A2,A3,A3_pending}.csv, .acceptance.txt and .html.
     A1: every decision of the round (history.csv; back-fill rows extend its never labels) and every row it covered (the snapshot), with
@@ -946,6 +980,11 @@ def audit_round(n):
         for u in unm[p]:
             pool[(p, u["element"], u["field"], u["label_as_printed"].strip(), u["unit"])].append(u)
     taken_pro = set()
+    resolving = defaultdict(list)                                               # P169: entry id -> every promoted row of a compiled paper
+    for f in sorted(COMPILED.glob("*.promoted.csv")):
+        for x in rd(f):
+            if not x["outcome"].startswith("not promoted"):
+                resolving[x["id"]].append(dict(x, pid=f.name[:-len(".promoted.csv")]))
     decisions = {}
     for h in hist:
         if h["action"] in ("add", "alias", "never", "reject") and "back-fill" not in h["decided_by"]:
@@ -961,6 +1000,13 @@ def audit_round(n):
         rows = [r for r in snap if r["candidate"] == cid]
         src = [p for p in h["source_pids"].split(";") if p]
         base = dict(id=cid, decision=act + (f" -> {h['target']}" if h["target"] else ""), covers=covers)
+        if act == "add":                                                        # P169 (user): an accept's effect is every compiled row that
+            for x in resolving.get(cid, []):                                    # resolves to the new entry, by any path (label, alias, symbol)
+                if not any(r["pid"] == x["pid"] and r["element"] == x["element"] and r["label"] == x["printed"] for r in rows):
+                    a1.append(dict(base, pid=x["pid"], element=x["element"], field=x["field"], row_label=x["printed"],
+                                   now=f"fact: {cid} ({x['lookup']}); {x['outcome']}", effect="yes", reason="resolves to the entry (not the candidate's own row)"))
+            if not rows and resolving.get(cid):
+                continue
         if not rows:
             why = (f"no compiled output for {', '.join(src)}" if src and not any((COMPILED / f"{p}.facts.csv").exists() for p in src)   # P168 fix: the papers
                    else "no row of this decision in the snapshot")                                                                   # themselves
@@ -1008,6 +1054,7 @@ def audit_round(n):
     write(REPORTS / f"R{n}_apply.A1.csv", A1_COLS, a1)
     # A2
     a2 = []
+    user = user_labels(entries)                                                 # P169
     for p in sorted(compiled):
         for x in pro[p]:
             if x["field"] in ("quantity", "model"):                             # P168: a model promotion against the entry's name
@@ -1020,11 +1067,14 @@ def audit_round(n):
                 hd = head_noun(entries.get(q, {}).get("definition", ""))
             hr, hn = head_noun(x.get("meaning") or x["printed"]), head_noun(name.replace("_", " "))
             sym = re.search(r"symbol '(.*)' of this paper", x["lookup"])           # P165 (user): a paper-local symbol of the record's own paper
-            verdict = "not promoted (ambiguous)" if x["outcome"].startswith("not promoted") else "symbol (paper-local)" if sym else \
-                ("agree" if hr and hr in (hn, hd) else "disagree" if hr else "no meaning text")
+            al = re.search(r"\balias '(.*)'$", x["lookup"])
+            ref = (user.get((x["id"], "symbol", X.symbol_key(sym.group(1)))) if sym else user.get((x["id"], "alias", X.norm_label(al.group(1)))) if al else None)
+            verdict = "not promoted (ambiguous)" if x["outcome"].startswith("not promoted") else \
+                (f"{'symbol' if sym else 'alias'} (user decision)" if ref else "symbol (paper-local)" if sym else    # P169: a user's alias / symbol
+                 "agree" if hr and hr in (hn, hd) else "disagree" if hr else "no meaning text")
             a2.append(dict(pid=p, element=x["element"], field=x["field"], printed=x["printed"], record_meaning=x.get("meaning", ""), lookup=x["lookup"], entry=x["id"],
                            entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict,
-                           symbol=sym.group(1) if sym else "", outcome=x["outcome"]))
+                           symbol=sym.group(1) if sym else "", history=ref or "", outcome=x["outcome"]))
             if verdict in ("disagree", "no meaning text"):
                 fails.append(f"A2 {p}:{x['element']} '{x['printed']}' -> {x['id']}: {verdict} (head nouns {hr} / {hn} / {hd})")
     write(REPORTS / f"R{n}_apply.A2.csv", A2_COLS, a2)
