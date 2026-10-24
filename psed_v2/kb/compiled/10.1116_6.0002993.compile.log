@@ -1,0 +1,64 @@
+input: 7 lines; pass 0 = line 1; 6 pass-1 lines for 6 groups; ignored lines 
+g: s9.p1: mention_unmatched ['PE-ALD']
+g: s9.p1: mention_unmatched ['PE-ALD']
+g: s9.p1: mention_unmatched ['PE-ALD']
+g: s10.p1: mention_unmatched ['thermal ALD process']
+g: s10.p1: mention_unmatched ['PE-ALD at 150 °C']
+h: tree from pass 0: run 13, simulation 0, specimen 7, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
+h: specimen_created mat23:run:mat23_run_peald_125:film
+h: specimen_created mat23:run:mat23_run_peald_temp:film
+h: specimen_created mat23:run:mat23_run_tald_temp:film
+h: specimen_created mat23:run:mat23_run_peald_ga_pulse:film
+h: specimen_created mat23:run:mat23_run_peald_h2s_pulse:film
+h: specimen_created mat23:run:mat23_run_tald_125:film
+h: 1 result rows moved to mat23:run:mat23_run_peald_125:film
+h: 1 result rows moved to mat23:ent:mat23_specimen_peald_225_20nm
+h: 1 result rows moved to mat23:run:mat23_run_peald_ga_pulse:film
+h: 1 result rows moved to mat23:run:mat23_run_peald_h2s_pulse:film
+h: 1 result rows moved to mat23:run:mat23_run_peald_temp:film
+h: 1 result rows moved to mat23:run:mat23_run_tald_125:film
+h: 1 result rows moved to mat23:ent:mat23_specimen_tald_225_10nm
+h: 1 result rows moved to mat23:run:mat23_run_tald_temp:film
+i: merged fig2c into fig2b;fig2c (deposition_temperature 150)
+i: merged fig2e into fig2a;fig2e (deposition_temperature 150)
+i: merged fig2f into fig2b;fig2c;fig2f (deposition_temperature 150)
+i: merged fig2g into fig2a;fig2e;fig2g (deposition_temperature 150)
+i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 29.1)
+i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 29.7)
+i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 49.7)
+i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 58.8)
+j: derived over 13 entities: 19 rows; not derived: {'no fact for H': 26, 'no fact for p': 13, 'E: no fact for p': 13, 'no fact for rho': 32, 'stated: mat23:fig1b#6 0.1560547504025765 nm/cycle': 1, 'no fact for dn': 13, 'no fact for mg': 26, 'no fact for t': 11, 'no fact for h2': 13, 'no fact for phi': 13, 'no fact for d': 13, 'lam: no fact for d': 13, 'stated: mat23:s9.p6#1 0.5 Å/cycle': 1, 'n: no fact for gpc': 7, 'gpc: no fact for n': 7, 'gpc: n: no fact for gpc': 7, 'no fact for N': 2, 'stated: mat23:abs.g3#3 1.71 Å/cycle': 1, 'stated: mat23:s9.p1#1 1.71 Å/cycle': 1, 'stated: mat23:s9.p1#4 0.98 Å/cycle': 1, 'stated: mat23:fig1b#7 0.0950402576489533 nm/cycle': 1}
+j: caveats (query.caveats_of): 2, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 4
+j: claim nodes (query.claim_nodes): 2 nodes for 7 claims; claims without a full triple (query.node_of empty): 4
+j: comparisons from figures.json (1c): 5
+step input: {'records': 120}
+step a: {'kept': 120}
+step b: {'kept': 120}
+step c: {'quantity_other (kept)': 10, 'kept': 120}
+step d: {'quote_noncontiguous (kept)': 1, 'quote_not_found': 1, 'kept': 119}
+step e: {'unit_unresolved (kept as printed)': 1, 'kept': 119}
+step f: {'kept': 119}
+step g: {'mention_unmatched': 5}
+step h: {'place: claim -> paper': 7, 'place: setting about a run -> deposition': 14, 'specimen_created': 6, 'place: result about a run -> film measurement': 18, 'place: cited -> paper': 6, 'place: about paper -> recipe': 18, 'place: result about a run -> its specimen measurement': 10, 'place: result about a specimen -> its measurement': 31, 'place: setting about a specimen -> deposition': 10, 'place: about paper, method -> paper method activity': 3, 'place: caveat -> paper': 2}
+step m: {'statement filled from the quote': 104, 'label_as_printed filled with the quantity id': 2, 'links resolved': 3}
+step 1c: {'curve -> observation': 8, 'data role measured': 8, 'peak -> observation': 4}
+step i: {'merged': 8, 'kept': 123}
+step n: {'comparison replicate': 1, 'comparison series': 3, 'comparison grid': 1}
+step j: {'derived cycle_time': 13, 'derived deposition_rate': 6}
+step k: {'statement from the record': 115, 'statement_copies_text (reported by check)': 73, 'statement assembled': 27}
+diff against the gold:
+  setting        54   39   18  0.46  0.33
+  observation    51   63   29  0.46  0.57
+  activity       30   44   27  0.61  0.90
+  entity         14   13   13  1.00  0.93
+  claim          13    7    4  0.57  0.31
+  cited           9    6    4  0.67  0.44
+  comparison      7    5    0  0.00  0.00
+  caveat          5    2    2  1.00  0.40
+  derived         4   25    2  0.08  0.50
+  identity        2    0    0     -  0.00
+  paper           1    1    0  0.00  0.00
+  model           1    0    0     -  0.00
+gold definitions with an eq* element in evidence: 0/0
+gold model rows with quantity and value: 0: {}
+observations: gold 51, compiled 63, matched 29
