@@ -757,7 +757,7 @@ REPORTS = V2 / "kb" / "reports"
 SNAP_COLS = ["pid", "element", "field", "label", "unit", "candidate", "decision"]
 A1_COLS = ["id", "decision", "covers", "pid", "element", "field", "row_label", "now", "effect", "reason"]
 A2_COLS = ["pid", "element", "field", "printed", "record_meaning", "lookup", "entry", "entry_name", "entry_definition", "head_record", "head_entry_name",
-           "head_entry_definition", "verdict", "outcome"]
+           "head_entry_definition", "verdict", "symbol", "outcome"]
 A3_COLS = ["pid", "element", "field", "label", "unit", "record_key", "class", "candidate_at_snapshot", "why"]
 A3P_COLS = ["candidate", "first_round", "pids", "rows_at_snapshot", "open_rows_now", "accounted", "detail"]
 HEAD_STOPS = r"\b(of|at|in|for|with|between|without|per|from|on|to|by|where|that|which|during|when|as|under|over)\b|[,;:(\[$]| - | – "
@@ -782,9 +782,10 @@ def snapshot(n, pids, pend):
 
 def head_noun(text):
     """The head noun of a noun phrase (P157c): LaTeX unwrapped, casefold, the text before the first preposition / relative word / comma
-    / bracket / '$', its last alphabetic word of two or more letters, a plural s dropped (not ss, us, is)."""
+    / bracket / '$', its last alphabetic word of two or more letters, a plural s dropped (not ss, us, is). P165: a hyphen is a word
+    boundary ('flow-type' -> type)."""
     t = re.split(HEAD_STOPS, X.LATEX_TEXT.sub(r"\1", str(text or "")).casefold(), maxsplit=1)[0]
-    ws = [x for x in t.split() if re.fullmatch(r"[a-zà-ÿ\-]{2,}", x)]
+    ws = [x for x in t.replace("-", " ").split() if re.fullmatch(r"[a-zà-ÿ]{2,}", x)]
     h = ws[-1] if ws else ""
     return h[:-1] if h.endswith("s") and not h.endswith(("ss", "us", "is")) and len(h) > 3 else h
 
@@ -796,8 +797,10 @@ def open_rows(n, compiled, unm, snap):
     """P157d A3, out of audit_round since P162: every open (not never) unmapped row of round n's compiled papers (unm: their unmapped.csv
     rows), classified. P162: a row that would be unclassified and is absent from the round's apply snapshot (born after apply, e.g. a
     derived unit's condition) is NEW_SINCE_APPLY: counted, listed and carried into the next propose (carried_rows), not a failure.
+    P165: the unit row of a promoted record whose unit units.yaml lacks is "unit unresolved" (listed), not open.
     Returns (A3 rows, failures, the unmapped_rows() row of each A3 row)."""
     fails = []
+    pro = {p: rd(COMPILED / f"{p}.promoted.csv") for p in compiled}
     pend = {x["id"]: x for x in rd(PENDING)}
     decided_ids = {h["id"]: h for h in rd(HISTORY) if h["action"] in ("add", "alias", "never", "reject")}
     _CAND.clear()
@@ -825,8 +828,11 @@ def open_rows(n, compiled, unm, snap):
             cid = cids[min(seen[k], len(cids) - 1)] if cids else ""
             seen[k] += 1
             raw = next(x for x in unm[p] if x["element"] == u["element"] and x["field"] == u["field"] and x["label_as_printed"].strip() == u["label"])
+            prom = next((x for x in pro.get(p, []) if x["element"] == u["element"] and x["printed"] == u["label"] and not x["outcome"].startswith("not promoted")), None)
             if cid in pend:
                 cls, why = f"pending candidate {cid}", ("cell without printed label, keyed by its meaning" if not u["label"] else "")
+            elif u["field"] == "unit" and prom:                                 # P165 (user): its record is promoted; the unit is a units.yaml matter
+                cls, why = "unit unresolved", f"the record is promoted to {prom['id']}; its unit {u['unit']!r} is not in units.yaml"
             elif raw["action"].startswith("kept (ambiguous"):
                 cls, why = "other", f"compile: {raw['action'][6:-1]}; propose groups it as {cid or 'nothing'}"
             elif k in ngrp:
@@ -870,7 +876,8 @@ def audit_round(n):
     """P157d: A1-A3 of round n (the P157c audit), written to kb/reports/R<n>_apply.{A1,A2,A3,A3_pending}.csv, .acceptance.txt and .html.
     A1: every decision of the round (history.csv; back-fill rows extend its never labels) and every row it covered (the snapshot), with
     where the row is now: a fact (promoted.csv), never (unmapped.csv column never) or open. A2: every promotion in the round's papers,
-    agree when the record's meaning and the entry share the head noun. A3: every open row, classified; every pending candidate of the
+    agree when the record's meaning and the entry share the head noun (P165: a promotion through a paper-local symbol of the record's
+    paper is "symbol (paper-local)", no head-noun test). A3: every open row, classified; every pending candidate of the
     round's papers accounted for. Acceptance: A1 every covered row has its effect, except a reject (by design), a paper with no compiled
     output and the unit row of a promoted record (a units.yaml matter); A2 no disagree; A3 no unclassified row, no pending candidate
     lost a row. P162: A3 is open_rows() (a row born after apply: NEW_SINCE_APPLY, carried, not a failure); A1 also reads the papers of rows
@@ -971,9 +978,12 @@ def audit_round(n):
                 name, defi = x["id"], f"a value of {q}"
                 hd = head_noun(entries.get(q, {}).get("definition", ""))
             hr, hn = head_noun(x.get("meaning") or x["printed"]), head_noun(name.replace("_", " "))
-            verdict = "not promoted (ambiguous)" if x["outcome"].startswith("not promoted") else ("agree" if hr and hr in (hn, hd) else "disagree" if hr else "no meaning text")
+            sym = re.search(r"symbol '(.*)' of this paper", x["lookup"])           # P165 (user): a paper-local symbol of the record's own paper
+            verdict = "not promoted (ambiguous)" if x["outcome"].startswith("not promoted") else "symbol (paper-local)" if sym else \
+                ("agree" if hr and hr in (hn, hd) else "disagree" if hr else "no meaning text")
             a2.append(dict(pid=p, element=x["element"], field=x["field"], printed=x["printed"], record_meaning=x.get("meaning", ""), lookup=x["lookup"], entry=x["id"],
-                           entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict, outcome=x["outcome"]))
+                           entry_name=name, entry_definition=defi, head_record=hr, head_entry_name=hn, head_entry_definition=hd, verdict=verdict,
+                           symbol=sym.group(1) if sym else "", outcome=x["outcome"]))
             if verdict in ("disagree", "no meaning text"):
                 fails.append(f"A2 {p}:{x['element']} '{x['printed']}' -> {x['id']}: {verdict} (head nouns {hr} / {hn} / {hd})")
     write(REPORTS / f"R{n}_apply.A2.csv", A2_COLS, a2)

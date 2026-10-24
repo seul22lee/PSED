@@ -157,7 +157,7 @@ def main(arg):
     pid, key_ = C.resolve(arg)
     form = C.schema("form.json")
     val, props, qids = Draft202012Validator(K.before_freeze(form)), form["properties"], set(form["$defs"]["quantity_id"]["enum"]) | {"other"}   # P159: the gold predates the P158 rules
-    gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")))
+    gold = K.gold_rows(pid)                                                     # P165: a gold other row read through step a0's lookup
     run, records, fate, rows = traced_run(pid)
     comp = [r for r in rows if "#" in r["fact_id"]]
     CR, GR = {r["fact_id"]: r for r in rows}, {r["fact_id"]: r for r in gold}

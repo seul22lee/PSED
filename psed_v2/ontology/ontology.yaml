@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 45e55fd1bb4b52330c8d138469e0ba1d142353f9973d023ce3f61b3bb305557e
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 0afba98c16fb00be2da7827e1c308e4d7b4bef61ffe68919ff5dbd255147c2fe
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -575,7 +575,8 @@ entries:
     unit: g/cm3
     qudt_quantity_kind: "quantitykind:MassDensity"
     qudt_unit: "unit:GM-PER-CentiM3"
-    aliases: [FilmDensity, film density, Density of the condensed phase, rho]
+    aliases: [FilmDensity, film density, Density of the condensed phase]
+    symbols: [{text: ρ, paper: 10.1039_d0cp03358h}]
     base: {source: schema_miner, path: MaterialProperties/FilmDensity}
     evidence: ['alias ''rho'': yim22 tab1.r4c1 (P131b alias audit)']
 

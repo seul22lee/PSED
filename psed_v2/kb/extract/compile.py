@@ -1426,10 +1426,30 @@ def matches(g, c):
     return match_key(g) == match_key(c)
 
 
+GOLD_RESOLVED = {}
+
+
+def gold_rows(pid):
+    """P165 (user): the gold rows of kb/pilot/<pid>.facts.csv (the file is never written) as every matcher reads them: a row of quantity
+    other is read through step a0's lookup (vocab_hits on its label_as_printed: the current ids, names, aliases and this paper's
+    symbols); one id -> that quantity, as the compiler would give the record. GOLD_RESOLVED[pid] lists each resolution."""
+    rows = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")))
+    log = GOLD_RESOLVED.setdefault(pid, [])
+    log.clear()
+    for g in rows:
+        if g["quantity"] == "other" and g["label_as_printed"].strip():
+            hits = vocab_hits(pid, "quantity", g["label_as_printed"])
+            if len(hits) == 1:
+                (i, how), = hits.items()
+                log.append(dict(fact_id=g["fact_id"], type=g["type"], label=g["label_as_printed"], id=i, how=how))
+                g["quantity"] = i
+    return rows
+
+
 def diff(run):
-    """Gold kb/pilot/<pid>.facts.csv against the compiled rows by matches() (P134 key, canonical units, D13); one gold row per compiled
-    row, first come."""
-    gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
+    """Gold kb/pilot/<pid>.facts.csv (gold_rows, P165) against the compiled rows by matches() (P134 key, canonical units, D13); one gold
+    row per compiled row, first come."""
+    gold = gold_rows(run.pid)
     comp = run.rows
     free = list(range(len(gold)))
     matched = collections.Counter()

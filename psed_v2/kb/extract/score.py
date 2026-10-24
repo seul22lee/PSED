@@ -62,7 +62,7 @@ def score_rows(key, run, table, tree_errs):
             x = rec.get("about")
             ab["paper" if x == "paper" else "null" if not x else "filled (a pass-0 unit)" if x in run.node else "unknown"] += 1
     out += [row("about", k, n) for k, n in ab.most_common()]
-    gold = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").open(encoding="utf-8")))
+    gold = K.gold_rows(run.pid)                                                 # P165: a gold other row read through step a0's lookup
     G, CR = {g["fact_id"]: g for g in gold}, {c["fact_id"]: c for c in run.rows}
     free, pk = list(range(len(gold))), collections.Counter()
     for c in run.rows:                                                          # the pairs of compile.diff: one gold row per compiled row, first come
