@@ -1,0 +1,36 @@
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 64aa8a4..df4d423 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -209,7 +209,8 @@ def candidates(pids, extra=()):
+     on accept and into never.csv as paper-local rows on never.
+     6. P163: a candidate whose label is another's with a trailing symbol or qualifier (extends()) joins the closest shorter one; its labels
+        become that candidate's aliases (log prefix_merges).
+-    7. P168: a row of field model (a simulation unit's printed name no model entry has) makes a candidate of kind model; a row whose
++    7. P168: a row of field model (a simulation unit's printed name no model entry has) makes a candidate of kind model (P170: any member
++       of that field; a pass-1 record of the same printed name joins it); a row whose
+        field is a categorical (an unresolved material, structure, ... value) makes none (log categorical).
+     Returns ({id: group}, log)."""
+     spell = unit_spellings()
+@@ -312,7 +313,7 @@ def candidates(pids, extra=()):
+     for c in out.values():
+         units = Counter(u["unit"] for u in c["members"] if u["unit"])
+         c["unit"] = units.most_common(1)[0][0] if units else ""
+-        c["kind"] = "model" if all(u["field"] == "model" for u in c["members"]) else \
++        c["kind"] = "model" if any(u["field"] == "model" for u in c["members"]) else \
+             "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for u in c["members"]) or any(u["field"] == "quantity" for u in c["members"]) else "unit"   # P168: a simulation name
+         ev = {}
+         for u in c["members"]:
+@@ -326,9 +327,10 @@ PREPOSITIONS = {"for", "of", "in", "at", "with", "on", "per", "to", "by", "from"
+ 
+ def label_tokens(s):
+     """P163: a label as ordered words: LaTeX unwrapped, backslashes dropped, casefold, split at anything not a letter or digit; a, an, the
+-    dropped."""
++    dropped where a word follows (P170 fix: a final 'a' is a letter label, 'Model A' is not 'model')."""
+     t = X.LATEX_TEXT.sub(r"\1", str(s or "")).replace("\\", " ").casefold()
+-    return [w for w in re.findall(r"[^\W_]+", t) if w not in {"a", "an", "the"}]
++    ws = re.findall(r"[^\W_]+", t)
++    return [w for i, w in enumerate(ws) if w not in {"a", "an", "the"} or i == len(ws) - 1]
+ 
+ 
+ def extends(short, long):
