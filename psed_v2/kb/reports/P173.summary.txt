@@ -1,0 +1,28 @@
+P173: 22 provider calls (wer21: pass 0 1, pass 1 21), $0.42 by the records lines (planned $0.60). Stopped at wer21's decide.html: round 5
+proposed, 3 candidates; the decisions are the user's.
+
+1. Verdict rule (0 calls). kb/figures_import.py, for a paper without human verdicts: no figure-stage flag -> pass, any flag -> flagged; the
+   flag names on the panel, its curves and cells. compile: a fact from a flagged panel gets basis digitized and the flags in definition_note
+   (facts.csv has no uncertainty-note column; the curve's uncertainty.note in figures.json carries them as well). Against the twelve's human
+   verdicts: 95 of 153 judged panels agree (0.621), a reference row of ontology/gates.csv (not a gate). The 58 disagreeing: judged ok and
+   flagged by the rule 52, missed_series and passed by the rule 6; every panel listed. The twelve keep their human verdicts; their imports
+   and compiles are unchanged. CLAUDE.md: from paper 13 on no one judges figures.
+2. Atomic apply (0 calls). grow.py apply runs in a sandbox copy and moves its files into place only after export --check and every round's
+   audit pass. Test on a throwaway copy, replaying P172's real failure (one fixture decision; kb/pilot/query.py from before the P172 fix):
+   compile crashed after apply had written never.csv and pending.csv in the sandbox; printed 'APPLY FAILED in the sandbox: nothing was
+   written', the four files it would have written; the copy: 0 of 310 files changed; the sandbox removed. The success path (move into place,
+   commit) runs at the next real apply. The sandbox lives in the system temp directory, outside the repository, while apply runs.
+3. grow.py run wer21. Figures import with the rule: 15 data panels, pass 9 / flagged 6, none stopped by the verdict; 1 imported (fig. 2:
+   6 curves, flags F3 and F2 -> 6 facts, basis digitized); 14 inventory only at the P89 axis step (unchanged): their axis labels resolve to
+   no entry (Wavelength, Counts/s, Energy, I_O/I_total, p_O; 'Coverage' ambiguous between surface_coverage and normalized_thickness):
+   25 rows in ontology/unmapped.csv, which propose does not read, so none is a round-5 candidate.
+   Pass 0: 15 units (run 10, simulation 1, specimen 4). Gates pass: units per 100 elements 5.34 (worst development value 3.37), unbound
+   items 0, units named after a measurement 0, panels with no layout 0.0. Pass 1: 173 records; form failures 0.046 (0.091), quotes not
+   found 0.017 (0.163). check.py 84 problems (statement repeats eight words 35, claim without links 18, gas_flow_rate without species 8,
+   points_ref in a facts file 6, as in every paper of the twelve). Audits of rounds 1-4 PASS; export --check 15 of 15.
+   Simulation -> model: sim_markov_chain 'Markov chain approach' -> no entry; candidate markov_chain_approach (kind model, nearest
+   yanguas_gil_markov_chain); no model run under it.
+   Round 5 candidates: integration_time (quantity, s, nearest cycle_time), markov_chain_approach (model), spectroscopic_ellipsometer
+   (nearest the method spectroscopic_ellipsometry). pending.csv 24 rows (21 earlier undecided).
+4. On the way: figures_import wrote ontology/unmapped.csv with CRLF (LF in git since P155), a whole-file diff; now LF. wer21 imported again
+   (0 calls): identical but the timestamp. CLAUDE.md's verdict line said 'imports every data panel'; now it says what the code does.

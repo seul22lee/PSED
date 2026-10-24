@@ -1,6 +1,20 @@
 <!doctype html><html><head><meta charset='utf-8'><title>RUN_wer21</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>RUN_wer21</h1>
 <h2>Summary</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.summary.txt</p>
 <pre>plan (0 calls): exit 0
+figures import wer21 (0 calls; P173 rule verdicts): exit 0
+pass 0 wer21: exit 0
+gate pass 0 wer21: exit 0
+pass 1 wer21: exit 0
+compile wer21 (0 calls): exit 0
+check.py wer21 (0 calls): exit 0
+gate pass 1 wer21: exit 0
+audit round 1: exit 0
+audit round 2: exit 0
+audit round 3: exit 0
+audit round 4: exit 0
+export --check (0 calls): exit 0
+grow.py add: exit 0
+grow.py propose: exit 0
 </pre>
 <h2>Plan (calls and dollars per step)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.plan.csv</p>
 <table><tr><th>paper</th><th>pid</th><th>figure_calls</th><th>figure_usd</th><th>pass0_calls</th><th>pass0_usd</th><th>pass1_calls</th><th>pass1_usd</th><th>note</th></tr>
@@ -14,9 +28,97 @@
 <tr><td>panels with no layout (share)</td><td>pass0</td><td>higher</td><td>0.867</td><td>gao15</td></tr>
 <tr><td>form failures (share of records)</td><td>pass1</td><td>higher</td><td>0.091</td><td>gor03</td></tr>
 <tr><td>quotes not found (share of records)</td><td>pass1</td><td>higher</td><td>0.163</td><td>mat22</td></tr>
+<tr><td>figure verdict rule agreement</td><td>reference (not a gate)</td><td></td><td>0.621</td><td>95 of 153 human-judged panels of the twelve</td></tr>
+</table>
+<h2>Gate pass0 (wer21)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.gate_pass0.csv</p>
+<table><tr><th>paper</th><th>stage</th><th>metric</th><th>value</th><th>worst_dev_value</th><th>worst_dev_paper</th><th>verdict</th></tr>
+<tr><td>wer21</td><td>pass0</td><td>units per 100 elements</td><td>5.34</td><td>3.37</td><td>gre23</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass0</td><td>unbound items</td><td>0</td><td>0</td><td>yim20</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass0</td><td>units named after a measurement</td><td>0</td><td>0</td><td>yim20</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td><td>0.867</td><td>gao15</td><td>pass</td></tr>
+</table>
+<h2>Gate pass1 (wer21)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.gate_pass1.csv</p>
+<table><tr><th>paper</th><th>stage</th><th>metric</th><th>value</th><th>worst_dev_value</th><th>worst_dev_paper</th><th>verdict</th></tr>
+<tr><td>wer21</td><td>pass1</td><td>form failures (share of records)</td><td>0.046</td><td>0.091</td><td>gor03</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.017</td><td>0.163</td><td>mat22</td><td>pass</td></tr>
 </table>
 <h2>Steps</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.steps.csv</p>
 <table><tr><th>step</th><th>command</th><th>exit</th><th>output</th></tr>
 <tr><td>plan (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py plan wer21</td><td>0</td><td>[{&quot;paper&quot;: &quot;wer21&quot;, &quot;pid&quot;: &quot;10.1116_6.0001094&quot;, &quot;figure_calls&quot;: 0, &quot;figure_usd&quot;: 0.0, &quot;pass0_calls&quot;: 1, &quot;pass0_usd&quot;: 0.152, &quot;pass1_calls&quot;: 21, &quot;pass1_usd&quot;: 0.45, &quot;note&quot;: &quot;pass-1 groups from elements.csv as it stands (built again after the figure stage)&quot;}]</td></tr>
+<tr><td>figures import wer21 (0 calls; P173 rule verdicts)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/figures_import.py 10.1116_6.0001094</td><td>0</td><td>10.1116_6.0001094: 15 data panels, 1 imported; 6 curves, 0 cells, 0 peaks, 1 sets, 0 derived, 0 converted, 23 inventory; 25 unmapped; 0 fields through the paper&#x27;s definitions (P89)
+unmapped rows 25: {&#x27;label_unresolved&#x27;: 22, &#x27;unit_unknown&#x27;: 3}</td></tr>
+<tr><td>pass 0 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/pass0_paper.py wer21</td><td>0</td><td>10.1116_6.0001094: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1116_6.0001094: 1 calls made, 0 from the cache
+wer21 pass 0: 15 units, by role {&#x27;run&#x27;: 10, &#x27;simulation&#x27;: 1, &#x27;specimen&#x27;: 4}; table layouts 1, panel layouts 23</td></tr>
+<tr><td>gate pass 0 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py pass0 wer21</td><td>0</td><td>metric                                      value  worst dev  verdict
+units per 100 elements                       5.34       3.37  pass (gre23)
+unbound items                                   0          0  pass (yim20)
+units named after a measurement                 0          0  pass (yim20)
+panels with no layout (share)                 0.0      0.867  pass (gao15)</td></tr>
+<tr><td>pass 1 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/pass1_elements.py wer21</td><td>0</td><td>wer21 pass 1: 21 groups (abstract+s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12, s13+s14+s15+s16+s17+s18+s19+s20+s21, s22+s23, s24+s25, s26+s27+s28+s29, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig11, fig12, fig13, fig14, fig15, fig1, tabI, fig10); figure/table/equation groups: fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig11, fig12, fig13, fig14, fig15, fig1, tabI, fig10; unpaired: none
+10.1116_6.0001094: 21 planned calls (0 cached, 21 to call), model gemini-3.8-flash
+10.1116_6.0001094: 21 calls made, 0 from the cache; prefix cached once (1 cached content)
+wer21 pass 1: 173 records by type {&#x27;setting&#x27;: 107, &#x27;claim&#x27;: 25, &#x27;model&#x27;: 17, &#x27;caveat&#x27;: 16, &#x27;observation&#x27;: 4, &#x27;cited&#x27;: 2, &#x27;derived&#x27;: 2}; NK {&#x27;no_knowledge&#x27;: 96, &#x27;boilerplate&#x27;: 57, &#x27;duplicate&#x27;: 11, &#x27;citation_line&#x27;: 6}; elements missing 0; records failing form.json 8; unparsed responses none
+wer21 this run: 21 lines, tokens in 607985 (cache read 588084) out 46706</td></tr>
+<tr><td>compile wer21 (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/compile.py wer21</td><td>0</td><td>wer 150)
+i: merged fig12.cap into s18.p1;s25.p14;fig12.cap (pulse_time 5)
+i: merged fig13.cap into s25.p13;s25.p15;fig11.cap;fig13.cap (process_pressure 0.005)
+i: merged fig14.cap into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap (plasma_power 150)
+i: merged tabI.r2c2 into tabI.r1c2;tabI.r2c2 (gas_flow_rate )
+i: merged tabI.r3c3 into tabI.r2c3;tabI.r3c3 (process_pressure )
+i: merged tabI.r4c4 into tabI.r2c4;tabI.r4c4 (plasma_power )
+i: merged tabI.r5c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4 (plasma_power 150)
+i: merged tabI.r6c3 into s25.p13;s25.p15;fig11.cap;fig13.cap;tabI.r6c3 (process_pressure 0.005)
+i: merged tabI.r7c3 into tabI.r2c3;tabI.r3c3;tabI.r7c3 (process_pressure )
+i: merged tabI.r7c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4;tabI.r7c4 (plasma_power 150)
+j: derived over 6 entities: 6 rows; not derived: {&#x27;no fact for S&#x27;: 6, &#x27;no fact for p&#x27;: 6, &#x27;E: no fact for p&#x27;: 6, &#x27;no fact for rho&#x27;: 12, &#x27;n: no fact for gpc&#x27;: 6, &#x27;gpc: no fact for n&#x27;: 6, &#x27;no fact for H&#x27;: 6, &#x27;no fact for dn&#x27;: 6, &#x27;no fact for mg&#x27;: 12, &#x27;no fact for t&#x27;: 6, &#x27;no fact for h2&#x27;: 6, &#x27;no fact for phi&#x27;: 6, &#x27;no fact for T&#x27;: 6, &#x27;lam: no fact for T&#x27;: 6, &#x27;gpc: n: no fact for gpc&#x27;: 6}
+j: caveats (query.caveats_of): 15, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
+j: claim nodes (query.claim_nodes): 17 nodes for 23 claims; claims without a full triple (query.node_of empty): 0
+j: comparisons from figures.json (1c): 2
+step input: {&#x27;records&#x27;: 173}
+step a0: {&#x27;value_text promoted (value:reactor_type: value)&#x27;: 1, &#x27;quantity promoted (quantity: symbol)&#x27;: 1}
+step a: {&#x27;numeric string coerced (C4)&#x27;: 6, &#x27;schema:enum&#x27;: 2, &#x27;schema:required&#x27;: 2, &#x27;kept&#x27;: 169}
+step a_fields: {&#x27;effect&#x27;: 2, &#x27;qualifiers&#x27;: 2}
+step b: {&#x27;model_with_value (kept)&#x27;: 5, &#x27;kept&#x27;: 169}
+step c: {&#x27;quantity_other (kept)&#x27;: 2, &#x27;kept&#x27;: 169}
+step d: {&#x27;quote_not_found&#x27;: 3, &#x27;kept&#x27;: 166}
+step e: {&#x27;kept&#x27;: 166}
+step f: {&#x27;species_resolved&#x27;: 10, &#x27;kept&#x27;: 166}
+step h: {&#x27;simulation name unresolved (unmapped, field model)&#x27;: 1, &#x27;place: about paper -&gt; recipe&#x27;: 104, &#x27;place: claim -&gt; paper&#x27;: 23, &#x27;place: caveat -&gt; paper&#x27;: 15, &#x27;place: about paper, method -&gt; paper method activity&#x27;: 1, &#x27;place: model about a simulation -&gt; simulation&#x27;: 7, &#x27;place: setting about a run -&gt; deposition&#x27;: 14, &#x27;place: cited -&gt; paper&#x27;: 2, &#x27;specimen_created&#x27;: 6}
+step m: {&#x27;statement filled from the quote&#x27;: 115, &#x27;label_as_printed filled with the quantity id&#x27;: 10, &#x27;links resolved&#x27;: 5, &#x27;links named elements without facts&#x27;: 9}
+step 1c: {&#x27;data of a flagged panel (rule verdict)&#x27;: 6, &#x27;curve -&gt; observation&#x27;: 6, &#x27;data role measured&#x27;: 6}
+step i: {&#x27;merged&#x27;: 37, &#x27;kept&#x27;: 135}
+step n: {&#x27;comparison series&#x27;: 2}
+step j: {&#x27;derived cycle_time&#x27;: 6}
+step k: {&#x27;statement from the record&#x27;: 129, &#x27;statement_copies_text (reported by check)&#x27;: 28, &#x27;statement assembled&#x27;: 12}
+diff against the gold (type, gold, compiled, matched, precision, recall):
+no gold: kb/pilot/10.1116_6.0001094.facts.csv absent (not scored)</td></tr>
+<tr><td>check.py wer21 (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python -c import sys; sys.path.insert(0, &#x27;psed_v2/kb/extract&#x27;); import score; e, _ = score.check_dir(&#x27;10.1116_6.0001094&#x27;); print(len(e), &#x27;check.py problems&#x27;)</td><td>0</td><td>84 check.py problems</td></tr>
+<tr><td>gate pass 1 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py pass1 wer21</td><td>0</td><td>metric                                      value  worst dev  verdict
+form failures (share of records)            0.046      0.091  pass (gor03)
+quotes not found (share of records)         0.017      0.163  pass (mat22)</td></tr>
+<tr><td>audit round 1</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>audit round 2</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>audit round 3</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>audit round 4</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>export --check (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/ontology/export.py --check</td><td>0</td><td>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 21 rows: undecided 21
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)</td></tr>
+<tr><td>grow.py add</td><td>cmd_add</td><td>0</td><td>wer21</td></tr>
+<tr><td>grow.py propose</td><td>cmd_propose</td><td>0</td><td>psed_v2/ontology/decide.html</td></tr>
 </table>
 </body></html>

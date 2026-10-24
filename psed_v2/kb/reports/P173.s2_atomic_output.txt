@@ -1,0 +1,52 @@
+fixture (copy only): integration_time (round 5) -> never (Model internals); kb/pilot/query.py of 64aff0b^ (before the P172 fix)
+$ grow.py apply   (exit 1)
+Traceback (most recent call last):
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py", line 1583, in <module>
+    raise SystemExit(C.main(main))
+                     ^^^^^^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/common.py", line 196, in main
+    return fn(sys.argv[1] if len(sys.argv) > 1 else "")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py", line 1561, in main
+    rows = run.run()
+           ^^^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py", line 1391, in run
+    rows = self.derived(rows)
+           ^^^^^^^^^^^^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py", line 1224, in derived
+    import query as Q
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/query.py", line 394, in <module>
+    TREES = {k: Tree(k) for k in KEY}
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/query.py", line 394, in <dictcomp>
+    TREES = {k: Tree(k) for k in KEY}
+                ^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/query.py", line 25, in __init__
+    self.rows = list(csv.DictReader((HERE / f"{KEY[key]}.facts.csv").open(encoding="utf-8")))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ftk3187/miniconda3/envs/psed310/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/10.1116_6.0001094.facts.csv'
+Traceback (most recent call last):
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py", line 1784, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py", line 1775, in main
+    out = {"init": cmd_init, "add": lambda: cmd_add(args.pids), "propose": cmd_propose, "apply": cmd_apply, "status": cmd_status, "report": report_page,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py", line 714, in cmd_apply
+    return apply_here()
+           ^^^^^^^^^^^^
+  File "/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py", line 879, in apply_here
+    subprocess.run([py, str(V2 / "kb" / "extract" / "compile.py"), pid], cwd=ROOT, check=True)
+  File "/home/ftk3187/miniconda3/envs/psed310/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/ftk3187/miniconda3/envs/psed310/bin/python', '/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py', '10.1002_cvde.200390005']' returned non-zero exit status 1.
+
+APPLY FAILED in the sandbox: nothing was written. It would have written:
+  changed: ontology/never.csv
+  changed: ontology/pending.csv
+  new: kb/reports/R5_apply.decision_rows.csv
+  new: kb/reports/R5_apply.written.csv
+STOPPED: apply failed (see above); ontology/, kb/compiled and pending.csv untouched

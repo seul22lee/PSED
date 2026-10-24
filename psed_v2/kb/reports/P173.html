@@ -1,0 +1,783 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P173</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P173</h1>
+<h2>Summary</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.summary.txt</p>
+<pre>P173: 22 provider calls (wer21: pass 0 1, pass 1 21), $0.42 by the records lines (planned $0.60). Stopped at wer21&#x27;s decide.html: round 5
+proposed, 3 candidates; the decisions are the user&#x27;s.
+
+1. Verdict rule (0 calls). kb/figures_import.py, for a paper without human verdicts: no figure-stage flag -&gt; pass, any flag -&gt; flagged; the
+   flag names on the panel, its curves and cells. compile: a fact from a flagged panel gets basis digitized and the flags in definition_note
+   (facts.csv has no uncertainty-note column; the curve&#x27;s uncertainty.note in figures.json carries them as well). Against the twelve&#x27;s human
+   verdicts: 95 of 153 judged panels agree (0.621), a reference row of ontology/gates.csv (not a gate). The 58 disagreeing: judged ok and
+   flagged by the rule 52, missed_series and passed by the rule 6; every panel listed. The twelve keep their human verdicts; their imports
+   and compiles are unchanged. CLAUDE.md: from paper 13 on no one judges figures.
+2. Atomic apply (0 calls). grow.py apply runs in a sandbox copy and moves its files into place only after export --check and every round&#x27;s
+   audit pass. Test on a throwaway copy, replaying P172&#x27;s real failure (one fixture decision; kb/pilot/query.py from before the P172 fix):
+   compile crashed after apply had written never.csv and pending.csv in the sandbox; printed &#x27;APPLY FAILED in the sandbox: nothing was
+   written&#x27;, the four files it would have written; the copy: 0 of 310 files changed; the sandbox removed. The success path (move into place,
+   commit) runs at the next real apply. The sandbox lives in the system temp directory, outside the repository, while apply runs.
+3. grow.py run wer21. Figures import with the rule: 15 data panels, pass 9 / flagged 6, none stopped by the verdict; 1 imported (fig. 2:
+   6 curves, flags F3 and F2 -&gt; 6 facts, basis digitized); 14 inventory only at the P89 axis step (unchanged): their axis labels resolve to
+   no entry (Wavelength, Counts/s, Energy, I_O/I_total, p_O; &#x27;Coverage&#x27; ambiguous between surface_coverage and normalized_thickness):
+   25 rows in ontology/unmapped.csv, which propose does not read, so none is a round-5 candidate.
+   Pass 0: 15 units (run 10, simulation 1, specimen 4). Gates pass: units per 100 elements 5.34 (worst development value 3.37), unbound
+   items 0, units named after a measurement 0, panels with no layout 0.0. Pass 1: 173 records; form failures 0.046 (0.091), quotes not
+   found 0.017 (0.163). check.py 84 problems (statement repeats eight words 35, claim without links 18, gas_flow_rate without species 8,
+   points_ref in a facts file 6, as in every paper of the twelve). Audits of rounds 1-4 PASS; export --check 15 of 15.
+   Simulation -&gt; model: sim_markov_chain &#x27;Markov chain approach&#x27; -&gt; no entry; candidate markov_chain_approach (kind model, nearest
+   yanguas_gil_markov_chain); no model run under it.
+   Round 5 candidates: integration_time (quantity, s, nearest cycle_time), markov_chain_approach (model), spectroscopic_ellipsometer
+   (nearest the method spectroscopic_ellipsometry). pending.csv 24 rows (21 earlier undecided).
+4. On the way: figures_import wrote ontology/unmapped.csv with CRLF (LF in git since P155), a whole-file diff; now LF. wer21 imported again
+   (0 calls): identical but the timestamp. CLAUDE.md&#x27;s verdict line said &#x27;imports every data panel&#x27;; now it says what the code does.
+</pre>
+<h2>1. Rule vs the twelve&#x27;s human verdicts (153 judged panels)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s1_cross.csv</p>
+<table><tr><th>human_verdict</th><th>rule_verdict</th><th>panels</th><th>agree</th></tr>
+<tr><td>missed_series</td><td>flagged</td><td>3</td><td>yes</td></tr>
+<tr><td>missed_series</td><td>pass</td><td>6</td><td>no</td></tr>
+<tr><td>ok</td><td>flagged</td><td>52</td><td>no</td></tr>
+<tr><td>ok</td><td>pass</td><td>90</td><td>yes</td></tr>
+<tr><td>wrong_points</td><td>flagged</td><td>2</td><td>yes</td></tr>
+<tr><td>total</td><td></td><td>153</td><td>95 agree</td></tr>
+</table>
+<h2>1. Disagreeing panels by flag</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s1_disagree_flags.csv</p>
+<table><tr><th>flag</th><th>disagreeing_panels</th></tr>
+<tr><td>F1</td><td>19</td></tr>
+<tr><td>F2</td><td>14</td></tr>
+<tr><td>F3</td><td>20</td></tr>
+<tr><td>F4</td><td>13</td></tr>
+<tr><td>F6</td><td>2</td></tr>
+</table>
+<h2>1. Every disagreeing panel</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s1_disagree.csv</p>
+<table><tr><th>paper</th><th>figure</th><th>panel</th><th>human_verdict</th><th>flags</th><th>rule_verdict</th><th>agree</th><th>note</th></tr>
+<tr><td>mat22</td><td>1</td><td>b</td><td>ok</td><td>F4</td><td>flagged</td><td>NO</td><td>two labelled Raman peaks at the printed positions</td></tr>
+<tr><td>mat22</td><td>2</td><td></td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>phase cells as printed categories; 50 and 450 °C rows outside the tick range</td></tr>
+<tr><td>mat22</td><td>4</td><td></td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>S/Mo cell values as printed</td></tr>
+<tr><td>yim20</td><td>7</td><td></td><td>ok</td><td>F1</td><td>flagged</td><td>NO</td><td>three magnification series; X5 tail to 150 µm as printed</td></tr>
+<tr><td>yim20</td><td>8</td><td>b</td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>four sample profiles with the bump at 170 µm</td></tr>
+<tr><td>yim20</td><td>9</td><td>a</td><td>ok</td><td>F2;F2;F2;F2</td><td>flagged</td><td>NO</td><td>three channel heights, drops at the printed positions</td></tr>
+<tr><td>yim20</td><td>9</td><td>d</td><td>ok</td><td>F2;F2;F2;F2</td><td>flagged</td><td>NO</td><td>three cycle counts, plateaus and drops right</td></tr>
+<tr><td>yim20</td><td>9</td><td>e</td><td>ok</td><td>F2;F2;F2;F2</td><td>flagged</td><td>NO</td><td>three curves right</td></tr>
+<tr><td>yim20</td><td>9</td><td>f</td><td>ok</td><td>F2;F2;F2;F2</td><td>flagged</td><td>NO</td><td>three curves right</td></tr>
+<tr><td>yim20</td><td>11</td><td>a</td><td>ok</td><td>F1;F2;F2</td><td>flagged</td><td>NO</td><td>three pulse series; 0.1 s scatter smoothed</td></tr>
+<tr><td>yim20</td><td>11</td><td>b</td><td>ok</td><td>F1;F2;F2</td><td>flagged</td><td>NO</td><td>three purge series match</td></tr>
+<tr><td>gre23</td><td>6</td><td>d</td><td>ok</td><td>F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>four element profiles, levels right; axes as printed (counts on x)</td></tr>
+<tr><td>gre23</td><td>6</td><td>e</td><td>ok</td><td>F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>four element profiles, levels right</td></tr>
+<tr><td>gre23</td><td>6</td><td>f</td><td>ok</td><td>F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>four element profiles, levels right</td></tr>
+<tr><td>ela03</td><td>6</td><td>a</td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>three pore-diameter profiles match</td></tr>
+<tr><td>ela03</td><td>6</td><td>b</td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>three points on the linear fit</td></tr>
+<tr><td>ela03</td><td>7</td><td>b</td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>single profile, plateau, rise and drop at the printed positions</td></tr>
+<tr><td>ela03</td><td>8</td><td>a</td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>data points read; the fit line not a series</td></tr>
+<tr><td>ela03</td><td>8</td><td>b</td><td>ok</td><td>F2</td><td>flagged</td><td>NO</td><td>data points read; the fit line not a series</td></tr>
+<tr><td>ela03</td><td>13</td><td></td><td>ok</td><td>F4</td><td>flagged</td><td>NO</td><td>four log-log lines at the printed pressures</td></tr>
+<tr><td>gor03</td><td>3</td><td></td><td>ok</td><td>F4</td><td>flagged</td><td>NO</td><td>one curve on log axes read at 15 points</td></tr>
+<tr><td>yli18</td><td>2</td><td></td><td>ok</td><td>F3;F3</td><td>flagged</td><td>NO</td><td>four pulse times, numerical and approximation each; x_t/x_s lines read as points</td></tr>
+<tr><td>yli18</td><td>3</td><td></td><td>ok</td><td>F4</td><td>flagged</td><td>NO</td><td>four pulse times, numerical and approximation each</td></tr>
+<tr><td>gao15</td><td>5</td><td>a</td><td>ok</td><td>F3</td><td>flagged</td><td>NO</td><td>one profile at 40 points; the top aspect-ratio axis not recorded</td></tr>
+<tr><td>gao15</td><td>5</td><td>b</td><td>ok</td><td>F3</td><td>flagged</td><td>NO</td><td>three gap sizes, 500 nm read as a sampled line</td></tr>
+<tr><td>art19</td><td>3</td><td></td><td>ok</td><td>F4</td><td>flagged</td><td>NO</td><td>two point sets; the linear fits not read as series</td></tr>
+<tr><td>yim22</td><td>2</td><td>a</td><td>ok</td><td>F4</td><td>flagged</td><td>NO</td><td>four pulse times match</td></tr>
+<tr><td>yim22</td><td>2</td><td>b</td><td>ok</td><td>F4</td><td>flagged</td><td>NO</td><td>four pulse times match</td></tr>
+<tr><td>yim22</td><td>6</td><td>a</td><td>ok</td><td>F4;F4;F4;F4;F4</td><td>flagged</td><td>NO</td><td>three series on log-log axes</td></tr>
+<tr><td>yim22</td><td>6</td><td>b</td><td>ok</td><td>F4;F4;F4;F4;F4</td><td>flagged</td><td>NO</td><td>two flat series on log y</td></tr>
+<tr><td>yim22</td><td>6</td><td>c</td><td>ok</td><td>F4;F4;F4;F4;F4</td><td>flagged</td><td>NO</td><td>two flat series on log y</td></tr>
+<tr><td>yim22</td><td>6</td><td>d</td><td>ok</td><td>F4;F4;F4;F4;F4</td><td>flagged</td><td>NO</td><td>two series on log-log axes</td></tr>
+<tr><td>hei24</td><td>2</td><td>a</td><td>ok</td><td>F3;F3;F3;F4</td><td>flagged</td><td>NO</td><td>three geometries match</td></tr>
+<tr><td>hei24</td><td>2</td><td>b</td><td>ok</td><td>F3;F3;F3;F4</td><td>flagged</td><td>NO</td><td>step functions read as their edge points only</td></tr>
+<tr><td>hei24</td><td>6</td><td>a</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>b</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>c</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>d</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>e</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>f</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>g</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>h</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>i</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>five sigmoids at the printed positions</td></tr>
+<tr><td>hei24</td><td>6</td><td>j</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>five sigmoids at the printed positions</td></tr>
+<tr><td>hei24</td><td>6</td><td>k</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>hei24</td><td>6</td><td>l</td><td>ok</td><td>F1;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3;F3</td><td>flagged</td><td>NO</td><td>step edges only</td></tr>
+<tr><td>zou23</td><td>5</td><td>a</td><td>ok</td><td>F6</td><td>flagged</td><td>NO</td><td>three depth profiles on log y, O scatter followed</td></tr>
+<tr><td>zou23</td><td>5</td><td>b</td><td>ok</td><td>F6</td><td>flagged</td><td>NO</td><td>six elements; Cl single point at 150 °C as printed</td></tr>
+<tr><td>zou23</td><td>10</td><td>c</td><td>ok</td><td>F1</td><td>flagged</td><td>NO</td><td>EDX colour maps, no data by rule</td></tr>
+<tr><td>zou23</td><td>10</td><td>d</td><td>ok</td><td>F1</td><td>flagged</td><td>NO</td><td>EDX colour maps, no data by rule</td></tr>
+<tr><td>zou23</td><td>10</td><td>e</td><td>ok</td><td>F1</td><td>flagged</td><td>NO</td><td>EDX colour maps, no data by rule</td></tr>
+<tr><td>zou23</td><td>10</td><td>f</td><td>ok</td><td>F1</td><td>flagged</td><td>NO</td><td>EDX colour maps, no data by rule</td></tr>
+<tr><td>mat23</td><td>3</td><td>a</td><td>missed_series</td><td></td><td>pass</td><td>NO</td><td>fitted peak marked on the page, no position returned</td></tr>
+<tr><td>mat23</td><td>3</td><td>b</td><td>missed_series</td><td></td><td>pass</td><td>NO</td><td>fitted peak marked on the page, no position returned</td></tr>
+<tr><td>mat23</td><td>3</td><td>c</td><td>missed_series</td><td></td><td>pass</td><td>NO</td><td>fitted peak marked on the page, no position returned</td></tr>
+<tr><td>mat23</td><td>3</td><td>d</td><td>missed_series</td><td></td><td>pass</td><td>NO</td><td>fitted peak marked on the page, no position returned</td></tr>
+<tr><td>mat23</td><td>3</td><td>e</td><td>missed_series</td><td></td><td>pass</td><td>NO</td><td>fitted peak marked on the page, no position returned</td></tr>
+<tr><td>mat23</td><td>3</td><td>f</td><td>missed_series</td><td></td><td>pass</td><td>NO</td><td>fitted peak marked on the page, no position returned</td></tr>
+</table>
+<h2>1. ontology/gates.csv (the agreement: a reference row, not a gate)</h2><p>/home/ftk3187/github/PSED/psed_v2/ontology/gates.csv</p>
+<table><tr><th>metric</th><th>stage</th><th>worse</th><th>worst_dev_value</th><th>paper</th></tr>
+<tr><td>units per 100 elements</td><td>pass0</td><td>lower</td><td>3.37</td><td>gre23</td></tr>
+<tr><td>unbound items</td><td>pass0</td><td>higher</td><td>0</td><td>yim20</td></tr>
+<tr><td>units named after a measurement</td><td>pass0</td><td>higher</td><td>0</td><td>yim20</td></tr>
+<tr><td>panels with no layout (share)</td><td>pass0</td><td>higher</td><td>0.867</td><td>gao15</td></tr>
+<tr><td>form failures (share of records)</td><td>pass1</td><td>higher</td><td>0.091</td><td>gor03</td></tr>
+<tr><td>quotes not found (share of records)</td><td>pass1</td><td>higher</td><td>0.163</td><td>mat22</td></tr>
+<tr><td>figure verdict rule agreement</td><td>reference (not a gate)</td><td></td><td>0.621</td><td>95 of 153 human-judged panels of the twelve</td></tr>
+</table>
+<h2>1. wer21 panels under the rule (kb/import_panels.csv)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s1_rule_wer21.csv</p>
+<table><tr><th>paper</th><th>figure</th><th>panel</th><th>panel_type</th><th>verdict</th><th>flags</th><th>outcome</th><th>reason</th></tr>
+<tr><td>10.1116_6.0001094</td><td>2</td><td></td><td>plot</td><td>rule: flagged</td><td>F3;F3;F3;F3;F3;F3;F2</td><td>imported</td><td>6 curves, 0 cells, 0 peaks, set wer21:cmp:fig2</td></tr>
+<tr><td>10.1116_6.0001094</td><td>4</td><td></td><td>spectrum</td><td>rule: pass</td><td></td><td>inventory only</td><td>x label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>5</td><td></td><td>spectrum</td><td>rule: pass</td><td></td><td>inventory only</td><td>x label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>a</td><td>plot</td><td>rule: flagged</td><td>F3;F3;F3;F3;F3</td><td>inventory only</td><td>x unit_unknown; y label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>b</td><td>plot</td><td>rule: flagged</td><td>F3;F3;F3;F3;F3</td><td>inventory only</td><td>x label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio; y label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O2+&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>c</td><td>plot</td><td>rule: flagged</td><td>F3;F3;F3;F3;F3</td><td>inventory only</td><td>x unit_unknown; y label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O2+&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>d</td><td>plot</td><td>rule: flagged</td><td>F3;F3;F3;F3;F3</td><td>inventory only</td><td>x unit_unknown; y label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>7</td><td>a</td><td>spectrum</td><td>rule: pass</td><td></td><td>inventory only</td><td>x label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>7</td><td>b</td><td>spectrum</td><td>rule: pass</td><td></td><td>inventory only</td><td>x label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>8</td><td>a</td><td>spectrum</td><td>rule: pass</td><td></td><td>inventory only</td><td>x label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>8</td><td>b</td><td>spectrum</td><td>rule: pass</td><td></td><td>inventory only</td><td>x label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>11</td><td></td><td>plot</td><td>rule: pass</td><td></td><td>inventory only</td><td>y label_unresolved: ambiguous alias: surface_coverage, normalized_thickness</td></tr>
+<tr><td>10.1116_6.0001094</td><td>12</td><td></td><td>plot</td><td>rule: pass</td><td></td><td>inventory only</td><td>y label_unresolved: ambiguous alias: surface_coverage, normalized_thickness</td></tr>
+<tr><td>10.1116_6.0001094</td><td>13</td><td></td><td>plot</td><td>rule: flagged</td><td>F3</td><td>inventory only</td><td>y label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>14</td><td></td><td>plot</td><td>rule: pass</td><td></td><td>inventory only</td><td>y label_unresolved: no entry, alias or label matches</td></tr>
+</table>
+<h2>1. wer21 facts from flagged panels</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s1_flagged_facts.csv</p>
+<table><tr><th>fact_id</th><th>type</th><th>quantity</th><th>label_as_printed</th><th>mentions</th><th>points_ref</th><th>basis</th><th>data_kind</th><th>definition_note</th></tr>
+<tr><td>wer21:fig2#7</td><td>observation</td><td>plasma_power</td><td>Power (W)</td><td>10.0 sccm</td><td>wer21:fig2#c1</td><td>digitized</td><td>read_from_figure</td><td>figure-stage flags: F3; F2</td></tr>
+<tr><td>wer21:fig2#8</td><td>observation</td><td>plasma_power</td><td>Power (W)</td><td>20.0 sccm</td><td>wer21:fig2#c2</td><td>digitized</td><td>read_from_figure</td><td>figure-stage flags: F3; F2</td></tr>
+<tr><td>wer21:fig2#9</td><td>observation</td><td>plasma_power</td><td>Power (W)</td><td>50.0 sccm</td><td>wer21:fig2#c3</td><td>digitized</td><td>read_from_figure</td><td>figure-stage flags: F3; F2</td></tr>
+<tr><td>wer21:fig2#10</td><td>observation</td><td>plasma_power</td><td>Power (W)</td><td>100.0 sccm</td><td>wer21:fig2#c4</td><td>digitized</td><td>read_from_figure</td><td>figure-stage flags: F3; F2</td></tr>
+<tr><td>wer21:fig2#11</td><td>observation</td><td>plasma_power</td><td>Power (W)</td><td>200.0 sccm</td><td>wer21:fig2#c5</td><td>digitized</td><td>read_from_figure</td><td>figure-stage flags: F3; F2</td></tr>
+<tr><td>wer21:fig2#12</td><td>observation</td><td>plasma_power</td><td>Power (W)</td><td>400.0 sccm</td><td>wer21:fig2#c6</td><td>digitized</td><td>read_from_figure</td><td>figure-stage flags: F3; F2</td></tr>
+</table>
+<h2>2. Atomic apply: a failure after writing (throwaway copy, P172&#x27;s real failure replayed)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s2_atomic_output.txt</p>
+<pre>fixture (copy only): integration_time (round 5) -&gt; never (Model internals); kb/pilot/query.py of 64aff0b^ (before the P172 fix)
+$ grow.py apply   (exit 1)
+Traceback (most recent call last):
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py&quot;, line 1583, in &lt;module&gt;
+    raise SystemExit(C.main(main))
+                     ^^^^^^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/common.py&quot;, line 196, in main
+    return fn(sys.argv[1] if len(sys.argv) &gt; 1 else &quot;&quot;)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py&quot;, line 1561, in main
+    rows = run.run()
+           ^^^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py&quot;, line 1391, in run
+    rows = self.derived(rows)
+           ^^^^^^^^^^^^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py&quot;, line 1224, in derived
+    import query as Q
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/query.py&quot;, line 394, in &lt;module&gt;
+    TREES = {k: Tree(k) for k in KEY}
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/query.py&quot;, line 394, in &lt;dictcomp&gt;
+    TREES = {k: Tree(k) for k in KEY}
+                ^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/query.py&quot;, line 25, in __init__
+    self.rows = list(csv.DictReader((HERE / f&quot;{KEY[key]}.facts.csv&quot;).open(encoding=&quot;utf-8&quot;)))
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &quot;/home/ftk3187/miniconda3/envs/psed310/lib/python3.11/pathlib.py&quot;, line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: &#x27;/tmp/grow_apply_sxav1hpo/psed_v2/kb/pilot/10.1116_6.0001094.facts.csv&#x27;
+Traceback (most recent call last):
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py&quot;, line 1784, in &lt;module&gt;
+    sys.exit(main())
+             ^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py&quot;, line 1775, in main
+    out = {&quot;init&quot;: cmd_init, &quot;add&quot;: lambda: cmd_add(args.pids), &quot;propose&quot;: cmd_propose, &quot;apply&quot;: cmd_apply, &quot;status&quot;: cmd_status, &quot;report&quot;: report_page,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py&quot;, line 714, in cmd_apply
+    return apply_here()
+           ^^^^^^^^^^^^
+  File &quot;/tmp/grow_apply_sxav1hpo/psed_v2/ontology/grow.py&quot;, line 879, in apply_here
+    subprocess.run([py, str(V2 / &quot;kb&quot; / &quot;extract&quot; / &quot;compile.py&quot;), pid], cwd=ROOT, check=True)
+  File &quot;/home/ftk3187/miniconda3/envs/psed310/lib/python3.11/subprocess.py&quot;, line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command &#x27;[&#x27;/home/ftk3187/miniconda3/envs/psed310/bin/python&#x27;, &#x27;/tmp/grow_apply_sxav1hpo/psed_v2/kb/extract/compile.py&#x27;, &#x27;10.1002_cvde.200390005&#x27;]&#x27; returned non-zero exit status 1.
+
+APPLY FAILED in the sandbox: nothing was written. It would have written:
+  changed: ontology/never.csv
+  changed: ontology/pending.csv
+  new: kb/reports/R5_apply.decision_rows.csv
+  new: kb/reports/R5_apply.written.csv
+STOPPED: apply failed (see above); ontology/, kb/compiled and pending.csv untouched
+</pre>
+<h2>2. Atomic apply: the copy before and after</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s2_atomic_compare.txt</p>
+<pre>files compared in the copy (ontology/, kb/compiled, kb/pilot, kb/reports): 310 before, 310 after
+files changed by the failed apply: 0
+pending.csv fixture row kept as decided (apply did not consume it): yes
+sandbox directories left in /tmp: 0
+</pre>
+<h2>3. wer21 gates</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_gates.csv</p>
+<table><tr><th>paper</th><th>stage</th><th>metric</th><th>value</th><th>worst_dev_value</th><th>worst_dev_paper</th><th>verdict</th></tr>
+<tr><td>wer21</td><td>pass0</td><td>a. a run or a simulation, and 3 units or more</td><td>15 units (run 10, simulation 1, specimen 4)</td><td></td><td></td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass0</td><td>units per 100 elements</td><td>5.34</td><td>3.37</td><td>gre23</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass0</td><td>unbound items</td><td>0</td><td>0</td><td>yim20</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass0</td><td>units named after a measurement</td><td>0</td><td>0</td><td>yim20</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td><td>0.867</td><td>gao15</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass1</td><td>form failures (share of records)</td><td>0.046</td><td>0.091</td><td>gor03</td><td>pass</td></tr>
+<tr><td>wer21</td><td>pass1</td><td>quotes not found (share of records)</td><td>0.017</td><td>0.163</td><td>mat22</td><td>pass</td></tr>
+</table>
+<h2>3. wer21 cost</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_cost.csv</p>
+<table><tr><th>stage</th><th>calls</th><th>models</th><th>input_tokens</th><th>cached_input_tokens</th><th>output_tokens</th><th>usd</th></tr>
+<tr><td>pass 0</td><td>1</td><td>gemini-3.8-flash</td><td>50794</td><td>0</td><td>40376</td><td>0.1895</td></tr>
+<tr><td>pass 1</td><td>21</td><td>gemini-3.8-flash</td><td>607985</td><td>588084</td><td>46706</td><td>0.2342</td></tr>
+<tr><td>total</td><td>22</td><td></td><td></td><td></td><td></td><td>0.4237</td></tr>
+<tr><td>planned (grow.py run --plan)</td><td>22</td><td></td><td></td><td></td><td></td><td>0.6</td></tr>
+</table>
+<h2>3. wer21 units (pass 0)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_units.csv</p>
+<table><tr><th>unit</th><th>role</th><th>name_as_printed</th><th>parent</th><th>experiment_kind</th><th>structure_class</th><th>specimen_class</th><th>introduced_in</th><th>data</th><th>evidence_quote</th></tr>
+<tr><td>run_fig2_c1</td><td>run</td><td>10.0 sccm</td><td></td><td>plasma_measurement</td><td></td><td></td><td>fig2;fig2.cap</td><td>wer21:fig2#c1</td><td>The flow and the power were controlled in four different experiments, each experiment with a different closing of the gate valve (0 cm or completely open, 10, 15, and 20 cm).</td></tr>
+<tr><td>run_fig2_c2</td><td>run</td><td>20.0 sccm</td><td></td><td>plasma_measurement</td><td></td><td></td><td>fig2;fig2.cap</td><td>wer21:fig2#c2</td><td>The flow and the power were controlled in four different experiments, each experiment with a different closing of the gate valve (0 cm or completely open, 10, 15, and 20 cm).</td></tr>
+<tr><td>run_fig2_c3</td><td>run</td><td>50.0 sccm</td><td></td><td>plasma_measurement</td><td></td><td></td><td>fig2;fig2.cap</td><td>wer21:fig2#c3</td><td>The flow and the power were controlled in four different experiments, each experiment with a different closing of the gate valve (0 cm or completely open, 10, 15, and 20 cm).</td></tr>
+<tr><td>run_fig2_c4</td><td>run</td><td>100.0 sccm</td><td></td><td>plasma_measurement</td><td></td><td></td><td>fig2;fig2.cap</td><td>wer21:fig2#c4</td><td>The flow and the power were controlled in four different experiments, each experiment with a different closing of the gate valve (0 cm or completely open, 10, 15, and 20 cm).</td></tr>
+<tr><td>run_fig2_c5</td><td>run</td><td>200.0 sccm</td><td></td><td>plasma_measurement</td><td></td><td></td><td>fig2;fig2.cap</td><td>wer21:fig2#c5</td><td>The flow and the power were controlled in four different experiments, each experiment with a different closing of the gate valve (0 cm or completely open, 10, 15, and 20 cm).</td></tr>
+<tr><td>run_fig2_c6</td><td>run</td><td>400.0 sccm</td><td></td><td>plasma_measurement</td><td></td><td></td><td>fig2;fig2.cap</td><td>wer21:fig2#c6</td><td>The flow and the power were controlled in four different experiments, each experiment with a different closing of the gate valve (0 cm or completely open, 10, 15, and 20 cm).</td></tr>
+<tr><td>sim_markov_chain</td><td>simulation</td><td>Markov chain approach</td><td></td><td></td><td>lateral_channel</td><td></td><td>s22.p8;s25.p14</td><td></td><td>The simulation and fit of deposition thickness profiles were done using a Markov chain approach described elsewhere.34 We implemented our own version of this algorithm.</td></tr>
+<tr><td>run_fig9a</td><td>run</td><td>3.5 \times 10^{-4}</td><td></td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9a;s25.p3</td><td></td><td>(a) 3.5 \times 10^{-4}</td></tr>
+<tr><td>specimen_fig9a</td><td>specimen</td><td>(a)</td><td>run_fig9a</td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9a</td><td></td><td>SEM images of samples grown with varying O_2 pressures but otherwise an identical process (200 cycles TMA-O_2^*, 150 W). (a) 3.5 \times 10^{-4}</td></tr>
+<tr><td>run_fig9b</td><td>run</td><td>1.0 \times 10^{-4}</td><td></td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9b;s25.p3</td><td></td><td>(b) 1.0 \times 10^{-4}</td></tr>
+<tr><td>specimen_fig9b</td><td>specimen</td><td>(b)</td><td>run_fig9b</td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9b</td><td></td><td>SEM images of samples grown with varying O_2 pressures but otherwise an identical process (200 cycles TMA-O_2^*, 150 W). (b) 1.0 \times 10^{-4}</td></tr>
+<tr><td>run_fig9c</td><td>run</td><td>6.2 \times 10^{-3}</td><td></td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9c;s25.p3</td><td></td><td>(c) 6.2 \times 10^{-3}</td></tr>
+<tr><td>specimen_fig9c</td><td>specimen</td><td>(c)</td><td>run_fig9c</td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9c</td><td></td><td>SEM images of samples grown with varying O_2 pressures but otherwise an identical process (200 cycles TMA-O_2^*, 150 W). (c) 6.2 \times 10^{-3}</td></tr>
+<tr><td>run_fig9d</td><td>run</td><td>1.0 \times 10^{-2}</td><td></td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9d;s25.p3</td><td></td><td>(d) 1.0 \times 10^{-2} mbar</td></tr>
+<tr><td>specimen_fig9d</td><td>specimen</td><td>(d)</td><td>run_fig9d</td><td>sample</td><td>planar</td><td>film</td><td>fig9.cap;fig9d</td><td></td><td>SEM images of samples grown with varying O_2 pressures but otherwise an identical process (200 cycles TMA-O_2^*, 150 W). (d) 1.0 \times 10^{-2} mbar</td></tr>
+</table>
+<h2>3. wer21 simulation -&gt; model</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_simulation_model.csv</p>
+<table><tr><th>unit</th><th>name_as_printed</th><th>model_entry</th><th>how</th><th>candidate</th><th>model_runs</th></tr>
+<tr><td>sim_markov_chain</td><td>Markov chain approach</td><td>(no entry)</td><td>kept (a simulation name no model entry has)</td><td>markov_chain_approach (kind model, nearest yanguas_gil_markov_chain)</td><td>0</td></tr>
+</table>
+<h2>3. Round 5 candidates (pending.csv)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_candidates.csv</p>
+<table><tr><th>id</th><th>kind</th><th>unit</th><th>rule_hint</th><th>nearest_id</th><th>nearest_definition</th><th>proposed_definition</th><th>evidence</th></tr>
+<tr><td>integration_time</td><td>quantity</td><td>s</td><td>c</td><td>cycle_time</td><td>The duration of one ALD cycle: the sum of its pulse, hold and purge times.</td><td>integrated for at least 50 s</td><td>10.1116_6.0001094:fig2.cap — integrated for at least 50 s</td></tr>
+<tr><td>markov_chain_approach</td><td>model</td><td></td><td>none</td><td>yanguas_gil_markov_chain</td><td>Markov chain model in which the trajectory of a molecule is a series of transitions between positions in the feature, with sticking and recombination probabilities (Cremers 2019, Sec. V B 2).</td><td></td><td>10.1116_6.0001094:s22.p8 — Markov chain approach</td></tr>
+<tr><td>spectroscopic_ellipsometer</td><td>quantity</td><td></td><td>none</td><td>spectroscopic_ellipsometry</td><td>Spectroscopic ellipsometry: film thickness and optical constants from the polarization change on reflection, in situ or ex situ (the mode qualifier).</td><td></td><td>10.1116_6.0001094:s18.p6 — spectroscopic ellipsometer</td></tr>
+</table>
+<h2>3. wer21 figure axis labels unresolved (ontology/unmapped.csv; not read by propose)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_figure_unresolved.csv</p>
+<table><tr><th>paper</th><th>figure</th><th>panel</th><th>field</th><th>raw</th><th>reason</th></tr>
+<tr><td>10.1116_6.0001094</td><td>2</td><td></td><td>conditions.key</td><td>RF frequency</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>4</td><td></td><td>x.label_raw</td><td>Wavelength (nm)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>4</td><td></td><td>y.label_raw</td><td>Counts/s</td><td>label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;Counts&#x27; -&gt; signal_intensity, &#x27;s&#x27; -&gt; specific_surface_area, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>5</td><td></td><td>x.label_raw</td><td>Wavelength (nm)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>5</td><td></td><td>y.label_raw</td><td>Counts/s</td><td>label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;Counts&#x27; -&gt; signal_intensity, &#x27;s&#x27; -&gt; specific_surface_area, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>a</td><td>x.unit_raw</td><td></td><td>unit_unknown: not in units.yaml (quantity plasma_power)</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>a</td><td>y.label_raw</td><td>I_total</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>b</td><td>x.label_raw</td><td>I_O/I_total</td><td>label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>b</td><td>y.label_raw</td><td>I_O2+/I_total</td><td>label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O2+&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>c</td><td>x.unit_raw</td><td></td><td>unit_unknown: not in units.yaml (quantity plasma_power)</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>c</td><td>y.label_raw</td><td>I_O2+/I_total</td><td>label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O2+&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>d</td><td>x.unit_raw</td><td></td><td>unit_unknown: not in units.yaml (quantity plasma_power)</td></tr>
+<tr><td>10.1116_6.0001094</td><td>6</td><td>d</td><td>y.label_raw</td><td>I_O/I_total</td><td>label_unresolved: no entry, alias or label matches; P90a ratio: parts &#x27;I_O&#x27; -&gt; unresolved, &#x27;I_total&#x27; -&gt; unresolved, no entry declares that ratio</td></tr>
+<tr><td>10.1116_6.0001094</td><td>7</td><td>a</td><td>x.label_raw</td><td>Energy (eV)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>7</td><td>a</td><td>y.label_raw</td><td>m/z = +16 (O⁺)
+Counts/s</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>7</td><td>b</td><td>x.label_raw</td><td>Energy (eV)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>7</td><td>b</td><td>y.label_raw</td><td>m/z = +32 (O₂⁺)
+Counts/s</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>8</td><td>a</td><td>x.label_raw</td><td>Energy (eV)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>8</td><td>a</td><td>y.label_raw</td><td>m/z = -16 (O⁻)
+Counts/s</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>8</td><td>b</td><td>x.label_raw</td><td>Energy (eV)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>8</td><td>b</td><td>y.label_raw</td><td>m/z = -32 (O₂⁻)
+Counts/s</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>11</td><td></td><td>y.label_raw</td><td>Coverage</td><td>label_unresolved: ambiguous alias: surface_coverage, normalized_thickness</td></tr>
+<tr><td>10.1116_6.0001094</td><td>12</td><td></td><td>y.label_raw</td><td>Coverage</td><td>label_unresolved: ambiguous alias: surface_coverage, normalized_thickness</td></tr>
+<tr><td>10.1116_6.0001094</td><td>13</td><td></td><td>y.label_raw</td><td>p_O (mbar)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+<tr><td>10.1116_6.0001094</td><td>14</td><td></td><td>y.label_raw</td><td>p_O (mbar)</td><td>label_unresolved: no entry, alias or label matches</td></tr>
+</table>
+<h2>3. wer21 compile steps</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_compile_steps.txt</p>
+<pre>step input: {&#x27;records&#x27;: 173}
+step a0: {&#x27;value_text promoted (value:reactor_type: value)&#x27;: 1, &#x27;quantity promoted (quantity: symbol)&#x27;: 1}
+step a: {&#x27;numeric string coerced (C4)&#x27;: 6, &#x27;schema:enum&#x27;: 2, &#x27;schema:required&#x27;: 2, &#x27;kept&#x27;: 169}
+step a_fields: {&#x27;effect&#x27;: 2, &#x27;qualifiers&#x27;: 2}
+step b: {&#x27;model_with_value (kept)&#x27;: 5, &#x27;kept&#x27;: 169}
+step c: {&#x27;quantity_other (kept)&#x27;: 2, &#x27;kept&#x27;: 169}
+step d: {&#x27;quote_not_found&#x27;: 3, &#x27;kept&#x27;: 166}
+step e: {&#x27;kept&#x27;: 166}
+step f: {&#x27;species_resolved&#x27;: 10, &#x27;kept&#x27;: 166}
+step h: {&#x27;simulation name unresolved (unmapped, field model)&#x27;: 1, &#x27;place: about paper -&gt; recipe&#x27;: 104, &#x27;place: claim -&gt; paper&#x27;: 23, &#x27;place: caveat -&gt; paper&#x27;: 15, &#x27;place: about paper, method -&gt; paper method activity&#x27;: 1, &#x27;place: model about a simulation -&gt; simulation&#x27;: 7, &#x27;place: setting about a run -&gt; deposition&#x27;: 14, &#x27;place: cited -&gt; paper&#x27;: 2, &#x27;specimen_created&#x27;: 6}
+step m: {&#x27;statement filled from the quote&#x27;: 115, &#x27;label_as_printed filled with the quantity id&#x27;: 10, &#x27;links resolved&#x27;: 5, &#x27;links named elements without facts&#x27;: 9}
+step 1c: {&#x27;data of a flagged panel (rule verdict)&#x27;: 6, &#x27;curve -&gt; observation&#x27;: 6, &#x27;data role measured&#x27;: 6}
+step i: {&#x27;merged&#x27;: 37, &#x27;kept&#x27;: 135}
+step n: {&#x27;comparison series&#x27;: 2}
+step j: {&#x27;derived cycle_time&#x27;: 6}
+step k: {&#x27;statement from the record&#x27;: 129, &#x27;statement_copies_text (reported by check)&#x27;: 28, &#x27;statement assembled&#x27;: 12}
+</pre>
+<h2>3. wer21 check.py problems by kind</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_check_by_kind.csv</p>
+<table><tr><th>kind</th><th>problems</th></tr>
+<tr><td>statement repeats eight words of &lt;element&gt; in a row</td><td>35</td></tr>
+<tr><td>claim without links</td><td>18</td></tr>
+<tr><td>gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50</td><td>8</td></tr>
+<tr><td>points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py</td><td>6</td></tr>
+<tr><td>same statement as &lt;element&gt;</td><td>4</td></tr>
+<tr><td>observation under wer21:recipe (activity recipe), not under a measurement activity or a comparison</td><td>4</td></tr>
+<tr><td>range 0.0001–0.01 is not a range its statement prints (P14)</td><td>2</td></tr>
+<tr><td>a spread fact (stat=) without between= and n= (P1)</td><td>2</td></tr>
+<tr><td>range 0.00035–0.01 is not a range its statement prints (P14)</td><td>2</td></tr>
+<tr><td>range 0.0006–0.01 is not a range its statement prints (P14)</td><td>1</td></tr>
+<tr><td>range 0.0023–0.01 is not a range its statement prints (P14)</td><td>1</td></tr>
+<tr><td>comparison without a purpose fact as its first link</td><td>1</td></tr>
+</table>
+<h2>3. wer21 check.py problems</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s3_check_problems.csv</p>
+<table><tr><th>problem</th></tr>
+<tr><td>wer21:abs.g3#1: statement repeats eight words of abs.g3 in a row</td></tr>
+<tr><td>wer21:abs.g3#2: statement repeats eight words of abs.g3 in a row</td></tr>
+<tr><td>wer21:abs.g3#3: statement repeats eight words of abs.g3 in a row</td></tr>
+<tr><td>wer21:s13.p4#1: statement repeats eight words of s13.p4 in a row</td></tr>
+<tr><td>wer21:s13.p6#1: statement repeats eight words of s13.p6 in a row</td></tr>
+<tr><td>wer21:s15.p1#1: statement repeats eight words of s15.p1 in a row</td></tr>
+<tr><td>wer21:s15.p2#1: statement repeats eight words of s15.p2 in a row</td></tr>
+<tr><td>wer21:s15.p3#1: statement repeats eight words of s15.p3 in a row</td></tr>
+<tr><td>wer21:s16.p2#2: statement repeats eight words of s16.p2 in a row</td></tr>
+<tr><td>wer21:s18.p1#6: statement repeats eight words of s18.p1 in a row</td></tr>
+<tr><td>wer21:s18.p1#9: statement repeats eight words of s18.p1 in a row</td></tr>
+<tr><td>wer21:s18.p1#12: statement repeats eight words of s18.p1 in a row</td></tr>
+<tr><td>wer21:s18.p2#2: statement repeats eight words of s18.p2 in a row</td></tr>
+<tr><td>wer21:s18.p3#1: statement repeats eight words of s18.p3 in a row</td></tr>
+<tr><td>wer21:s18.p3#1: statement repeats eight words of fig3.cap in a row</td></tr>
+<tr><td>wer21:s19.p1#2: statement repeats eight words of s19.p1 in a row</td></tr>
+<tr><td>wer21:s22.p3#1: statement repeats eight words of s22.p3 in a row</td></tr>
+<tr><td>wer21:s22.p3#1: statement repeats eight words of fig4.cap in a row</td></tr>
+<tr><td>wer21:s22.p31#2: same statement as wer21:s22.p31#1</td></tr>
+<tr><td>wer21:s22.p31#3: same statement as wer21:s22.p31#2</td></tr>
+<tr><td>wer21:s22.p31#4: same statement as wer21:s22.p31#3</td></tr>
+<tr><td>wer21:s25.p12#1: statement repeats eight words of s25.p12 in a row</td></tr>
+<tr><td>wer21:s25.p13#1: statement repeats eight words of s25.p13 in a row</td></tr>
+<tr><td>wer21:s25.p13#1: statement repeats eight words of s25.p15 in a row</td></tr>
+<tr><td>wer21:s25.p13#1: statement repeats eight words of fig11.cap in a row</td></tr>
+<tr><td>wer21:s25.p13#1: statement repeats eight words of fig13.cap in a row</td></tr>
+<tr><td>wer21:s25.p17#1: statement repeats eight words of s25.p17 in a row</td></tr>
+<tr><td>wer21:s25.p17#2: statement repeats eight words of s25.p17 in a row</td></tr>
+<tr><td>wer21:s25.p18#2: statement repeats eight words of s25.p18 in a row</td></tr>
+<tr><td>wer21:fig2#1: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:fig2#2: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:fig2#3: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:fig2#4: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:fig2#5: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:fig2#6: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:fig3.cap#1: statement repeats eight words of fig3.cap in a row</td></tr>
+<tr><td>wer21:fig5.cap#1: same statement as wer21:s22.p8#1</td></tr>
+<tr><td>wer21:fig6.cap#2: statement repeats eight words of fig6.cap in a row</td></tr>
+<tr><td>wer21:fig6.cap#3: statement repeats eight words of fig6.cap in a row</td></tr>
+<tr><td>wer21:tabI.r1c2#1: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:tabI.r1c3#1: statement repeats eight words of tabI.r1c3 in a row</td></tr>
+<tr><td>wer21:tabI.r2c3#1: statement repeats eight words of tabI.r2c3 in a row</td></tr>
+<tr><td>wer21:tabI.r2c3#1: statement repeats eight words of tabI.r3c3 in a row</td></tr>
+<tr><td>wer21:tabI.r2c3#1: statement repeats eight words of tabI.r7c3 in a row</td></tr>
+<tr><td>wer21:tabI.r4c2#1: gas_flow_rate setting without species= or gas=: which substance it is about lives only in prose (P50)</td></tr>
+<tr><td>wer21:tabI.r4c3#1: statement repeats eight words of tabI.r4c3 in a row</td></tr>
+<tr><td>wer21:tabI.r5c3#1: statement repeats eight words of tabI.r5c3 in a row</td></tr>
+<tr><td>wer21:fig2#7: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>wer21:fig2#8: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>wer21:fig2#9: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>wer21:fig2#10: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>wer21:fig2#11: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>wer21:fig2#12: points_ref in a facts file: figure points enter the knowledge base only through kb/figures_import.py (P88)</td></tr>
+<tr><td>wer21:abs.g4#1: claim without links</td></tr>
+<tr><td>wer21:abs.g6#1: claim without links</td></tr>
+<tr><td>wer21:abs.g7#1: claim without links</td></tr>
+<tr><td>wer21:s10.p1#1: claim without links</td></tr>
+<tr><td>wer21:s13.p1#1: claim without links</td></tr>
+<tr><td>wer21:s24.p5#1: claim without links</td></tr>
+<tr><td>wer21:s25.p1#1: claim without links</td></tr>
+<tr><td>wer21:s25.p2#1: claim without links</td></tr>
+<tr><td>wer21:s25.p3#1: claim without links</td></tr>
+<tr><td>wer21:s25.p20#1: claim without links</td></tr>
+<tr><td>wer21:s27.p1#1: claim without links</td></tr>
+<tr><td>wer21:s27.p2#1: claim without links</td></tr>
+<tr><td>wer21:s27.p4#1: claim without links</td></tr>
+<tr><td>wer21:fig6.cap#1: claim without links</td></tr>
+<tr><td>wer21:fig6.cap#2: claim without links</td></tr>
+<tr><td>wer21:fig6.cap#3: claim without links</td></tr>
+<tr><td>wer21:fig7.cap#1: claim without links</td></tr>
+<tr><td>wer21:fig15.cap#1: claim without links</td></tr>
+<tr><td>wer21:abs.g3#2: range 0.0001–0.01 is not a range its statement prints (P14)</td></tr>
+<tr><td>wer21:s15.p2#1: a spread fact (stat=) without between= and n= (P1)</td></tr>
+<tr><td>wer21:s15.p3#1: a spread fact (stat=) without between= and n= (P1)</td></tr>
+<tr><td>wer21:s18.p1#9: range 0.00035–0.01 is not a range its statement prints (P14)</td></tr>
+<tr><td>wer21:s18.p5#1: observation under wer21:recipe (activity recipe), not under a measurement activity or a comparison</td></tr>
+<tr><td>wer21:s18.p5#2: observation under wer21:recipe (activity recipe), not under a measurement activity or a comparison</td></tr>
+<tr><td>wer21:fig8a#1: observation under wer21:recipe (activity recipe), not under a measurement activity or a comparison</td></tr>
+<tr><td>wer21:fig8b#1: observation under wer21:recipe (activity recipe), not under a measurement activity or a comparison</td></tr>
+<tr><td>wer21:tabI.r1c3#1: range 0.0001–0.01 is not a range its statement prints (P14)</td></tr>
+<tr><td>wer21:tabI.r2c3#1: range 0.0006–0.01 is not a range its statement prints (P14)</td></tr>
+<tr><td>wer21:tabI.r4c3#1: range 0.0023–0.01 is not a range its statement prints (P14)</td></tr>
+<tr><td>wer21:tabI.r5c3#1: range 0.00035–0.01 is not a range its statement prints (P14)</td></tr>
+<tr><td>wer21:cmp:1: comparison without a purpose fact as its first link</td></tr>
+</table>
+<h2>3. Run steps (grow.py run wer21)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/RUN_wer21.steps.csv</p>
+<table><tr><th>step</th><th>command</th><th>exit</th><th>output</th></tr>
+<tr><td>plan (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py plan wer21</td><td>0</td><td>[{&quot;paper&quot;: &quot;wer21&quot;, &quot;pid&quot;: &quot;10.1116_6.0001094&quot;, &quot;figure_calls&quot;: 0, &quot;figure_usd&quot;: 0.0, &quot;pass0_calls&quot;: 1, &quot;pass0_usd&quot;: 0.152, &quot;pass1_calls&quot;: 21, &quot;pass1_usd&quot;: 0.45, &quot;note&quot;: &quot;pass-1 groups from elements.csv as it stands (built again after the figure stage)&quot;}]</td></tr>
+<tr><td>figures import wer21 (0 calls; P173 rule verdicts)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/figures_import.py 10.1116_6.0001094</td><td>0</td><td>10.1116_6.0001094: 15 data panels, 1 imported; 6 curves, 0 cells, 0 peaks, 1 sets, 0 derived, 0 converted, 23 inventory; 25 unmapped; 0 fields through the paper&#x27;s definitions (P89)
+unmapped rows 25: {&#x27;label_unresolved&#x27;: 22, &#x27;unit_unknown&#x27;: 3}</td></tr>
+<tr><td>pass 0 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/pass0_paper.py wer21</td><td>0</td><td>10.1116_6.0001094: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1116_6.0001094: 1 calls made, 0 from the cache
+wer21 pass 0: 15 units, by role {&#x27;run&#x27;: 10, &#x27;simulation&#x27;: 1, &#x27;specimen&#x27;: 4}; table layouts 1, panel layouts 23</td></tr>
+<tr><td>gate pass 0 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py pass0 wer21</td><td>0</td><td>metric                                      value  worst dev  verdict
+units per 100 elements                       5.34       3.37  pass (gre23)
+unbound items                                   0          0  pass (yim20)
+units named after a measurement                 0          0  pass (yim20)
+panels with no layout (share)                 0.0      0.867  pass (gao15)</td></tr>
+<tr><td>pass 1 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/pass1_elements.py wer21</td><td>0</td><td>wer21 pass 1: 21 groups (abstract+s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12, s13+s14+s15+s16+s17+s18+s19+s20+s21, s22+s23, s24+s25, s26+s27+s28+s29, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig11, fig12, fig13, fig14, fig15, fig1, tabI, fig10); figure/table/equation groups: fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig11, fig12, fig13, fig14, fig15, fig1, tabI, fig10; unpaired: none
+10.1116_6.0001094: 21 planned calls (0 cached, 21 to call), model gemini-3.8-flash
+10.1116_6.0001094: 21 calls made, 0 from the cache; prefix cached once (1 cached content)
+wer21 pass 1: 173 records by type {&#x27;setting&#x27;: 107, &#x27;claim&#x27;: 25, &#x27;model&#x27;: 17, &#x27;caveat&#x27;: 16, &#x27;observation&#x27;: 4, &#x27;cited&#x27;: 2, &#x27;derived&#x27;: 2}; NK {&#x27;no_knowledge&#x27;: 96, &#x27;boilerplate&#x27;: 57, &#x27;duplicate&#x27;: 11, &#x27;citation_line&#x27;: 6}; elements missing 0; records failing form.json 8; unparsed responses none
+wer21 this run: 21 lines, tokens in 607985 (cache read 588084) out 46706</td></tr>
+<tr><td>compile wer21 (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/compile.py wer21</td><td>0</td><td>wer 150)
+i: merged fig12.cap into s18.p1;s25.p14;fig12.cap (pulse_time 5)
+i: merged fig13.cap into s25.p13;s25.p15;fig11.cap;fig13.cap (process_pressure 0.005)
+i: merged fig14.cap into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap (plasma_power 150)
+i: merged tabI.r2c2 into tabI.r1c2;tabI.r2c2 (gas_flow_rate )
+i: merged tabI.r3c3 into tabI.r2c3;tabI.r3c3 (process_pressure )
+i: merged tabI.r4c4 into tabI.r2c4;tabI.r4c4 (plasma_power )
+i: merged tabI.r5c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4 (plasma_power 150)
+i: merged tabI.r6c3 into s25.p13;s25.p15;fig11.cap;fig13.cap;tabI.r6c3 (process_pressure 0.005)
+i: merged tabI.r7c3 into tabI.r2c3;tabI.r3c3;tabI.r7c3 (process_pressure )
+i: merged tabI.r7c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4;tabI.r7c4 (plasma_power 150)
+j: derived over 6 entities: 6 rows; not derived: {&#x27;no fact for S&#x27;: 6, &#x27;no fact for p&#x27;: 6, &#x27;E: no fact for p&#x27;: 6, &#x27;no fact for rho&#x27;: 12, &#x27;n: no fact for gpc&#x27;: 6, &#x27;gpc: no fact for n&#x27;: 6, &#x27;no fact for H&#x27;: 6, &#x27;no fact for dn&#x27;: 6, &#x27;no fact for mg&#x27;: 12, &#x27;no fact for t&#x27;: 6, &#x27;no fact for h2&#x27;: 6, &#x27;no fact for phi&#x27;: 6, &#x27;no fact for T&#x27;: 6, &#x27;lam: no fact for T&#x27;: 6, &#x27;gpc: n: no fact for gpc&#x27;: 6}
+j: caveats (query.caveats_of): 15, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
+j: claim nodes (query.claim_nodes): 17 nodes for 23 claims; claims without a full triple (query.node_of empty): 0
+j: comparisons from figures.json (1c): 2
+step input: {&#x27;records&#x27;: 173}
+step a0: {&#x27;value_text promoted (value:reactor_type: value)&#x27;: 1, &#x27;quantity promoted (quantity: symbol)&#x27;: 1}
+step a: {&#x27;numeric string coerced (C4)&#x27;: 6, &#x27;schema:enum&#x27;: 2, &#x27;schema:required&#x27;: 2, &#x27;kept&#x27;: 169}
+step a_fields: {&#x27;effect&#x27;: 2, &#x27;qualifiers&#x27;: 2}
+step b: {&#x27;model_with_value (kept)&#x27;: 5, &#x27;kept&#x27;: 169}
+step c: {&#x27;quantity_other (kept)&#x27;: 2, &#x27;kept&#x27;: 169}
+step d: {&#x27;quote_not_found&#x27;: 3, &#x27;kept&#x27;: 166}
+step e: {&#x27;kept&#x27;: 166}
+step f: {&#x27;species_resolved&#x27;: 10, &#x27;kept&#x27;: 166}
+step h: {&#x27;simulation name unresolved (unmapped, field model)&#x27;: 1, &#x27;place: about paper -&gt; recipe&#x27;: 104, &#x27;place: claim -&gt; paper&#x27;: 23, &#x27;place: caveat -&gt; paper&#x27;: 15, &#x27;place: about paper, method -&gt; paper method activity&#x27;: 1, &#x27;place: model about a simulation -&gt; simulation&#x27;: 7, &#x27;place: setting about a run -&gt; deposition&#x27;: 14, &#x27;place: cited -&gt; paper&#x27;: 2, &#x27;specimen_created&#x27;: 6}
+step m: {&#x27;statement filled from the quote&#x27;: 115, &#x27;label_as_printed filled with the quantity id&#x27;: 10, &#x27;links resolved&#x27;: 5, &#x27;links named elements without facts&#x27;: 9}
+step 1c: {&#x27;data of a flagged panel (rule verdict)&#x27;: 6, &#x27;curve -&gt; observation&#x27;: 6, &#x27;data role measured&#x27;: 6}
+step i: {&#x27;merged&#x27;: 37, &#x27;kept&#x27;: 135}
+step n: {&#x27;comparison series&#x27;: 2}
+step j: {&#x27;derived cycle_time&#x27;: 6}
+step k: {&#x27;statement from the record&#x27;: 129, &#x27;statement_copies_text (reported by check)&#x27;: 28, &#x27;statement assembled&#x27;: 12}
+diff against the gold (type, gold, compiled, matched, precision, recall):
+no gold: kb/pilot/10.1116_6.0001094.facts.csv absent (not scored)</td></tr>
+<tr><td>check.py wer21 (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python -c import sys; sys.path.insert(0, &#x27;psed_v2/kb/extract&#x27;); import score; e, _ = score.check_dir(&#x27;10.1116_6.0001094&#x27;); print(len(e), &#x27;check.py problems&#x27;)</td><td>0</td><td>84 check.py problems</td></tr>
+<tr><td>gate pass 1 wer21</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py pass1 wer21</td><td>0</td><td>metric                                      value  worst dev  verdict
+form failures (share of records)            0.046      0.091  pass (gor03)
+quotes not found (share of records)         0.017      0.163  pass (mat22)</td></tr>
+<tr><td>audit round 1</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>audit round 2</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>audit round 3</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>audit round 4</td><td>grow.py audit</td><td>0</td><td></td></tr>
+<tr><td>export --check (0 calls)</td><td>/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/ontology/export.py --check</td><td>0</td><td>vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) &lt;= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: [&#x27;o_atom&#x27;]
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a &#x27;never an entry&#x27; label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry&#x27;s alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 21 rows: undecided 21
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper&#x27;s own measure: re…)</td></tr>
+<tr><td>grow.py add</td><td>cmd_add</td><td>0</td><td>wer21</td></tr>
+<tr><td>grow.py propose</td><td>cmd_propose</td><td>0</td><td>psed_v2/ontology/decide.html</td></tr>
+</table>
+<h2>Code diff (P173 code commit)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.code.diff</p>
+<pre>diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
+index 30c09b0..7961813 100644
+--- a/psed_v2/kb/extract/compile.py
++++ b/psed_v2/kb/extract/compile.py
+@@ -917,6 +917,12 @@ class Run:
+             r[&quot;author&quot;] = self.pid
+             return r
+ 
++        def flagged(f, item):                                                   # P173 (user): data of a panel the rule verdict flagged: the
++            if item.get(&quot;verdict&quot;) == &quot;flagged&quot;:                                 # flag names in the fact&#x27;s note, basis digitized
++                f[&quot;basis&quot;] = &quot;digitized&quot;
++                f[&quot;definition_note&quot;] = (item.get(&quot;uncertainty&quot;) or {}).get(&quot;note&quot;, &quot;&quot;) or &quot;figure-stage flags&quot;
++                self.count(&quot;1c&quot;, &quot;data of a flagged panel (rule verdict)&quot;)
++
+         def result(cu, parent, typ):
+             y = cu[&quot;y&quot;]
+             if y.get(&quot;quantity&quot;) not in L.QUANTITIES:
+@@ -924,6 +930,7 @@ class Run:
+             facts.append(row(type=typ, quantity=y[&quot;quantity&quot;], label_as_printed=y.get(&quot;label_raw&quot;, &quot;&quot;) or y[&quot;quantity&quot;],
+                              data_kind=&quot;simulated&quot; if typ == &quot;model&quot; else &quot;read_from_figure&quot;, mentions=cu.get(&quot;series&quot;, {}).get(&quot;label_raw&quot;, &quot;&quot;),
+                              evidence=&quot;;&quot;.join(els(cu[&quot;figure&quot;], cu.get(&quot;panel&quot;, &quot;&quot;))), parent=parent, points_ref=cu[&quot;id&quot;]))
++            flagged(facts[-1], cu)
+             self.count(&quot;1c&quot;, f&quot;curve -&gt; {typ}&quot;)
+         unowned = []
+         for cu in Fj.get(&quot;curves&quot;, []):
+@@ -965,6 +972,7 @@ class Run:
+                              value=f&quot;{v[&#x27;value&#x27;]:.6g}&quot; if v.get(&quot;value&quot;) is not None else &quot;&quot;, value_text=vt, unit=u or &quot;&quot;,
+                              data_kind={&quot;measured&quot;: &quot;read_from_figure&quot;, &quot;fitted&quot;: &quot;computed_by_authors&quot;}.get(dr, &quot;simulated&quot;), evidence=ev,
+                              parent=&quot;@meas:&quot; + nid if dr == &quot;measured&quot; else nid, points_ref=v[&quot;id&quot;]))
++            flagged(facts[-1], v)
+             self.count(&quot;1c&quot;, f&quot;{v.get(&#x27;kind&#x27;, &#x27;value&#x27;)} -&gt; {facts[-1][&#x27;type&#x27;]}&quot;)
+         if unowned:                                                             # P144: no fallback
+             self.count(&quot;1c&quot;, &quot;curves no unit names (left out)&quot;, len(unowned))
+diff --git a/psed_v2/kb/extract/gates.py b/psed_v2/kb/extract/gates.py
+index 180a048..49a54b9 100644
+--- a/psed_v2/kb/extract/gates.py
++++ b/psed_v2/kb/extract/gates.py
+@@ -61,6 +61,31 @@ def pass1_values(pid):
+     return {&quot;form failures (share of records)&quot;: round(bad / max(n, 1), 3), &quot;quotes not found (share of records)&quot;: round(nq / max(n, 1), 3)}, n
+ 
+ 
++def verdict_agreement():
++    &quot;&quot;&quot;P173 (user): the figure verdict rule (kb/figures_import.py: no figure-stage flag -&gt; pass, any flag -&gt; flagged) against the human
++    verdicts of the twelve (ingest/answers/figures.json: ok -&gt; pass agrees, any other verdict -&gt; flagged agrees), per judged panel; every
++    panel written to kb/reports/gates_verdict_agreement.csv. Returns (agreement rate, agreeing, judged).&quot;&quot;&quot;
++    ans = json.loads((C.V2 / &quot;ingest&quot; / &quot;answers&quot; / &quot;figures.json&quot;).read_text(encoding=&quot;utf-8&quot;))[&quot;items&quot;]
++    flags = {}
++    for pid in {v[&quot;paper_id&quot;] for v in ans}:
++        f = C.V2 / &quot;ingest&quot; / &quot;final&quot; / pid / &quot;figures.json&quot;
++        for g in json.loads(f.read_text(encoding=&quot;utf-8&quot;)).get(&quot;figures&quot;, []) if f.exists() else []:
++            flags[(pid, str(g[&quot;number&quot;]))] = [x[&quot;flag&quot;] for x in g.get(&quot;flags&quot;) or []]
++    rows = []
++    for v in ans:
++        fl = flags.get((v[&quot;paper_id&quot;], str(v[&quot;figure&quot;])), [])
++        rule = &quot;pass&quot; if not fl else &quot;flagged&quot;
++        agree = (v[&quot;verdict&quot;] == &quot;ok&quot;) == (rule == &quot;pass&quot;)
++        rows.append(dict(paper=C.E.PAPERS.get(v[&quot;paper_id&quot;], v[&quot;paper_id&quot;]), figure=v[&quot;figure&quot;], panel=v[&quot;panel&quot;], human_verdict=v[&quot;verdict&quot;],
++                         flags=&quot;;&quot;.join(fl), rule_verdict=rule, agree=&quot;yes&quot; if agree else &quot;NO&quot;, note=v.get(&quot;note&quot;, &quot;&quot;)))
++    with (C.V2 / &quot;kb&quot; / &quot;reports&quot; / &quot;gates_verdict_agreement.csv&quot;).open(&quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as f:
++        w = csv.DictWriter(f, fieldnames=[&quot;paper&quot;, &quot;figure&quot;, &quot;panel&quot;, &quot;human_verdict&quot;, &quot;flags&quot;, &quot;rule_verdict&quot;, &quot;agree&quot;, &quot;note&quot;], lineterminator=&quot;\n&quot;)
++        w.writeheader()
++        w.writerows(rows)
++    n_ag = sum(1 for r in rows if r[&quot;agree&quot;] == &quot;yes&quot;)
++    return round(n_ag / max(len(rows), 1), 3), n_ag, len(rows)
++
++
+ def reference():
+     rows, per = {}, []
+     for pid, key in dev_papers():
+@@ -72,6 +97,9 @@ def reference():
+                 cur = rows.get(m)
+                 if cur is None or ((v &lt; cur[&quot;worst_dev_value&quot;]) if m in LOWER_IS_WORSE else (v &gt; cur[&quot;worst_dev_value&quot;])):
+                     rows[m] = dict(metric=m, stage=stage, worse=&quot;lower&quot; if m in LOWER_IS_WORSE else &quot;higher&quot;, worst_dev_value=v, paper=key)
++    rate, n_ag, n_all = verdict_agreement()                                     # P173: a reference, not a gate
++    rows[&quot;figure verdict rule agreement&quot;] = dict(metric=&quot;figure verdict rule agreement&quot;, stage=&quot;reference (not a gate)&quot;, worse=&quot;&quot;,
++                                                 worst_dev_value=rate, paper=f&quot;{n_ag} of {n_all} human-judged panels of the twelve&quot;)
+     with GATES.open(&quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as f:
+         w = csv.DictWriter(f, fieldnames=COLS, lineterminator=&quot;\n&quot;)
+         w.writeheader()
+diff --git a/psed_v2/kb/figures_import.py b/psed_v2/kb/figures_import.py
+index 937863f..3c7f305 100644
+--- a/psed_v2/kb/figures_import.py
++++ b/psed_v2/kb/figures_import.py
+@@ -8,7 +8,10 @@ panel with its outcome and reason), ontology/unmapped.csv (every unresolved fiel
+ 
+ No model call, no PDF, no paper named in any rule. Every rule is general; a paper, figure or label is never special-cased.
+ 
+-Gate (P84): a plot, spectrum or map panel is imported when its verdict in answers/figures.json is ok and it carries no F5 or F6 flag;
++Gate (P84): a plot, spectrum or map panel is imported when its verdict in answers/figures.json is ok and it carries no F5 or F6 flag
++(the twelve pilot papers, judged by hand); P173 (user): from paper 13 on (a paper with no verdict in answers/figures.json) every data panel
++is imported, its verdict the figure stage&#x27;s own flags: none -&gt; pass, any -&gt; flagged (the flag names kept on the panel, its curves and cells:
++uncertainty note, basis digitized); nothing is dropped;
+ F1-F4 are kept on the records as flags. Every other data panel is listed with its reason. Resolution, closed, in this order:
+   a. axis label -&gt; quantity id (resolve_label): LaTeX and braces stripped, the bracketed unit, trailing symbols, case and whitespace
+      normalised, then matched to the ids, names, labels and aliases of the entries with role coordinate, condition, output or
+@@ -519,6 +522,7 @@ class Importer:
+         self.problems = []
+         ans = json.loads(ANSWERS.read_text(encoding=&quot;utf-8&quot;))[&quot;items&quot;] if ANSWERS.exists() else []
+         self.verdict = {(v[&quot;paper_id&quot;], str(v[&quot;figure&quot;]), v[&quot;panel&quot;]): v for v in ans}
++        self.judged = {v[&quot;paper_id&quot;] for v in ans}                               # P173: papers with human verdicts (the twelve)
+ 
+     def unm(self, pid, fig, panel, field, raw, reason):
+         self.unmapped.append(dict(paper=pid, figure=fig, panel=panel, field=field, raw=raw, reason=reason))
+@@ -672,13 +676,18 @@ class Importer:
+                     continue
+                 counts[&quot;data_panels&quot;] += 1
+                 v = self.verdict.get((pid, fig, pan))
+-                row = dict(paper=pid, figure=fig, panel=pan, panel_type=p[&quot;panel_type&quot;], verdict=v[&quot;verdict&quot;] if v else &quot;&quot;, flags=&quot;;&quot;.join(flags), outcome=&quot;&quot;, reason=&quot;&quot;)
++                rule = pid not in self.judged                                    # P173 (user): from paper 13 on the verdict is the rule&#x27;s
++                if rule:
++                    v = dict(verdict=&quot;pass&quot; if not flags else &quot;flagged&quot;)         # no figure-stage flag -&gt; pass; any flag -&gt; flagged (imported)
++                row = dict(paper=pid, figure=fig, panel=pan, panel_type=p[&quot;panel_type&quot;], verdict=((&quot;rule: &quot; if rule else &quot;&quot;) + v[&quot;verdict&quot;]) if v else &quot;&quot;,
++                           flags=&quot;;&quot;.join(flags), outcome=&quot;&quot;, reason=&quot;&quot;)
+                 self.panels.append(row)
++                inv[&quot;verdict&quot;] = row[&quot;verdict&quot;]
+                 if not v:
+                     row.update(outcome=&quot;not imported&quot;, reason=&quot;no verdict&quot;); inv[&quot;status&quot;] = &quot;not judged&quot;; continue
+-                if v[&quot;verdict&quot;] != &quot;ok&quot;:
++                if v[&quot;verdict&quot;] not in (&quot;ok&quot;, &quot;pass&quot;, &quot;flagged&quot;):
+                     row.update(outcome=&quot;not imported&quot;, reason=f&quot;verdict {v[&#x27;verdict&#x27;]}&quot;); inv[&quot;status&quot;] = f&quot;verdict {v[&#x27;verdict&#x27;]}&quot;; continue
+-                if &quot;F5&quot; in flags or &quot;F6&quot; in flags:
++                if not rule and (&quot;F5&quot; in flags or &quot;F6&quot; in flags):                # the rule drops nothing (P173)
+                     row.update(outcome=&quot;not imported&quot;, reason=&quot;flag &quot; + &quot;, &quot;.join(x for x in flags if x in (&quot;F5&quot;, &quot;F6&quot;))); inv[&quot;status&quot;] = &quot;flagged F5/F6&quot;; continue
+                 ax = {a: self.axis(pid, fig, pan, a, p.get(a) or {}) for a in (&quot;x&quot;, &quot;y&quot;)}
+                 inv[&quot;quantities&quot;] = [ax[a][&quot;quantity&quot;] for a in (&quot;x&quot;, &quot;y&quot;) if ax[a][&quot;quantity&quot;]]
+@@ -788,6 +797,15 @@ class Importer:
+                 row.update(outcome=&quot;imported&quot;, reason=row[&quot;reason&quot;] or f&quot;{n_imp} curves, {len(p.get(&#x27;cells&#x27;) or [])} cells, {len(p.get(&#x27;peaks&#x27;) or [])} peaks&quot; + (f&quot;, set {sid}&quot; if sid else &quot;&quot;))
+         counts[&quot;derived&quot;] = len(out[&quot;derived&quot;]); counts[&quot;unmapped&quot;] = sum(1 for u in self.unmapped if u[&quot;paper&quot;] == pid)
+         counts[&quot;resolved_p89&quot;] = len(self.R.p89_hits); out[&quot;p89&quot;] = [dict(label=l, quantity=q, note=n, definition=f) for l, (q, n, f) in self.R.p89_hits]
++        if pid not in self.judged:                                               # P173: a flagged panel&#x27;s flag names on its curves and cells
++            vd = {(i[&quot;figure&quot;], i[&quot;panel&quot;]): i.get(&quot;verdict&quot;, &quot;&quot;) for i in out[&quot;inventory&quot;]}
++            for c in out[&quot;curves&quot;] + out[&quot;values&quot;]:
++                if vd.get((c[&quot;figure&quot;], c.get(&quot;panel&quot;, &quot;&quot;))) == &quot;rule: flagged&quot;:
++                    c[&quot;verdict&quot;] = &quot;flagged&quot;
++                    c.setdefault(&quot;uncertainty&quot;, {})
++                    if isinstance(c[&quot;uncertainty&quot;], dict):
++                        c[&quot;uncertainty&quot;].setdefault(&quot;basis&quot;, &quot;digitized&quot;)
++                        c[&quot;uncertainty&quot;][&quot;note&quot;] = &quot;figure-stage flags: &quot; + &quot;; &quot;.join(dict.fromkeys(c.get(&quot;flags&quot;) or []))
+         out[&quot;report&quot;] = dict(counts)
+         (HERE / f&quot;{pid}.figures.json&quot;).write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding=&quot;utf-8&quot;)
+         return out
+diff --git a/psed_v2/ontology/grow.py b/psed_v2/ontology/grow.py
+index 40d9bb4..a26846d 100644
+--- a/psed_v2/ontology/grow.py
++++ b/psed_v2/ontology/grow.py
+@@ -703,6 +703,65 @@ def split_labels(row, labels):
+ 
+ 
+ def cmd_apply():
++    &quot;&quot;&quot;P173 (user): apply is atomic. Every write happens in a sandbox (a temporary copy of ontology/ and kb/: kb/reports holds only the
++    R&lt;n&gt;_apply files; kb/cache, kb/records, kb/verify, ingest and corpus are read-only links); apply_here() runs there and ends with
++    export --check and the audits of every applied round. Only when all pass are the files it changed moved into the real tree and
++    committed; a failure leaves ontology/, kb/compiled and pending.csv untouched and prints what would have been written.&quot;&quot;&quot;
++    import os
++    import shutil
++    import tempfile
++    if os.environ.get(&quot;GROW_SANDBOX&quot;):
++        return apply_here()
++    tmp = Path(tempfile.mkdtemp(prefix=&quot;grow_apply_&quot;))
++    T = tmp / V2.name
++    skip = shutil.ignore_patterns(&quot;__pycache__&quot;)
++    try:
++        (T / &quot;kb&quot; / &quot;reports&quot;).mkdir(parents=True)
++        shutil.copytree(HERE, T / &quot;ontology&quot;, ignore=skip)
++        for x in (V2 / &quot;kb&quot;).iterdir():
++            if x.name in (&quot;reports&quot;, &quot;cache&quot;, &quot;records&quot;, &quot;verify&quot;, &quot;__pycache__&quot;):
++                continue
++            if x.is_dir():
++                shutil.copytree(x, T / &quot;kb&quot; / x.name, ignore=skip)
++            else:
++                shutil.copy2(x, T / &quot;kb&quot; / x.name)
++        for name in (&quot;cache&quot;, &quot;records&quot;, &quot;verify&quot;):
++            (T / &quot;kb&quot; / name).symlink_to(V2 / &quot;kb&quot; / name)
++        for f in (V2 / &quot;kb&quot; / &quot;reports&quot;).glob(&quot;R*_apply.*&quot;):
++            shutil.copy2(f, T / &quot;kb&quot; / &quot;reports&quot; / f.name)
++        for name in (&quot;ingest&quot;, &quot;corpus&quot;, &quot;.env&quot;):
++            if (V2 / name).exists():
++                (T / name).symlink_to(V2 / name)
++        p = subprocess.run([sys.executable, str(T / &quot;ontology&quot; / &quot;grow.py&quot;), &quot;apply&quot;], cwd=tmp, env={**os.environ, &quot;GROW_SANDBOX&quot;: &quot;1&quot;}, capture_output=True, text=True)
++        print(p.stdout[-8000:] + p.stderr[-3000:])
++        changed = []
++        for top in (&quot;ontology&quot;, &quot;kb&quot;):
++            for f in sorted((T / top).rglob(&quot;*&quot;)):
++                if f.is_symlink() or any(q.is_symlink() for q in f.parents if T in q.parents) or not f.is_file() or &quot;__pycache__&quot; in f.parts or f.name == &quot;.apply_message&quot;:
++                    continue
++                rel = f.relative_to(T)
++                real = V2 / rel
++                if not real.exists() or real.read_bytes() != f.read_bytes():
++                    changed.append((rel, &quot;new&quot; if not real.exists() else &quot;changed&quot;))
++        if p.returncode:
++            print(&quot;APPLY FAILED in the sandbox: nothing was written. It would have written:&quot;)
++            for rel, st in changed:
++                print(f&quot;  {st}: {rel}&quot;)
++            raise Stop(&quot;apply failed (see above); ontology/, kb/compiled and pending.csv untouched&quot;)
++        for rel, _ in changed:
++            (V2 / rel).parent.mkdir(parents=True, exist_ok=True)
++            shutil.copy2(T / rel, V2 / rel)
++        msg = (T / &quot;ontology&quot; / &quot;.apply_message&quot;).read_text(encoding=&quot;utf-8&quot;)
++        files = [ONTO, PENDING, NEVER, HISTORY, ROUNDS, REPORT, V2 / &quot;kb&quot; / &quot;pilot&quot; / &quot;vocab.py&quot;, V2 / &quot;kb&quot; / &quot;schema&quot;, COMPILED, V2 / &quot;kb&quot; / &quot;reports&quot;]
++        subprocess.run([&quot;git&quot;, &quot;add&quot;, &quot;--&quot;, *map(str, files)], cwd=ROOT, check=True)
++        subprocess.run([&quot;git&quot;, &quot;commit&quot;, &quot;-q&quot;, &quot;-m&quot;, msg], cwd=ROOT, check=True)
++        print(f&quot;moved {len(changed)} files into place and committed: {msg.splitlines()[0]}&quot;)
++        return []
++    finally:
++        shutil.rmtree(tmp, ignore_errors=True)
++
++
++def apply_here():
+     r, late = current((&quot;proposed&quot;,)), False
+     if not r:                                                                   # P169: late decisions of an applied round (no new snapshot)
+         dec = [x for x in rd(PENDING) if x[&quot;decision&quot;]]
+@@ -835,14 +894,17 @@ def cmd_apply():
+     set_round(n, status=&quot;applied&quot;, applied=today(), n_accepted=plus(&quot;n_accepted&quot;, c[&quot;accept&quot;]), n_alias=plus(&quot;n_alias&quot;, c[&quot;alias&quot;]),
+               n_rejected=plus(&quot;n_rejected&quot;, c[&quot;reject&quot;]), n_never=plus(&quot;n_never&quot;, c[&quot;never&quot;]))
+     fails = audit_round(n)                                                      # P157d: A1-A3 and their acceptance, every round
++    for r2 in rounds():                                                         # P173: and every other applied round&#x27;s audit
++        if r2[&quot;status&quot;] == &quot;applied&quot; and r2[&quot;round&quot;] != str(n) and (REPORTS / f&quot;R{r2[&#x27;round&#x27;]}_apply.decision_rows.csv&quot;).exists():
++            fails += [f&quot;round {r2[&#x27;round&#x27;]}: {x}&quot; for x in audit_round(int(r2[&quot;round&quot;]))]
+     report_page()
+-    files = [ONTO, PENDING, NEVER, HISTORY, ROUNDS, REPORT, V2 / &quot;kb&quot; / &quot;pilot&quot; / &quot;vocab.py&quot;, V2 / &quot;kb&quot; / &quot;schema&quot;, COMPILED, V2 / &quot;kb&quot; / &quot;reports&quot;]
+-    subprocess.run([&quot;git&quot;, &quot;add&quot;, &quot;--&quot;, *map(str, files)], cwd=ROOT, check=True)
+-    subprocess.run([&quot;git&quot;, &quot;commit&quot;, &quot;-q&quot;, &quot;-m&quot;, f&quot;grow round {n} {&#x27;late decisions &#x27; if late else &#x27;&#x27;}applied: {c[&#x27;accept&#x27;]} accepted, {c[&#x27;alias&#x27;]} aliases, {c[&#x27;reject&#x27;]} rejected, &quot;
+-                    f&quot;{c[&#x27;never&#x27;]} never; recompiled {len(extracted)} papers, scored {len(gold)} (0 calls)&quot;], cwd=ROOT, check=True)
+-    print(f&quot;round {n} applied: {dict(c)}; {len(rows) - len(decided)} rows stay pending; ontology.yaml sha256 {after[:12]}; committed&quot;)
++    (HERE / &quot;.apply_message&quot;).write_text(f&quot;grow round {n} {&#x27;late decisions &#x27; if late else &#x27;&#x27;}applied: {c[&#x27;accept&#x27;]} accepted, {c[&#x27;alias&#x27;]} aliases, &quot;
++                                         f&quot;{c[&#x27;reject&#x27;]} rejected, {c[&#x27;never&#x27;]} never; recompiled {len(extracted)} papers, scored {len(gold)} (0 calls)&quot;, encoding=&quot;utf-8&quot;)
++    print(f&quot;round {n} applied in the sandbox: {dict(c)}; {len(rows) - len(decided)} rows stay pending; ontology.yaml sha256 {after[:12]}&quot;)
+     for f in fails:
+         print(f&quot;ACCEPTANCE FAIL round {n}: {f}&quot;)
++    if fails:
++        raise Stop(f&quot;{len(fails)} audit failures: nothing moved into place&quot;)
+     return fails
+ 
+ 
+@@ -1217,8 +1279,8 @@ def cmd_run(args, yes=False, plan_only=False):
+     --check -&gt; grow.py add + propose -&gt; decide.html -&gt; stop. The planned provider calls and dollars are printed before the first call; a y/n is
+     asked unless --yes; --plan stops after the plan. GATE (gates.py, ontology/gates.csv: the worst of the twelve development papers):
+     a. pass 0 lists no run and no simulation, or fewer than 3 units; b. a pass-0 value worse than the worst development value; c. a provider
+-    error or a cached-prefix failure (any non-zero exit of a provider step); d. (before pass 0) data panels with no verdict in
+-    ingest/answers/figures.json, so the figures import (P84) imports nothing. After pass 1 (before propose): form failures or quotes not found
++    error or a cached-prefix failure (any non-zero exit of a provider step). P173: the figures import gives a paper 14+ its verdicts by rule
++    (kb/figures_import.py: the figure stage&#x27;s flags), so gate d (no verdicts, P172) is gone. After pass 1 (before propose): form failures or quotes not found
+     worse than the worst development value; an earlier round&#x27;s audit FAIL; export --check FAIL. Every run writes kb/reports/RUN_&lt;keys&gt;.html
+     with its plan, its gate tables and its steps.&quot;&quot;&quot;
+     if not 1 &lt;= len(args) &lt;= 3:
+@@ -1288,16 +1350,8 @@ def cmd_run(args, yes=False, plan_only=False):
+         if x[&quot;figure_calls&quot;]:
+             if step(f&quot;figure stage {x[&#x27;paper&#x27;]} ({x[&#x27;figure_calls&#x27;]} vision calls)&quot;, [py, V2 / &quot;ingest&quot; / &quot;figures.py&quot;, &quot;--ids&quot;, x[&quot;pid&quot;]])[0]:
+                 return finish(f&quot;gate c: the figure stage of {x[&#x27;paper&#x27;]} failed&quot;)
+-            step(f&quot;figures import {x[&#x27;paper&#x27;]} (0 calls)&quot;, [py, V2 / &quot;kb&quot; / &quot;figures_import.py&quot;, x[&quot;pid&quot;]])
+             step(f&quot;elements {x[&#x27;paper&#x27;]} again, with the figure stage&#x27;s panels (0 calls)&quot;, [py, PILOT / &quot;elements.py&quot;, &quot;--ids&quot;, x[&quot;pid&quot;]])
+-    ans = json.loads((V2 / &quot;ingest&quot; / &quot;answers&quot; / &quot;figures.json&quot;).read_text(encoding=&quot;utf-8&quot;)).get(&quot;items&quot;, [])
+-    for k, pid in zip(keys, pids):                                              # P172: the import gate (P84) needs the panels&#x27; verdicts
+-        f = FINAL / pid / &quot;figures.json&quot;
+-        data = [x for g in (json.loads(f.read_text(encoding=&quot;utf-8&quot;)).get(&quot;figures&quot;, []) if f.exists() else []) for x in g.get(&quot;panels&quot;) or []
+-                if x.get(&quot;panel_type&quot;) in (&quot;plot&quot;, &quot;spectrum&quot;, &quot;map&quot;)]
+-        if data and not any(v.get(&quot;paper_id&quot;) == pid for v in ans):
+-            return finish(f&quot;gate d: {k} has {len(data)} data panels and no verdicts in ingest/answers/figures.json: the figures import (P84) imports &quot;
+-                          &quot;nothing; the verdicts (or a rule for them) come before pass 0&quot;)
++        step(f&quot;figures import {x[&#x27;paper&#x27;]} (0 calls; P173 rule verdicts)&quot;, [py, V2 / &quot;kb&quot; / &quot;figures_import.py&quot;, x[&quot;pid&quot;]])
+     for k in keys:
+         if step(f&quot;pass 0 {k}&quot;, [py, EXTRACT / &quot;pass0_paper.py&quot;, k])[0]:
+             return finish(f&quot;gate c: pass 0 of {k} failed (provider error)&quot;)
+</pre>
+<h2>Code diff (unmapped.csv written with LF; CLAUDE.md verdict line)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P173.s2_lf_fix.diff</p>
+<pre>diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
+index e36efe3..90fb3e2 100644
+--- a/psed_v2/CLAUDE.md
++++ b/psed_v2/CLAUDE.md
+@@ -103,10 +103,11 @@ psed_v2/
+   prints the planned calls and dollars and asks y/n (--yes skips, --plan stops after the plan); then the user&#x27;s decisions in decide.html;
+   then `grow.py apply`. The gates read ontology/gates.csv (the worst of the twelve development papers, `kb/extract/gates.py reference`);
+   every run writes kb/reports/RUN_&lt;keys&gt;.html.
+-- Figure verdicts (P173, user): from paper 13 on, figure verdicts are by rule; no one judges figures. kb/figures_import.py imports every
+-  data panel of a paper without human verdicts: no figure-stage flag -&gt; pass, any flag -&gt; flagged (imported; the flag names kept on the panel
+-  and on every curve and cell, and on the facts compiled from them: basis digitized, the flags in the note). The twelve keep their human
+-  verdicts; the rule&#x27;s agreement with them is a reference row of ontology/gates.csv, not a gate.
++- Figure verdicts (P173, user): from paper 13 on, figure verdicts are by rule; no one judges figures. kb/figures_import.py gives every
++  data panel of a paper without human verdicts a verdict: no figure-stage flag -&gt; pass, any flag -&gt; flagged (imported; the flag names kept on
++  the panel and on every curve and cell, and on the facts compiled from them: basis digitized, the flags in definition_note). No panel stops
++  at the verdict; a panel whose axes resolve to no entry stays inventory only (P89), its labels in ontology/unmapped.csv. The twelve keep
++  their human verdicts; the rule&#x27;s agreement with them is a reference row of ontology/gates.csv, not a gate.
+ - grow.py apply is atomic (P173): it runs in a sandbox copy and moves its files into place only after export --check and every round&#x27;s audit
+   pass; a failure writes nothing and prints what would have been written.
+ - A unit is done when its report carries the gold row comparison.
+diff --git a/psed_v2/kb/figures_import.py b/psed_v2/kb/figures_import.py
+index 3c7f305..a132dae 100644
+--- a/psed_v2/kb/figures_import.py
++++ b/psed_v2/kb/figures_import.py
+@@ -866,7 +866,7 @@ def write_reports(imp, results):
+     done = {r[&quot;paper_id&quot;] for r in results}
+     old = [r for r in csv.DictReader(UNMAPPED.open(newline=&quot;&quot;, encoding=&quot;utf-8&quot;)) if r.get(&quot;field&quot;) != &quot;pilot&quot; and r[&quot;paper&quot;] not in done] if UNMAPPED.exists() else []
+     with UNMAPPED.open(&quot;w&quot;, newline=&quot;&quot;, encoding=&quot;utf-8&quot;) as f:
+-        w = csv.DictWriter(f, fieldnames=[&quot;paper&quot;, &quot;figure&quot;, &quot;panel&quot;, &quot;field&quot;, &quot;raw&quot;, &quot;reason&quot;]); w.writeheader(); w.writerows(keep + old + imp.unmapped)
++        w = csv.DictWriter(f, fieldnames=[&quot;paper&quot;, &quot;figure&quot;, &quot;panel&quot;, &quot;field&quot;, &quot;raw&quot;, &quot;reason&quot;], lineterminator=&quot;\n&quot;); w.writeheader(); w.writerows(keep + old + imp.unmapped)   # P173: LF, as the file is in git since P155
+ 
+ 
+ def main(argv):
+</pre>
+</body></html>

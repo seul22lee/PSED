@@ -1,2 +1,77 @@
 step,command,exit,output
 plan (0 calls),/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py plan wer21,0,"[{""paper"": ""wer21"", ""pid"": ""10.1116_6.0001094"", ""figure_calls"": 0, ""figure_usd"": 0.0, ""pass0_calls"": 1, ""pass0_usd"": 0.152, ""pass1_calls"": 21, ""pass1_usd"": 0.45, ""note"": ""pass-1 groups from elements.csv as it stands (built again after the figure stage)""}]"
+figures import wer21 (0 calls; P173 rule verdicts),/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/figures_import.py 10.1116_6.0001094,0,"10.1116_6.0001094: 15 data panels, 1 imported; 6 curves, 0 cells, 0 peaks, 1 sets, 0 derived, 0 converted, 23 inventory; 25 unmapped; 0 fields through the paper's definitions (P89)
+unmapped rows 25: {'label_unresolved': 22, 'unit_unknown': 3}"
+pass 0 wer21,/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/pass0_paper.py wer21,0,"10.1116_6.0001094: 1 planned calls (0 cached, 1 to call), model gemini-3.8-flash
+10.1116_6.0001094: 1 calls made, 0 from the cache
+wer21 pass 0: 15 units, by role {'run': 10, 'simulation': 1, 'specimen': 4}; table layouts 1, panel layouts 23"
+gate pass 0 wer21,/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py pass0 wer21,0,"metric                                      value  worst dev  verdict
+units per 100 elements                       5.34       3.37  pass (gre23)
+unbound items                                   0          0  pass (yim20)
+units named after a measurement                 0          0  pass (yim20)
+panels with no layout (share)                 0.0      0.867  pass (gao15)"
+pass 1 wer21,/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/pass1_elements.py wer21,0,"wer21 pass 1: 21 groups (abstract+s1+s2+s3+s4+s5+s6+s7+s8+s9+s10+s11+s12, s13+s14+s15+s16+s17+s18+s19+s20+s21, s22+s23, s24+s25, s26+s27+s28+s29, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig11, fig12, fig13, fig14, fig15, fig1, tabI, fig10); figure/table/equation groups: fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig11, fig12, fig13, fig14, fig15, fig1, tabI, fig10; unpaired: none
+10.1116_6.0001094: 21 planned calls (0 cached, 21 to call), model gemini-3.8-flash
+10.1116_6.0001094: 21 calls made, 0 from the cache; prefix cached once (1 cached content)
+wer21 pass 1: 173 records by type {'setting': 107, 'claim': 25, 'model': 17, 'caveat': 16, 'observation': 4, 'cited': 2, 'derived': 2}; NK {'no_knowledge': 96, 'boilerplate': 57, 'duplicate': 11, 'citation_line': 6}; elements missing 0; records failing form.json 8; unparsed responses none
+wer21 this run: 21 lines, tokens in 607985 (cache read 588084) out 46706"
+compile wer21 (0 calls),/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/compile.py wer21,0,"wer 150)
+i: merged fig12.cap into s18.p1;s25.p14;fig12.cap (pulse_time 5)
+i: merged fig13.cap into s25.p13;s25.p15;fig11.cap;fig13.cap (process_pressure 0.005)
+i: merged fig14.cap into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap (plasma_power 150)
+i: merged tabI.r2c2 into tabI.r1c2;tabI.r2c2 (gas_flow_rate )
+i: merged tabI.r3c3 into tabI.r2c3;tabI.r3c3 (process_pressure )
+i: merged tabI.r4c4 into tabI.r2c4;tabI.r4c4 (plasma_power )
+i: merged tabI.r5c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4 (plasma_power 150)
+i: merged tabI.r6c3 into s25.p13;s25.p15;fig11.cap;fig13.cap;tabI.r6c3 (process_pressure 0.005)
+i: merged tabI.r7c3 into tabI.r2c3;tabI.r3c3;tabI.r7c3 (process_pressure )
+i: merged tabI.r7c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4;tabI.r7c4 (plasma_power 150)
+j: derived over 6 entities: 6 rows; not derived: {'no fact for S': 6, 'no fact for p': 6, 'E: no fact for p': 6, 'no fact for rho': 12, 'n: no fact for gpc': 6, 'gpc: no fact for n': 6, 'no fact for H': 6, 'no fact for dn': 6, 'no fact for mg': 12, 'no fact for t': 6, 'no fact for h2': 6, 'no fact for phi': 6, 'no fact for T': 6, 'lam: no fact for T': 6, 'gpc: n: no fact for gpc': 6}
+j: caveats (query.caveats_of): 15, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
+j: claim nodes (query.claim_nodes): 17 nodes for 23 claims; claims without a full triple (query.node_of empty): 0
+j: comparisons from figures.json (1c): 2
+step input: {'records': 173}
+step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity promoted (quantity: symbol)': 1}
+step a: {'numeric string coerced (C4)': 6, 'schema:enum': 2, 'schema:required': 2, 'kept': 169}
+step a_fields: {'effect': 2, 'qualifiers': 2}
+step b: {'model_with_value (kept)': 5, 'kept': 169}
+step c: {'quantity_other (kept)': 2, 'kept': 169}
+step d: {'quote_not_found': 3, 'kept': 166}
+step e: {'kept': 166}
+step f: {'species_resolved': 10, 'kept': 166}
+step h: {'simulation name unresolved (unmapped, field model)': 1, 'place: about paper -> recipe': 104, 'place: claim -> paper': 23, 'place: caveat -> paper': 15, 'place: about paper, method -> paper method activity': 1, 'place: model about a simulation -> simulation': 7, 'place: setting about a run -> deposition': 14, 'place: cited -> paper': 2, 'specimen_created': 6}
+step m: {'statement filled from the quote': 115, 'label_as_printed filled with the quantity id': 10, 'links resolved': 5, 'links named elements without facts': 9}
+step 1c: {'data of a flagged panel (rule verdict)': 6, 'curve -> observation': 6, 'data role measured': 6}
+step i: {'merged': 37, 'kept': 135}
+step n: {'comparison series': 2}
+step j: {'derived cycle_time': 6}
+step k: {'statement from the record': 129, 'statement_copies_text (reported by check)': 28, 'statement assembled': 12}
+diff against the gold (type, gold, compiled, matched, precision, recall):
+no gold: kb/pilot/10.1116_6.0001094.facts.csv absent (not scored)"
+check.py wer21 (0 calls),"/home/ftk3187/miniconda3/envs/psed310/bin/python -c import sys; sys.path.insert(0, 'psed_v2/kb/extract'); import score; e, _ = score.check_dir('10.1116_6.0001094'); print(len(e), 'check.py problems')",0,84 check.py problems
+gate pass 1 wer21,/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/kb/extract/gates.py pass1 wer21,0,"metric                                      value  worst dev  verdict
+form failures (share of records)            0.046      0.091  pass (gor03)
+quotes not found (share of records)         0.017      0.163  pass (mat22)"
+audit round 1,grow.py audit,0,
+audit round 2,grow.py audit,0,
+audit round 3,grow.py audit,0,
+audit round 4,grow.py audit,0,
+export --check (0 calls),/home/ftk3187/miniconda3/envs/psed310/bin/python psed_v2/ontology/export.py --check,0,"vocab.py up to date
+schema/ up to date
+pass 1. every schema-miner leaf path appears exactly once 30 paths
+pass 2. every entry has a definition; review-defined terms cite the review 
+pass 3. every extension entry has gold evidence 
+pass 4. no alias in two entries; ambiguous words only in ambiguous_aliases 
+pass 5. extension quantities (concepts) <= 60; base quantities = Sec. 10 list; categoricals = Sec. 12 keys + categorical outputs + attributes 56 extension quantities
+pass 6. transform inputs/outputs and model parameters are existing ids; ids unique 
+pass 7. no species, structure or process taken from a review table (each has gold evidence) 
+pass 8. every quantity, categorical and model has one category = a leaf node; every node has a definition and a review citation and is not empty 16 nodes, 8 top-level, 13 leaves, depth 2
+pass 9. every categorical has values_from; every species has kind; no value alias under two values 186 value aliases
+pass 10. no orphan: every entry and hierarchy node has at least one edge all connected; only as a qualifier value: ['o_atom']
+pass 11. a family has two or more members, none replaced; replaced_by names an entry; attribute only on quantities and categoricals 3 families: conformality (5); growth_amount (7); composition (3)
+pass 12. a 'never an entry' label stored by the pilot is an attribute entry or a promoted entry with its deviation; an unmapped label is no live entry's alias attributes: annealing_temperature, saturation_density, probe_resolution, objective_magnification, pillar_layout, raman_shift, front_slope, fit_r2, signal_intensity
+pass 13. structure classes form one tree rooted at structure, each with a definition and a citation; every structure entry is an instance of a class; every slot is a test_structure entry, the added slots carry the CQ; no structure alias in two slots 10 classes, 11 slot entries, 12 structure instances
+pass 14. pending entries (pending.csv) have a kind from the list, a definition or evidence, a decision from the list with its target (alias: an existing entry, never: a category), clash with no entry while undecided or accepted 21 rows: undecided 21
+pass 15. families (P100): every family is declared under families:, its members share one QUDT dimension (units.yaml) unless the family declares mixed_dimensions with a reason composition: 3 members, one dimension 1; conformality: 5 members, mixed (the depth the film reaches is given either as a length (pene…); growth_amount: 7 members, mixed (the amount deposited is given in the paper's own measure: re…)"
+grow.py add,cmd_add,0,wer21
+grow.py propose,cmd_propose,0,psed_v2/ontology/decide.html
