@@ -895,7 +895,11 @@ def open_rows(n, compiled, unm, snap):
 
 def carried_rows(exclude=()):
     """P162: the rows open_rows() classes NEW_SINCE_APPLY, of the papers of every applied round with an apply snapshot (a paper in two
-    such rounds: the later one), the papers in exclude (the open round's own, read whole) left out."""
+    such rounds: the later one), the papers in exclude (the open round's own, read whole) left out. P168 fix: also the rows already
+    pending under a candidate first proposed in the open round (a carried row stays carried once propose made it pending, so the
+    apply snapshot holds it)."""
+    cur = current(("open", "proposed"))
+    first = {x["id"] for x in rd(PENDING) if cur and x["first_round"] == cur["round"]}
     out, done = [], set(exclude)
     for r in sorted(rounds(), key=lambda r: -int(r["round"])):
         snap = rd(REPORTS / f"R{r['round']}_apply.decision_rows.csv") if r["status"] == "applied" else []
@@ -904,7 +908,7 @@ def carried_rows(exclude=()):
             continue
         done |= set(pids)
         rows, _, us = open_rows(int(r["round"]), set(pids), {p: rd(COMPILED / f"{p}.unmapped.csv") for p in pids}, snap)
-        out += [u for x, u in zip(rows, us) if x["class"] == NEW_SINCE_APPLY]
+        out += [u for x, u in zip(rows, us) if x["class"] == NEW_SINCE_APPLY or (x["class"].startswith("pending candidate ") and x["class"][18:] in first)]
     return out
 
 
@@ -958,7 +962,8 @@ def audit_round(n):
         src = [p for p in h["source_pids"].split(";") if p]
         base = dict(id=cid, decision=act + (f" -> {h['target']}" if h["target"] else ""), covers=covers)
         if not rows:
-            why = (f"no compiled output for {', '.join(src)}" if src and not set(src) & a1p else "no row of this decision in the snapshot")
+            why = (f"no compiled output for {', '.join(src)}" if src and not any((COMPILED / f"{p}.facts.csv").exists() for p in src)   # P168 fix: the papers
+                   else "no row of this decision in the snapshot")                                                                   # themselves
             a1.append(dict(base, now="none", effect="n/a" if "no compiled output" in why else "no effect", reason=why))
             if "no compiled output" not in why and act != "reject":
                 fails.append(f"A1 {cid}: {why}")
