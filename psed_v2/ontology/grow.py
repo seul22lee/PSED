@@ -52,7 +52,7 @@ GATES_CSV = HERE / "gates.csv"                                                  
 COMPILED, RECORDS, FINAL = V2 / "kb" / "compiled", V2 / "kb" / "records", V2 / "ingest" / "final"
 ROUND_COLS = ["round", "opened", "applied", "pids", "dois", "status", "n_candidates", "n_accepted", "n_alias", "n_rejected", "n_never"]
 DECISION_COLS = ["class", "category", "slot", "parameters", "symbol_paper"]   # P175 (user): what apply reads besides the decision (pending.csv)
-HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"] + DECISION_COLS
+HISTORY_COLS = ["date", "round", "action", "id", "kind", "target", "source_pids", "source_dois", "decided_by", "reason", "ontology_sha256_after"] + DECISION_COLS + ["species"]   # P179c (user): a symbol decision may carry the species its subscript denotes
 NEVER_COLS = ["label", "category", "paper", "source", "symbol"]                 # P157d: symbol yes = matched only in its paper
 STOP_WORDS = {"of", "the", "an", "and", "or", "in", "on", "at", "to", "for", "by", "with", "is", "as", "from", "per", "its", "a"}
 

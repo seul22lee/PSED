@@ -395,6 +395,7 @@ def species_named(pid, label):
     return found
 
 
+SPECIES_EVIDENCED = ("kept: its own element names it", "backed by the definition", "from the definition", "corrected from the definition")   # P179c
 UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    # P179 (user): a reactant presented unnamed ('reactant A')
 SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
 CELL_ID = re.compile(r"^(tab\w*?)\.r(\d+)c(\d+)$")                              # a table cell id: table, row, column
@@ -410,7 +411,7 @@ def line_version(x):
 def accepted_versions(key):
     """P179b (user): the form versions whose pass-1 lines compile reads for a paper (key): status accepted in ontology/form_versions.csv
     for that paper (a row with its key), else for every paper (a row with no paper)."""
-    rows = list(csv.DictReader(FORM_VERSIONS.open(encoding="utf-8"))) if FORM_VERSIONS.exists() else []
+    rows = list(csv.DictReader(x for x in FORM_VERSIONS.open(encoding="utf-8") if not x.startswith("#"))) if FORM_VERSIONS.exists() else []   # P179c: # = the header
     st = {r["version"]: r["status"] for r in rows if not r["paper"]}
     st.update({r["version"]: r["status"] for r in rows if r["paper"] == key})
     return {v for v, x in st.items() if x == "accepted"}
@@ -985,7 +986,49 @@ class Run:
             self.count("a1", f"symbol species: {how}")
             self.note(f"a1: symbol species {r['eid']} {lab!r} {rec.get('type')} {rec.get('quantity')}: record {own or '-'}, definition "
                       f"{', '.join(f'{e}: {x}' for e, x in found) or '-'} -> {how}" + (f" ({sp})" if sp and sp != own else ""))
+        self.symbol_species_paper(recs)
         return recs
+
+    def symbol_species_paper(self, recs):
+        """a1, P179c (user): a symbol is paper-local, its species too (P157d). Within the paper, a symbol (export.symbol_key of the label)
+        whose species is evidenced in any record (kept, backed by, from or corrected from the definition) gives that species to every
+        record of the symbol that has none; differing evidenced species clear every record of the symbol ('symbol species conflict').
+        Then a user's symbol decision (history.csv kind symbol with a species, for this paper) gives its species to the paper's symbols
+        whose subscript is the decided letter, where the species is still empty."""
+        def put(r, sp, how, note):
+            rec = r["rec"]
+            q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
+            rec["qualifiers"] = ({**q, "species": sp} if sp else {k: v for k, v in q.items() if k != "species"}) or None
+            rec["note"] = "; ".join(x for x in (rec.get("note"), note) if x)
+            r["a1"].update(outcome=how, species=sp)
+            self.count("a1", f"symbol species: {how}")
+            self.note(f"a1: symbol species {r['eid']} {r['a1']['label']!r}: {note}")
+        by = collections.defaultdict(list)
+        for r in recs:
+            if r.get("a1"):
+                by[C.X.symbol_key(r["a1"]["label"])].append(r)
+        for sym, rs in by.items():
+            ev = collections.defaultdict(set)
+            for r in rs:
+                if r["a1"]["outcome"] in SPECIES_EVIDENCED and r["a1"]["species"]:
+                    ev[r["a1"]["species"]].add(r["eid"])
+            if len(ev) == 1:
+                (sp, els), = ev.items()
+                for r in rs:
+                    if not r["a1"]["species"]:
+                        put(r, sp, "from the symbol's evidence in this paper", f"species {sp} from the symbol's evidence in this paper ({', '.join(sorted(els))})")
+            elif len(ev) > 1:
+                for r in rs:
+                    put(r, "", "symbol species conflict", "symbol species conflict: " + "; ".join(f"{sp} ({', '.join(sorted(e))})" for sp, e in sorted(ev.items())))
+        hist = C.V2 / "ontology" / "history.csv"
+        for h in csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []:
+            if h["kind"] != "symbol" or not h.get("species") or self.pid not in h["source_pids"].split(";"):
+                continue
+            for r in recs:
+                m = SUBSCRIPT.match(r["a1"]["label"]) if r.get("a1") else None
+                if m and C.X.symbol_key(m.group(1)) == C.X.symbol_key(h["id"]) and not r["a1"]["species"]:
+                    put(r, h["species"], "from the user's symbol decision", f"species {h['species']}: the user's decision on subscript {h['id']} (history.csv, {h['date']})")
+
 
     def recipe_process_mode(self, recs):
         """P179 (user): process_mode on a run comes only from its recipe field (the pass-0 unit's process_mode with its quote, filled by

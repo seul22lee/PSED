@@ -1127,7 +1127,7 @@ def run_checks(onto):
                 "molecule_diameter take species, process_mode a pass-0 field of runs with its quote (hot_wire) and no transform, every form candidate decided",
                 not bad, f"problems: {bad}" if bad else f"form version {FORM_VERSION}, pass-0 form version {PASS0_FORM_VERSION}", bad))
     fv = HERE / "form_versions.csv"                                             # P179b (user): the form versions compile reads
-    listed = {r["version"] for r in csv.DictReader(fv.open(encoding="utf-8"))} if fv.exists() else set()
+    listed = {r["version"] for r in csv.DictReader(x for x in fv.open(encoding="utf-8") if not x.startswith("#"))} if fv.exists() else set()
     found = Counter()
     for f in sorted((HERE.parent / "kb" / "records").glob("*.jsonl")):
         for ln in f.read_text(encoding="utf-8").splitlines():

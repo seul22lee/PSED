@@ -154,8 +154,13 @@ psed_v2/
   criterion; the user vetoes by name afterwards.
 - P179b (user): compile reads a pass-1 line only if its form version is accepted in ontology/form_versions.csv (version, paper, date,
   status, decided_by, reason; a row with a paper overrides the row for every paper; 'none' = a line written before the freeze); the
-  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there. A candidate
-  version is adopted per paper by comparing two sandbox compiles (kb/tmp/A without, kb/tmp/B with it) against the gold.
+  latest-line rule runs over accepted lines only. export --check 17: every form version of kb/records is listed there.
+- P179c (user): a version's lines are adopted for a paper only as a whole paper (every group re-extracted under it), when the whole-paper
+  scores drop on no type and every 4c check passes (the rule heads form_versions.csv; P179's partial re-extraction adopted for no paper).
+  A symbol's species is paper-wide (a1 after the per-record rule): a symbol whose species is evidenced in any record of the paper gives
+  it to every record of the symbol that has none; differing evidenced species clear them all ('symbol species conflict'). A user's
+  symbol decision (history.csv kind symbol, column species, the paper in source_pids) gives its species to the paper's symbols whose
+  subscript is the decided letter, where still empty.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
