@@ -354,16 +354,44 @@ def candidates_of(pids):
     return _CAND[key]
 
 
+def candidate_of(row):
+    """P164: a pending row's candidate: by its id, else (an id the user edited in pending.csv) the one candidate of its papers with the
+    same evidence items; a pilot row: none."""
+    if row["first_round"] in ("", "0"):
+        return None
+    cands = candidates_of(row["pids"].split(";"))[0]
+    if row["id"] in cands:
+        return cands[row["id"]]
+    ev = sorted(evidence_items(row))
+    hits = [c for c in cands.values() if sorted(c["evidence"].values()) == ev]
+    return hits[0] if len(hits) == 1 else None
+
+
 def printed_labels(row):
     """The printed labels behind a pending row: its candidate's label, then its aliases (the symbols); a pilot row: its id."""
-    c = candidates_of(row["pids"].split(";"))[0].get(row["id"]) if row["first_round"] not in ("", "0") else None
+    c = candidate_of(row)
     return [c["label"]] + c["aliases"] if c else [row["id"].replace("_", " ")]
 
 
 def candidate_symbols(row):
     """P157d: the symbols of a pending row's candidate, each with the paper it came from: [(text, pid)]; a pilot row: none."""
-    c = candidates_of(row["pids"].split(";"))[0].get(row["id"]) if row["first_round"] not in ("", "0") else None
-    return list(c["symbols"]) if c else []
+    c = candidate_of(row)
+    return list(dict.fromkeys(c["symbols"])) if c else []
+
+
+def label_papers(row, label):
+    """P164: the papers whose rows of a pending row's candidate print this label (the row's papers when none does)."""
+    c = candidate_of(row)
+    ps = list(dict.fromkeys(u["pid"] for u in (c["members"] if c else []) if u["label"] == label))
+    return ps or [p for p in row["pids"].split(";") if p]
+
+
+def symbol_like(t):
+    """P164 (user): a label that is a symbol (one letter, a Greek letter, a subscript, LaTeX): the part before the first _ or ^, its LaTeX
+    commands removed, holds no word of three or more Latin letters ('R', '\\sigma', '\\beta_0', '\\tau/\\epsilon', 'd_{pore}'; not 'Particle
+    radius, R')."""
+    base = re.sub(r"\\[A-Za-z]+", "", re.split(r"[_^]", str(t), maxsplit=1)[0])
+    return bool(str(t).strip()) and not re.search(r"[A-Za-z]{3,}", base)
 
 
 def run_conditions(pid):
@@ -585,6 +613,37 @@ def add_alias(text, eid, labels):
     return text[:s] + blk + text[e:]
 
 
+def add_symbols(text, eid, pairs):
+    """P164: append {text, paper} symbols to an entry's symbols (a flow list on one line; a new line after its aliases, else after its id);
+    a symbol the entry already has for that paper (equal export.symbol_key) is left out. Returns (text, the symbols added)."""
+    s, e = entry_span(text, eid)
+    blk = text[s:e]
+    m = re.search(r"(?m)^    symbols: (\[.*\])$", blk)
+    have = yaml.safe_load(m.group(1)) if m else []
+    keys, add = {(X.symbol_key(h["text"]), h.get("paper", "")) for h in have}, []
+    for t, p in pairs:
+        if (X.symbol_key(t), p) not in keys:
+            keys.add((X.symbol_key(t), p))
+            add.append(dict(text=t, paper=p))
+    if not add:
+        return text, []
+    line = "    symbols: " + yaml.safe_dump(have + add, default_flow_style=True, allow_unicode=True, width=100000, sort_keys=False).strip()
+    if m:
+        blk = blk[:m.start()] + line + blk[m.end():]
+    else:
+        a = re.search(r"(?m)^    aliases: .*$", blk)
+        blk = blk[:a.end()] + "\n" + line + blk[a.end():] if a else blk.replace("\n", "\n" + line + "\n", 1)
+    return text[:s] + blk + text[e:], add
+
+
+def split_labels(row, labels):
+    """P164 (user): a decision's printed labels as (word labels, symbols [(text, pid)]): a symbol-like label is a symbol of each paper
+    that prints it, never a word."""
+    words = [t for t in labels if not symbol_like(t)]
+    syms = [(t, p) for t in labels if symbol_like(t) for p in label_papers(row, t)]
+    return words, syms
+
+
 def cmd_apply():
     r = current(("proposed",))
     if not r:
@@ -602,8 +661,8 @@ def cmd_apply():
             stops.append(f"{x['id']}: accept, but ontology.yaml has it with another definition: {have[x['id']].get('definition')!r}")
         if x["decision"] == "accept" and x["kind"] == "unit":
             stops.append(f"{x['id']}: accept of a unit; units go into units.yaml by hand, not into ontology.yaml")
-        if x["decision"] == "alias" and x["alias_target"] not in have:
-            stops.append(f"{x['id']}: alias target {x['alias_target']!r} is not an entry")
+        if x["decision"] == "alias" and x["alias_target"] not in have and x["alias_target"] not in {y["id"] for y in decided if y["decision"] == "accept"}:
+            stops.append(f"{x['id']}: alias target {x['alias_target']!r} is not an entry, nor accepted in this round")
         if x["decision"] == "never" and not x["never_category"].strip():
             stops.append(f"{x['id']}: never without a never_category")
     if stops:
@@ -611,18 +670,39 @@ def cmd_apply():
     backup = {p: p.read_bytes() for p in (ONTO, PENDING, NEVER, HISTORY, ROUNDS) if p.exists()}
     snapshot(n, r["pids"].split(";"), rows)                                     # P157d: the rows each candidate covers, before anything changes
     text = ONTO.read_text(encoding="utf-8")
-    new, hist, nev = [], [], X.never_rows()
-    for x in decided:
+    new, hist, nev, applied = [], [], X.never_rows(), []
+    order = {"accept": 0, "alias": 1}                                          # P164: accepts first (an alias may target an entry of this round)
+    for x in sorted(decided, key=lambda x: order.get(x["decision"], 2)):
         labels, syms = printed_labels(x), candidate_symbols(x)
+        words, lsyms = split_labels(x, labels[:1])                             # P164: a symbol-like label is a symbol of its paper, never a word
         if x["decision"] == "accept" and x["id"] not in have:                  # P157d: the printed label -> aliases, the table symbols -> symbols
-            e = X.pending_entry(x, labels[:1], syms)
+            e = X.pending_entry(x, words, list(dict.fromkeys(syms + lsyms)))
             e.update(origin=f"round {n}", source_pids=[p for p in x["pids"].split(";") if p], evidence=evidence_items(x))
             new.append({k: e[k] for k in ORDER if k in e and e[k] not in ("", [], None)})
-        elif x["decision"] == "alias":                                         # P156: the label only; a symbol (an alias of the candidate) is
-            text = add_alias(text, x["alias_target"], labels[:1])              # local to its paper and goes into an entry only on accept
-        elif x["decision"] == "never":                                         # P157d: the label (any paper) and each symbol (its paper only)
-            nev.append(dict(label=labels[0], category=x["never_category"], paper=x["pids"], source=f"round {n}: {x['id']}", symbol=""))
-            nev += [dict(label=t, category=x["never_category"], paper=p, source=f"round {n}: symbol of {x['id']}", symbol="yes") for t, p in syms]
+            applied.append(dict(id=x["id"], decision="accept", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(e.get("aliases") or []),
+                                symbols="; ".join(f"{s_['text']} ({s_['paper']})" for s_ in e.get("symbols") or []), note=""))
+        elif x["decision"] == "alias":                                         # P156: the label only (a candidate's table symbols stay out);
+            t_new = next((e for e in new if e["id"] == x["alias_target"]), None)   # P164: a symbol-like label goes to the target's symbols
+            if t_new is not None:
+                al = [w for w in words if X.norm_label(w) not in {X.norm_label(a) for a in t_new.get("aliases", [])}]
+                t_new["aliases"] = t_new.get("aliases", []) + al
+                keys = {(X.symbol_key(s_["text"]), s_["paper"]) for s_ in t_new.get("symbols", [])}
+                sy = [dict(text=t, paper=p) for t, p in dict.fromkeys(lsyms) if (X.symbol_key(t), p) not in keys]
+                t_new["symbols"] = t_new.get("symbols", []) + sy
+            else:
+                text = add_alias(text, x["alias_target"], words) if words else text
+                al = words
+                text, sy = add_symbols(text, x["alias_target"], lsyms)
+            applied.append(dict(id=x["id"], decision=f"alias -> {x['alias_target']}", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(al),
+                                symbols="; ".join(f"{s_['text']} ({s_['paper']})" for s_ in sy),
+                                note="" if al or sy else "nothing new: the target already has this label or symbol"))
+        elif x["decision"] == "never":                                         # P157d: the label (any paper) and each symbol (its paper only);
+            nev += [dict(label=w, category=x["never_category"], paper=x["pids"], source=f"round {n}: {x['id']}", symbol="") for w in words]
+            nev += [dict(label=t, category=x["never_category"], paper=p, source=f"round {n}: " + ("symbol of " if t not in labels[:1] else "") + x["id"],
+                         symbol="yes") for t, p in dict.fromkeys(lsyms + syms)]    # P164: a symbol-like label is a symbol row of its paper
+            applied.append(dict(id=x["id"], decision=f"never ({x['never_category']})", candidate=(candidate_of(x) or {}).get("id", ""), aliases="; ".join(words),
+                                symbols="; ".join(f"{t} ({p})" for t, p in dict.fromkeys(lsyms + syms)), note=""))
+    write(REPORTS / f"R{n}_apply.written.csv", ["id", "decision", "candidate", "aliases", "symbols", "note"], applied)   # P164: what apply wrote
     if new:
         mark = "\nfamilies:"
         assert text.count(mark) == 1
@@ -685,14 +765,17 @@ HEAD_STOPS = r"\b(of|at|in|for|with|between|without|per|from|on|to|by|where|that
 
 def snapshot(n, pids, pend):
     """The rows of a round before apply changes anything: every compiled unmapped row of its papers with the candidate propose made of
-    it and that candidate's decision in pending.csv ('' when undecided; candidate '' for a never row or a value without a quantity)."""
+    it and that candidate's decision in pending.csv ('' when undecided; candidate '' for a never row or a value without a quantity).
+    P164: a candidate whose pending row the user gave another id is written under that id (candidate_of: the same evidence)."""
     _CAND.clear()
     cands, _ = round_candidates(pids)                                            # P162: the carried rows too, as propose made them
     dec = {x["id"]: x["decision"] for x in pend}
+    rid = {c["id"]: x["id"] for x in pend for c in [candidate_of(x)] if c and c["id"] != x["id"]}   # P164: an id the user edited
     out = []
     for cid, c in cands.items():
         for u in c["members"]:
-            out.append(dict(pid=u["pid"], element=u["element"], field=u["field"], label=u["label"], unit=u["unit"], candidate=cid, decision=dec.get(cid, "")))
+            out.append(dict(pid=u["pid"], element=u["element"], field=u["field"], label=u["label"], unit=u["unit"], candidate=rid.get(cid, cid),
+                            decision=dec.get(rid.get(cid, cid), "")))
     write(REPORTS / f"R{n}_apply.decision_rows.csv", SNAP_COLS, out)
     return out
 

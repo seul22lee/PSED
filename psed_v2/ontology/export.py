@@ -22,6 +22,7 @@ import csv
 import hashlib
 import json
 import re
+import unicodedata
 import pprint
 import sys
 from pathlib import Path
@@ -70,9 +71,21 @@ def strip_unit(label):
 LATEX_TEXT = re.compile(r"\\(?:text|mathrm|mathit|mathbf|rm)\s*\{([^{}]*)\}")
 
 
+LATEX_GREEK = dict(zip("alpha beta gamma delta epsilon varepsilon zeta eta theta vartheta iota kappa lambda mu nu xi pi varpi rho varrho sigma "
+                       "varsigma tau upsilon phi varphi chi psi omega Gamma Delta Theta Lambda Xi Pi Sigma Upsilon Phi Psi Omega".split(),
+                       "αβγδεεζηθϑικλμνξπϖρϱσςτυφφχψωΓΔΘΛΞΠΣΥΦΨΩ"))           # P164 (user): \\epsilon and \\varepsilon both ε, as papers print it
+LATEX_GREEK_RX = re.compile(r"\\(" + "|".join(sorted(LATEX_GREEK, key=len, reverse=True)) + r")(?![A-Za-z])")
+LATEX_ACCENT_RX = re.compile(r"\\(bar|tilde)\s*(?:\{([^{}]*)\}|([^\s{}\\]))")
+LATEX_ACCENT = {"bar": "\u0304", "tilde": "\u0303"}                                 # P164: the combining macron and tilde
+
+
 def strip_latex(s):
-    """\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; braces, backslashes and the ^ / _ markers removed."""
-    return re.sub(r"[{}\\^_]", "", LATEX_TEXT.sub(r"\1", str(s)))
+    """\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; P164: a LaTeX Greek command -> its Unicode letter (\\sigma -> σ, \\Gamma
+    -> Γ), \\bar{x} and \\tilde{x} -> the letter with its combining accent (s̄, ξ̃), NFC; braces, backslashes and the ^ / _ markers removed.
+    The one function of norm_label and symbol_key."""
+    t = LATEX_GREEK_RX.sub(lambda m: LATEX_GREEK[m.group(1)], LATEX_TEXT.sub(r"\1", str(s)))
+    t = LATEX_ACCENT_RX.sub(lambda m: (m.group(2) if m.group(2) is not None else m.group(3)) + LATEX_ACCENT[m.group(1)], t)
+    return unicodedata.normalize("NFC", re.sub(r"[{}\\^_]", "", t))
 
 
 def strip_trailing_units(s):

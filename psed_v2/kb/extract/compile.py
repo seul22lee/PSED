@@ -251,7 +251,9 @@ def curve_units(pid, obj):
     the role unless taken from the kind. Parent: the paper's one simulation (model_run) or its one run (run), else null, flagged "parent
     unresolved". introduced_in the panel's caption element; evidence_quote and name_as_printed the legend label as printed; data the curve
     ref with its role; conditions (P163 rule 1): legend_conditions() of the legend label against the panel's series_axis; origin
-    "derived: <layout>". Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS) and by pass0_paper.consistency."""
+    "derived: <layout>". P164 fix 3: units with the same parent and role and an equal condition vector (every condition equal in
+    quantity, value and unit) are one unit (merge_units). Read by compile (input, tree), by pass1_elements.units_block (PASS-0 UNITS)
+    and by pass0_paper.consistency."""
     obj = obj if isinstance(obj, dict) else {}
     units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
     sims, runs = ([u["id"] for u in units if u.get("role") == r] for r in ("simulation", "run"))
@@ -276,9 +278,41 @@ def curve_units(pid, obj):
             out.append(dict(id=f"{pid}:{panel}:{c['id'].split('#')[-1]}", parent=par[0] if len(par) == 1 else None, name_as_printed=label or None, role=role,
                             structure_class=None, specimen_class=None, experiment_kind=None, introduced_in=[cap] if cap in ids else [],
                             data=[dict(id=c["id"], role=drole)], evidence_quote=label or None, origin=f"derived: {lays[panel]['layout']}",
-                            conditions=conds, series_axis=axes.get(panel, ""), panel=panel, curve=c["id"],
-                            role_from="unit list" if by_list else "figure kind", flag="; ".join(flags)))
-    return out
+                            conditions=conds, series_axis=axes.get(panel, ""), panel=panel, curve=c["id"], y=(c.get("quantity") if it["cell"] else c.get("y", {}).get("quantity")) or "",
+                            role_from="unit list" if by_list else "figure kind", flag="; ".join(flags), aliases=[]))
+    return merge_units(out)
+
+
+def condition_vector(u):
+    """P164: a derived unit's conditions as a sorted tuple of (quantity, or other:<label>; value or value text; unit)."""
+    return tuple(sorted((c["quantity"] if c["quantity"] != "other" else f"other:{c['key']}", f"{c['value']:.6g}" if isinstance(c.get("value"), float) else str(c.get("value_text", "")),
+                         c.get("unit") or "") for c in u["conditions"]))
+
+
+def merge_units(units):
+    """P164 fix 3 (user): derived units with the same parent and role and an equal, non-empty condition vector are one unit: the first
+    keeps its id and takes the others' data refs and captions; their ids become its aliases (compile maps them to it). One curve per y
+    quantity: when two units of a group show the same y quantity (two runs a vector does not tell apart, such as a sphere and a slab panel
+    with the same legend), the group stays split, every unit marked. Returns the units left, the merged ones dropped."""
+    groups = collections.defaultdict(list)
+    for u in units:
+        if u["conditions"]:
+            groups[(u["parent"], u["role"], condition_vector(u))].append(u)
+    for us in groups.values():
+        if len(us) < 2:
+            continue
+        if len({u["y"] for u in us}) < len(us):
+            for u in us:
+                u["merge"] = f"split: {len(us)} units share the vector, {len(us) - len({x['y'] for x in us})} with a y quantity already in the group"
+            continue
+        head = us[0]
+        for u in us[1:]:
+            head["data"] += u["data"]
+            head["introduced_in"] += [e for e in u["introduced_in"] if e not in head["introduced_in"]]
+            head["aliases"] += [u["id"]] + u["aliases"]
+            u["merged_into"] = head["id"]
+        head["merge"] = f"merged: {head['id']} + " + ", ".join(u["id"] for u in us[1:])
+    return [u for u in units if not u.get("merged_into")]
 
 
 class Run:
@@ -720,6 +754,9 @@ class Run:
             rows.append(row(fact_id=self.node[it["id"]][0], type="entity", how=how(it), evidence=ok_ev(it.get("introduced_in") or []),
                             parent=par[0] if par[1] == "simulation" else k, label_as_printed=it.get("name_as_printed") or it["id"],
                             statement=f"model run {it['id']} ({it.get('name_as_printed')!r}{origin(it)})"))
+        for it in items:                                                        # P164: a merged derived unit's other ids name its row
+            for al in it.get("aliases") or []:
+                self.node.setdefault(al, self.node[it["id"]])
         self.note("h: tree from pass 0: " + ", ".join(f"{r} {len(role(r))}" for r in ("run", "simulation", "specimen", "model_run", "series", "cited_work"))
                   + "; identity rows: none (pass 0 carries no identity)")
         self.rows_tree = rows
