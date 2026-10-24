@@ -6,7 +6,8 @@
     python3 psed_v2/kb/extract/gates.py pass0 <paper>           # the pass-0 gate: exit 0 pass, 3 stop; the gate table printed
     python3 psed_v2/kb/extract/gates.py pass1 <paper>           # the pass-1 gate (after compile): exit 0 pass, 3 stop
 
-Metrics (worse = lower for units per 100 elements, higher for the rest):
+Metrics (P174: ontology/gates.csv column direction, read by the gate: 'lower is worse' for units per 100 elements, 'higher is worse' for
+the rest):
   pass 0  units per 100 elements: the pass-0 units and the units derived from curves (compile.curve_units) per 100 elements.csv rows;
           unbound items (pass0_paper.consistency); units named after a measurement (pass0_paper.measurement_named); panels with no layout:
           the share of pass 0's panel_layouts whose layout is null (a share, so the paper's size does not decide it).
@@ -26,7 +27,7 @@ import compile as K
 import pass0_paper as P0
 
 GATES = C.V2 / "ontology" / "gates.csv"
-COLS = ["metric", "stage", "worse", "worst_dev_value", "paper"]
+COLS = ["metric", "stage", "direction", "worst_dev_value", "paper"]
 LOWER_IS_WORSE = {"units per 100 elements"}
 
 
@@ -96,9 +97,9 @@ def reference():
                 per.append(dict(paper=key, stage=stage, metric=m, value=v))
                 cur = rows.get(m)
                 if cur is None or ((v < cur["worst_dev_value"]) if m in LOWER_IS_WORSE else (v > cur["worst_dev_value"])):
-                    rows[m] = dict(metric=m, stage=stage, worse="lower" if m in LOWER_IS_WORSE else "higher", worst_dev_value=v, paper=key)
+                    rows[m] = dict(metric=m, stage=stage, direction="lower is worse" if m in LOWER_IS_WORSE else "higher is worse", worst_dev_value=v, paper=key)
     rate, n_ag, n_all = verdict_agreement()                                     # P173: a reference, not a gate
-    rows["figure verdict rule agreement"] = dict(metric="figure verdict rule agreement", stage="reference (not a gate)", worse="",
+    rows["figure verdict rule agreement"] = dict(metric="figure verdict rule agreement", stage="reference (not a gate)", direction="",
                                                  worst_dev_value=rate, paper=f"{n_ag} of {n_all} human-judged panels of the twelve")
     with GATES.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=COLS, lineterminator="\n")
@@ -128,7 +129,9 @@ def gate(stage, pid, key):
     rows, stop = [], list(extra)
     for m, v in vals.items():
         r = ref[m]
-        worse = v < float(r["worst_dev_value"]) if r["worse"] == "lower" else v > float(r["worst_dev_value"])
+        if r["direction"] not in ("lower is worse", "higher is worse"):        # P174: the gate reads the direction from gates.csv
+            raise SystemExit(f"ontology/gates.csv: {m}: direction {r['direction']!r} is neither 'lower is worse' nor 'higher is worse'")
+        worse = v < float(r["worst_dev_value"]) if r["direction"] == "lower is worse" else v > float(r["worst_dev_value"])
         rows.append(dict(paper=key, stage=stage, metric=m, value=v, worst_dev_value=r["worst_dev_value"], worst_dev_paper=r["paper"], verdict="STOP" if worse else "pass"))
         if worse:
             stop.append(f"gate b: {m} {v} is worse than the worst development value {r['worst_dev_value']} ({r['paper']})")

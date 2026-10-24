@@ -431,10 +431,11 @@ def check_derived():
 
 
 def check_figures_import():
-    """P84-P87: for every paper of the knowledge base with a kb/<id>.figures.json: every data panel whose verdict is ok is imported or
-    listed in ontology/unmapped.csv (or kb/import_panels.csv) with a reason; every curve's axes resolve to entries whose dimension is
-    the unit's (units.yaml); every set from a panel has its varied condition resolved (a replicate set none); the counts of
-    kb/import_report.csv equal the records on disk; the kinds and bases of the records are in the ontology's tables."""
+    """P84-P87: for every paper of the knowledge base with a kb/<id>.figures.json: every data panel is imported (P174: no panel is
+    dropped); every curve axis is an entry whose dimension is the unit's (units.yaml), or (P174) other with its row of field axis in
+    compile.py's kb/compiled/<id>.unmapped.csv, or an entry whose printed unit units.yaml lacks with its unit row there (a unit not printed
+    needs none); every set from a panel has its varied condition resolved (a replicate set none); the counts of kb/import_report.csv
+    equal the records on disk; the kinds and bases of the records are in the ontology's tables."""
     import query as Q, yaml
     err = []
     KB = HERE.parent
@@ -444,7 +445,6 @@ def check_figures_import():
         dim[u["symbol"]] = u["dimension"]
     report = {r["paper_id"]: r for r in rd(KB / "import_report.csv")}
     panels = rd(KB / "import_panels.csv")
-    unm = rd(HERE.parent.parent / "ontology" / "unmapped.csv")
     n_curves = n_sets = n_panels = 0
     for k, T in Q.TREES.items():
         pid = Q.KEY[k]
@@ -452,20 +452,27 @@ def check_figures_import():
         if not p.exists():
             err.append(f"{k}: no kb/{pid}.figures.json (run kb/figures_import.py) (P84)"); continue
         F = json.loads(p.read_text(encoding="utf-8"))
-        for row in [x for x in panels if x["paper"] == pid and x["verdict"] == "ok"]:
+        unm = {(u["field"], u["label_as_printed"], json.loads(u["candidate"]).get("panel", "")) for u in rd(KB / "compiled" / f"{pid}.unmapped.csv")
+               if u["field"] in ("axis", "unit") and u["candidate"].startswith("{")}   # P174: compile.py's rows, not ontology/unmapped.csv
+        for row in [x for x in panels if x["paper"] == pid]:
             n_panels += 1
-            if row["outcome"] == "imported":
-                continue
-            listed = any(u["paper"] == pid and u["figure"] == row["figure"] and u["panel"] == row["panel"] for u in unm) or row["reason"].startswith("flag")
-            if not listed:
-                err.append(f"{k} Fig. {row['figure']}{row['panel']}: verdict ok, not imported and not in unmapped.csv ({row['reason']}) (P84)")
+            if row["outcome"] != "imported":
+                err.append(f"{k} Fig. {row['figure']}{row['panel']}: not imported ({row['reason']}) (P174: no panel is dropped)")
         for c in F["curves"]:
             n_curves += 1
             for ax in ("x", "y"):
                 q, u = c[ax]["quantity"], c[ax]["unit"]
+                if q == "other":
+                    if ("axis", c[ax].get("key", ""), c["id"].split("#")[0]) not in unm:
+                        err.append(f"{c['id']}: {ax} other without its row of field axis in kb/compiled/{pid}.unmapped.csv (P174)")
+                    continue
                 e = L.ENTRIES.get(q)
                 if not e:
                     err.append(f"{c['id']}: {ax} quantity {q!r} is no entry (P84a)"); continue
+                if c[ax].get("unit_reason"):
+                    if c[ax]["unit_reason"] != "unit not printed" and ("unit", c[ax].get("key", ""), c["id"].split("#")[0]) not in unm:
+                        err.append(f"{c['id']}: {ax} unit {u!r} as printed ({c[ax]['unit_reason']}) without its unit row in kb/compiled/{pid}.unmapped.csv (P174)")
+                    continue
                 if u not in dim:
                     err.append(f"{c['id']}: {ax} unit {u!r} is not in units.yaml (P84b)"); continue
                 if dim[u] != e.get("dimension") and not (e.get("dimension") == "signal" and dim[u] in ("signal", "dimensionless")):
@@ -496,7 +503,7 @@ def check_figures_import():
             for col, n in disk.items():
                 if int(r[col]) != n:
                     err.append(f"{k}: import_report.csv {col} {r[col]} against {n} records on disk (P84)")
-    print(f"== figures import (P84-P87): {n_panels} ok panels, {n_curves} curves, {n_sets} sets over {len(Q.TREES)} papers; import report, unmapped.csv and units checked")
+    print(f"== figures import (P84-P87, P174): {n_panels} data panels, {n_curves} curves, {n_sets} sets over {len(Q.TREES)} papers; import report, compile.py's axis rows and units checked")
     return err
 
 

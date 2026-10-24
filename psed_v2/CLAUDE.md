@@ -101,15 +101,21 @@ psed_v2/
 - Papers 14+ (P172, user): 3 per round. `grow.py run <paper> <paper> <paper>` (resolve: paper key in kb/pilot/paper_keys.csv, elements, the
   figure stage and its import when figures.json is missing; pass 0; derived units and checks; GATE; pass 1; compile; check.py; add; propose)
   prints the planned calls and dollars and asks y/n (--yes skips, --plan stops after the plan); then the user's decisions in decide.html;
-  then `grow.py apply`. The gates read ontology/gates.csv (the worst of the twelve development papers, `kb/extract/gates.py reference`);
-  every run writes kb/reports/RUN_<keys>.html.
+  then `grow.py apply`. The gates read ontology/gates.csv (the worst of the twelve development papers, `kb/extract/gates.py reference`;
+  P174: its column direction, 'lower is worse' / 'higher is worse', is what the gate reads); every run writes kb/reports/RUN_<keys>.html
+  with the no-gold inspection of each paper (sections 5a-5h, kb/extract/inspection.py).
 - Figure verdicts (P173, user): from paper 13 on, figure verdicts are by rule; no one judges figures. kb/figures_import.py gives every
   data panel of a paper without human verdicts a verdict: no figure-stage flag -> pass, any flag -> flagged (imported; the flag names kept on
-  the panel and on every curve and cell, and on the facts compiled from them: basis digitized, the flags in definition_note). No panel stops
-  at the verdict; a panel whose axes resolve to no entry stays inventory only (P89), its labels in ontology/unmapped.csv. The twelve keep
+  the panel and on every curve and cell, and on the facts compiled from them: basis digitized, the flags in definition_note). The twelve keep
   their human verdicts; the rule's agreement with them is a reference row of ontology/gates.csv, not a gate.
-- grow.py apply is atomic (P173): it runs in a sandbox copy and moves its files into place only after export --check and every round's audit
-  pass; a failure writes nothing and prints what would have been written.
+- No panel is dropped (P174, user): every data panel is imported. For the twelve, a human verdict other than ok or an F5 / F6 flag makes
+  the panel flagged (as the rule's flagged). Figure labels (x, y, series axis, condition keys) take the one resolution path,
+  compile.resolve_label (step a0's lookup: ids, names, aliases, this paper's symbols; never an entry's label): one id, else other with the
+  label kept (never.csv words of any paper and symbols of the paper marked never; two ids: ambiguous). compile.py writes each label left
+  other as a row of field axis in kb/compiled/<pid>.unmapped.csv, so propose sees it. ontology/unmapped.csv no longer exists. apply imports
+  the figures again before it recompiles.
+- grow.py apply is atomic (P173): it runs in a sandbox copy (P174: under psed_v2/kb/tmp/, git-ignored by psed_v2/.gitignore) and moves its
+  files into place only after export --check and every round's audit pass; a failure writes nothing and prints what would have been written.
 - A unit is done when its report carries the gold row comparison.
 - Models are pinned by name; the cost is stated before any provider call.
 

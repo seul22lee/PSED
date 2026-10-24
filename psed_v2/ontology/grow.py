@@ -47,7 +47,7 @@ import export as X  # noqa: E402
 
 ONTO = HERE / "ontology.yaml"
 ROUNDS, HISTORY, PENDING, NEVER = HERE / "rounds.csv", HERE / "history.csv", HERE / "pending.csv", HERE / "never.csv"
-DECIDE, REPORT, UNMAPPED = HERE / "decide.html", HERE / "ontology.html", HERE / "unmapped.csv"
+DECIDE, REPORT = HERE / "decide.html", HERE / "ontology.html"                # P174: ontology/unmapped.csv deleted (a figure label is a compiled unmapped row)
 GATES_CSV = HERE / "gates.csv"                                                  # P172: written by kb/extract/gates.py reference
 COMPILED, RECORDS, FINAL = V2 / "kb" / "compiled", V2 / "kb" / "records", V2 / "ingest" / "final"
 ROUND_COLS = ["round", "opened", "applied", "pids", "dois", "status", "n_candidates", "n_accepted", "n_alias", "n_rejected", "n_never"]
@@ -319,7 +319,7 @@ def candidates(pids, extra=()):
         units = Counter(u["unit"] for u in c["members"] if u["unit"])
         c["unit"] = units.most_common(1)[0][0] if units else ""
         c["kind"] = "model" if any(u["field"] == "model" for u in c["members"]) else \
-            "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for u in c["members"]) or any(u["field"] == "quantity" for u in c["members"]) else "unit"   # P168: a simulation name
+            "quantity" if units or any(re.search(r"\d", u["label"] + u["quote"]) for u in c["members"]) or any(u["field"] in ("quantity", "axis") for u in c["members"]) else "unit"   # P168: a simulation name; P174: a figure label
         ev = {}
         for u in c["members"]:
             ev.setdefault(u["pid"], f"{u['pid']}:{u['element']} — {u['quote']}" + (f" ({'; '.join(c['notes'])})" if c["notes"] else ""))
@@ -704,7 +704,8 @@ def split_labels(row, labels):
 
 def cmd_apply():
     """P173 (user): apply is atomic. Every write happens in a sandbox (a temporary copy of ontology/ and kb/: kb/reports holds only the
-    R<n>_apply files; kb/cache, kb/records, kb/verify, ingest and corpus are read-only links); apply_here() runs there and ends with
+    R<n>_apply files; kb/cache, kb/records, kb/verify, ingest and corpus are read-only links; P174: the sandbox lives in psed_v2/kb/tmp/,
+    git-ignored, never the system temp); apply_here() runs there, imports the figures again and ends with
     export --check and the audits of every applied round. Only when all pass are the files it changed moved into the real tree and
     committed; a failure leaves ontology/, kb/compiled and pending.csv untouched and prints what would have been written."""
     import os
@@ -712,14 +713,15 @@ def cmd_apply():
     import tempfile
     if os.environ.get("GROW_SANDBOX"):
         return apply_here()
-    tmp = Path(tempfile.mkdtemp(prefix="grow_apply_"))
+    (V2 / "kb" / "tmp").mkdir(exist_ok=True)
+    tmp = Path(tempfile.mkdtemp(prefix="grow_apply_", dir=V2 / "kb" / "tmp"))
     T = tmp / V2.name
     skip = shutil.ignore_patterns("__pycache__")
     try:
         (T / "kb" / "reports").mkdir(parents=True)
         shutil.copytree(HERE, T / "ontology", ignore=skip)
         for x in (V2 / "kb").iterdir():
-            if x.name in ("reports", "cache", "records", "verify", "__pycache__"):
+            if x.name in ("reports", "cache", "records", "verify", "tmp", "__pycache__"):
                 continue
             if x.is_dir():
                 shutil.copytree(x, T / "kb" / x.name, ignore=skip)
@@ -752,8 +754,9 @@ def cmd_apply():
             (V2 / rel).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(T / rel, V2 / rel)
         msg = (T / "ontology" / ".apply_message").read_text(encoding="utf-8")
-        files = [ONTO, PENDING, NEVER, HISTORY, ROUNDS, REPORT, V2 / "kb" / "pilot" / "vocab.py", V2 / "kb" / "schema", COMPILED, V2 / "kb" / "reports"]
-        subprocess.run(["git", "add", "--", *map(str, files)], cwd=ROOT, check=True)
+        paths = [str(V2 / rel) for rel, _ in changed]                         # P174: exactly the files moved into place, the git-ignored ones
+        ign = set(subprocess.run(["git", "check-ignore", "--", *paths], cwd=ROOT, capture_output=True, text=True).stdout.splitlines())   # (paper text) left out
+        subprocess.run(["git", "add", "--", *[x for x in paths if x not in ign]], cwd=ROOT, check=True)
         subprocess.run(["git", "commit", "-q", "-m", msg], cwd=ROOT, check=True)
         print(f"moved {len(changed)} files into place and committed: {msg.splitlines()[0]}")
         return []
@@ -875,6 +878,9 @@ def apply_here():
             subprocess.run([py, str(HERE / "export.py")], capture_output=True, text=True, cwd=ROOT)
             raise Stop(f"{' '.join(cmd[1:])} failed; every file restored, nothing applied:\n{p.stdout}{p.stderr}")
     extracted = sorted(p.stem for p in RECORDS.glob("*.jsonl") if (COMPILED / f"{p.stem}.facts.csv").exists() and p.stem not in HELD)
+    figs = [pid for pid in extracted if (V2 / "ingest" / "final" / pid / "figures.json").exists()]
+    if figs:                                                                    # P174: a figure label resolves at import (the one path): import again
+        subprocess.run([py, str(V2 / "kb" / "figures_import.py"), *figs], cwd=ROOT, check=True, capture_output=True)
     for pid in extracted:                                                       # 0 calls: compile reads the stored records
         subprocess.run([py, str(V2 / "kb" / "extract" / "compile.py"), pid], cwd=ROOT, check=True)
     gold = [pid for pid in extracted if (V2 / "kb" / "pilot" / f"{pid}.facts.csv").exists()]
@@ -1275,14 +1281,15 @@ def new_key(pid, index):
 def cmd_run(args, yes=False, plan_only=False):
     """P172 (user): papers 14+ end to end, 3 per round: resolve the papers (paper key: kb/pilot/paper_keys.csv; elements.csv; the figure
     stage and its import when figures.json is missing) -> pass 0 -> units from curves + the consistency, model-named and measurement-named
-    checks (printed by pass 0) -> GATE -> pass 1 -> compile -> check.py -> gates after pass 1 -> the audits of the applied rounds and export
+    checks (printed by pass 0) -> GATE -> pass 1 -> compile -> check.py -> inspection (P174: kb/extract/inspection.py, sections 5a-5h) -> gates
+    after pass 1 -> the audits of the applied rounds and export
     --check -> grow.py add + propose -> decide.html -> stop. The planned provider calls and dollars are printed before the first call; a y/n is
     asked unless --yes; --plan stops after the plan. GATE (gates.py, ontology/gates.csv: the worst of the twelve development papers):
     a. pass 0 lists no run and no simulation, or fewer than 3 units; b. a pass-0 value worse than the worst development value; c. a provider
     error or a cached-prefix failure (any non-zero exit of a provider step). P173: the figures import gives a paper 14+ its verdicts by rule
     (kb/figures_import.py: the figure stage's flags), so gate d (no verdicts, P172) is gone. After pass 1 (before propose): form failures or quotes not found
     worse than the worst development value; an earlier round's audit FAIL; export --check FAIL. Every run writes kb/reports/RUN_<keys>.html
-    with its plan, its gate tables and its steps."""
+    with its plan, its gate tables, its steps and (P174) the no-gold inspection of each compiled paper."""
     if not 1 <= len(args) <= 3:
         raise Stop("grow.py run takes 1 to 3 papers (one round)")
     py, steps, stopped = sys.executable, [], ""
@@ -1307,6 +1314,8 @@ def cmd_run(args, yes=False, plan_only=False):
     keys = [index[p] for p in pids]
     tag = "_".join(keys)
 
+    inspected = []
+
     def step(name, cmd):
         p = subprocess.run([str(c) for c in cmd], cwd=ROOT, capture_output=True, text=True)
         out = (p.stdout + p.stderr).strip()
@@ -1321,6 +1330,10 @@ def cmd_run(args, yes=False, plan_only=False):
         parts = [f"Summary={R_}.summary.txt", f"Plan (calls and dollars per step)={R_}.plan.csv", f"Gates (ontology/gates.csv: the worst development values)={GATES_CSV}"]
         parts += [f"Gate {g} ({k})={REPORTS / f'RUN_{k}.gate_{g}.csv'}" for k in keys for g in ("pass0", "pass1") if (REPORTS / f"RUN_{k}.gate_{g}.csv").exists()]
         parts += [f"Steps={R_}.steps.csv"]
+        if inspected:                                                           # P174 (user): the no-gold inspection, sections 5a-5h, of every paper
+            sys.path.insert(0, str(EXTRACT))
+            import inspection
+            parts += [f"{k} {t}={p}" for k in inspected for t, p in inspection.parts(f"RUN_{k}")]
         subprocess.run([sys.executable, str(V2 / "kb" / "report.py"), f"{R_}.html", *parts], cwd=ROOT, check=True, capture_output=True)
         print(f"run report: {R_}.html" + (f"; STOPPED: {msg}" if msg else ""))
         if msg:
@@ -1365,6 +1378,8 @@ def cmd_run(args, yes=False, plan_only=False):
         if step(f"compile {k} (0 calls)", [py, EXTRACT / "compile.py", k])[0]:
             return finish(f"compile of {k} failed")
         step(f"check.py {k} (0 calls)", [py, "-c", f"import sys; sys.path.insert(0, {str(EXTRACT)!r}); import score; e, _ = score.check_dir({pid!r}); print(len(e), 'check.py problems')"])
+        if not step(f"inspection {k} (0 calls; sections 5a-5h)", [py, EXTRACT / "inspection.py", k, "--prefix", f"RUN_{k}"])[0]:   # P174 (user): every run
+            inspected.append(k)
     bad = [k for k in keys if step(f"gate pass 1 {k}", [py, EXTRACT / "gates.py", "pass1", k])[0]]
     if bad:
         return finish(f"pass-1 gate: {', '.join(bad)} (see the gate table); stopped before propose")
@@ -1694,7 +1709,8 @@ def report_page():
     o = onto()
     entries = o["entries"]
     by_id = {e["id"]: e for e in entries}
-    hist, rs, pend, nev, unm = rd(HISTORY), rounds(), rd(PENDING), X.never_rows(), rd(UNMAPPED)
+    hist, rs, pend, nev = rd(HISTORY), rounds(), rd(PENDING), X.never_rows()
+    axis = [u for r in rs if r["round"] != "0" for p in r["pids"].split(";") if p and (COMPILED / f"{p}.unmapped.csv").exists() for u in unmapped_rows(p) if u["field"] == "axis"]
     checks = X.run_checks(o)
     src = defaultdict(lambda: dict(rounds=[], pids=[], dois=[]))
     for h in hist:
@@ -1706,7 +1722,7 @@ def report_page():
     trees = summary_trees(o, hist, pend, nev)                                   # P157: the entries, units, qualifiers, never, pending, history
     tree_check = tree_result(trees)
     summary = [["ontology.yaml sha256", sha(ONTO)], ["ontology hash (export.ontology_hash: this file without its header line, then units.yaml)", X.ontology_hash()],
-               ["rounds", len(rs)], ["unmapped (figure import)", len(unm)],
+               ["rounds", len(rs)], ["figure labels other (compiled unmapped rows, field axis)", len(axis)],
                ["checks passed", f"{sum(1 for c in checks if c[1])} of {len(checks)}"]]
     check_html = "".join(f"<tr class='{'pass' if c[1] else 'fail'}'><td>{esc(c[0])}</td><td>{'pass' if c[1] else 'FAIL'}</td><td>{esc(c[2])}</td>"
                          f"<td>{'<ul>' + ''.join(f'<li>{esc(b)}</li>' for b in c[3]) + '</ul>' if c[3] else '—'}</td></tr>" for c in checks)
@@ -1725,7 +1741,7 @@ def report_page():
     cand = [candidate_cells(x, by_id) + [esc(x["decision"]), esc(x["alias_target"]), esc(x["never_category"]), esc(x["decision_note"]), esc(x["first_round"])] for x in pend]
     page = (f"<!doctype html><html><head><meta charset='utf-8'><title>ontology</title><style>{STYLE}</style></head><body><h1>PSED v2 ontology</h1>"
             f"<p>Written by psed_v2/ontology/grow.py (report / apply) from ontology.yaml, units.yaml, history.csv, rounds.csv, pending.csv, never.csv and "
-            f"unmapped.csv. Papers 1-12 (the pilot golds) are development papers (P157f); held-out papers (13+) are refused by grow.py add.</p>"
+            f"the compiled unmapped rows. Papers 1-12 (the pilot golds) are development papers (P157f); held-out papers (13+) are refused by grow.py add.</p>"
             f"<h2>1. Kinds</h2><pre>{esc(chr(10).join(X.kinds_lines(o)))}</pre>"
             f"<h2>2. Summary</h2><pre>{esc(chr(10).join(draw(trees[0])))}</pre>"
             f"<pre class='{'pass' if tree_check[0].startswith('sum check: pass') and tree_check[1] == 'unplaced: none' else 'fail'}'>{esc(chr(10).join(tree_check))}</pre>"
@@ -1747,8 +1763,9 @@ def report_page():
             + table(NEVER_COLS + ["superseded by"], [[x[c] for c in NEVER_COLS] + ["; ".join(f"{p} → superseded by {e}" for lab, p, e in sup if lab == x["label"])] for x in nev])
             + f"<h2>14. Unmapped</h2><h3>Values without a quantity (compiled unmapped rows of the rounds' papers with no label or only a unit; not candidates)</h3>"
             + table(["pid", "element", "raw text", "unit"], [[u["pid"], u["element"], u["quote"], u["unit"]] for u in values])
-            + f"<h3>Figure import ({len(unm)})</h3>{table(['paper', 'figure', 'panel', 'field', 'raw', 'reason'], [[x[c] for c in ('paper', 'figure', 'panel', 'field', 'raw', 'reason')] for x in unm])}"
-            "</body></html>\n")
+            + f"<h3>Figure labels left other ({len(axis)}; compiled unmapped rows of field axis, P174)</h3>"
+            + table(["pid", "element", "label", "unit", "action"], [[u["pid"], u["element"], u["label"], u["unit"], u["action"]] for u in axis])
+            + "</body></html>\n")
     if HELD_RX:
         assert not HELD_RX.search(page), "a held-out paper in ontology.html"
     REPORT.write_text(page, encoding="utf-8")

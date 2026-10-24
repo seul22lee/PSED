@@ -154,6 +154,24 @@ def vocab_hits(pid, kind, text):
     return hits
 
 
+def never_of(pid, text):
+    """The never.csv row of a record key: a word (any paper, export.norm_label) or a symbol of this paper (export.symbol_key); else None."""
+    return (NEVER.get(C.X.norm_label(text)) or NEVER_SYMBOLS.get((pid, C.X.symbol_key(text)))) if text.strip() else None
+
+
+def resolve_label(pid, text, kind="quantity"):
+    """P174 (user): the one resolution path for a label outside a record (a figure's x, y or series axis, a condition key), as step a0
+    reads a record key: vocab_hits of one kind on the text whole. One id -> it; two -> other, ambiguous; none -> other, with the never.csv
+    category of the text (never_of). Returns dict(id, how, ambiguous, never, never_label)."""
+    hits = vocab_hits(pid, kind, text) if text.strip() else {}
+    if len(hits) == 1:
+        (i, how), = hits.items()
+        return dict(id=i, how=how, ambiguous=[], never="", never_label="")
+    nv = never_of(pid, text)
+    return dict(id="other", how="", ambiguous=sorted(hits), never=nv["category"] if nv else "",
+                never_label=(nv["label"] + (f" (symbol in {nv['paper']})" if nv.get("symbol") == "yes" else "")) if nv else "")
+
+
 def series_axis(pid):
     """P163: {panel: the series_axis label as printed} of the figure stage's ingest/final/<pid>/figures.json (kb/<pid>.figures.json keeps
     it only as a set's varied_raw, and a map's set names its axes instead)."""
@@ -506,7 +524,7 @@ class Run:
                 if len(mh) == 1:                                                # P172: a record of quantity other whose label names one model
                     r["names_model"] = next(iter(mh))                           # entry (its name, alias or a symbol of this paper): no quantity
                     self.count("a0", "quantity other naming a model entry (kept)")
-                hit = (NEVER.get(C.X.norm_label(text)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(text)))) if text.strip() else None
+                hit = never_of(self.pid, text)
                 if hit:
                     r["never"], r["never_label"] = hit["category"], hit["label"] + (f" (symbol in {hit['paper']})" if hit.get("symbol") == "yes" else "")
                     self.count("a0", "quantity other: never.csv " + ("symbol" if hit.get("symbol") == "yes" else "word"))
@@ -834,7 +852,7 @@ class Run:
             self.count("h", "simulation linked to a model entry")
             self.note(f"h: simulation {it['id']} ({name!r}) -> model {i} ({how})")
             return
-        nv = NEVER.get(C.X.norm_label(name)) or NEVER_SYMBOLS.get((self.pid, C.X.symbol_key(name)))
+        nv = never_of(self.pid, name)
         self.unmapped.append(dict(element=eid, field="model", id="other", label_as_printed=name, unit="", candidate="",
                                   action=f"kept (ambiguous: {', '.join(sorted(hits))})" if hits else "kept (a simulation name no model entry has)",
                                   never=nv["category"] if nv else "", nearest=""))
@@ -932,6 +950,19 @@ class Run:
                              evidence=";".join(els(cu["figure"], cu.get("panel", ""))), parent=parent, points_ref=cu["id"]))
             flagged(facts[-1], cu)
             self.count("1c", f"curve -> {typ}")
+        for inv in Fj.get("inventory", []):                                     # P174 (user): a figure's label the one path left other is an
+            ev = els(inv["figure"], inv.get("panel", ""))                       # unmapped row (field axis) like any other label; a resolved
+            for a in inv.get("labels") or []:                                   # axis whose printed unit units.yaml lacks, a unit row
+                cand = json.dumps(dict(axis=a["axis"], label_raw=a["label_raw"], panel=inv["id"]), ensure_ascii=False)
+                if a["quantity"] == "other":
+                    self.unmapped.append(dict(element=ev[0] if ev else self.els[0]["element_id"], field="axis", id="other", label_as_printed=a["key"], unit=a.get("unit", ""),
+                                              candidate=cand, action=f"kept (never: {a['never_label']})" if a.get("never") else f"kept (ambiguous: {', '.join(a['ambiguous'])})"
+                                              if a.get("ambiguous") else "kept", never=a.get("never", ""), nearest=""))
+                    self.count("1c", f"figure label other ({a['axis']})" + (", never" if a.get("never") else ", ambiguous" if a.get("ambiguous") else ""))
+                elif a.get("unit_reason") in ("unit_unknown", "dimension_mismatch"):
+                    self.unmapped.append(dict(element=ev[0] if ev else self.els[0]["element_id"], field="unit", id=normalize(a.get("unit", "")), label_as_printed=a["key"],
+                                              unit=a.get("unit", ""), candidate=cand, action=f"kept (axis {a['unit_reason'].replace('_', ' ')}: values as printed)", never=""))
+                    self.count("1c", f"figure axis {a['unit_reason'].replace('_', ' ')} (values as printed)")
         unowned = []
         for cu in Fj.get("curves", []):
             own = [i for i in owner.get(cu["id"], []) if i in self.node]
@@ -962,7 +993,7 @@ class Run:
             q = v.get("quantity") or ""
             if q not in L.QUANTITIES:
                 self.count("1c", f"{v.get('kind', 'value')} without a quantity id (result left out)"); continue
-            u = dimless(unit_symbol(v.get("unit") or "") if v.get("unit") else "")
+            u = dimless((unit_symbol(v["unit"]) or v["unit"]) if v.get("unit") else "")   # P174: a unit units.yaml lacks stays as printed
             vt = v.get("value_text") or ""
             if q in CATEGORICAL_ALIASES and vt:                                 # P149 F3: a cell's value_text resolved to the value id
                 hit = categorical(q, vt)
