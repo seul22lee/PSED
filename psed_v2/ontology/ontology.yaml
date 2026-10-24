@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 24aa4bc579b99b97552f25673f963c1683544d34cb50b362a72b12690d02e0fc
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): c5feffaa220cc168422145cab6a2317936d2fedd84a68e7be4f111dc039b9eee
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -2511,6 +2511,7 @@ entries:
   # ---------------------------------------------------------------- models
   - id: ylilammi_diffusion_reaction
     aliases: [Yilammi et al. diffusion–reaction model]
+    symbols: [{text: diffusion model, paper: 10.1063_1.5028178}]
     type: model
     name: "Ylilammi diffusion-reaction model"                     # P142b
     origin: base
@@ -2524,6 +2525,7 @@ entries:
 
   - id: gordon_plug_flow
     aliases: [Gordon model]
+    symbols: [{text: Kinetic Model, paper: 10.1002_cvde.200390005}]
     type: model
     name: "Gordon plug-flow model"                     # P142b
     origin: base
@@ -2548,6 +2550,7 @@ entries:
     evidence: ["Werbrouck2021 Figs. 11-14"]
 
   - id: arts_slope
+    symbols: [{text: eq 6, paper: 10.1021_acs.jpcc.9b08176}]
     type: model
     name: "Arts slope relation"                     # P142b
     origin: extension
