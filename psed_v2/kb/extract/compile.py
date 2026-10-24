@@ -396,7 +396,7 @@ def species_named(pid, label):
     return found
 
 
-SYMBOL_TYPES = ("model", "definition", "cited")                                  # P182 (user): the record types the symbol-species step reads
+SYMBOL_TYPES = ("model", "definition", "cited", "derived")                       # P182 (user): the record types the symbol-species step reads
 SPECIES_EVIDENCED = ("kept: its own element names it", "backed by the definition", "from the definition", "corrected from the definition")   # P179c
 UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    # P179 (user): a reactant presented unnamed ('reactant A')
 SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
@@ -1004,8 +1004,8 @@ class Run:
     # ------------------------------------------------------------------------------------------------------------ a1 (P178, P179)
     def symbol_species(self, recs):
         """a1, P178 / P179 (user): the species of a record labelled with a symbol (export.symbol_like, holding a letter) rests on evidence,
-        every form version; P182 (user): the records are selected by type, model / definition / cited (SYMBOL_TYPES), never by quantity;
-        settings and observations keep their own species:
+        every form version; P182 (user): the records are selected by type, model / definition / cited / derived (SYMBOL_TYPES), never
+        by quantity; settings and observations keep their own species:
           1. this paper's definition record of the symbol, else of its subscript (p_B -> B), whose own text (its quote, the meaning it
              copies, its table row) names one substance: a species name; 'carrier gas' (the paper's one carrier_gas setting); an
              unnamed reactant ('reactant X', or 'molecule(s) X' for a letter X the paper calls a reactant) = model_reactant. A

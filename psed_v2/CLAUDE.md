@@ -181,9 +181,9 @@ psed_v2/
   from them (export.entry_qualifiers; no hand lists); export --check 19 (applies_to on every key; every qualifier lists.py puts on an
   entry within its set); form.json carries one rule per scoped key ('P182 scope <key>'). compile a1, every form version: a value
   record's key outside its quantity's scope is removed and listed (kb/compiled/<pid>.qualifier_scope.csv; other and lists of
-  quantities not checked; figure and derived facts too). The symbol-species step (P178/P179) reads model / definition / cited records
-  only, never by quantity; settings, observations and derived records keep their own species; its own-element test reads the text
-  through normalize().
+  quantities not checked; figure and derived facts too). The symbol-species step (P178/P179) reads model / definition / cited /
+  derived records (records identified by a symbol) only, never by quantity; settings and observations keep their own species; its
+  own-element test reads the text through normalize().
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
