@@ -1,0 +1,24 @@
+P170: 31 provider calls (round-4 pass 1: gao15 8, yim22 17, mat23 6), $0.803 (+ at most $0.064 for the three cached prefixes); fewer than the
+≈ 50 stated, as planned by --plan. Steps 1, 2, 4: 0 calls.
+
+1. gao15's pass-0 layouts: fig3a-i, fig4 and fig6 have no layout (pass 0 gave none); they are micrographs (top-view infrared microscopy,
+   optical microscopy, SEM) with no figures.json data; fig5a is panel_one_unit (its unit bound), fig5b curve_per_unit. As the directive
+   says, nothing is created. On the twelve papers the panel_one_unit panels with no unit are yli18 fig1, gre23 fig1a, fig1b (schematics)
+   and gre23 fig4a (a photo of the compact before ALD); the rule would have made specimens of them; not built. Unbound items: 0.
+2. pass0_paper.measurement_named (flag only, printed after every pass 0): a run or specimen whose printed name names a measurement method
+   and whose evidence states no deposition. On the twelve papers: 0 flags, and no run or specimen name holds a measurement-method word at
+   all. mat23's 11 extra runs are named after processes ('PE - ALD', 'Thermal ALD', 'PE ALD@125°C', 'H₂S plasma', 'Ga₂(NMe₂)₆', 'thermal ALD
+   process at 150 °C'), and their evidence says 'deposited' (the GIWAXS, AFM and transmittance captions name the film's deposition). Not met.
+3. Pass 1 (form P163, cached prefix): gao15 103 records ($0.115), yim22 485 ($0.551), mat23 120 ($0.137); every element answered, no re-run.
+   Scores (T6 / gold rows; check.py --dir): gao15 81 / 225, 54; yim22 318 / 608, 199 (model 147 / 215, entity 59 / 68, definition 31 / 62); mat23
+   63 / 191, 135 (activity 27 / 30, observation 29 / 51, entity 13 / 14). Records failing form.json: gao15 2 (qualifiers type 2, rule 1 1),
+   yim22 11 (variables type 9, P158 rule 5 1, an enum 1), mat23 0.
+   Simulation -> model: the nine earlier papers all linked; yim22 'Model A' (72 model runs) and 'Model B' (0 model runs: pass 0 put every
+   model run under Model A) resolve to no entry, so they are model candidates.
+4. grow.py add (round 4: gao15, yim22, mat23) and propose: 29 candidates (yim22 23, mat23 5, gao15 1), none in two or more papers; 23 rows
+   never; 1 label-prefix merge ('Collision frequency of Reactant A with ...' into 'collision frequency'). Model candidates: Model A, Model B
+   (kind model). decide.html: 45 undecided rows (16 earlier, 29 of round 4).
+   A mistake of mine, found here and fixed: the P163 label-prefix rule dropped the letter 'a' as an article, so 'Model A' read as 'model' and
+   'Model B' was merged into it; label_tokens now drops a / an / the only before another word, and round 4 was proposed again (28 -> 29
+   candidates). A candidate is now kind model when any of its rows is a simulation name (Model A had a pass-1 row of the same name).
+   Audits rounds 1-3 still PASS; export.py --check 15 of 15.
