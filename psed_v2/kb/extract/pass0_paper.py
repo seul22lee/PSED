@@ -43,8 +43,9 @@ UNITS: one item per run, specimen, simulation and model run.
   cell's text.
 - introduced_in: the element ids where the unit is named, then every table or figure element that shows it (ELEMENT INDEX).
 - structure_class, specimen_class, experiment_kind: only values of the form's enums, only when the paper states them.
-- process_mode (a run only): the run's process mode, one of the form's values, only when the paper states it for that run, with
-  process_mode_quote copied from the paper (the words that state it); null otherwise, never inferred from the reactants (P179).
+- recipe fields of a run (P181): reactant_A, reactant_B, carrier_gas (species ids) and process_mode (one of the form's values), each only
+  when the paper states it for that run, with <field>_quote copied from the paper (the words that state it); null otherwise, never
+  inferred. A simulation or model run: the same fields when the paper states them for the model, else null.
 
 TABLE LAYOUTS (one per table of TABLES below):
 {tables}

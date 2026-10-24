@@ -400,6 +400,26 @@ UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    #
 SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
 CELL_ID = re.compile(r"^(tab\w*?)\.r(\d+)c(\d+)$")                              # a table cell id: table, row, column
 PROCESS_MODE_PASS = "0pm"                                                        # P179: the records line of the process_mode fill (process_mode_fill.py)
+RECIPE_FILL_PASS = "0rf"                                                         # P181: the records line of the recipe fill (the four recipe fields)
+FILL_PASSES = (PROCESS_MODE_PASS, RECIPE_FILL_PASS)
+
+
+def recipe_fill(lines):
+    """P179, P181: the latest fill line of the pass-0 units (process_mode fill or recipe fill) as {unit id: {field, field_quote,
+    field_element}} for export.RECIPE_FIELDS (a process_mode fill holds process_mode with quote and element); (line number, fields)."""
+    n = max((i for i, x in enumerate(lines, 1) if x["pass"] in FILL_PASSES), default=None)
+    if n is None:
+        return None, {}
+    out = {}
+    for x in (C.loads_json(lines[n - 1]["response"]).get("recipes") or []):
+        if isinstance(x, dict) and x.get("id"):
+            f_ = {}
+            for f in C.X.RECIPE_FIELDS:
+                if f in x:
+                    legacy = f == "process_mode" and f + "_quote" not in x
+                    f_.update({f: x.get(f), f + "_quote": x.get("quote") if legacy else x.get(f + "_quote"), f + "_element": x.get("element") if legacy else x.get(f + "_element")})
+            out[x["id"]] = f_
+    return n, out
 FORM_VERSIONS = C.V2 / "ontology" / "form_versions.csv"                          # P179b (user): the form versions compile reads
 
 
@@ -791,7 +811,7 @@ class Run:
                 for e in x.get("element_ids") or []:                            # P179: per element, the latest line of its group that holds
                     if grp_of.get(e) == x["section"]:                           # it (a re-extraction line holds some of a group's elements)
                         el_line[e] = n
-            elif x["pass"] == PROCESS_MODE_PASS:                                # P179: the latest process_mode fill of the pass-0 runs
+            elif x["pass"] in FILL_PASSES:                                      # P179, P181: the latest fill of the pass-0 units
                 fill = n
         used = set(el_line.values())
         before = [n for n, x in enumerate(lines, 1) if x["pass"] == 0 and used and n < min(used)]
@@ -815,15 +835,12 @@ class Run:
             if e in parsed[n]:
                 self.answers[e] = parsed[n][e]
                 self.form_version[e] = lines[n - 1].get("form_version", "")     # P158: '' = written before the freeze
-        self.fill = {}
-        if fill:                                                                # P179: the recipe field process_mode (+ quote, element) on the runs
-            resp = C.loads_json(lines[fill - 1]["response"])
-            self.fill = {x["id"]: x for x in (resp.get("recipes") or []) if isinstance(x, dict) and x.get("id")}
-            for u in self.pass0:
-                if isinstance(u, dict) and u.get("role") == "run" and u.get("id") in self.fill:
-                    x = self.fill[u["id"]]
-                    u.update(process_mode=x.get("process_mode"), process_mode_quote=x.get("quote"), process_mode_element=x.get("element"))
-            self.note(f"input: process_mode fill = line {fill}: " + ", ".join(f"{i} {x.get('process_mode') or 'null'}" for i, x in self.fill.items()))
+        fill, self.fill = recipe_fill(lines)                                    # P179, P181: the recipe fields (+ quote, element) on the units
+        for u in self.pass0:
+            if isinstance(u, dict) and u.get("id") in self.fill:
+                u.update(self.fill[u["id"]])
+        if fill:
+            self.note(f"input: recipe fill = line {fill}: " + "; ".join(f"{i} " + ", ".join(f"{f} {x[f]}" for f in C.X.RECIPE_FIELDS if x.get(f)) for i, x in self.fill.items()))
         recs = []
         for eid, a in sorted(self.answers.items(), key=lambda x: self.order[x[0]]):
             if isinstance(a, list):
@@ -1029,6 +1046,37 @@ class Run:
                 if m and C.X.symbol_key(m.group(1)) == C.X.symbol_key(h["id"]) and not r["a1"]["species"]:
                     put(r, h["species"], "from the user's symbol decision", f"species {h['species']}: the user's decision on subscript {h['id']} (history.csv, {h['date']})")
 
+
+    def step_fill(self, recs):
+        """P181 (user), every form version: the definitional step of a setting or observation of pulse_time, purge_time or exposure whose
+        step is empty, from its run's recipe fields (the recipe fill): its species = the run's reactant_A -> reactant_A (pulse_time,
+        exposure) / purge_A (purge_time); = reactant_B -> reactant_B / purge_B, and for a run of process_mode plasma a pulse_time of its
+        reactant_B -> plasma. The record's run: its about unit (a run or a simulation), a specimen's parent run, a model run's simulation;
+        about 'paper': the paper's runs, when every one naming the species gives it the same role. No species, no run, the run's fields
+        null, a species matching neither, runs disagreeing: the step stays empty (a log line 'a1: step fill ...'). A step set is untouched."""
+        units = {u["id"]: u for u in self.pass0 if isinstance(u, dict) and not u.get("origin")}
+        runs = [u for u in units.values() if u.get("role") in ("run", "simulation")]
+        for r in recs:
+            rec = r["rec"]
+            q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
+            if r.get("origin") or rec.get("type") not in ("setting", "observation") or rec.get("quantity") not in C.X.STEP_QUANTITIES or q.get("step"):
+                continue
+            sp, ab = q.get("species") or "", rec.get("about") if isinstance(rec.get("about"), str) else ""
+            u = units.get(ab)
+            cand = runs if ab == "paper" else [] if not u else [u] if u.get("role") in ("run", "simulation") else [units[u["parent"]]] if u.get("parent") in units else []
+            roles = {("A", "") if sp == x.get("reactant_A") else ("B", x.get("process_mode") or "") for x in cand if sp and sp in (x.get("reactant_A"), x.get("reactant_B"))}
+            step, why = "", ("no species" if not sp else f"no run (about {ab or '-'})" if not cand else
+                             "run fields null" if not any(x.get("reactant_A") or x.get("reactant_B") for x in cand) else
+                             "species matches neither field" if not roles else "runs disagree on the species' role" if len(roles) > 1 else "")
+            if not why:
+                half, mode = next(iter(roles))
+                step = (f"purge_{half}" if rec["quantity"] == "purge_time" else
+                        "plasma" if half == "B" and mode == "plasma" and rec["quantity"] == "pulse_time" else f"reactant_{half}")
+                rec["qualifiers"] = {**q, "step": step}
+                why = "the run's recipe field"
+            self.count("a1", f"step fill: {step or 'empty'} ({why})")
+            self.note(f"a1: step fill {r['eid']} {rec['quantity']} {rec.get('value')} species {sp or '-'} about {ab or '-'}: {step or '(empty)'} ({why})")
+        return recs
 
     def recipe_process_mode(self, recs):
         """P179 (user): process_mode on a run comes only from its recipe field (the pass-0 unit's process_mode with its quote, filled by
@@ -2015,6 +2063,7 @@ class Run:
         recs = self.resolve_other(recs)                                         # P157b
         recs = self.symbol_species(recs)                                        # P178, P179 (user)
         recs = self.recipe_process_mode(recs)                                   # P179 (user)
+        recs = self.step_fill(recs)                                             # P181 (user)
         recs = self.validate(recs)
         self.count("a", "kept", len(recs))
         recs = self.type_rules(recs)

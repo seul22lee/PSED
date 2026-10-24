@@ -55,7 +55,8 @@ Fields
 - value, value_min, value_max, value_text: as printed; unit: a string as printed, never inferred or converted; the value_text of
   material, substrate, reactant_A, reactant_B and structure is an id of the codebook's species, materials and structures (f); for
   a reactor or an instrument, the name only.
-- mentions: only names from PASS-0 UNITS (name as printed), exactly as listed."""
+- mentions: only names from PASS-0 UNITS (name as printed), exactly as listed.
+- step: by the run's recipe fields (CODEBOOK step values)."""
 
 
 def container(eid):
@@ -263,7 +264,29 @@ def examples(pid, form):
             if not list(val.iter_errors(rec)):
                 out[(t, ek)] = (C.E.PAPERS[p], {k: rec[k] for k in fbt[t]})       # P148-cost: the type's fields only (the response schema's)
     order = [(t, k) for t in TYPES(form) for k in dict.fromkeys(EXAMPLE_KINDS.values()) if (t, k) in out]
-    return "\n".join(f"- {t} / {k} ({out[(t, k)][0]}): " + json.dumps(out[(t, k)][1], ensure_ascii=False) for t, k in order)
+    return "\n".join([f"- {t} / {k} ({out[(t, k)][0]}): " + json.dumps(out[(t, k)][1], ensure_ascii=False) for t, k in order] + step_examples(pid, form))
+
+
+def step_examples(pid, form):
+    """P181 (user): two example records of a step quantity with step and species, copied (the type's fields) from existing pass-1 lines
+    of form version P163 of other papers (papers in index order, the first record of each): a pulse_time of step reactant_A and one of
+    step reactant_B (no P163 purge_time record carries a species)."""
+    fbt = fields_by_type(form)["setting"]
+    kinds, out = {}, {}
+    for p in C.E.PAPERS:
+        if p == pid or p in C.HELD_OUT:
+            continue
+        for x in C.lines(p, 1):
+            if x.get("form_version") != "P163":
+                continue
+            for eid, a in answers(C.loads_json(x["response"])).items():
+                for rec in a if isinstance(a, list) else []:
+                    q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
+                    if rec.get("type") == "setting" and rec.get("quantity") == "pulse_time" and q.get("step") in ("reactant_A", "reactant_B") \
+                            and q.get("species") and q["step"] not in out:
+                        kinds.setdefault(p, {r["element_id"]: r["kind"] for r in C.E.load(p)})
+                        out[q["step"]] = (C.E.PAPERS[p], EXAMPLE_KINDS.get(kinds[p].get(eid), kinds[p].get(eid, "")), {k: rec.get(k) for k in fbt})
+    return [f"- setting / {k} ({key}, a P163 line): " + json.dumps(r, ensure_ascii=False) for key, k, r in (out[s_] for s_ in ("reactant_A", "reactant_B") if s_ in out)]
 
 
 def units_block(pid):
@@ -276,7 +299,11 @@ def units_block(pid):
     obj = C.loads_json(p0[-1]["response"])
     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
     data = lambda it: " ".join(f"{d.get('id')}:{d.get('role') or 'null'}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
-    line = lambda it: f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"   # noqa: E731  P175
+    _, fill = K.recipe_fill(C.lines(pid))                                       # P181 (user): the recipe fields, in words, null ones omitted
+    words = {"reactant_A": "reactant_A", "reactant_B": "reactant_B", "carrier_gas": "carrier", "process_mode": "mode"}
+    recipe = lambda it: ", ".join(f"{words[f]} {fill[it['id']][f]}" for f in C.X.RECIPE_FIELDS if fill.get(it.get("id"), {}).get(f))   # noqa: E731
+    line = lambda it: (f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"
+                       + (f" | {recipe(it)}" if recipe(it) else ""))                # noqa: E731  P175
     der = K.bind(pid, obj, None)["units"]                                       # P177b: compile.bind's derived units (no pass-1 records yet)
     return "\n".join([line(it) for it in items if isinstance(it, dict)]
                      + (["Units the compiler derived from figure curves (one per curve no unit above names; name = the legend label):"] if der else [])

@@ -5721,8 +5721,9 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
                 'category': 'cycle_step',
                 'converts_to': {},
                 'cq': '',
-                'definition': 'Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the '
-                              'product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time.',
+                'definition': 'Duration of a reactant exposure step (steps reactant_A and reactant_B of the ALD cycle, Cremers 2019, Sec. I); the '
+                              'exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the '
+                              'plasma-on time.',
                 'definitions': [],
                 'dimension': 'time',
                 'family': '',
@@ -5746,8 +5747,8 @@ ENTRIES = {'absorption_coefficient': {'aliases': ['AbsorptionCoefficient'],
                 'category': 'cycle_step',
                 'converts_to': {},
                 'cq': '',
-                'definition': 'Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps 2 and 4 of the '
-                              'ALD cycle, Cremers 2019, Sec. I).',
+                'definition': 'Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps purge_A and '
+                              'purge_B of the ALD cycle, Cremers 2019, Sec. I).',
                 'definitions': [],
                 'dimension': 'time',
                 'family': '',

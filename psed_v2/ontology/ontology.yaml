@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): 9fdf73a08b9a98e441f4cf1307d42df73cb63d0f10c935800b5c79b197183c08
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): e6bb8eeff06478d78a578fcee0dc32b41b86b8b82e7ffd78fd3aefc665fe9966
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -395,7 +395,7 @@ entries:
     origin: base
     role: condition
     category: cycle_step
-    definition: "Duration of a reactant exposure step (steps 1 and 3 of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time."
+    definition: "Duration of a reactant exposure step (steps reactant_A and reactant_B of the ALD cycle, Cremers 2019, Sec. I); the exposure is the product of reactant partial pressure and pulse time (Cremers Sec. II D). For a plasma step it is the plasma-on time."
     dimension: time
     unit: s
     qudt_quantity_kind: "quantitykind:Time"
@@ -414,7 +414,7 @@ entries:
     origin: base
     role: condition
     category: cycle_step
-    definition: "Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps 2 and 4 of the ALD cycle, Cremers 2019, Sec. I)."
+    definition: "Duration of the step in which excess reactant and gaseous by-products are purged or pumped away (steps purge_A and purge_B of the ALD cycle, Cremers 2019, Sec. I)."
     dimension: time
     unit: s
     qudt_quantity_kind: "quantitykind:Time"
@@ -3539,7 +3539,7 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: body_thickness,      inputs: [feature_depth, entry_sides], output: body_thickness,  formula: "L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
   definition: {meaning: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)", values: definition ids, log: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)"}
-  step:      {meaning: "which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific).", values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds"}
+  step:      {meaning: "which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific).", values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds", value_definitions: {reactant_A: "the exposure step of the run's reactant_A species", purge_A: "the purge after the exposure step of the run's reactant_A species", reactant_B: "the exposure step of the run's reactant_B species", purge_B: "the purge after the exposure step of the run's reactant_B species", plasma: "the plasma exposure step (reactant_B delivered as a plasma)", hold_A: "a static (closed-valve) exposure of reactant A", hold_B: "a static (closed-valve) exposure of reactant B", none: "not step-specific"}}   # P181 (user): one definition per value, naming the run's recipe field
   species:   {meaning: "the substance a value is about (a species id): a reactant, a carrier or background gas, or a detected phase", values: species ids, log: "P179 (user): the meaning; values: species entries only"}
   gas:       {meaning: "the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure", values: species ids}
   element:   {meaning: "the element a composition value counts (a chemical symbol): the numerator of an element_ratio, the element of an element_fraction, of an XPS signal or a binding energy", values: element symbols}
