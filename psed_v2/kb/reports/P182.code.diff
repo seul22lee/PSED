@@ -1,5 +1,5 @@
 diff --git a/psed_v2/CLAUDE.md b/psed_v2/CLAUDE.md
-index c11bc847..2eb7aae9 100644
+index c11bc847..eb010475 100644
 --- a/psed_v2/CLAUDE.md
 +++ b/psed_v2/CLAUDE.md
 @@ -52,7 +52,7 @@ psed_v2/
@@ -26,14 +26,14 @@ index c11bc847..2eb7aae9 100644
 +  from them (export.entry_qualifiers; no hand lists); export --check 19 (applies_to on every key; every qualifier lists.py puts on an
 +  entry within its set); form.json carries one rule per scoped key ('P182 scope <key>'). compile a1, every form version: a value
 +  record's key outside its quantity's scope is removed and listed (kb/compiled/<pid>.qualifier_scope.csv; other and lists of
-+  quantities not checked; figure and derived facts too). The symbol-species step (P178/P179) reads model / definition / cited records
-+  only, never by quantity; settings, observations and derived records keep their own species; its own-element test reads the text
-+  through normalize().
++  quantities not checked; figure and derived facts too). The symbol-species step (P178/P179) reads model / definition / cited /
++  derived records (records identified by a symbol) only, never by quantity; settings and observations keep their own species; its
++  own-element test reads the text through normalize().
  - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
    analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
    (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
 diff --git a/psed_v2/kb/extract/compile.py b/psed_v2/kb/extract/compile.py
-index c339a33e..ace693bf 100644
+index c339a33e..4c99d401 100644
 --- a/psed_v2/kb/extract/compile.py
 +++ b/psed_v2/kb/extract/compile.py
 @@ -36,6 +36,7 @@ UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candid
@@ -48,7 +48,7 @@ index c339a33e..ace693bf 100644
      return found
  
  
-+SYMBOL_TYPES = ("model", "definition", "cited")                                  # P182 (user): the record types the symbol-species step reads
++SYMBOL_TYPES = ("model", "definition", "cited", "derived")                       # P182 (user): the record types the symbol-species step reads
  SPECIES_EVIDENCED = ("kept: its own element names it", "backed by the definition", "from the definition", "corrected from the definition")   # P179c
  UNNAMED_REACTANT = re.compile(r"\b(?i:reactants?|precursors?)\s+([A-Z])\b")    # P179 (user): a reactant presented unnamed ('reactant A')
  SUBSCRIPT = re.compile(r"^[^_]+_\{?(.+?)\}?$")                                  # P178: a symbol's subscript (p_B -> B, c_{TMA} -> TMA)
@@ -185,8 +185,8 @@ index c339a33e..ace693bf 100644
 -        """a1, P178 / P179 (user): the species of a record labelled with a symbol (export.symbol_like, holding a letter) whose quantity
 -        takes the species qualifier rests on evidence, every form version:
 +        """a1, P178 / P179 (user): the species of a record labelled with a symbol (export.symbol_like, holding a letter) rests on evidence,
-+        every form version; P182 (user): the records are selected by type, model / definition / cited (SYMBOL_TYPES), never by quantity;
-+        settings and observations keep their own species:
++        every form version; P182 (user): the records are selected by type, model / definition / cited / derived (SYMBOL_TYPES), never
++        by quantity; settings and observations keep their own species:
            1. this paper's definition record of the symbol, else of its subscript (p_B -> B), whose own text (its quote, the meaning it
               copies, its table row) names one substance: a species name; 'carrier gas' (the paper's one carrier_gas setting); an
               unnamed reactant ('reactant X', or 'molecule(s) X' for a letter X the paper calls a reactant) = model_reactant. A

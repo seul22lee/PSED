@@ -113,6 +113,11 @@ a1: symbol species fig5.cap 'T' model deposition_temperature: record -, definiti
 a1: symbol species fig5.cap 'K' model adsorption_equilibrium_constant: record -, definition - -> no species
 a1: symbol species fig5.cap 'c' model initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species fig5.cap 't_p' model pulse_time: record -, definition - -> no species
+a1: symbol species fig6 'PD50%' derived penetration_depth: record -, definition - -> no species
+a1: symbol species tabI.r1c4 'c' derived initial_sticking_coefficient: record tma, definition - -> species cleared (no evidence)
+a1: symbol species tabI.r1c5 'K' derived adsorption_equilibrium_constant: record -, definition - -> no species
+a1: symbol species tabI.r2c4 'c' derived initial_sticking_coefficient: record ticl4, definition - -> species cleared (no evidence)
+a1: symbol species tabI.r2c5 'K' derived adsorption_equilibrium_constant: record -, definition - -> no species
 a1: symbol species s5.p7 'W': species model_reactant from the symbol's evidence in this paper (fig2.cap, fig3.cap, fig5.cap, s8.p3)
 a1: symbol species fig1.cap 'W': species model_reactant from the symbol's evidence in this paper (fig2.cap, fig3.cap, fig5.cap, s8.p3)
 a1: symbol species s8.p3 'M_B': species n2: the user's decision on subscript B (history.csv, 2026-10-24)
@@ -256,7 +261,7 @@ j: claim nodes (query.claim_nodes): 10 nodes for 15 claims; claims without a ful
 j: comparisons from figures.json (1c): 1
 step input: {'records': 285}
 step a0: {'quantity other: never.csv symbol': 8, 'quantity other: never.csv word': 22, 'quantity promoted (quantity: alias)': 1}
-step a1: {'symbol species: no species': 74, 'symbol species: from the definition': 11, 'symbol species: backed by the definition': 12, 'symbol species: species cleared (no evidence)': 8, "symbol species: from the symbol's evidence in this paper": 2, "symbol species: from the user's symbol decision": 12, "step fill: reactant_A (the run's recipe field)": 2, "step fill: purge_A (the run's recipe field)": 2, "step fill: reactant_B (the run's recipe field)": 2, "step fill: purge_B (the run's recipe field)": 2, 'qualifier out of scope: species': 6, 'qualifier out of scope: phase': 2, 'qualifier out of scope: stage': 7, 'qualifier out of scope: structure_class': 7, 'qualifier out of scope: position': 2, 'qualifier out of scope: basis': 1, 'qualifier out of scope: origin': 1, 'qualifier out of scope: relative_to': 1, 'qualifier out of scope: over': 1, 'qualifier out of scope: mode': 1, 'qualifier out of scope: specimen_class': 1}
+step a1: {'symbol species: no species': 77, 'symbol species: from the definition': 11, 'symbol species: backed by the definition': 12, 'symbol species: species cleared (no evidence)': 10, "symbol species: from the symbol's evidence in this paper": 2, "symbol species: from the user's symbol decision": 12, "step fill: reactant_A (the run's recipe field)": 2, "step fill: purge_A (the run's recipe field)": 2, "step fill: reactant_B (the run's recipe field)": 2, "step fill: purge_B (the run's recipe field)": 2, 'qualifier out of scope: species': 6, 'qualifier out of scope: phase': 2, 'qualifier out of scope: stage': 7, 'qualifier out of scope: structure_class': 7, 'qualifier out of scope: position': 2, 'qualifier out of scope: basis': 1, 'qualifier out of scope: origin': 1, 'qualifier out of scope: relative_to': 1, 'qualifier out of scope: over': 1, 'qualifier out of scope: mode': 1, 'qualifier out of scope: specimen_class': 1}
 step a: {'variables_unmapped (set to null)': 18, 'variable filled from a definition (C5)': 9, 'kept': 285}
 step b: {'model_with_value (kept)': 76, 'kept': 285}
 step c: {'quantity_other never (kept)': 30, 'kept': 285}

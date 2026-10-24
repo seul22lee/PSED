@@ -13,16 +13,33 @@ a1: symbol species s9.p7 't_hold' definition pulse_time: record -, definition - 
 a1: symbol species eq1 't_hold' model pulse_time: record -, definition - -> no species
 a1: symbol species s9.p8 't_purge' definition purge_time: record -, definition - -> no species
 a1: symbol species eq2 't_purge' model purge_time: record -, definition - -> no species
+a1: symbol species s9.p9 't_purge' derived purge_time: record -, definition - -> no species
+a1: symbol species s9.p9 't_purge' derived purge_time: record -, definition - -> no species
 a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species eq6 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species eq7 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species eq8 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p15 '\\bar{\\nu}' derived reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p15 '\\bar{\\nu}' derived reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p15 '\\bar{\\nu}' derived reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species fig2.cap 'T' definition deposition_temperature: record -, definition - -> no species
+a1: symbol species fig3b 'Δn_g' derived gas_moles_per_cycle: record dez, definition - -> kept: its own element names it
+a1: symbol species fig3b 'Δn_g' derived gas_moles_per_cycle: record dez, definition - -> kept: its own element names it
+a1: symbol species fig3b 'Δn_g' derived gas_moles_per_cycle: record dez, definition - -> kept: its own element names it
 a1: symbol species fig1.cap 'd_NP' definition particle_diameter: record -, definition - -> no species
 a1: symbol species fig1.cap 'L' definition feature_depth: record -, definition - -> no species
 a1: symbol species fig1.cap '\\phi_i' definition porosity: record -, definition - -> no species
+a1: symbol species tabI.r1c4 '\\Delta n_s (\\mu\\text{mol}/\\text{cyc})' derived deposited_moles_per_cycle: record -, definition - -> no species
+a1: symbol species tabI.r1c5 '\\Delta n_g (\\mu\\text{mol}/\\text{cyc})' derived gas_moles_per_cycle: record dez, definition - -> species cleared (no evidence)
+a1: symbol species tabI.r1c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' derived reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species tabI.r2c4 '\\Delta n_s (\\mu\\text{mol}/\\text{cyc})' derived deposited_moles_per_cycle: record -, definition - -> no species
+a1: symbol species tabI.r2c5 '\\Delta n_g (\\mu\\text{mol}/\\text{cyc})' derived gas_moles_per_cycle: record dez, definition - -> species cleared (no evidence)
+a1: symbol species tabI.r2c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' derived reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species tabI.r3c4 '\\Delta n_s (\\mu\\text{mol}/\\text{cyc})' derived deposited_moles_per_cycle: record -, definition - -> no species
+a1: symbol species tabI.r3c5 '\\Delta n_g (\\mu\\text{mol}/\\text{cyc})' derived gas_moles_per_cycle: record dez, definition - -> species cleared (no evidence)
+a1: symbol species tabI.r3c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' derived reaction_stoichiometry: record -, definition - -> no species
 a1: step fill s9.p4 pulse_time None species dez about paper: reactant_A (the run's recipe field)
 a1: step fill s9.p4 pulse_time None species h2o about paper: reactant_B (the run's recipe field)
 a1: step fill s14.p6 purge_time 48.0 species dez about paper: purge_A (the run's recipe field)
@@ -178,7 +195,7 @@ j: claim nodes (query.claim_nodes): 16 nodes for 17 claims; claims without a ful
 j: comparisons from figures.json (1c): 1
 step input: {'records': 200}
 step a0: {'quantity promoted (quantity: symbol)': 2, 'quantity other: never.csv word': 2}
-step a1: {'symbol species: no species': 17, "step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1, "step fill: purge_A (the run's recipe field)": 1, 'qualifier out of scope: stage': 3, 'qualifier out of scope: relative_to': 5, 'qualifier out of scope: over': 3, 'qualifier out of scope: mode': 3, 'qualifier out of scope: ratio': 3, 'qualifier out of scope: specimen_class': 16, 'qualifier out of scope: structure_class': 24, 'qualifier out of scope: phase': 9, 'qualifier out of scope: position': 3, 'qualifier out of scope: step': 1, 'qualifier out of scope: species': 9}
+step a1: {'symbol species: no species': 28, 'symbol species: kept: its own element names it': 3, 'symbol species: species cleared (no evidence)': 3, "step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1, "step fill: purge_A (the run's recipe field)": 1, 'qualifier out of scope: stage': 3, 'qualifier out of scope: relative_to': 5, 'qualifier out of scope: over': 3, 'qualifier out of scope: mode': 3, 'qualifier out of scope: ratio': 3, 'qualifier out of scope: specimen_class': 16, 'qualifier out of scope: structure_class': 24, 'qualifier out of scope: phase': 9, 'qualifier out of scope: position': 3, 'qualifier out of scope: step': 1, 'qualifier out of scope: species': 9}
 step a: {'variables_unmapped (set to null)': 5, 'variable filled from a definition (C5)': 1, 'kept': 200}
 step b: {'kept': 200}
 step c: {'quantity_other (kept)': 5, 'quantity_other never (kept)': 2, 'kept': 200}
@@ -196,8 +213,8 @@ step k: {'statement from the record': 162, 'statement_copies_text (reported by c
 diff against the gold:
   setting        89   43   23  0.53  0.26
   observation    89   73   26  0.36  0.29
-  claim          57   17   11  0.65  0.19
   cited          57    3    3  1.00  0.05
+  claim          57   17   11  0.65  0.19
   caveat         53    7    7  1.00  0.13
   activity       41   36   31  0.86  0.76
   derived        31   39   21  0.54  0.68

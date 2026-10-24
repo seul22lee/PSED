@@ -17,10 +17,13 @@ a0: tabu1.r0c0: quantity 'Distance between pillars' -> pillar_spacing (quantity:
 a0: tabu1.r0c1: quantity 'Distance between pillars' -> pillar_spacing (quantity: name 'Distance between pillars')
 a1: symbol species s2.p2 'cA' definition initial_sticking_coefficient: record model_reactant, definition - -> kept: its own element names it
 a1: symbol species s8.p1 '\\lambda_{\\text{TMA}}' model mean_free_path: record tma, definition tabu2.r26c0: {'tma'} -> backed by the definition
+a1: symbol species s16.p10 'PD50%' derived penetration_depth: record -, definition fig3.cap: {'al2o3'} -> from the definition (al2o3)
 a1: symbol species s18.p3 'c_H2O' cited initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'}, tabu1.r3c1: {'h2o'} -> backed by the definition
 a1: symbol species s18.p3 'c_TMA' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
 a1: symbol species s19.p1 'c_A' model initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species s19.p2 'K_n' definition knudsen_number: record -, definition - -> no species
+a1: symbol species s19.p4 'c_TMA' derived initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
+a1: symbol species s19.p4 'c_H2O' derived initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'}, tabu1.r3c1: {'h2o'} -> backed by the definition
 a1: symbol species fig1.cap 'H' definition feature_width: record -, definition - -> no species
 a1: symbol species fig1.cap 'L' definition feature_depth: record -, definition - -> no species
 a1: symbol species fig2.cap '\\tilde{x}' definition dimensionless_distance: record -, definition - -> no species
@@ -47,6 +50,37 @@ a1: symbol species fig10c 'N' model cycle_number: record -, definition - -> no s
 a1: symbol species fig10d 'H' model feature_width: record -, definition - -> no species
 a1: symbol species fig10e 'H' model feature_width: record -, definition - -> no species
 a1: symbol species fig10f 'H' model feature_width: record -, definition - -> no species
+a1: symbol species tab1.r1c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r1c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r2c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r2c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r3c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r3c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r4c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r4c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r5c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r5c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r6c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r6c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r7c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r8c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r8c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r9c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r9c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r10c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r10c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r12c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r12c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r13c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r13c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r14c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r14c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r15c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r15c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r16c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r16c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species tab1.r18c9 'S1/N' derived growth_per_cycle: record -, definition - -> no species
+a1: symbol species tab1.r18c12 'x50% (PD^50%)' derived coated_aspect_ratio: record -, definition - -> no species
 a1: symbol species tab2.r1c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
 a1: symbol species tab2.r2c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
 a1: symbol species tab2.r3c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
@@ -55,6 +89,8 @@ a1: symbol species tab2.r4c6 'c_{\\text{TMA}}' cited initial_sticking_coefficien
 a1: symbol species tab2.r5c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
 a1: symbol species tab2.r5c7 'c_{\\text{H}_2\\text{O}}' cited initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'}, tabu1.r3c1: {'h2o'} -> backed by the definition
 a1: symbol species tab2.r6c6 'c_{\\text{TMA}}' cited initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
+a1: symbol species tab2.r7c6 'c_{\\text{TMA}}' derived initial_sticking_coefficient: record tma, definition tabu1.r2c0: {'tma'}, tabu1.r2c1: {'tma'} -> backed by the definition
+a1: symbol species tab2.r7c7 'c_{\\text{H}_2\\text{O}}' derived initial_sticking_coefficient: record h2o, definition tabu1.r3c0: {'h2o'}, tabu1.r3c1: {'h2o'} -> backed by the definition
 a1: symbol species tabu1.r2c0 'c_TMA' definition initial_sticking_coefficient: record tma, definition - -> kept: its own element names it
 a1: symbol species tabu1.r3c0 'c_H2O' definition initial_sticking_coefficient: record h2o, definition - -> kept: its own element names it
 a1: symbol species tabu1.r4c0 'b' definition b_film: record -, definition - -> no species
@@ -90,6 +126,8 @@ a1: symbol species tabu2.r27c0 '\\rho' definition film_density: record -, defini
 a1: symbol species tabu2.r28c0 '\\theta' definition surface_coverage: record -, definition - -> no species
 a1: symbol species tabu2.r29c0 '\\xi' definition dimensionless_distance: record -, definition - -> no species
 a1: symbol species s19.p1 'c_A': species model_reactant from the symbol's evidence in this paper (s2.p2)
+a1: symbol species fig3.cap 'PD^{50%}': species al2o3 from the symbol's evidence in this paper (s16.p10)
+a1: symbol species tabu2.r13c0 'PD^50%': species al2o3 from the symbol's evidence in this paper (s16.p10)
 a1: symbol species tabu2.r21c0 't_p': species tma from the symbol's evidence in this paper (fig10.cap)
 a1: symbol species tabu2.r9c0 'M_A': species tma from the symbol's evidence in this paper (fig10.cap)
 a1: symbol species tabu1.r6c0 'd_A': species tma from the symbol's evidence in this paper (fig10.cap)
@@ -131,7 +169,9 @@ a1: qualifier out of scope: s6.p1 setting purge_time over=run (record)
 a1: qualifier out of scope: s6.p1 setting purge_time ratio=0.0 (record)
 a1: qualifier out of scope: s6.p1 setting purge_time specimen_class=film (record)
 a1: qualifier out of scope: s6.p1 setting purge_time structure_class=lateral_channel (record)
+a1: qualifier out of scope: s16.p10 derived penetration_depth species=al2o3 (record)
 a1: qualifier out of scope: s18.p3 cited film_density phase=al2o3 (record)
+a1: qualifier out of scope: fig3.cap definition penetration_depth species=al2o3 (record)
 a1: qualifier out of scope: fig3.cap definition front_slope level=50% (record)
 a1: qualifier out of scope: fig9f observation normalized_thickness position=plateau (record)
 a1: qualifier out of scope: fig9f observation normalized_thickness position=plateau (record)
@@ -219,6 +259,7 @@ a1: qualifier out of scope: tab1.r18c2 setting purge_time stage=initial (record)
 a1: qualifier out of scope: tab1.r18c2 setting purge_time over=run (record)
 a1: qualifier out of scope: tab1.r18c2 setting purge_time mode=not_stated (record)
 a1: qualifier out of scope: tab1.r18c2 setting purge_time structure_class=lateral_channel (record)
+a1: qualifier out of scope: tabu2.r13c0 definition penetration_depth species=al2o3 (record)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
 a: tab1.r1c2: qualifiers.n '1' -> 1.0 (C4)
@@ -340,7 +381,7 @@ j: claim nodes (query.claim_nodes): 20 nodes for 22 claims; claims without a ful
 j: comparisons from figures.json (1c): 10
 step input: {'records': 582}
 step a0: {'quantity other: never.csv word': 39, 'quantity promoted (quantity: name)': 2, 'quantity other: never.csv symbol': 3}
-step a1: {'symbol species: kept: its own element names it': 10, 'symbol species: backed by the definition': 14, 'symbol species: no species': 46, 'symbol species: from the definition': 1, 'symbol species: species cleared (no evidence)': 3, "symbol species: from the symbol's evidence in this paper": 6, "step fill: reactant_A (the run's recipe field)": 9, 'step fill: empty (no species)': 4, "step fill: purge_A (the run's recipe field)": 5, "step fill: reactant_B (the run's recipe field)": 5, "step fill: purge_B (the run's recipe field)": 5, 'qualifier out of scope: over': 22, 'qualifier out of scope: ratio': 2, 'qualifier out of scope: specimen_class': 2, 'qualifier out of scope: structure_class': 22, 'qualifier out of scope: phase': 1, 'qualifier out of scope: level': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: stage': 23, 'qualifier out of scope: mode': 20}
+step a1: {'symbol species: kept: its own element names it': 10, 'symbol species: backed by the definition': 18, 'symbol species: from the definition': 2, 'symbol species: no species': 77, 'symbol species: species cleared (no evidence)': 3, "symbol species: from the symbol's evidence in this paper": 8, "step fill: reactant_A (the run's recipe field)": 9, 'step fill: empty (no species)': 4, "step fill: purge_A (the run's recipe field)": 5, "step fill: reactant_B (the run's recipe field)": 5, "step fill: purge_B (the run's recipe field)": 5, 'qualifier out of scope: over': 22, 'qualifier out of scope: ratio': 2, 'qualifier out of scope: specimen_class': 2, 'qualifier out of scope: structure_class': 22, 'qualifier out of scope: species': 3, 'qualifier out of scope: phase': 1, 'qualifier out of scope: level': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: stage': 23, 'qualifier out of scope: mode': 20}
 step a: {'numeric string coerced (C4)': 20, 'schema:enum': 1, 'kept': 581}
 step a_p158: {'P158 rule 4 (predates the freeze, kept)': 13, 'P158 rule 1 (predates the freeze, kept)': 4, 'P158 rule 5 (predates the freeze, kept)': 8}
 step a_fields: {'value_text': 1}

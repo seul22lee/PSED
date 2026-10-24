@@ -5,6 +5,8 @@ a1: symbol species eq4 'a' model aspect_ratio: record -, definition - -> no spec
 a1: symbol species eq5 'J' model None: record -, definition - -> no species
 a1: symbol species eq6 't' model pulse_time: record -, definition - -> no species
 a1: symbol species eq7 'Pt' model exposure: record -, definition - -> no species
+a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -> kept: its own element names it
+a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -> kept: its own element names it
 a1: symbol species eq8 'CF' model None: record -, definition - -> no species
 a1: symbol species eq9 'J' model None: record -, definition - -> no species
 a1: symbol species eq10 'dt' model None: record -, definition - -> no species
@@ -15,6 +17,7 @@ a1: symbol species eq14 '(Pt)_{\\text{bottom}}' model exposure: record -, defini
 a1: symbol species eq15 '(Pt)_{\\text{total}}' model exposure: record -, definition - -> no species
 a1: symbol species fig1 'L' model feature_depth: record -, definition - -> no species
 a1: symbol species fig1 'a' model feature_width: record -, definition - -> no species
+a1: symbol species eq7 'Pt': species hf_nme2_4 from the symbol's evidence in this paper (s6.p7)
 a1: step fill s8.p3 exposure 30000.0 species - about run_30k_L: (empty) (no species)
 a1: step fill s8.p5 exposure 2000.0 species - about run_2k_L: (empty) (no species)
 a1: step fill s8.p5 exposure 4000.0 species - about run_4k_L: (empty) (no species)
@@ -48,7 +51,7 @@ j: claim nodes (query.claim_nodes): 8 nodes for 10 claims; claims without a full
 j: comparisons from figures.json (1c): 2
 step input: {'records': 99}
 step a0: {'quantity other: never.csv word': 1}
-step a1: {'symbol species: no species': 14, 'process_mode from the recipe field: thermal': 3, 'step fill: empty (no species)': 3, "step fill: reactant_A (the run's recipe field)": 3, 'qualifier out of scope: species': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: structure_class': 1, 'qualifier out of scope: by': 3}
+step a1: {'symbol species: no species': 14, 'symbol species: kept: its own element names it': 2, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: thermal': 3, 'step fill: empty (no species)': 3, "step fill: reactant_A (the run's recipe field)": 3, 'qualifier out of scope: species': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: structure_class': 1, 'qualifier out of scope: by': 3}
 step a: {'schema:not': 2, 'schema:type': 3, 'schema:enum': 1, 'kept': 96}
 step a_fields: {'quantity': 2, 'qualifiers': 3, 'value_text': 1}
 step b: {'kept': 96}
