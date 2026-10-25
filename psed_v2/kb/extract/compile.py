@@ -37,9 +37,32 @@ UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candid
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "unit_fact_id", "origin", "role", "how", "reason", "facts"]   # P184: the compiled unit id
-FACT_FIELDS = F.FIELDS + ["dimension_mismatch"]                                  # P194 (user): compiled facts carry the dimension flag (6b)
+FACT_FIELDS = F.FIELDS + ["dimension_mismatch"]
+
+
+def kind_rank(f, kind_of):
+    """P195 (user) A1 (2): where a value comes from in the paper, judged by the fact's evidence elements: any text, table or caption element
+    -> 1 (stated); figure-panel elements only -> 2 (read from a figure); computed_by_kb -> 3. data_kind is not part of the precedence."""
+    if f.get("data_kind") == "computed_by_kb":
+        return 3
+    ev = [e for e in (f.get("evidence") or "").split(";") if e]
+    return 2 if ev and all(kind_of.get(e) == "panel" for e in ev) else 1
+
+
+def sig_digits(s):
+    """The significant digits of a number as written (Decimal digits: 0.0934 -> 3, 500 -> 3); 0 when it is no number."""
+    import decimal
+    try:
+        return len(decimal.Decimal(str(s).strip()).as_tuple().digits)
+    except (decimal.InvalidOperation, ValueError):
+        return 0
+
+
+def value_text(v, inputs=()):
+    """P195 (user): a computed value stored with 6 significant digits, never fewer than its inputs (the old 4-digit format dropped)."""
+    return f"{v:.{max([6] + [sig_digits(x) for x in inputs])}g}"                                  # P194 (user): compiled facts carry the dimension flag (6b)
 MIGRATED_FIELDS = ["paper", "element", "type", "label_as_printed", "form_version", "quantity_before", "definition", "quantity_after"]   # P194 2e
-TRANSFORM_FIELDS = ["paper", "unit", "transform", "outcome", "inputs", "output_fact", "value", "unit_of_value"]   # P194 1a-1c: <pid>.transforms.csv
+TRANSFORM_FIELDS = ["paper", "unit", "transform", "outcome", "inputs", "output_fact", "value", "unit_of_value", "note"]   # P194 1a-1c: <pid>.transforms.csv
 REDUNDANT_FIELDS = ["paper", "unit", "transform", "printed_fact", "printed_value", "printed_unit", "printed_range", "computed_fact", "computed_value",
                     "computed_unit", "computed_range", "outcome"]                  # P194 1d: <pid>.transform_redundant.csv
 RECIPE_CSV = ["run", "field", "value", "quote", "element"]                      # P187: kb/compiled/<pid>.recipe_fields.csv (compile stores the recipe fields)
@@ -50,14 +73,7 @@ NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
 
 
-def migrate_definition(q, quals):
-    """P194 (user) 2e, every form version: the qualifier key definition is gone (it served only front_slope): a front_slope with
-    definition=normalized is normalized_front_slope, with definition=thickness_per_cycle it stays front_slope; the key is removed.
-    quals: {key: value}. Returns (quantity, qualifiers without the key, the definition value or None when the key was absent)."""
-    if not isinstance(quals, dict) or "definition" not in quals:
-        return q, quals, None
-    d = quals["definition"]
-    return ("normalized_front_slope" if q == "front_slope" and d == "normalized" else q), {k: v for k, v in quals.items() if k != "definition"}, d
+migrate_definition = L.migrate_definition                                        # P194 2e; P195: the rule lives in lists.py (check.py reads the gold through it)
 
 
 def num_text(v):
@@ -2175,40 +2191,48 @@ class Run:
         return rows
 
     def transforms(self, rows):
-        """j, P194 (user) 1a-1d: every transform declared in ontology.yaml (vocab.TRANSFORMS) with a function in lists.TRANSFORM_FN, per unit
-        (an entity row: specimen, film, model run, derived unit). A unit's facts: the value facts under it (directly or under its measurement
-        activities), not flagged (6b), a computed_by_kb fact only for a quantity the unit holds no printed fact of (the lists.DERIVED entries
-        no declaration takes run first: a cycle_time they give is a deposition_rate input); plus, for a quantity it holds no value of, its
-        parent's single value (P190, as unit_vectors). A declared input 'q{k=v}' takes the unit's facts of q whose qualifiers contain k=v; several: the one whose qualifiers
-        equal the declared ones; still several -> 'inputs ambiguous', none -> 'inputs missing' (nothing computed). Each input converted to the
-        unit the function is written for (lists.convert); the output: a derived fact of the output quantity, kind computed_by_kb, inputs = the
-        input fact ids, evidence = theirs, its declared qualifiers plus the declaration's carry keys from its first input, in the output's
-        lists.UNITS unit. 1d: a printed (not computed_by_kb) fact of the output quantity under the unit whose qualifiers do not conflict is
-        compared: each printed number spans +- half its last printed digit, the output range is the extreme over the corner combinations
-        of the input ranges; overlap = agree: the printed fact is dropped; else both kept (<pid>.transform_redundant.csv)."""
+        """j, P194 / P195 (user) A1, A3: every transform declared in ontology.yaml (vocab.TRANSFORMS) with a function in lists.TRANSFORM_FN,
+        per computation unit: a run, specimen (the compiler's film too), simulation or model run (pass-0 roles), never a measurement unit.
+        A unit's inputs: its own value facts, the results of its measurement units (the measurement activities under it, P185) and the
+        conditions (settings, model inputs) of its ancestors, transitively under P190: an ancestor's value reaches a unit only when every unit
+        between holds no value of that quantity and the ancestor holds exactly one value of it. A flagged fact (6b) is never an input. A
+        declared input 'q{k=v}' takes the facts of q whose qualifiers contain k=v; when several match: (1) the qualifiers exactly the declared
+        ones, (2) where the value comes from (kind_rank: a text, table or caption element; figure panels only; computed_by_kb), (3) own unit,
+        then measurement unit, then ancestor, nearest first; values that agree within printed precision (+- half the last printed digit) are
+        one value, the most precise one used; more than one value left -> 'inputs ambiguous', none -> 'inputs missing'. Inputs are
+        converted to the units the function is written for (lists.convert). A3: a unit that holds a printed fact of the output (not
+        computed_by_kb, qualifiers not in conflict, not an input of the computation) keeps it; the transform is computed and compared (each
+        printed number +- half its last digit, the output's range over the corner combinations of the input ranges: agree / disagree,
+        <pid>.transform_redundant.csv) and no computed fact is added. Else the output: a derived fact on the computation unit, kind
+        computed_by_kb, inputs and evidence of its inputs, the declared qualifiers plus the carry keys of its first input, in the output's
+        lists.UNITS unit, with 6 significant digits, never fewer than its inputs (value_text)."""
         import decimal
         import itertools
+        import experiments as EX
         quals = lambda f: dict(x.split("=", 1) for x in (f.get("qualifiers") or "").split(";") if "=" in x)   # noqa: E731
         tree = {r["fact_id"]: r for r in rows if "#" not in r["fact_id"]}
-        ents = [r["fact_id"] for r in rows if r.get("type") == "entity" and "#" not in r["fact_id"]]
-        es = set(ents)
-
-        def owner(f):                                                           # the entity a fact is about: its nearest entity ancestor
-            p, seen = f.get("parent"), set()
-            while p and p not in es and p not in seen:
-                seen.add(p)
-                p = tree.get(p, {}).get("parent")
-            return p if p in es else None
+        units = list(dict.fromkeys([nid for nid, role in self.node.values() if role in ("run", "simulation", "specimen", "model_run")] + list(self.films.values())))
+        units = [u for u in units if u in tree]
+        meas_of = collections.defaultdict(set)
+        for r in rows:
+            if "#" not in r["fact_id"] and r.get("type") == "activity" and r.get("kind") == "measurement":
+                meas_of[r.get("parent")].add(r["fact_id"])
         value = lambda f: F.num(f["value"]) if f.get("value") else None         # noqa: E731
         facts = [f for f in rows if "#" in f["fact_id"] and f.get("type") not in ("claim", "caveat", "definition", "cited") and value(f) is not None]
-        own, direct = collections.defaultdict(list), collections.defaultdict(list)
+        direct = collections.defaultdict(list)
         for f in facts:
-            e = owner(f)
-            if e:
-                own[e].append(f)
             direct[f.get("parent")].append(f)
-        usable = lambda f: not f.get("dimension_mismatch")                      # noqa: E731
-        printed_first = lambda fs: [f for f in fs if f.get("data_kind") != "computed_by_kb"] or fs   # noqa: E731  a computed fact only when nothing printed
+
+        def local(u):                                                           # (fact, source rank): own 0, its measurement units 1
+            return [(f, 0) for f in direct.get(u, [])] + [(f, 1) for m in sorted(meas_of.get(u, ())) for f in direct.get(m, [])]
+
+        def ancestors(u):
+            out, p, seen = [], tree.get(u, {}).get("parent"), set()
+            while p and p not in seen and p in tree:
+                seen.add(p)
+                out.append(p)
+                p = tree[p].get("parent")
+            return out
 
         def to_unit(v, u, to):
             a = V.UNIT_ALIAS.get(u, u) if u else ""
@@ -2231,71 +2255,87 @@ class Run:
             except (decimal.InvalidOperation, ValueError):
                 return 0.0
 
-        def pool(e, q):
-            mine = [f for f in own.get(e, []) if f["quantity"] == q]
-            if mine:
-                return printed_first([f for f in mine if usable(f)])
-            par = printed_first([f for f in direct.get(tree.get(e, {}).get("parent"), []) if f["quantity"] == q])   # P190: the parent's single value
-            return [par[0]] if par and usable(par[0]) and len({(f["value"], f["unit"]) for f in par}) == 1 else []
+        rank = lambda f: kind_rank(f, self.kind_of)                             # noqa: E731
 
-        self.transform_rows, self.redundant_rows, out, drop = [], [], [], set()
+        def candidates(u, q):
+            """(fact, source rank) of q for unit u: its own and measurement facts; if it holds none, the nearest ancestor's conditions of q
+            when that ancestor holds exactly one value of it (every unit between holding none)."""
+            mine = [(f, s) for f, s in local(u) if f["quantity"] == q]
+            if mine:
+                return [(f, s) for f, s in mine if not f.get("dimension_mismatch")]
+            for d, a in enumerate(ancestors(u), 2):
+                held = [f for f in direct.get(a, []) if f["quantity"] == q]
+                if not held:
+                    continue
+                conds = [f for f in held if EX.is_condition(f)]
+                vals = {(f["value"], f.get("unit") or "") for f in conds}
+                return [(f, d) for f in conds if not f.get("dimension_mismatch")] if conds and len(vals) == 1 and len(conds) == len(held) else []
+            return []
+
+        self.transform_rows, self.redundant_rows, out = [], [], []
         self.count_transforms = collections.Counter()
         decl = {d["id"]: d for d in L.TRANSFORMS}
         for tid in decl:
             if tid not in L.TRANSFORM_FN:
                 self.count("j", f"declared, no function (not computed): {tid}")
-        for e in ents:
+        for u in units:
             for tid, Fn in L.TRANSFORM_FN.items():
                 D = decl[tid]
-                picks, outcome = [], ""
-                for inp in D["inputs"]:
+                picks, outcome, notes = [], "", []
+                for inp, fu in zip(D["inputs"], Fn["units"]):
                     q, need = L.ref_key(inp)
                     need = dict(x.split("=", 1) for x in need)
-                    cand = [f for f in pool(e, q) if need.items() <= quals(f).items()]
+                    cand = [(f, s) for f, s in candidates(u, q) if need.items() <= quals(f).items()]
                     if len(cand) > 1:
-                        cand = [f for f in cand if quals(f) == need]
-                        if len(cand) != 1:
-                            outcome = outcome or "inputs ambiguous"
-                    if not cand:
+                        cand = [x for x in cand if quals(x[0]) == need] or cand                         # (1) the declared qualifiers exactly
+                        best = min(rank(f) for f, _ in cand)
+                        cand = [x for x in cand if rank(x[0]) == best]                                   # (2) where the value comes from
+                        near = min(s for _, s in cand)
+                        cand = [x for x in cand if x[1] == near]                                         # (3) own, measurement unit, ancestor
+                    try:
+                        vals = {f"{to_unit(F.num(f['value']), f.get('unit') or '', fu):.12g}" for f, _ in cand}
+                        if len(vals) > 1:                               # P195 (user): values agreeing within printed precision are one value
+                            rg = [(sorted(to_unit(F.num(f["value"]) + s * half(f["value"]), f.get("unit") or "", fu) for s in (-1, 1)), x) for x in cand for f in [x[0]]]
+                            if all(max(a[0][0], b[0][0]) <= min(a[0][1], b[0][1]) for a in rg for b in rg):
+                                w = min(r_[1] - r_[0] for r_, _ in rg)              # the most precise one
+                                cand = [x for r_, x in rg if r_[1] - r_[0] <= w * (1 + 1e-9)]
+                                vals = {f"{to_unit(F.num(f['value']), f.get('unit') or '', fu):.12g}" for f, _ in cand}
+                                if len(vals) == 1:
+                                    notes.append(f"{q}: values agree within printed precision, the most precise used")
+                    except (ValueError, KeyError) as ex:
+                        vals, outcome = set(), outcome or f"not computed: {ex}"[:120]
+                    if len(vals) > 1:
+                        outcome = outcome or "inputs ambiguous"
+                    elif not cand:
                         outcome = outcome or "inputs missing"
-                    picks.append(cand[0] if len(cand) == 1 else None)
-                found = [f for f in picks if f]
+                    elif len(cand) > 1:
+                        notes.append(f"{q}: one value, {len(cand)} facts")
+                    picks.append([f for f, _ in cand] if len(vals) == 1 else [])
+                found = [f for fs in picks for f in fs]
                 if outcome:
-                    if found:                                                   # a unit holding none of the inputs is not listed
-                        self.transform_rows.append(dict(paper=self.key, unit=e, transform=tid, outcome=outcome, inputs=";".join(f["fact_id"] for f in found),
-                                                        output_fact="", value="", unit_of_value=""))
-                    self.count("j", f"{tid}: {outcome}" + ("" if found else " (no input at all)"))
+                    if found or any(candidates(u, L.ref_key(i)[0]) for i in D["inputs"]):
+                        self.transform_rows.append(dict(paper=self.key, unit=u, transform=tid, outcome=outcome, inputs=";".join(f["fact_id"] for f in found),
+                                                        output_fact="", value="", unit_of_value="", note="; ".join(notes)))
+                    self.count("j", f"{tid}: {outcome}")
                     continue
+                first = [fs[0] for fs in picks]
+                vals = [to_unit(F.num(f["value"]), f.get("unit") or "", fu) for f, fu in zip(first, Fn["units"])]
                 try:
-                    vals = [to_unit(F.num(f["value"]), f.get("unit") or "", u) for f, u in zip(picks, Fn["units"])]
                     v = Fn["fn"](*vals)
-                    oq, oneed = L.ref_key(D["output"])
-                    ou = L.UNITS.get(oq)
-                    unit = Fn["unit"]
-                    if ou is not None:
-                        v, unit = to_unit(v, Fn["unit"], ou), ou
-                except (ValueError, KeyError, ZeroDivisionError) as ex:
-                    self.transform_rows.append(dict(paper=self.key, unit=e, transform=tid, outcome=f"not computed: {ex}"[:120], inputs=";".join(f["fact_id"] for f in picks),
-                                                    output_fact="", value="", unit_of_value=""))
-                    self.count("j", f"{tid}: not computed ({type(ex).__name__})")
+                except ZeroDivisionError:
+                    self.count("j", f"{tid}: not computed (division by zero)")
                     continue
-                q0 = quals(picks[0])
+                oq, oneed = L.ref_key(D["output"])
+                ou = L.UNITS.get(oq)
+                unit = Fn["unit"]
+                if ou is not None:
+                    v, unit = to_unit(v, Fn["unit"], ou), ou
+                q0 = quals(first[0])
                 oquals = {**dict(x.split("=", 1) for x in oneed), **{k: q0[k] for k in D.get("carry") or [] if k in q0}}
-                ev = sorted({x for f in picks for x in f["evidence"].split(";") if x}, key=lambda x: self.order.get(x, 10 ** 6))
-                f = {x: "" for x in FACT_FIELDS}
-                f.update(type="derived", quantity=oq, qualifiers=";".join(f"{k}={w}" for k, w in sorted(oquals.items())), value=f"{v:.4g}", unit=unit,
-                         data_kind="computed_by_kb", method="calculation", inputs=";".join(dict.fromkeys(x["fact_id"] for x in picks)), evidence=";".join(ev),
-                         parent=e, author=self.pid, mentions=tree[e].get("label_as_printed", ""), definition_note=f"computed by transform {tid}: {D['formula']}")
-                self.id_count[ev[0]] += 1
-                f["fact_id"] = f"{self.key}:{ev[0]}#{self.id_count[ev[0]]}"
-                out.append(f)
-                self.count_transforms[tid] += 1
-                self.count("j", f"{tid}: computed")
-                self.transform_rows.append(dict(paper=self.key, unit=e, transform=tid, outcome="computed", inputs=f["inputs"], output_fact=f["fact_id"], value=f["value"], unit_of_value=unit))
-                rng = []                                                        # 1d: the output range from the input ranges (corner combinations)
-                for x, u in zip(picks, Fn["units"]):
+                rng = []                                                        # the output range from the input ranges (corner combinations)
+                for x, fu in zip(first, Fn["units"]):
                     h = half(x["value"])
-                    rng.append(sorted(to_unit(F.num(x["value"]) + s * h, x.get("unit") or "", u) for s in (-1, 1)))
+                    rng.append(sorted(to_unit(F.num(x["value"]) + s * h, x.get("unit") or "", fu) for s in (-1, 1)))
                 corners = []
                 for c in itertools.product(*rng):
                     try:
@@ -2305,32 +2345,43 @@ class Run:
                 lo, hi = (min(corners), max(corners)) if corners else (v, v)
                 if ou is not None:
                     lo, hi = sorted((to_unit(lo, Fn["unit"], ou), to_unit(hi, Fn["unit"], ou)))
-                for pf in own.get(e, []):
-                    pq = quals(pf)
-                    if pf["quantity"] != oq or pf.get("data_kind") == "computed_by_kb" or any(k in pq and pq[k] != w for k, w in oquals.items()) \
-                            or any(pf is x for x in picks):                    # an input of this computation is not a printed value of its output
-                        continue
-                    row = dict(paper=self.key, unit=e, transform=tid, printed_fact=pf["fact_id"], printed_value=pf["value"], printed_unit=pf.get("unit") or "",
-                               computed_fact=f["fact_id"], computed_value=f["value"], computed_unit=unit, computed_range=f"{lo:.6g} to {hi:.6g}")
-                    try:
-                        if pf.get("dimension_mismatch"):
-                            raise ValueError("flagged (6b)")
-                        ph = half(pf["value"])
-                        plo, phi = sorted(to_unit(F.num(pf["value"]) + s * ph, pf.get("unit") or "", unit) for s in (-1, 1))
-                    except (ValueError, KeyError) as ex:
-                        row.update(printed_range="", outcome=f"not comparable: {ex}"[:100])
+                ins = ";".join(dict.fromkeys(f["fact_id"] for fs in picks for f in fs))
+                printed = [pf for pf, _ in local(u) if pf["quantity"] == oq and pf.get("data_kind") != "computed_by_kb" and not any(pf is x for fs in picks for x in fs)
+                           and not any(k in quals(pf) and quals(pf)[k] != w for k, w in oquals.items())]
+                if printed:                                                     # A3: the printed output stays; compared, no computed fact
+                    for pf in printed:
+                        row = dict(paper=self.key, unit=u, transform=tid, printed_fact=pf["fact_id"], printed_value=pf["value"], printed_unit=pf.get("unit") or "",
+                                   computed_fact="(not added)", computed_value=value_text(v, [x["value"] for x in first]), computed_unit=unit, computed_range=f"{lo:.6g} to {hi:.6g}")
+                        try:
+                            if pf.get("dimension_mismatch"):
+                                raise ValueError("flagged (6b)")
+                            ph = half(pf["value"])
+                            plo, phi = sorted(to_unit(F.num(pf["value"]) + s * ph, pf.get("unit") or "", unit) for s in (-1, 1))
+                            agree = max(lo, plo) <= min(hi, phi)
+                            row.update(printed_range=f"{plo:.6g} to {phi:.6g}", outcome="agree" if agree else "disagree")
+                            self.count("j", f"{tid}: printed output {'agrees' if agree else 'disagrees'}")
+                        except (ValueError, KeyError) as ex:
+                            row.update(printed_range="", outcome=f"not comparable: {ex}"[:100])
                         self.redundant_rows.append(row)
-                        continue
-                    agree = max(lo, plo) <= min(hi, phi)
-                    row.update(printed_range=f"{plo:.6g} to {phi:.6g}", outcome="agree: printed fact dropped" if agree else "disagree: both kept")
-                    self.redundant_rows.append(row)
-                    self.count("j", f"1d {tid}: {'agree' if agree else 'disagree'}")
-                    if agree:
-                        drop.add(pf["fact_id"])
-        self.note(f"j: transforms (P194): {sum(self.count_transforms.values())} computed facts ({dict(self.count_transforms)}); declared without a function: "
+                    self.transform_rows.append(dict(paper=self.key, unit=u, transform=tid, outcome="printed output kept (compared)", inputs=ins, output_fact="",
+                                                    value=value_text(v, [x["value"] for x in first]), unit_of_value=unit, note="; ".join(notes)))
+                    continue
+                ev = sorted({x for fs in picks for f in fs for x in f["evidence"].split(";") if x}, key=lambda x: self.order.get(x, 10 ** 6))
+                f = {x: "" for x in FACT_FIELDS}
+                f.update(type="derived", quantity=oq, qualifiers=";".join(f"{k}={w}" for k, w in sorted(oquals.items())), value=value_text(v, [x["value"] for x in first]), unit=unit,
+                         data_kind="computed_by_kb", method="calculation", inputs=ins, evidence=";".join(ev), parent=u, author=self.pid,
+                         mentions=tree[u].get("label_as_printed", ""), definition_note=f"computed by transform {tid}: {D['formula']}")
+                self.id_count[ev[0]] += 1
+                f["fact_id"] = f"{self.key}:{ev[0]}#{self.id_count[ev[0]]}"
+                out.append(f)
+                self.count_transforms[tid] += 1
+                self.count("j", f"{tid}: computed")
+                self.transform_rows.append(dict(paper=self.key, unit=u, transform=tid, outcome="computed", inputs=ins, output_fact=f["fact_id"], value=f["value"],
+                                                unit_of_value=unit, note="; ".join(notes)))
+        self.note(f"j: transforms (P195): {sum(self.count_transforms.values())} computed facts ({dict(self.count_transforms)}); declared without a function: "
                   + ", ".join(t_ for t_ in decl if t_ not in L.TRANSFORM_FN) + "; lists.DERIVED entries with no declaration (left running): "
-                  + ", ".join(k for k, D_ in L.DERIVED.items() if not D_.get("transform")) + f"; 1d printed facts dropped: {len(drop)}")
-        return [r for r in rows if r["fact_id"] not in drop] + out
+                  + ", ".join(k for k, D_ in L.DERIVED.items() if not D_.get("transform")))
+        return rows + out
 
     def derived(self, rows):
         """j: lists.DERIVED through query.derive on the compiled tree, one derived row per entity and derived id when every input is a
@@ -2362,7 +2413,7 @@ class Run:
                 q, _ = L.derived_key(did)
                 f = {x: "" for x in FACT_FIELDS}
                 ev = sorted({x for i in ins for x in byid[i]["evidence"].split(";")}, key=self.order.get)
-                f.update(type="derived", quantity=q, qualifiers=L.DERIVED[did].get("qualifiers", ""), value=f"{d['value']:.4g}", unit=d["unit"], data_kind="computed_by_kb",
+                f.update(type="derived", quantity=q, qualifiers=L.DERIVED[did].get("qualifiers", ""), value=value_text(d["value"], [byid[i]["value"] for i in ins if i in byid]), unit=d["unit"], data_kind="computed_by_kb",
                          method="calculation", inputs=";".join(dict.fromkeys(ins)), evidence=";".join(ev), parent=e, author=self.pid,
                          mentions=T.byid[e]["label_as_printed"])
                 self.id_count[ev[0]] += 1

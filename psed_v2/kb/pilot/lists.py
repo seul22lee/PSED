@@ -208,6 +208,26 @@ UNITS = {"body_thickness": "mm", "body_diameter": "mm", "particle_diameter": "nm
          "sheet_resistance": "Ω/sq", "h_per_metal": "", "density_relative_to_bulk": "%",
          "moles_deposited": "mmol", "moles_from_mass_gain": "mmol", "shell_volume_fraction": "%", "deposition_rate": "nm/h", "coating_mass_fraction": "%"}
 
+def migrate_definition(q, quals):
+    """P194 (user) 2e, every form version: the qualifier key definition is gone (it served only front_slope): a front_slope with
+    definition=normalized is normalized_front_slope, with definition=thickness_per_cycle it stays front_slope; the key is removed.
+    quals: {key: value}. Returns (quantity, qualifiers without the key, the definition value or None when the key was absent). P195 (user)
+    A7b: here, so that compile (records, compile.gold_rows) and check.py (the gold files) read through one rule."""
+    if not isinstance(quals, dict) or "definition" not in quals:
+        return q, quals, None
+    d = quals["definition"]
+    return ("normalized_front_slope" if q == "front_slope" and d == "normalized" else q), {k: v for k, v in quals.items() if k != "definition"}, d
+
+
+def migrate_fact_row(r):
+    """P195 (user) A7b: a facts.csv row (gold or compiled) read through migrate_definition: quantity and the qualifiers string."""
+    kv = [x.split("=", 1) for x in (r.get("qualifiers") or "").split(";") if "=" in x]
+    q, rest, d = migrate_definition(r.get("quantity"), dict(kv))
+    if d is not None:
+        r = {**r, "quantity": q, "qualifiers": ";".join(f"{k}={v}" for k, v in kv if k in rest)}
+    return r
+
+
 def unit_dimensions():
     """{unit symbol or variant: dimension} from ontology/units.yaml (P108; P194: moved from check.py, compile flags facts with it)."""
     import yaml
@@ -288,6 +308,8 @@ TRANSFORM_FN = {
     "moles_deposited": dict(fn=lambda dn, N: dn * N, units=["mmol", ""], unit="mmol"),
     "coating_mass_fraction": dict(fn=lambda mg: 100 * mg / (1 + mg), units=[""], unit="%"),
     "deposition_rate": dict(fn=lambda gpc, tc: gpc * 3600 / tc, units=["nm/cycle", "s"], unit="nm/h"),
+    "coated_ar": dict(fn=lambda pd, w: pd / w, units=["µm", "µm"], unit="1"),                      # P195 (user) A3: penetration_depth / feature_width
+    "normalize_front_slope": dict(fn=lambda s, gpc: s / gpc, units=["nm", "nm/cycle"], unit="1"),  # P195 (user) A3: dimensionless, S/N is per cycle
 }
 
 DERIVED = {
@@ -334,8 +356,6 @@ DERIVED = {
                            fn=lambda T, p, d, kB: 1e6 * kB * T / (2 ** 0.5 * 3.141592653589793 * (d * 1e-9) ** 2 * p)),
     "knudsen_number": dict(unit="", formula="mean free path / characteristic size (the hydraulic diameter, the pore or particle diameter, the feature width)",
                            inputs=[_in("lam", "mean_free_path", "", "µm"), _in("h", "other:hydraulic diameter h|particle_diameter|feature_width", "", "µm")], fn=lambda lam, h: lam / h),
-    "cycle_time": dict(unit="s", formula="the sum of the pulse, hold and purge times of one cycle",
-                       inputs=[_in("t", "pulse_time|purge_time|other:DEZ hold|other:H2O hold", "", "s", all=True)], fn=lambda t: sum(t)),
     "deposition_rate": dict(unit="nm/h", formula="GPC × 3600 / cycle time",
                             inputs=[_in("gpc", "growth_per_cycle", "", "nm/cycle", pick=["", "position=plateau"]), _in("tc", "cycle_time", "", "s")],
                             transform="deposition_rate", fn=TRANSFORM_FN["deposition_rate"]["fn"]),

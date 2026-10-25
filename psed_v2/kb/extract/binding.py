@@ -44,10 +44,15 @@ def check(rows):
 
 
 def write(rows):
-    with FILE.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=FIELDS, lineterminator="\n")
+    """P195 (user) A7a: the file's fields only (binding_rows also gives unit_fact_id, P184, which this file never carried), written to a
+    temporary file that then replaces the file (a failure leaves the file as it was)."""
+    import os
+    tmp = FILE.with_suffix(".csv.tmp")
+    with tmp.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=FIELDS, lineterminator="\n", extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
+    os.replace(tmp, FILE)
 
 
 def main(argv):

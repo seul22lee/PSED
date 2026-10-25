@@ -60,6 +60,31 @@ def table_lines(md):
     return [l for l in (md or "").splitlines() if l.strip().startswith("|") and not re.match(r"^\|[\s:|-]+\|$", l.strip())]
 
 
+def header_decisions():
+    """P195 (user) A5: {(paper_id, table id): {column index: header text}} from ontology/history.csv rows of kind table_header decided by
+    the user (target: a JSON object c<j> -> text; an empty text keeps the column's header element with no text)."""
+    p = V2 / "ontology" / "history.csv"
+    out = {}
+    for r in (csv.DictReader(p.open(encoding="utf-8")) if p.exists() else []):
+        if r.get("kind") == "table_header" and r.get("decided_by") == "user":
+            cols = {int(k.lstrip("c")): str(v) for k, v in json.loads(r["target"]).items()}
+            for pid in r["source_pids"].split(";"):
+                out[(pid, r["id"])] = cols
+    return out
+
+
+def decided_table(pid, tid, md):
+    """P195 (user) A5: a table's markdown as sent and as its elements are built: with a user's table_header decision the header line holds
+    exactly the decided texts, column by column (the separator and the body rows as ingested); no decision: the markdown as ingested."""
+    d = header_decisions().get((pid, tid))
+    if not d or not md:
+        return md
+    lines = md.splitlines()
+    i = next(n for n, l in enumerate(lines) if l.strip().startswith("|"))
+    lines[i] = "| " + " | ".join(d.get(j, "") for j in range(max(d) + 1)) + " |"
+    return "\n".join(lines)
+
+
 def panels_of(pid):
     """P172: a paper's lettered panels per figure number: PANELS (read from the crops) for the pilot papers; else the figure stage's own
     panels (ingest/final/<pid>/figures.json: the one-letter panel names of each numbered figure); none (one panel per figure) when the figure
@@ -132,9 +157,10 @@ def build(pid):
             done.add(n)
         elif c["kind"] == "table" and n:
             add(f"tab{n}.cap", "caption", "tables", f"Table {n} caption", c["caption"])
-            for i, l in enumerate(table_lines(c.get("table"))):
+            dec = header_decisions().get((pid, f"tab{n}"), {})                  # P195 (user) A5: a decided header keeps every decided column
+            for i, l in enumerate(table_lines(decided_table(pid, f"tab{n}", c.get("table")))):
                 for j, cell in enumerate([x.strip() for x in l.strip().strip("|").split("|")]):
-                    if cell:
+                    if cell or (i == 0 and j in dec):
                         add(f"tab{n}.r{i}c{j}", "table_cell", f"tab{n}", f"Table {n}, row {i}, column {j}", cell)
     for c in st["captions"]:
         if c["kind"] == "table" and not c.get("number") and c.get("table"):

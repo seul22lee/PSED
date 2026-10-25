@@ -35,7 +35,8 @@ from elements import PAPERS as KEYS  # noqa: E402
 
 
 def rd(p):
-    return list(csv.DictReader(p.open(encoding="utf-8"))) if p.exists() else []
+    rows = list(csv.DictReader(p.open(encoding="utf-8"))) if p.exists() else []
+    return [L.migrate_fact_row(r) for r in rows] if p.name.endswith(".facts.csv") else rows   # P195 (user) A7b: as compile.gold_rows reads the gold
 
 
 def words(t):

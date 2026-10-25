@@ -1297,16 +1297,19 @@ def audit_round(n):
     for x in rd(PENDING):                                                       # P176: every pending row, by (id, first round)
         cid = x["id"]
         xp = [p for p in x["pids"].split(";") if p]
-        at = [r for r in snap if r["candidate"] == cid] if int(x["first_round"] or 0) <= n else []   # P176: keyed by (id, first round): a later
+        fr = int(x["first_round"] or 0)
+        at = [r for r in snap if r["candidate"] == cid] if fr <= n else []    # P176: keyed by (id, first round): a later
         now = [r for r in a3 if r["class"] == f"pending candidate {cid}"]                             # round's row of the same id is another candidate
         if not set(xp) & set(pids) and not at:
             if not set(xp) & {p.stem for p in COMPILED.glob("*.facts.csv")}:
                 a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=0, open_rows_now=0, accounted="yes",
                                 detail=f"no compiled output for {x['pids']} (its paper is not compiled)"))
             continue
-        lost = [r for r in at if (r["pid"], r["element"], r["field"]) not in open_now]   # P176: closed; a row regrouped since apply is still open
-        dorm = [(r, ret) for r in lost for ret in [retired_by(r["pid"], r["element"], r["label"])] if ret]   # P189 (user): dormant, as A1's (P187)
-        lost = [r for r in lost if not any(r is d for d, _ in dorm)]
+        if fr > n and not at:                                                   # P195 (user): whatever round first held it: the rows of the
+            at = [r for r in rd(REPORTS / f"R{fr}_apply.decision_rows.csv") if r["candidate"] == cid and r["pid"] in pids]   # candidate's first round, this round's papers
+        dorm = [(r, ret) for r in at for ret in [retired_by(r["pid"], r["element"], r["label"])] if ret]   # P189, P195 (user): dormant when an adopted
+        lost = [r for r in at if (r["pid"], r["element"], r["field"]) not in open_now   # re-extraction no longer prints the label at the element
+                and not any(r is d for d, _ in dorm)]                           # P176: closed; a row regrouped since apply is still open
         ok = not lost and bool(now or at)
         a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=len(at), open_rows_now=len(now),
                         accounted=("dormant" if dorm else "yes") if ok else "NO",
@@ -1366,6 +1369,22 @@ def new_key(pid, index):
     raise Stop(f"{pid}: no free key for {key}")
 
 
+def table_shapes(pid):
+    """P195 (user) A5: {table id: (header cells, body columns)} as the ingest built the elements (kb/pilot/<pid>.elements.csv: row 0 the
+    header; a body column counts when a body row holds an element in it)."""
+    rows = defaultdict(lambda: defaultdict(set))
+    for r in rd(PILOT / f"{pid}.elements.csv"):
+        m = re.fullmatch(r"(tab\w*?)\.r(\d+)c(\d+)", r["element_id"])
+        if m:
+            rows[m.group(1)][int(m.group(2))].add(int(m.group(3)))
+    return {t_: (len(rs.get(0, ())), len(set().union(*[c for i, c in rs.items() if i > 0]))) for t_, rs in rows.items()}
+
+
+def table_header_decided(pid):
+    """P195 (user) A5: the tables of a paper with a user's table_header decision (history.csv kind table_header)."""
+    return {h["id"] for h in rd(HISTORY) if h["kind"] == "table_header" and h["decided_by"] == "user" and pid in h["source_pids"].split(";")}
+
+
 def cmd_run(args, yes=False, plan_only=False):
     """P172 (user): papers 14+ end to end, 3 per round: resolve the papers (paper key: kb/pilot/paper_keys.csv; elements.csv; the figure
     stage and its import when figures.json is missing) -> pass 0 -> units from curves + the consistency, model-named and measurement-named
@@ -1417,6 +1436,8 @@ def cmd_run(args, yes=False, plan_only=False):
         Path(f"{R_}.summary.txt").write_text((f"STOPPED: {msg}\n" if msg else "") + "\n".join(f"{s['step']}: exit {s['exit']}" for s in steps) + "\n", encoding="utf-8")
         parts = [f"Summary={R_}.summary.txt", f"Plan (calls and dollars per step)={R_}.plan.csv", f"Gates (ontology/gates.csv: the worst development values)={GATES_CSV}"]
         parts += [f"Gate {g} ({k})={REPORTS / f'RUN_{k}.gate_{g}.csv'}" for k in keys for g in ("pass0", "pass1") if (REPORTS / f"RUN_{k}.gate_{g}.csv").exists()]
+        if (REPORTS / f"RUN_{tag}.gate_tables.csv").exists():                 # P195 (user) A5: the tables the header gate stopped on
+            parts += [f"Table header gate (header cells vs body columns, no table_header decision)={REPORTS / f'RUN_{tag}.gate_tables.csv'}"]
         parts += [f"Steps={R_}.steps.csv"]
         if inspected:                                                           # P174 (user): the no-gold inspection, sections 5a-5h, of every paper
             sys.path.insert(0, str(EXTRACT))
@@ -1430,6 +1451,12 @@ def cmd_run(args, yes=False, plan_only=False):
     need = [p for p in pids if not (PILOT / f"{p}.elements.csv").exists()]
     if need:
         step("elements (0 calls)", [py, PILOT / "elements.py", "--ids", *need])
+    bad = [dict(paper=index[p], pid=p, table=t_, header_cells=h, body_columns=b) for p in pids for t_, (h, b) in sorted(table_shapes(p).items())
+           if h != b and t_ not in table_header_decided(p)]                    # P195 (user) A5: the table-header gate
+    if bad:
+        write(REPORTS / f"RUN_{tag}.gate_tables.csv", ["paper", "pid", "table", "header_cells", "body_columns"], bad)
+        finish("table header gate: header cells differ from body columns with no table_header decision: "
+               + "; ".join(f"{x['paper']} {x['table']} ({x['header_cells']} header cells, {x['body_columns']} body columns)" for x in bad))
     rc, out = step("plan (0 calls)", [py, EXTRACT / "gates.py", "plan", *keys])
     plan = json.loads(out.strip().splitlines()[-1]) if rc == 0 else []
     write(Path(f"{REPORTS / f'RUN_{tag}'}.plan.csv"), ["paper", "pid", "figure_calls", "figure_usd", "pass0_calls", "pass0_usd", "pass1_calls", "pass1_usd", "note"], plan)

@@ -88,9 +88,11 @@ LATEX_ACCENT = {"bar": "\u0304", "tilde": "\u0303"}                             
 def strip_latex(s):
     """\\text{...} (and \\mathrm, \\mathit, \\mathbf, \\rm) unwrapped; P164: a LaTeX Greek command -> its Unicode letter (\\sigma -> σ, \\Gamma
     -> Γ), \\bar{x} and \\tilde{x} -> the letter with its combining accent (s̄, ξ̃), NFC; braces, backslashes and the ^ / _ markers removed.
-    The one function of norm_label and symbol_key."""
+    The one function of norm_label and symbol_key. P195 (user) A7c: a Unicode sub- or superscript character (decomposition <sub> / <super>)
+    -> its NFKC form, so x̃₅₀% and \\tilde{x}_{50\\%} give one key."""
     t = LATEX_GREEK_RX.sub(lambda m: LATEX_GREEK[m.group(1)], LATEX_TEXT.sub(r"\1", str(s)))
     t = LATEX_ACCENT_RX.sub(lambda m: (m.group(2) if m.group(2) is not None else m.group(3)) + LATEX_ACCENT[m.group(1)], t)
+    t = "".join(unicodedata.normalize("NFKC", ch).replace("\u2212", "-") if unicodedata.decomposition(ch).startswith(("<sub>", "<super>")) else ch for ch in t)   # ⁻ ₋ -> - as ^{-}
     return unicodedata.normalize("NFC", re.sub(r"[{}\\^_]", "", t))
 
 

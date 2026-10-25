@@ -34,8 +34,8 @@ def _tables(pid):
     st = json.loads((C.V2 / "ingest" / "final" / pid / "structure.json").read_text(encoding="utf-8"))
     out, k = [], 0
     for c in st["captions"]:
-        if c["kind"] == "table" and c.get("number"):
-            out.append((f"tab{c['number']}", f"tab{c['number']}.cap", c.get("table") or ""))
+        if c["kind"] == "table" and c.get("number"):                            # P195 (user) A5: a decided header as the elements carry it
+            out.append((f"tab{c['number']}", f"tab{c['number']}.cap", E.decided_table(pid, f"tab{c['number']}", c.get("table") or "")))
     for c in st["captions"]:
         if c["kind"] == "table" and not c.get("number") and c.get("table"):
             k += 1

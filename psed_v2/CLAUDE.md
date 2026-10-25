@@ -248,6 +248,20 @@ psed_v2/
   reads '|' as whitespace. The matcher is compile.assign (one-to-one, most pairs, then agreement on step, species, parent). No step from
   the recipe for a coordinate-axis setting (recipe() / axis_step deleted). A value fact whose unit's dimension differs from its entry's
   (lists.dimension_problem) keeps value and unit, gets dimension_mismatch, and is not converted, not a transform input, not compared.
+- P195 (user): transform computation units are runs, specimens (films too), simulations and model runs, never measurement units (units
+  of unresolved role are none). A unit's inputs: its own facts, its measurement units' results (P185), its ancestors' conditions
+  transitively under P190. Several matching facts: (1) the declared qualifiers exactly, (2) where the value comes from (any text, table
+  or caption element = stated; figure-panel elements only = read from a figure; computed_by_kb last; data_kind not part of it), (3) own,
+  then measurement unit, then ancestor, nearest first; values that agree within printed precision (+- half the last digit) are one value,
+  the most precise used; else 'inputs ambiguous'. A unit holding a printed output keeps it: the transform is computed, compared
+  (transform_redundant.csv) and adds no fact; else the computed fact. Computed values carry 6 significant digits, never fewer than their
+  inputs. cycle_time is not computed (declaration and DERIVED entry removed); a printed cycle time is an input. P184 accepted for every
+  paper with P184 lines (zou23 has none). A table_header decision (history.csv kind table_header, target {c<j>: text}) sets a table's
+  header as sent and as its header elements' texts (ids unchanged; an empty text keeps the element); grow.py run stops after the
+  elements step on a table whose header cells differ from its body columns with no such decision (RUN_<keys>.gate_tables.csv).
+  export.strip_latex maps Unicode sub- and superscripts to their NFKC form (⁻ / − -> -). Audit A3: a pending row whose label an adopted
+  re-extraction no longer prints at that element is dormant, whatever round first held it. check.py reads the gold through
+  lists.migrate_fact_row. binding.py --write writes the file's fields through a temporary file.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
