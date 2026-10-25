@@ -1,0 +1,40 @@
+transform,inputs,output,formula,carry,function,status
+unit_conversion,any,same,unit table below,,,not computed: no function
+thickness_to_gpc,film_thickness; cycle_number,growth_per_cycle,d / N,,,not computed: no function
+x_over_width,distance; feature_width,dimensionless_distance,x / w,,,not computed: no function
+normalize_thickness,film_thickness; film_thickness{position=reference},normalized_thickness,d(x) / d_ref,,,not computed: no function
+aspect_ratio,feature_depth; feature_width,aspect_ratio,L / w  (Cremers Eq. 11),,,not computed: no function
+coated_ar,penetration_depth; feature_width,coated_aspect_ratio{basis=AR},PD / w,level,,not computed: no function
+exposure,partial_pressure; pulse_time,exposure,p * t  (Cremers Sec. II D),,,not computed: no function
+step_coverage,film_thickness{position=bottom}; film_thickness{position=top},step_coverage,d_bottom / d_top,,,not computed: no function
+final_channel_height,feature_width; film_thickness{position=plateau},feature_width{stage=final},H - 2 S_IIb (P51),,lists.TRANSFORM_FN (moved from lists.DERIVED feature_width{stage=final}),computed by compile step j
+exposure_per_run,exposure; cycle_number,exposure{over=run},E * N (P51),,lists.TRANSFORM_FN (moved from lists.DERIVED exposure{over=run}),computed by compile step j
+sheet_resistance,resistivity; film_thickness,sheet_resistance,rho / d (P51),,lists.TRANSFORM_FN (moved from lists.DERIVED sheet_resistance),computed by compile step j
+gpc_from_atoms,atoms_per_cycle; film_density,growth_per_cycle,n M / (rho N_A) (P51; M and N_A assumed facts),,,not computed: no function
+atoms_from_gpc,growth_per_cycle; film_density,atoms_per_cycle,GPC rho N_A / M * metal atoms per formula unit (P51),,,not computed: no function
+density_to_bulk,film_density; film_density{reference=bulk},density_relative_to_bulk,100 rho / rho_bulk (P51),,,not computed: no function
+moles_deposited,deposited_moles_per_cycle; cycle_number,moles_deposited,dn_s * N (P51),,lists.TRANSFORM_FN (moved from lists.DERIVED moles_deposited),computed by compile step j
+moles_from_mass_gain,mass_gain,moles_from_mass_gain,mass gain * specimen mass * specimens per run / M (P51; assumed facts),,,not computed: no function
+target_gpc,film_thickness{kind=target}; cycle_number,growth_per_cycle{kind=target},d_target / N (P51),,,not computed: no function
+plasma_h2_fraction,gas_flow_rate{gas=h2}; gas_flow_rate{gas=h2s}; gas_flow_rate{gas=ar},plasma_gas_ratio{gas=h2;relative_to=all_gases},100 H2 / (H2 + H2S + Ar) (P51),,,not computed: no function
+coating_mass_fraction,mass_gain,coating_mass_fraction,"100 mg / (1 + mg), mg relative to the initial mass (P51)",,lists.TRANSFORM_FN (moved from lists.DERIVED coating_mass_fraction),computed by compile step j
+shell_volume_fraction,porosity{stage=initial}; film_thickness,shell_volume_fraction,100 (1 - phi) ((d_NP + 2 t)^3 / d_NP^3 - 1) (P51; d_NP an assumed fact),,,not computed: no function
+cycle_time,pulse_time; purge_time,cycle_time,"sum of the pulse, hold and purge times (P51)",,,not computed: no function
+deposition_rate,growth_per_cycle; cycle_time,deposition_rate,GPC * 3600 / t_cycle (P51),,lists.TRANSFORM_FN (moved from lists.DERIVED deposition_rate),computed by compile step j
+h_per_metal,element_fraction{element=H}; element_ratio{element=S;reference_element=Mo},element_ratio{element=H;reference_element=Mo},"H at.% / Mo at.%, Mo at.% = (100 - H - N - O at.%) / (1 + S/Mo) (P52)",,,not computed: no function
+mean_free_path,deposition_temperature; partial_pressure,mean_free_path,"k_B T / (sqrt(2) pi d^2 p), d the molecular diameter (an assumed fact) (P58)",,,not computed: no function
+knudsen_number,mean_free_path; feature_width,knudsen_number,"lambda / w (the hydraulic diameter, the pore or particle diameter) (P58)",,,not computed: no function
+body_thickness,feature_depth; entry_sides,body_thickness,L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78),,,not computed: no function
+normalize_front_slope,front_slope; growth_per_cycle{position=plateau},normalized_front_slope,front slope / plateau GPC,,,not computed: no function
+(lists.DERIVED exposure),partial_pressure{step=reactant_A}; pulse_time{step=reactant_A},exposure,partial pressure of reactant A × its pulse time,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED growth_per_cycle),atoms_per_cycle; other:molar mass{species=@material}; film_density; other:Avogadro constant,growth_per_cycle,atoms per cycle × M / (ρ N_A): the thickness the deposited metal atoms make at the film's density,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED atoms_per_cycle),growth_per_cycle; film_density; other:molar mass{species=@material}; other:Avogadro constant; @formula_metals,atoms_per_cycle,GPC × ρ N_A / M × metal atoms per formula unit: metal atoms per nm² per cycle at the film's own density,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED element_ratio{element=H;reference_element=Mo}),element_fraction{element=H}; element_ratio{element=S;reference_element=Mo}; element_fraction{element=N}; element_fraction{element=O},element_ratio{element=H;reference_element=Mo},"H at.% / Mo at.%, with Mo at.% = (100 − H − N − O at.%) / (1 + S/Mo)",,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED density_relative_to_bulk),film_density; film_density{reference=bulk;species=@material},density_relative_to_bulk,film density / bulk density,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED moles_from_mass_gain),mass_gain; other:powder mass; other:NPCs per run; other:molar mass{species=@material},moles_from_mass_gain,mass gain × powder mass per compact × compacts per run / M,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED growth_per_cycle{kind=target;over=run}),film_thickness{kind=target}; cycle_number,growth_per_cycle{kind=target;over=run},thickness target / cycles: the growth per cycle the chosen cycle count implies,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED plasma_gas_ratio{gas=h2;relative_to=all_gases}),gas_flow_rate{gas=h2;step=plasma}; gas_flow_rate{gas=h2s;step=plasma}; gas_flow_rate{gas=ar;step=plasma},plasma_gas_ratio{gas=h2;relative_to=all_gases},H2 flow / (H2S + H2 + Ar flow): the H2 share of the whole plasma feed,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED shell_volume_fraction),porosity{stage=initial}; particle_diameter; film_thickness,shell_volume_fraction,"(1 − φ_i) × ((d_NP + 2 t)³ / d_NP³ − 1): the coating's share of the compact volume, spherical particles",,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED mean_free_path),deposition_temperature; partial_pressure; other:molecular diameter{species=@A}; other:Boltzmann constant,mean_free_path,k_B T / (√2 π d² p) for reactant A at the deposition temperature and its partial pressure,,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED knudsen_number),mean_free_path; other:hydraulic diameter h|particle_diameter|feature_width,knudsen_number,"mean free path / characteristic size (the hydraulic diameter, the pore or particle diameter, the feature width)",,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)
+(lists.DERIVED cycle_time),pulse_time|purge_time|other:DEZ hold|other:H2O hold,cycle_time,"the sum of the pulse, hold and purge times of one cycle",,lists.DERIVED (its own fn),no declaration with the same inputs and output: left running (query.derive)

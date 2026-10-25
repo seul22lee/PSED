@@ -201,10 +201,11 @@ i: merged fig5.cap into s3.x3;s5.p7;fig5.cap (cycle_number 140)
 i: merged fig5.cap into s3.x3;fig5.cap (deposition_temperature 150)
 i: merged fig6.cap into s3.x5;fig6.cap (cycle_number 500)
 i: merged fig8.cap into s3.x1;s3.x2;fig2.cap;fig4.cap;fig8.cap (cycle_number )
-j: derived over 44 entities: 46 rows; not derived: {'no fact for H': 85, 'no fact for p': 88, 'E: no fact for p': 44, 'no fact for rho': 85, 'n: no fact for gpc': 41, 'gpc: no fact for n': 41, 'no fact for dn': 44, 'no fact for mg': 88, 'no fact for t': 46, 'no fact for h2': 2, 'no fact for phi': 44, 'lam: no fact for p': 44, 'stated: mat22:s5.p6#8 51 s': 44, 'gpc: n: no fact for gpc': 41, 'stated: mat22:s3.p32#1 2.2 nm-2': 1, 'gpc: no fact for rho': 3, 'no fact for rb': 3, 'stated: mat22:s3.p30#1 0.6 nm-2': 1, 'stated: mat22:s3.p30#2 1.6 nm-2': 1}
+j: derived over 44 entities: 45 rows; not derived: {'no fact for p': 88, 'n: no fact for gpc': 41, 'gpc: no fact for n': 41, 'no fact for H': 41, 'no fact for rho': 44, 'no fact for mg': 44, 'no fact for t': 44, 'no fact for h2': 2, 'no fact for phi': 44, 'lam: no fact for p': 44, 'stated: mat22:s5.p6#8 51 s': 44, 'stated: mat22:s3.p32#1 2.2 nm-2': 1, 'no fact for rb': 3, 'stated: mat22:s3.p30#1 0.6 nm-2': 1, 'stated: mat22:s3.p30#2 1.6 nm-2': 1}
 j: caveats (query.caveats_of): 4, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 29 nodes for 32 claims; claims without a full triple (query.node_of empty): 1
 j: comparisons from figures.json (1c): 20
+j: transforms (P194): 1 computed facts ({'sheet_resistance': 1}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, coated_ar, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, cycle_time, h_per_metal, mean_free_path, knudsen_number, body_thickness, normalize_front_slope; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number, cycle_time; 1d printed facts dropped: 0
 step input: {'pass-0 extension units': 3, 'records': 300, 'coordinates of a pass-0 unit (run)': 32, 'coordinate of a pass-0 unit (value)': 63}
 step a0: {'value_text promoted (value:crystallinity: value)': 32, 'quantity promoted (quantity: id)': 63}
 step a1: {'symbol species: from the definition': 1, 'process_mode from the recipe field: plasma': 44, 'material from the recipe field: mos2': 41, 'material from the recipe field: ws2': 2, 'material from the recipe field: tis2': 2, 'process_mode from the recipe field: thermal': 1, 'qualifier out of scope: species': 3, 'qualifier out of scope: position': 1, 'qualifier out of scope: ratio': 3}
@@ -219,15 +220,15 @@ step m: {'label_as_printed filled with the quantity id': 5, 'statement filled fr
 step 1c: {'peak -> observation': 25, 'image -> a measurement (spectroscopic_ellipsometry)': 1, 'image -> a measurement (photograph)': 1, 'crystallinity value_text resolved (F3)': 32, 'cell -> observation': 32, 'image -> a measurement (tem)': 3, 'cell without a quantity id (result left out)': 32, 'image -> a measurement (sem)': 1, 'curve -> observation': 6, 'unbound item (image): no unit named': 2}
 step i: {'merged': 16, 'kept': 497}
 step n: {'comparison series': 17, 'comparison grid': 3}
-step j: {'derived plasma_gas_ratio{gas=h2;relative_to=all_gases}': 42, 'derived sheet_resistance': 1, 'derived element_ratio{element=H;reference_element=Mo}': 3}
+step j: {'derived plasma_gas_ratio{gas=h2;relative_to=all_gases}': 42, 'derived element_ratio{element=H;reference_element=Mo}': 3, 'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): coated_ar': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): cycle_time': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'declared, no function (not computed): normalize_front_slope': 1, 'final_channel_height: inputs missing (no input at all)': 44, 'exposure_per_run: inputs missing': 6, 'sheet_resistance: inputs missing': 4, 'moles_deposited: inputs missing': 6, 'coating_mass_fraction: inputs missing (no input at all)': 44, 'deposition_rate: inputs missing (no input at all)': 44, 'sheet_resistance: inputs missing (no input at all)': 39, 'sheet_resistance: computed': 1, 'exposure_per_run: inputs missing (no input at all)': 38, 'moles_deposited: inputs missing (no input at all)': 38}
 step k: {'statement from the record': 428, 'statement_copies_text (reported by check)': 62, 'statement assembled': 115}
 diff against the gold:
   observation   313  212  115  0.54  0.37
-  setting       251  238  122  0.51  0.49
-  activity      249  179  125  0.70  0.50
+  setting       251  238  125  0.53  0.50
+  activity      249  179  127  0.71  0.51
   cited          58    9    6  0.67  0.10
+  entity         54   44   44  1.00  0.81
   caveat         54    4    1  0.25  0.02
-  entity         54   44   43  0.98  0.80
   claim          52   32   23  0.72  0.44
   definition     14    1    1  1.00  0.07
   comparison     12   20    8  0.40  0.67

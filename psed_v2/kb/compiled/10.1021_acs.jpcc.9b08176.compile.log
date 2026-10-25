@@ -46,6 +46,7 @@ a1: qualifier out of scope: s6.p2 cited step_coverage surface=sio2 (record)
 a1: qualifier out of scope: s6.p2 cited step_coverage surface=al2o3 (record)
 a1: qualifier out of scope: s6.p2 cited step_coverage surface=tio2 (record)
 a1: qualifier out of scope: s6.p2 cited step_coverage surface=hfo2 (record)
+a1: qualifier out of scope: s6.p4 definition dimensionless_distance level=50% (record)
 a1: qualifier out of scope: fig3.cap derived recombination_probability stage=initial (record)
 a1: qualifier out of scope: fig3.cap derived recombination_probability stage=initial (record)
 d: quote found across elements: s6.p9 caveat None -> evidence s6.p8;s6.p9
@@ -71,13 +72,14 @@ i: merged s5.p2 into s5.p2;fig2B (material tio2)
 i: merged s5.p2 into s5.p2;fig2B (material tio2)
 i: merged s5.p2 into s5.p2;fig2B;tab1.r3c0 (material al2o3)
 i: merged s5.p2 into s5.p2;fig2B;tab1.r4c0 (material hfo2)
-j: derived over 10 entities: 10 rows; not derived: {'no fact for S': 8, 'no fact for p': 18, 'E: no fact for p': 10, 'no fact for rho': 20, 'n: no fact for gpc': 10, 'gpc: no fact for n': 10, 'no fact for H': 12, 'no fact for dn': 10, 'no fact for mg': 20, 'no fact for t': 10, 'no fact for h2': 10, 'no fact for phi': 10, 'lam: no fact for p': 8, 'gpc: n: no fact for gpc': 10, 'no fact for T': 2, 'lam: no fact for T': 2}
+j: derived over 10 entities: 10 rows; not derived: {'no fact for p': 18, 'n: no fact for gpc': 10, 'gpc: no fact for n': 10, 'no fact for H': 10, 'no fact for rho': 10, 'no fact for mg': 10, 'no fact for t': 10, 'no fact for h2': 10, 'no fact for phi': 10, 'lam: no fact for p': 8, 'no fact for T': 2, 'lam: no fact for T': 2}
 j: caveats (query.caveats_of): 4, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 2
 j: claim nodes (query.claim_nodes): 7 nodes for 18 claims; claims without a full triple (query.node_of empty): 1
 j: comparisons from figures.json (1c): 4
+j: transforms (P194): 0 computed facts ({}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, coated_ar, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, cycle_time, h_per_metal, mean_free_path, knudsen_number, body_thickness, normalize_front_slope; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number, cycle_time; 1d printed facts dropped: 0
 step input: {'pass-0 extension units': 16, 'records': 103, 'legend conditions of a pass-0 unit (specimen)': 8, 'coordinate of a pass-0 unit (species)': 10, 'coordinate of a pass-0 unit (value)': 8, 'legend conditions of a pass-0 unit (model_run)': 2}
 step a0: {'value_text promoted (material: id)': 10, 'quantity promoted (quantity: alias)': 8}
-step a1: {'symbol species: backed by the definition': 6, 'symbol species: from the definition': 4, 'symbol species: no species': 8, 'symbol species: species cleared (no evidence)': 2, 'symbol species: kept: its own element names it': 1, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: plasma': 8, 'material from the recipe field: sio2': 4, 'material from the recipe field: tio2': 2, 'material from the recipe field: al2o3': 1, 'material from the recipe field: hfo2': 1, 'qualifier out of scope: surface': 4, 'qualifier out of scope: stage': 2}
+step a1: {'symbol species: backed by the definition': 6, 'symbol species: from the definition': 4, 'symbol species: no species': 8, 'symbol species: species cleared (no evidence)': 2, 'symbol species: kept: its own element names it': 1, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: plasma': 8, 'material from the recipe field: sio2': 4, 'material from the recipe field: tio2': 2, 'material from the recipe field: al2o3': 1, 'material from the recipe field: hfo2': 1, 'qualifier out of scope: surface': 4, 'qualifier out of scope: level': 1, 'qualifier out of scope: stage': 2}
 step a: {'kept': 137}
 step b: {'model_with_value (kept)': 3, 'kept': 137}
 step c: {'kept': 137}
@@ -89,7 +91,7 @@ step m: {'statement filled from the quote': 97, 'links resolved': 19}
 step 1c: {'unbound item (image): ambiguous': 1, 'curve -> observation': 8, 'curve -> model': 2}
 step i: {'merged': 19, 'claim merged': 1, 'kept': 127}
 step n: {'comparison series': 3, 'comparison grid': 1}
-step j: {'derived cycle_time': 10}
+step j: {'derived cycle_time': 10, 'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): coated_ar': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): cycle_time': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'declared, no function (not computed): normalize_front_slope': 1, 'final_channel_height: inputs missing (no input at all)': 10, 'exposure_per_run: inputs missing (no input at all)': 6, 'sheet_resistance: inputs missing (no input at all)': 10, 'moles_deposited: inputs missing (no input at all)': 6, 'coating_mass_fraction: inputs missing (no input at all)': 10, 'deposition_rate: inputs missing': 10, 'exposure_per_run: inputs missing': 4, 'moles_deposited: inputs missing': 4}
 step k: {'statement from the record': 117, 'statement_copies_text (reported by check)': 39, 'statement assembled': 20}
 diff against the gold:
   setting        50   45   26  0.58  0.52
@@ -98,7 +100,7 @@ diff against the gold:
   activity       22   31   16  0.52  0.73
   model          22   11   10  0.91  0.45
   definition     16    8    5  0.62  0.31
-  claim          13   18    8  0.44  0.62
+  claim          13   18    9  0.50  0.69
   entity         12   10    8  0.80  0.67
   caveat          8    4    1  0.25  0.12
   derived         7   21    5  0.24  0.71
