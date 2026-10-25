@@ -177,10 +177,16 @@ def resolve_label(pid, text, kind="quantity"):
 
 def series_axis(pid):
     """P163: {panel: the series_axis label as printed} of the figure stage's ingest/final/<pid>/figures.json (kb/<pid>.figures.json keeps
-    it only as a set's varied_raw, and a map's set names its axes instead)."""
+    it only as a set's varied_raw, and a map's set names its axes instead); P191 (user): a user's figure_axis decision replaces it."""
     p = C.V2 / "ingest" / "final" / pid / "figures.json"
     d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-    return {f"fig{f['number']}{x.get('panel', '')}": (x.get("series_axis") or "").strip() for f in d.get("figures", []) for x in f.get("panels") or []}
+    out = {f"fig{f['number']}{x.get('panel', '')}": (x.get("series_axis") or "").strip() for f in d.get("figures", []) for x in f.get("panels") or []}
+    hist = C.V2 / "ontology" / "history.csv"                                    # P191 (user): a figure_axis decision (kind figure_axis, slot series,
+    for h in csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []:   # id the panel, target '<quantity> [<unit>]', the paper in
+        m = re.fullmatch(r"(\w+)\s*\[(.*)\]", h["target"].strip())               # source_pids) gives the panel's series axis '<quantity> (<unit>)'
+        if h["kind"] == "figure_axis" and h["slot"] == "series" and pid in h["source_pids"].split(";") and m:
+            out[h["id"]] = f"{m.group(1)} ({m.group(2)})" if m.group(2).strip() else m.group(1)
+    return out
 
 
 def legend_number(t):
@@ -294,14 +300,29 @@ def parse_legend(pid, label, axis):
     return out
 
 
+_FI = []
+
+
+def axis_title(label):
+    """P191 (user): an axis label as the figure import reads it, the one function (kb/figures_import.axis_title: a transform unwrapped, a
+    trailing bracket group units.yaml knows split off as the unit) -> (transform, key, unit)."""
+    if not _FI:
+        sys.path.insert(0, str(C.V2 / "kb"))
+        import figures_import
+        _FI.append(figures_import)
+    return _FI[0].axis_title(label)
+
+
 def classify_part(pid, part, ax_, qk, one, axis, methods=True):
-    """P177b: one legend part classed (parse_legend)."""
+    """P177b: one legend part classed (parse_legend). P191 (user): its axis part read by axis_title (the figure import's): the key
+    resolved, the unit group a bare number's unit."""
     if qk:
         v = qualifier_value(pid, qk, part)
         return [dict(kind="qualifier", key=part, qualifier=qk, value_text=v, quantity="",
                      how=f"axis '{axis}' names the qualifier {qk}: {qk}={v}" if v else f"axis '{axis}' names the qualifier {qk}; '{part}' is none of its values",
                      **({} if v else dict(flag="legend part no value of the axis's qualifier")))]
-    ax = vocab_hits(pid, "quantity", ax_) if ax_ else {}
+    _, axk, axu = axis_title(ax_) if ax_ else ("", "", "")
+    ax = vocab_hits(pid, "quantity", axk) if axk else {}
     axis_q = next(iter(ax)) if len(ax) == 1 else ""
     rg = RANGE.fullmatch(part)
     if rg and (not rg.group(4).strip() or unit_symbol(rg.group(4).strip()) is not None):
@@ -316,12 +337,13 @@ def classify_part(pid, part, ax_, qk, one, axis, methods=True):
     if num:
         keys = ([sym] if sym else []) + ([ax_] if ax_ and (one or not sym) else [])
         keys = keys[::-1] if one and not sym else keys
-        found = [(k, h) for k in keys for h in [vocab_hits(pid, "quantity", k)] if len(h) == 1]
-        hit = next(((k, h) for k, h in found if unit_fits(next(iter(h)), num[1])), None)   # P177c (user, chat): the dimension guard
+        look, unit_ = (lambda k: axk if k == ax_ else k), (lambda k: num[1] or (axu if k == ax_ else ""))   # P191: the axis as the import reads it
+        found = [(k, h) for k in keys for h in [vocab_hits(pid, "quantity", look(k))] if len(h) == 1]
+        hit = next(((k, h) for k, h in found if unit_fits(next(iter(h)), unit_(k))), None)   # P177c (user, chat): the dimension guard
         key = hit[0] if hit else sym or part if found else (ax_ if ax_ and (one or not sym) else sym or part)
         q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'" + (
             f" ('{found[0][0]}' names {next(iter(found[0][1]))}, whose dimension the unit '{num[1]}' does not have)" if found else "")))
-        return [dict(kind="value", key=key, value=num[0], unit=num[1], quantity=q,
+        return [dict(kind="value", key=key, value=num[0], unit=unit_(key) if hit else num[1], quantity=q,
                      how=how if hit is None else f"{'series_axis' if key == ax_ else 'symbol / name'} '{key}' -> {q} ({how})")]
     name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]\s*$", "", part).strip() or part
     mh = vocab_hits(pid, "model", name)

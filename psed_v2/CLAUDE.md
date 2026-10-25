@@ -230,6 +230,12 @@ psed_v2/
   value of, and only when the parent holds one value of it (as the tree, P184). Value ranges: an entry's range: [min, max] (ontology.yaml;
   a probability or fraction [0, 1], compared as a fraction: '1', a % / 100); export --check 20 (two numbers, min <= max); compile keeps
   a value fact outside its quantity's range and lists it (kb/compiled/<pid>.out_of_range.csv: paper, element, quantity, value, quote).
+- P191 (user): the legend path reads a series-axis label with the figure import's function (compile.axis_title loads
+  kb/figures_import.axis_title: the unit group split off; the key resolved, the unit a bare legend number's unit). A user's figure_axis
+  decision (history.csv kind figure_axis, slot series, id the panel, target '<quantity> [<unit>]', the paper in source_pids) replaces the
+  figure stage's series axis of that panel in compile.series_axis.
+  Audit A1 finds a decision's row by (paper, element, field, normalized label), the unit as printed not in the key; a unit row an
+  adopted re-extraction no longer prints is dormant (grow.retired_by unit=True).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
