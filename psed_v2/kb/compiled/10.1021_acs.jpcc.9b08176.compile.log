@@ -1,4 +1,4 @@
-input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 4
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 11, P179 4
 input: 36 lines; pass 0 = line 3; 11 pass-1 lines for 11 groups; ignored lines 4 (abstract+s1+s2+s3+s4+s5), 5 (s6+s7+s8+s9+s10+s11+s12+s13+s14), 6 (fig1), 7 (fig1A), 8 (fig1B), 9 (fig1C), 10 (fig2), 11 (fig2A), 12 (fig2B), 13 (fig3), 14 (tab1), 16 (abstract+s1+s2+s3+s4+s5), 17 (fig1), 18 (fig1C), 19 (tab1)
 input: pass-0 extension = line 23: 16 units (measurement 16); 1 image panel methods
 input: recipe fill = line 25: run_sio2_3_8s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_sio2_12s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_sio2_38s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_sio2_120s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_tio2_12s reactant_A tdmat, reactant_B o2, process_mode plasma, material tio2; run_tio2_120s reactant_A tdmat, reactant_B o2, process_mode plasma, material tio2; run_al2o3_120s reactant_A tma, reactant_B o2, process_mode plasma, material al2o3; run_hfo2_120s reactant_A tdmacph, reactant_B o2, process_mode plasma, material hfo2; sim_slope 
@@ -93,12 +93,12 @@ step i: {'merged': 19, 'claim merged': 1, 'kept': 127}
 step n: {'comparison series': 3, 'comparison grid': 1}
 step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 19, 'exposure_per_run: inputs missing': 19, 'sheet_resistance: inputs missing': 19, 'moles_deposited: inputs missing': 19, 'coating_mass_fraction: inputs missing': 19, 'deposition_rate: inputs missing': 19, 'coated_ar: inputs missing': 19, 'normalize_front_slope: inputs missing': 19}
 step k: {'statement from the record': 117, 'statement_copies_text (reported by check)': 39, 'statement assembled': 10}
-diff against the gold (type, gold, compiled, matched, precision, recall):
+diff against the gold:
   setting        50   45   26  0.58  0.52
   observation    36   19   10  0.53  0.28
   cited          23   11    7  0.64  0.30
-  activity       22   31   16  0.52  0.73
   model          22   11   10  0.91  0.45
+  activity       22   31   16  0.52  0.73
   definition     16    8    5  0.62  0.31
   claim          13   18    9  0.50  0.69
   entity         12   10    8  0.80  0.67

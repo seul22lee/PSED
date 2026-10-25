@@ -1,4 +1,4 @@
-input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 11
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 17, P179 11
 input: 48 lines; pass 0 = line 1; 17 pass-1 lines for 17 groups; ignored lines 2 (abstract+s0+s1+s2+s3+s4+s5), 3 (s6+s7+s8+s9+s10+s11), 4 (s12+s13+s14), 5 (s15+s16+s17+s18+s19+s20), 6 (s21), 7 (fig1), 8 (fig2), 9 (fig4), 10 (fig5), 11 (fig6), 12 (fig7), 13 (fig3), 14 (tab1), 15 (tab2), 16 (tab3), 17 (tabu1), 18 (tabu2), 19 (abstract+s0+s1+s2+s3+s4+s5), 20 (s6+s7+s8+s9+s10+s11), 21 (s12+s13+s14), 22 (s15+s16+s17+s18+s19+s20), 23 (fig2), 24 (fig6), 25 (fig7), 26 (tab1), 27 (tab3), 28 (tabu1), 29 (tabu2)
 input: pass-0 extension = line 30: 2 units (model_run 2); 0 image panel methods
 input: recipe field set to null: sim_model_a assumptions The model is built on reversible single-site Langmuir adsorption for the gas-solid reaction step, imagining a checkerboard surface with equal, non-interacting adsorbed species, representing a lumped rather than elementary reaction. (quote not found (s6.p1))
@@ -599,31 +599,31 @@ j: claim nodes (query.claim_nodes): 55 nodes for 75 claims; claims without a ful
 j: comparisons from figures.json (1c): 4
 j: transforms (P195): 0 computed facts ({}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
 k: value out of range: yim22:tab3.r15c6#1 initial_sticking_coefficient 1.25  (as a fraction 1.25, range [0, 1])
-step input: {'pass-0 extension units': 2, 'records': 625, 'unit derived (derived: curve_per_unit, model_run)': 4, 'condition of a derived unit (value)': 8}
-step a0: {'definition qualifier migrated: front_slope thickness_per_cycle -> front_slope': 1, 'definition qualifier migrated: front_slope normalized -> normalized_front_slope': 15, 'quantity other: never.csv symbol': 27, 'quantity other: never.csv word': 6, 'quantity promoted (quantity: symbol)': 8}
+step input: {'pass-0 extension units': 2, 'records': 625, 'unit derived (derived: curve_per_unit, model_run)': 4, 'condition of a derived unit (value)': 8, 'legend conditions of a pass-0 unit (model_run)': 5, 'coordinate of a pass-0 unit (value)': 5}
+step a0: {'definition qualifier migrated: front_slope thickness_per_cycle -> front_slope': 1, 'definition qualifier migrated: front_slope normalized -> normalized_front_slope': 15, 'quantity other: never.csv symbol': 27, 'quantity other: never.csv word': 11, 'quantity promoted (quantity: symbol)': 8}
 step a1: {'symbol species: no species': 277, 'symbol species: from the definition': 85, 'symbol species: backed by the definition': 17, 'symbol species: species cleared (no evidence)': 2, "symbol species: from the symbol's evidence in this paper": 17, 'qualifier out of scope: step': 2, 'qualifier out of scope: stage': 10, 'qualifier out of scope: over': 5, 'qualifier out of scope: mode': 5, 'qualifier out of scope: level': 1}
-step a: {'variables_unmapped (set to null)': 6, 'numeric string coerced (C4)': 5, 'variable filled from a definition (C5)': 3, 'schema:enum': 1, 'schema:pattern': 5, 'schema:not': 1, 'kept': 626}
+step a: {'variables_unmapped (set to null)': 6, 'numeric string coerced (C4)': 5, 'variable filled from a definition (C5)': 3, 'schema:enum': 1, 'schema:pattern': 5, 'schema:not': 1, 'kept': 631}
 step a_fields: {'cause': 1, 'note': 5, 'quantity': 1}
-step b: {'statement_only (kept: P138 form)': 1, 'model_with_value (kept)': 305, 'kept': 626}
-step c: {'quantity_other (kept)': 20, 'quantity_other never (kept)': 33, 'kept': 626}
-step d: {'quote_not_found': 5, 'quote_noncontiguous (kept)': 1, 'derived condition (figures.json, no quote check)': 8, 'kept': 621}
-step e: {'unit_unresolved (kept as printed)': 8, 'kept': 621}
-step f: {'species_resolved': 1, 'kept': 621}
+step b: {'statement_only (kept: P138 form)': 1, 'model_with_value (kept)': 305, 'kept': 631}
+step c: {'quantity_other (kept)': 20, 'quantity_other never (kept)': 34, "quantity_other of a derived value (the panel's row written once)": 4, 'kept': 631}
+step d: {'quote_not_found': 5, 'quote_noncontiguous (kept)': 1, 'derived condition (figures.json, no quote check)': 13, 'kept': 626}
+step e: {'unit_unresolved (kept as printed)': 8, 'kept': 626}
+step f: {'species_resolved': 1, 'kept': 626}
 step g: {'mention_unmatched': 7}
-step h: {'simulation linked to a model entry': 2, 'model run without a simulation parent (under the paper)': 4, 'place: claim -> paper': 118, 'place: cited -> paper': 2, 'place: definition -> paper': 82, 'place: model about a simulation -> simulation': 125, 'place: about paper -> recipe': 25, 'place: caveat -> paper': 11, 'place: setting about a simulation -> simulation': 20, 'place: derived about a simulation -> simulation': 9, 'place: model about a model run -> model run': 197, 'place: derived about a model run -> model run': 24, 'place: setting about a model run sharing its simulation -> model run': 8}
-step m: {'statement filled from the quote': 455, 'kind_filled (stated)': 1, 'links resolved': 26}
+step h: {'simulation linked to a model entry': 2, 'model run without a simulation parent (under the paper)': 4, 'place: claim -> paper': 118, 'place: cited -> paper': 2, 'place: definition -> paper': 82, 'place: model about a simulation -> simulation': 125, 'place: about paper -> recipe': 25, 'place: caveat -> paper': 11, 'place: setting about a simulation -> simulation': 20, 'place: derived about a simulation -> simulation': 9, 'place: model about a model run -> model run': 197, 'place: derived about a model run -> model run': 24, 'place: setting about a model run sharing its simulation -> model run': 13}
+step m: {'statement filled from the quote': 460, 'kind_filled (stated)': 1, 'links resolved': 26}
 step 1c: {'figure label other (x)': 15, 'figure label other (y)': 13, 'figure label other (condition)': 14, 'figure label other (series)': 1, 'figure axis dimension mismatch (values as printed)': 1, 'curve -> model': 95, 'curve -> model (legend quantity)': 3, 'data of a flagged panel (rule verdict)': 4}
-step i: {'merged': 83, 'claim merged': 43, 'definition merged': 9, 'kept': 584}
+step i: {'merged': 83, 'claim merged': 43, 'definition merged': 9, 'kept': 589}
 step n: {'comparison replicate': 3, 'comparison grid': 1}
 step 6b: {'dimension mismatch flagged': 2}
 step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs ambiguous': 1, 'exposure_per_run: inputs missing': 80, 'sheet_resistance: inputs missing': 80, 'moles_deposited: inputs missing': 80, 'coating_mass_fraction: inputs missing': 80, 'deposition_rate: inputs missing': 80, 'coated_ar: inputs missing': 80, 'normalize_front_slope: inputs missing': 80, 'final_channel_height: inputs missing': 79}
-step k: {'statement from the record': 486, 'statement_copies_text (reported by check)': 47, 'statement assembled': 98, 'value out of range (kept, listed)': 1}
-diff against the gold (type, gold, compiled, matched, precision, recall):
+step k: {'statement from the record': 491, 'statement_copies_text (reported by check)': 47, 'statement assembled': 98, 'value out of range (kept, listed)': 1}
+diff against the gold:
   model         215  363  167  0.46  0.78
   derived        84   29   23  0.79  0.27
   claim          77   75   56  0.75  0.73
   entity         68   78   61  0.78  0.90
-  setting        67   31    0  0.00  0.00
+  setting        67   36    0  0.00  0.00
   definition     62   73   29  0.40  0.47
   comparison     15    4    1  0.25  0.07
   caveat          8   11    3  0.27  0.38

@@ -1,4 +1,4 @@
-input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 5
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P158 15, P163 1, P179 5
 input: 40 lines; pass 0 = line 2; 15 pass-1 lines for 15 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4), 4 (s5+s6+s7+s8+s9+s10), 5 (s11+s12+s13+s14+s15+s16), 6 (fig1), 7 (fig2), 8 (fig3), 9 (fig4), 10 (fig5), 11 (fig6), 12 (fig7), 13 (fig8), 14 (tab1), 15 (tab2), 16 (tabu1), 17 (tabu2), 18 (s5+s6+s7+s8+s9+s10), 19 (abstract+s0+s1+s2+s3+s4), 20 (s11+s12+s13+s14+s15+s16), 21 (fig8), 22 (tab2), 23 (tabu1)
 input: pass-0 extension = line 24: 0 units (); 0 image panel methods
 input: recipe fill = line 25: sim_dr 
@@ -186,16 +186,6 @@ a0: fig7.cap: quantity 'R' -> particle_radius (quantity: symbol 'R' of this pape
 a0: fig7.cap: quantity 'reactant exposure' -> exposure (quantity: alias 'reactant exposure')
 a0: fig7.cap: quantity 'R' -> particle_radius (quantity: symbol 'R' of this paper)
 a0: fig7.cap: quantity 'reactant exposure' -> exposure (quantity: alias 'reactant exposure')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
-a0: fig8.cap: quantity 'temperature' -> deposition_temperature (quantity: name 'temperature')
 a1: symbol species eq1 'n_P' model reactant_number_density: record -, definition - -> no species
 a1: symbol species s4.p3 'n_P' definition reactant_number_density: record -, definition - -> no species
 a1: symbol species eq6 'n_P' model reactant_number_density: record -, definition - -> no species
@@ -247,15 +237,15 @@ i: merged tab2.r6c1 into fig6.cap;tab2.r6c1 (pulse_time 500)
 j: derived over 166 entities: 0 rows; not derived: {'no fact for p': 136, 'n: no fact for gpc': 166, 'gpc: no fact for n': 166, 'no fact for H': 166, 'no fact for rho': 166, 'no fact for mg': 166, 'no fact for t': 166, 'no fact for h2': 166, 'no fact for phi': 166, 'no fact for T': 156, 'lam: no fact for T': 156, 'stated: hei24:fig3#1 100000 Pa s': 1, 'stated: hei24:fig3#2 100000 Pa s': 1, 'stated: hei24:fig3#3 100000 Pa s': 1, 'stated: hei24:fig3#4 50000 Pa s': 1, 'stated: hei24:fig3#5 50000 Pa s': 1, 'stated: hei24:fig3#6 50000 Pa s': 1, 'stated: hei24:fig3#7 10000 Pa s': 1, 'stated: hei24:fig3#8 10000 Pa s': 1, 'stated: hei24:fig3#9 10000 Pa s': 1, 'stated: hei24:fig4#1 100000 Pa s': 1, 'stated: hei24:fig4#2 50000 Pa s': 1, 'stated: hei24:fig4#3 10000 Pa s': 1, 'stated: hei24:fig7a#2 100000 Pa s': 1, 'stated: hei24:fig7a#4 100000 Pa s': 1, 'stated: hei24:fig7a#6 100000 Pa s': 1, 'stated: hei24:fig7a#8 10000 Pa s': 1, 'stated: hei24:fig7a#10 10000 Pa s': 1, 'stated: hei24:fig7a#12 10000 Pa s': 1, 'stated: hei24:fig7a#14 1000 Pa s': 1, 'stated: hei24:fig7a#16 1000 Pa s': 1, 'stated: hei24:fig7a#18 1000 Pa s': 1, 'stated: hei24:fig7b#2 100000 Pa s': 1, 'stated: hei24:fig7b#4 100000 Pa s': 1, 'stated: hei24:fig7b#6 100000 Pa s': 1, 'stated: hei24:fig7b#8 10000 Pa s': 1, 'stated: hei24:fig7b#10 10000 Pa s': 1, 'stated: hei24:fig7b#12 10000 Pa s': 1, 'stated: hei24:fig7b#14 1000 Pa s': 1, 'stated: hei24:fig7b#16 1000 Pa s': 1, 'stated: hei24:fig7b#18 1000 Pa s': 1, 'no fact for d': 10, 'lam: no fact for d': 10}
 j: caveats (query.caveats_of): 0, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 19 nodes for 25 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 79
+j: comparisons from figures.json (1c): 73
 j: transforms (P195): 6 computed facts ({'coated_ar': 6}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
 step input: {'pass-0 extension units': 0, 'records': 216, 'unit derived (derived: curve_per_unit, model_run)': 166, 'condition of a derived unit (name)': 15, 'condition of a derived unit (value)': 178}
-step a0: {'quantity other: never.csv word': 5, 'derived legend name -> structure value': 15, 'quantity promoted (quantity: id)': 12, 'quantity promoted (quantity: symbol)': 118, 'quantity promoted (quantity: alias)': 38, 'quantity promoted (quantity: name)': 10}
+step a0: {'quantity other: never.csv word': 5, 'derived legend name -> structure value': 15, 'quantity promoted (quantity: id)': 12, 'quantity promoted (quantity: symbol)': 118, 'quantity promoted (quantity: alias)': 38}
 step a1: {'symbol species: no species': 36}
 step a: {'variables_unmapped (set to null)': 1, 'schema:not': 1, 'kept': 408}
 step a_fields: {'quantity': 1}
 step b: {'model_with_value (kept)': 87, 'kept': 408}
-step c: {'quantity_other (kept)': 20, 'quantity_other never (kept)': 5, 'kept': 408}
+step c: {'quantity_other (kept)': 22, 'quantity_other never (kept)': 5, "quantity_other of a derived value (the panel's row written once)": 8, 'kept': 408}
 step d: {"quote found in the paper's elements concatenated (P182)": 3, 'quote_not_found': 1, 'derived condition (figures.json, no quote check)': 193, 'kept': 407}
 step e: {'unit_unresolved (kept as printed)': 2, 'kept': 407}
 step f: {'species_resolved': 31, 'kept': 407}
@@ -263,23 +253,23 @@ step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 26, '
 step m: {'statement filled from the quote': 367, 'links resolved': 19}
 step 1c: {'figure label other (series)': 1, 'figure label other (x)': 1, 'figure label other (y)': 1, 'figure label other (x), never': 1, 'curve -> model': 166}
 step i: {'claim merged': 1, 'merged': 5, 'kept': 567}
-step n: {'comparison replicate': 47, 'comparison series': 28, 'comparison grid': 4}
+step n: {'comparison replicate': 43, 'comparison series': 27, 'comparison grid': 3}
 step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 167, 'exposure_per_run: inputs missing': 167, 'sheet_resistance: inputs missing': 167, 'moles_deposited: inputs missing': 167, 'coating_mass_fraction: inputs missing': 167, 'deposition_rate: inputs missing': 167, 'coated_ar: computed': 6, 'normalize_front_slope: inputs missing': 167, 'coated_ar: inputs missing': 161}
 step k: {'statement from the record': 401, 'statement_copies_text (reported by check)': 33, 'statement assembled': 172}
-diff against the gold (type, gold, compiled, matched, precision, recall):
+diff against the gold:
   model         189  265  172  0.65  0.91
-  setting       172  219  105  0.48  0.61
+  setting       172  219   95  0.43  0.55
   entity         83  166   83  0.50  1.00
   definition     35   50   15  0.30  0.43
-  comparison     24   79   16  0.20  0.67
+  comparison     24   73   15  0.21  0.62
   claim          20   25   11  0.44  0.55
   derived        16    6    0  0.00  0.00
   caveat          7    0    0     -  0.00
-  paper           1    1    0  0.00  0.00
-  activity        1    2    0  0.00  0.00
   identity        1    0    0     -  0.00
-  cited           0    2    0  0.00     -
+  activity        1    2    0  0.00  0.00
+  paper           1    1    0  0.00  0.00
   observation     0    6    0  0.00     -
+  cited           0    2    0  0.00     -
 gold definitions with an eq* element in evidence: 0/35
 gold model rows with quantity and value: 16: {'other': 3, 'porosity': 1, 'feature_width': 1, 'specific_surface_area': 1, 'feature_depth': 1, 'molar_mass': 1, 'initial_sticking_coefficient': 1, 'saturation_density': 1, 'reactant_number_density': 1, 'partial_pressure': 1, 'deposition_temperature': 1, 'pulse_time': 2, 'exposure': 1}
 observations: gold 0, compiled 6, matched 0
