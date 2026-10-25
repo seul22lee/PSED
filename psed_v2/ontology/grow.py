@@ -1422,7 +1422,8 @@ def cmd_run(args, yes=False, plan_only=False):
     error or a cached-prefix failure (any non-zero exit of a provider step). P173: the figures import gives a paper 14+ its verdicts by rule
     (kb/figures_import.py: the figure stage's flags), so gate d (no verdicts, P172) is gone. After pass 1 (before propose): form failures or quotes not found
     worse than the worst development value; an earlier round's audit FAIL; export --check FAIL. Every run writes kb/reports/RUN_<keys>.html
-    with its plan, its gate tables, its steps and (P174) the no-gold inspection of each compiled paper."""
+    with its plan, its gate tables, its steps and (P174) the no-gold inspection of each compiled paper. P201 (user): after the figures import,
+    the figure-label job (kb/extract/figure_axes.py, records pass 0ax, one call per paper) and the import again, then pass 0 and pass 1."""
     if not 1 <= len(args) <= 3:
         raise Stop("grow.py run takes 1 to 3 papers (one round)")
     py, steps, stopped = sys.executable, [], ""
@@ -1492,11 +1493,13 @@ def cmd_run(args, yes=False, plan_only=False):
                + "; ".join(f"{x['paper']} {x['element']} (NUL {x['nul']}, U+FFFD {x['fffd']})" for x in bad))
     rc, out = step("plan (0 calls)", [py, EXTRACT / "gates.py", "plan", *keys])
     plan = json.loads(out.strip().splitlines()[-1]) if rc == 0 else []
-    write(Path(f"{REPORTS / f'RUN_{tag}'}.plan.csv"), ["paper", "pid", "figure_calls", "figure_usd", "pass0_calls", "pass0_usd", "pass1_calls", "pass1_usd", "note"], plan)
-    calls = sum(x["figure_calls"] + x["pass0_calls"] + x["pass1_calls"] for x in plan)
-    usd = sum(x["figure_usd"] + x["pass0_usd"] + x["pass1_usd"] for x in plan)
+    write(Path(f"{REPORTS / f'RUN_{tag}'}.plan.csv"), ["paper", "pid", "figure_calls", "figure_usd", "axes_calls", "axes_usd", "pass0_calls", "pass0_usd", "pass1_calls",
+                                                      "pass1_usd", "note"], plan)
+    calls = sum(x["figure_calls"] + x["axes_calls"] + x["pass0_calls"] + x["pass1_calls"] for x in plan)
+    usd = sum(x["figure_usd"] + x["axes_usd"] + x["pass0_usd"] + x["pass1_usd"] for x in plan)
     for x in plan:
-        print(f"{x['paper']}: figure stage {x['figure_calls']} calls (${x['figure_usd']}), pass 0 {x['pass0_calls']} (${x['pass0_usd']}), pass 1 {x['pass1_calls']} (${x['pass1_usd']})")
+        print(f"{x['paper']}: figure stage {x['figure_calls']} calls (${x['figure_usd']}), figure axes {x['axes_calls']} (${x['axes_usd']}), "
+              f"pass 0 {x['pass0_calls']} (${x['pass0_usd']}), pass 1 {x['pass1_calls']} (${x['pass1_usd']})")
     print(f"planned: {calls} provider calls, about ${usd:.2f}")
     if plan_only:
         return finish()
@@ -1513,6 +1516,10 @@ def cmd_run(args, yes=False, plan_only=False):
                 return finish(f"gate c: the figure stage of {x['paper']} failed")
             step(f"elements {x['paper']} again, with the figure stage's panels (0 calls)", [py, PILOT / "elements.py", "--ids", x["pid"]])
         step(f"figures import {x['paper']} (0 calls; P173 rule verdicts)", [py, V2 / "kb" / "figures_import.py", x["pid"]])
+        if x.get("axes_calls"):                                                 # P201 (user): the figure-label job, then the import again with its answers
+            if step(f"figure axes {x['paper']} ({x['axes_calls']} call)", [py, EXTRACT / "figure_axes.py", x["pid"]])[0]:
+                return finish(f"gate c: the figure-label job of {x['paper']} failed")
+            step(f"figures import {x['paper']} again, with the 0ax answers (0 calls)", [py, V2 / "kb" / "figures_import.py", x["pid"]])
     for k in keys:
         if step(f"pass 0 {k}", [py, EXTRACT / "pass0_paper.py", k])[0]:
             return finish(f"gate c: pass 0 of {k} failed (provider error)")

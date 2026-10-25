@@ -18,7 +18,10 @@ as flags. Resolution (P174, user: the one path):
      label). One id -> that quantity; two -> other, flagged ambiguous; none -> other with its never.csv category when a word (any paper)
      or a symbol of this paper matches. The key is the printed title inside a transform log(...)/log10(...)/ln(...) (recorded; the values
      are taken back to linear) without a trailing bracket group that is a unit units.yaml knows (the axis unit, P90b). compile.py writes
-     every label left other as an unmapped row of field axis (kb/compiled/<pid>.unmapped.csv), so grow.py propose sees it.
+     every label left other as an unmapped row of field axis (kb/compiled/<pid>.unmapped.csv), so grow.py propose sees it. P201 (user):
+     every quantity lookup of a label (axis keys, denominators, the series-axis key and its parts, condition keys) is
+     compile.figure_quantity: the paper's 0ax answer (kb/extract/figure_axes.py), a user's figure_axis decision for a series axis, else
+     other ('no 0ax answer'); the qualifier test of a series axis reads the answer; species and unit lookups as before.
   b. unit_raw -> canonical through ontology/units.yaml for a resolved axis; a unit units.yaml lacks, or of another dimension than the
      entry's, keeps the values as printed (unit_reason; compile.py writes a unit row); an other axis keeps its values as printed. A
      normalised axis whose denominator resolves to cycle_number reads a length unit as per cycle (the printed 'nm' of S/N).
@@ -337,16 +340,18 @@ class Importer:
         unit_raw, label_raw, transform, dimension, unit_row, target_row, denominator, unit_reason)."""
         tr, key, ubr = axis_title(a.get("label_raw"))
         uraw = (a.get("unit_raw") or "").strip() or ubr                         # P90b: the unit inside the title's bracket
-        res = K.resolve_label(pid, key)
+        pel = f"fig{fig}{panel}"
+        res = K.figure_quantity(pid, pel, key, f"{ax} axis")                    # P201 (user): the one lookup of a figure label (0ax)
         q = res["id"]
+        den = a.get("normalization_denominator_symbol") if a.get("is_normalized") else None
+        dres = K.figure_quantity(pid, pel, den, "denominator") if den else None   # P201: asked whatever the axis answer (the asked labels are fixed)
         out = dict(label_raw=a.get("label_raw"), unit_raw=a.get("unit_raw") or "", log=bool(a.get("log")), is_normalized=bool(a.get("is_normalized")),
                    quantity=q, key=key, how=res["how"], transform=tr, unit=uraw, unit_printed=uraw, dimension="", denominator=None, unit_row=None, target_row=None, unit_reason="")
         if q != "other":
             e = L.ENTRIES.get(q, {})
             out["dimension"] = e.get("dimension", "")
-            if a.get("is_normalized") and a.get("normalization_denominator_symbol"):
-                den = a["normalization_denominator_symbol"]
-                dq = K.resolve_label(pid, den)["id"]
+            if den:
+                dq = dres["id"]
                 sp = self.R.species_id(den) if dq == "other" else ""
                 out["denominator"] = dict(symbol=den, quantity=dq) if dq != "other" else dict(symbol=den, species=sp) if sp else dict(symbol=den)
             row = fit_unit(uraw, q)
@@ -371,7 +376,7 @@ class Importer:
     def condition(self, pid, fig, panel, key, text):
         """A condition key and printed value resolved (the one path): dict(key_raw, raw, quantity, value, value_max, unit, role), or None
         when the key stays other (its label kept for compile.py's unmapped row)."""
-        res = K.resolve_label(pid, key)
+        res = K.figure_quantity(pid, f"fig{fig}{panel}", key, "condition key", context=str(text))   # P201 (user)
         pv = parse_value(text)
         q = res["id"]
         if q == "other":
@@ -427,7 +432,8 @@ class Importer:
         return dict(label_raw=lab, cls="replicate", series_structure="replicate")
 
     # ---- one paper
-    def paper(self, pid):
+    def paper(self, pid, write=True):
+        """One paper's import -> its record; written to kb/<pid>.figures.json unless write is False (P201: figure_axes.py collects)."""
         d = json.loads((FINAL / pid / "figures.json").read_text(encoding="utf-8"))
         key = PAPERS.get(pid, pid)
         prov = dict(extractor="vlm", model=d["model"], prompt_sha256=d["prompt_sha256"])
@@ -472,15 +478,15 @@ class Importer:
                 sa_q, sa_key, sa_parts = "", "", []
                 if sa_raw and (len(p.get("series") or []) > 1 or p.get("cells")):
                     _, sa_key, sa_u = axis_title(sa_raw)
-                    res = K.resolve_label(pid, sa_key)
+                    res = K.figure_quantity(pid, pel, sa_key, "series axis")    # P201 (user): the 0ax answer (a decision: its quantity)
                     kind_only = bool(p.get("series")) and all(len({MODEL_WORDS[w] for w in re.findall(r"[a-zA-Z]+", (s0.get("label") or "").lower()) if w in MODEL_WORDS}) == 1 for s0 in p.get("series") or []) \
                         or bool(re.search(r"\b(type|kind|model|dataset|method|geometry|shape)\s*$", sa_raw.strip().lower()))   # an axis that names a category ('sticking coefficient type', 'particle geometry'), not a quantity
-                    qk, aparts = K.qualifier_key(sa_key), K.axis_parts(sa_key)
+                    qk, aparts = res["qualifier"], K.axis_parts(sa_key)        # P201: the qualifier test reads the answer
+                    pres = [K.figure_quantity(pid, pel, part, "series-axis part") for part in aparts] if len(aparts) >= 2 else []
                     if qk:                                                      # P175 (user): an axis naming a qualifier key; its legend names the values
                         self.label("series", sa_raw, sa_key, "", dict(id=f"qualifier:{qk}", how=f"names the qualifier {qk}", ambiguous=[], never="", never_label=""))
                     elif len(aparts) >= 2:                                      # P175 (user): a two-quantity axis, each part on the one path
-                        for part in aparts:
-                            r_ = K.resolve_label(pid, part)
+                        for part, r_ in zip(aparts, pres):
                             self.label("series", sa_raw, part, "", r_)
                             sa_parts.append(r_["id"])
                     elif res["id"] != "other":
@@ -504,7 +510,7 @@ class Importer:
                     pts = [[self.to_canonical(x, ax["x"]), self.to_canonical(y, ax["y"])] for x, y in s["points"]]
                     kind = "simulated" if (lab.get("kind") or panel_kind) == "simulated" else "read_from_figure"
                     cconds = dict(conds)
-                    for c in K.parse_legend(pid, s["label"] or "", sa_raw) if sa_parts else []:   # P175: the legend's parts by order
+                    for c in K.parse_legend(pid, s["label"] or "", sa_raw, pel) if sa_parts else []:   # P175: the legend's parts by order
                         q = c["quantity"]
                         if c["kind"] == "value" and q not in ("", "other") and c.get("value") is not None:
                             u_, t_ = fit_unit(c["unit"], q), entry_unit_row(q)
@@ -592,7 +598,7 @@ class Importer:
         out["report"] = dict(counts)
         fp = HERE / f"{pid}.figures.json"
         old = json.loads(fp.read_text(encoding="utf-8")) if fp.exists() else {}
-        if {k: v for k, v in old.items() if k != "imported_at"} != {k: v for k, v in json.loads(json.dumps(out)).items() if k != "imported_at"}:
+        if write and {k: v for k, v in old.items() if k != "imported_at"} != {k: v for k, v in json.loads(json.dumps(out)).items() if k != "imported_at"}:
             fp.write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")   # P174: an import that changes nothing keeps the file (apply imports again)
         return out
 

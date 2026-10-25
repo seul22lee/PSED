@@ -225,18 +225,95 @@ def resolve_label(pid, text, kind="quantity"):
                 never_label=(nv["label"] + (f" (symbol in {nv['paper']})" if nv.get("symbol") == "yes" else "")) if nv else "")
 
 
+def figure_axis_decisions(pid):
+    """P191 (user): {panel: (quantity, unit)} of the user's figure_axis decisions of this paper (history.csv kind figure_axis, slot series,
+    id the panel, target '<quantity> [<unit>]', the paper in source_pids)."""
+    hist = C.V2 / "ontology" / "history.csv"
+    out = {}
+    for h in csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []:
+        m = re.fullmatch(r"(\w+)\s*\[(.*)\]", h["target"].strip())
+        if h["kind"] == "figure_axis" and h["slot"] == "series" and pid in h["source_pids"].split(";") and m:
+            out[h["id"]] = (m.group(1), m.group(2).strip())
+    return out
+
+
 def series_axis(pid):
     """P163: {panel: the series_axis label as printed} of the figure stage's ingest/final/<pid>/figures.json (kb/<pid>.figures.json keeps
-    it only as a set's varied_raw, and a map's set names its axes instead); P191 (user): a user's figure_axis decision replaces it."""
+    it only as a set's varied_raw, and a map's set names its axes instead); P191 (user): a user's figure_axis decision replaces it
+    ('<quantity> (<unit>)', the unit read from it; P201: figure_quantity gives the decided quantity directly)."""
     p = C.V2 / "ingest" / "final" / pid / "figures.json"
     d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
     out = {f"fig{f['number']}{x.get('panel', '')}": (x.get("series_axis") or "").strip() for f in d.get("figures", []) for x in f.get("panels") or []}
-    hist = C.V2 / "ontology" / "history.csv"                                    # P191 (user): a figure_axis decision (kind figure_axis, slot series,
-    for h in csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []:   # id the panel, target '<quantity> [<unit>]', the paper in
-        m = re.fullmatch(r"(\w+)\s*\[(.*)\]", h["target"].strip())               # source_pids) gives the panel's series axis '<quantity> (<unit>)'
-        if h["kind"] == "figure_axis" and h["slot"] == "series" and pid in h["source_pids"].split(";") and m:
-            out[h["id"]] = f"{m.group(1)} ({m.group(2)})" if m.group(2).strip() else m.group(1)
+    for panel, (q, u) in figure_axis_decisions(pid).items():
+        out[panel] = f"{q} ({u})" if u else q
     return out
+
+
+AXES_PASS = "0ax"                                                               # P201 (user): the records line of the figure-label job (figure_axes.py)
+COLLECT = None                                                                  # P201: {(pid, panel, kind, text): context} while figure_axes.py collects
+_AXES = {}
+
+
+def axes_answers(pid):
+    """P201 (user): the latest 0ax line's answers -> ({(panel, kind, text): answer dict}, line number or None). The line carries its labels
+    (id, panel, kind, text); an answer joins its label by id."""
+    if pid not in _AXES:
+        lines = C.lines(pid)
+        n = max((i for i, x in enumerate(lines, 1) if x["pass"] == AXES_PASS), default=None)
+        out = {}
+        if n:
+            got = {a.get("id"): a for a in C.loads_json(lines[n - 1]["response"]).get("answers") or [] if isinstance(a, dict)}
+            for lab in lines[n - 1].get("labels") or []:
+                if lab["id"] in got:
+                    out[(lab["panel"], lab["kind"], lab["text"])] = got[lab["id"]]
+        _AXES[pid] = (out, n)
+    return _AXES[pid]
+
+
+AXIS_ANSWERS = set(C.schema("form.json")["$defs"]["quantity_id"]["enum"])      # P201: the form's quantity enum (figure_axes.py answers from it)
+QUALIFIER_KINDS = ("series axis", "series-axis part", "legend key")            # P201: the label kinds a qualifier-key answer may take
+MISSES = collections.defaultdict(dict)                                          # P201: pid -> {(panel, kind, text): why} (no 0ax answer, an answer no id)
+
+
+def figure_quantity(pid, panel, text, kind, context=""):
+    """P201 (user): the one quantity lookup of a figure label (figures_import: axis keys, denominators, the series-axis key and its parts,
+    condition keys; classify_part: the axis key, a range symbol, a legend key before '=' / ':', a legend part naming a quantity). kind: x axis,
+    y axis, denominator, series axis, series-axis part, condition key, legend key, legend part. Collect mode (COLLECT a dict, figure_axes.py):
+    the label is recorded (context: a condition key's printed value) and answers other. Answer mode: a user's figure_axis decision gives a
+    series axis's quantity directly; else the 0ax answer of (panel, kind, text): a quantity id; a qualifier key (element, species, step) for a
+    series axis, series-axis part or legend key (id other, qualifier set); other. A label with no answer is other, listed in MISSES ('no 0ax
+    answer'). An other keeps the never.csv handling of resolve_label and is written as an unresolved label (how ''). Returns dict(id, how,
+    ambiguous, never, never_label, qualifier)."""
+    text = (text or "").strip()
+    out = dict(id="other", how="", ambiguous=[], never="", never_label="", qualifier="")
+    if not text:
+        return out
+    dec = figure_axis_decisions(pid).get(panel) if kind == "series axis" else None
+    if dec:
+        return dict(out, id=dec[0], how="the user's figure_axis decision")
+    if COLLECT is not None:
+        COLLECT.setdefault((pid, panel, kind, text), context)
+        return out
+    answers, n = axes_answers(pid)
+    a = answers.get((panel, kind, text))
+    ans = str((a or {}).get("answer") or "")
+    if ans in AXIS_ANSWERS:
+        return dict(out, id=ans, how=f"0ax answer (records line {n})")
+    if ans in QUALIFIER_AXES and kind in QUALIFIER_KINDS:
+        return dict(out, qualifier=ans, how=f"0ax answer: the qualifier {ans} (records line {n})")
+    if a is None or ans != "other":
+        MISSES[pid][(panel, kind, text)] = "no 0ax answer" if a is None else f"0ax answer {ans!r} is no quantity id"
+        out["how"] = MISSES[pid][(panel, kind, text)]
+    nv = never_of(pid, text)
+    if nv:
+        out.update(never=nv["category"], never_label=nv["label"] + (f" (symbol in {nv['paper']})" if nv.get("symbol") == "yes" else ""))
+    return out
+
+
+def fq_hits(pid, panel, text, kind):
+    """figure_quantity as vocab_hits gives it: {id: how} when it names a quantity, else {}."""
+    r = figure_quantity(pid, panel, text, kind)
+    return {r["id"]: r["how"]} if r["id"] != "other" else {}
 
 
 def legend_number(t):
@@ -321,7 +398,7 @@ def data_role_word(part):
     return roles[0] if roles and all(w in DATA_ROLE_WORDS or w in DATA_ROLE_FILLER for w in ws) else ""
 
 
-def parse_legend(pid, label, axis):
+def parse_legend(pid, label, axis, panel=""):
     """P163 rule 1, P175, P177b, P177c (user): a legend label's parts (legend_parts at its top-level legend separators of ontology.yaml:
     ',', '@', ' at '; an axis of two or more parts (axis separators ' and ', ',') pairs with them by order, the legend split at the dash
     separators ' - ' / ' – ' too when the others do not give that count), each resolved on the one path and classed by the kind of what it
@@ -336,17 +413,19 @@ def parse_legend(pid, label, axis):
       method    measurement-method words (legend_methods: SE, XRR, EDS): the method of the item's result; the rest of the part is classed again;
       never     a never.csv word (or a symbol of this paper): a never condition (kept, no candidate);
       other     none of these: an other condition (a candidate).
-    Returns [dict(kind, key, quantity, value, value_min, value_max, unit, value_text, qualifier, model, method, role, how, flag)]."""
+    Returns [dict(kind, key, quantity, value, value_min, value_max, unit, value_text, qualifier, model, method, role, how, flag)].
+    P201 (user): panel = the figure panel (fig<n><letter>) whose 0ax answers figure_quantity reads; the qualifier key of the axis is the
+    axis's answer."""
     parts = legend_parts(label)
     aparts = axis_parts(axis)
     if len(aparts) >= 2 and len(parts) != len(aparts):
         dash = legend_parts(label, LEGEND_ALL)
         parts = dash if len(dash) == len(aparts) else parts
     paired = len(aparts) >= 2 and len(parts) == len(aparts)
-    qk = qualifier_key(axis)
+    qk = figure_quantity(pid, panel, axis_title(axis)[1], "series axis")["qualifier"] if axis else ""
     out = []
     for n, part in enumerate(parts):
-        out += classify_part(pid, part, aparts[n] if paired else axis, qk, len(parts) == 1 or paired, axis)
+        out += classify_part(pid, part, aparts[n] if paired else axis, qk, len(parts) == 1 or paired, axis, panel=panel)
     return out
 
 
@@ -363,21 +442,23 @@ def axis_title(label):
     return _FI[0].axis_title(label)
 
 
-def classify_part(pid, part, ax_, qk, one, axis, methods=True):
+def classify_part(pid, part, ax_, qk, one, axis, methods=True, panel=""):
     """P177b: one legend part classed (parse_legend). P191 (user): its axis part read by axis_title (the figure import's): the key
-    resolved, the unit group a bare number's unit."""
+    resolved, the unit group a bare number's unit. P201 (user): every quantity lookup (the axis key, a range symbol, a key before '=' / ':',
+    a part naming a quantity) is figure_quantity's, of the panel."""
     if qk:
         v = qualifier_value(pid, qk, part)
         return [dict(kind="qualifier", key=part, qualifier=qk, value_text=v, quantity="",
                      how=f"axis '{axis}' names the qualifier {qk}: {qk}={v}" if v else f"axis '{axis}' names the qualifier {qk}; '{part}' is none of its values",
                      **({} if v else dict(flag="legend part no value of the axis's qualifier")))]
     _, axk, axu = axis_title(ax_) if ax_ else ("", "", "")
-    ax = vocab_hits(pid, "quantity", axk) if axk else {}
+    axkind = "series-axis part" if ax_ != axis else "series axis"
+    ax = fq_hits(pid, panel, axk, axkind) if axk else {}
     axis_q = next(iter(ax)) if len(ax) == 1 else ""
     rg = RANGE.fullmatch(part)
     if rg and (not rg.group(4).strip() or unit_symbol(rg.group(4).strip()) is not None):
         sym = rg.group(1).strip()
-        hit = vocab_hits(pid, "quantity", sym)
+        hit = fq_hits(pid, panel, sym, "legend key")
         q, how = next(iter(hit.items())) if len(hit) == 1 else ("other", f"unresolved: other condition '{sym}'")
         lo, hi = (float(x.replace("−", "-")) for x in (rg.group(2), rg.group(3)))
         return [dict(kind="value", key=sym, value=None, value_min=lo, value_max=hi, unit=rg.group(4).strip(), quantity=q,
@@ -388,7 +469,7 @@ def classify_part(pid, part, ax_, qk, one, axis, methods=True):
         keys = ([sym] if sym else []) + ([ax_] if ax_ and (one or not sym) else [])
         keys = keys[::-1] if one and not sym else keys
         look, unit_ = (lambda k: axk if k == ax_ else k), (lambda k: num[1] or (axu if k == ax_ else ""))   # P191: the axis as the import reads it
-        found = [(k, h) for k in keys for h in [vocab_hits(pid, "quantity", look(k))] if len(h) == 1]
+        found = [(k, h) for k in keys for h in [fq_hits(pid, panel, look(k), axkind if k == ax_ else "legend key")] if len(h) == 1]
         hit = next(((k, h) for k, h in found if unit_fits(next(iter(h)), unit_(k))), None)   # P177c (user, chat): the dimension guard
         key = hit[0] if hit else sym or part if found else (ax_ if ax_ and (one or not sym) else sym or part)
         q, how = (next(iter(hit[1].items())) if hit else ("other", f"unresolved: other condition '{key}'" + (
@@ -410,7 +491,7 @@ def classify_part(pid, part, ax_, qk, one, axis, methods=True):
             rest = re.sub(rf"(?i)(?<!\w){re.escape(w)}(?!\w)", " ", rest)
         rest = " ".join(rest.split()).strip(" ,;-–")
         return [dict(kind="method", key=w, method=mi, quantity="", how=f"names the method {mi}") for mi, w in ms.items()] \
-            + (classify_part(pid, rest, ax_, qk, one, axis, methods=False) if rest else [])
+            + (classify_part(pid, rest, ax_, qk, one, axis, methods=False, panel=panel) if rest else [])
     sp = vocab_hits(pid, SPECIES_KIND[axis_q], name) if axis_q in SPECIES_KIND else {}
     if len(sp) == 1:
         (i, h), = sp.items()
@@ -424,7 +505,7 @@ def classify_part(pid, part, ax_, qk, one, axis, methods=True):
     if len(hits) == 1:
         ((q, i), h), = hits.items()
         return [dict(kind="name", key=part, value_text=i, quantity=q, how=f"name '{name}' -> {q} = {i} ({h})")]
-    qh = vocab_hits(pid, "quantity", name)
+    qh = fq_hits(pid, panel, name, "legend part")
     if len(qh) == 1:
         (i, h), = qh.items()
         return [dict(kind="quantity", key=part, quantity=i, how=f"names the quantity {i} ({h})")]
@@ -910,7 +991,7 @@ def bind(pid, obj, recs=None):
                 continue
             its = []
             for c in (curves if not (layout == "point_per_unit" and cells) else []):   # point_per_unit with cells: the cells (the series repeat them)
-                parts = parse_legend(pid, (c.get("series") or {}).get("label_raw", ""), sa)
+                parts = parse_legend(pid, (c.get("series") or {}).get("label_raw", ""), sa, pel0)
                 base = dict(vector=[x for x in parts if x["kind"] in CONDITION_KINDS], qualifiers=[f"{x['qualifier']}={x['value_text']}" for x in parts if x["kind"] == "qualifier" and x.get("value_text")],
                             y_quantity=next((x["quantity"] for x in parts if x["kind"] == "quantity"), ""), model=next((x["model"] for x in parts if x["kind"] == "model"), ""),
                             method=next((x["method"] for x in parts if x["kind"] == "method"), ""), parts=parts,
@@ -1112,8 +1193,9 @@ class Run:
             else:
                 self.count("input", f"unit derived ({u['origin']}, {u['role']})")
             dkind = "model_input" if u["role"] == "model_run" else "stated"
-            for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values (and P177b a point's
-                rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])   # coordinates), resolved by step a0
+            for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values (and P177b a point's coordinates);
+                q_ = c.get("quantity") if c["kind"] == "value" and c.get("quantity") in AXIS_ANSWERS else "other"   # P201 (user): their quantity is
+                rec = dict(type="setting", quantity=q_, label_as_printed=c["key"], quote=c["key"], about=u["id"])   # figure_quantity's (0ax), never a0's
                 if c["kind"] == "value" and c.get("value_min") is not None:     # P175: '<symbol> = <a> to <b>'
                     rec.update(value_min=c["value_min"], value_max=c["value_max"], unit=c["unit"] or None, kind=dkind)
                 elif c["kind"] == "value":
@@ -1351,7 +1433,7 @@ class Run:
                 else:
                     self.count("a0", "derived legend label parsed to nothing (other)" + (", two values" if hits else ""))
                     self.note(f"a0: {r['eid']}: legend label {lab!r} parsed to nothing" + (f": names {sorted(hits)}" if hits else ""))
-            todo = [("quantity", C.X.record_text(rec), "quantity")] if q == "other" else []
+            todo = [("quantity", C.X.record_text(rec), "quantity")] if q == "other" and not r.get("derived") else []   # P201: a figure label: 0ax
             vt = rec.get("value_text")
             if q in SPECIES_KIND and isinstance(vt, str) and vt not in enum[SPECIES_KIND[q]]["enum"]:
                 todo.append(("value_text", vt, SPECIES_KIND[q]))
@@ -1852,7 +1934,8 @@ class Run:
             return ("observation", "@meas:" + nid) if dr == "measured" else ("model", nid)
 
         def curve_row(cu, nid, role, it, parts=None):
-            parts = parse_legend(self.pid, cu.get("series", {}).get("label_raw", ""), series_axis(self.pid).get(f"fig{cu['figure']}{cu.get('panel', '')}", "")) if parts is None else parts
+            pel = f"fig{cu['figure']}{cu.get('panel', '')}"
+            parts = parse_legend(self.pid, cu.get("series", {}).get("label_raw", ""), series_axis(self.pid).get(pel, ""), pel) if parts is None else parts
             q = next((x["quantity"] for x in parts if x["kind"] == "quantity"), "") or cu["y"].get("quantity")
             if q not in L.QUANTITIES:
                 self.count("1c", "curve y quantity not an id"); return

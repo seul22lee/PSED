@@ -161,13 +161,14 @@ def plan(pids):
         u = x["usage"]
         hit = min(u.get("cache_read_tokens", 0) or 0, u["input_tokens"])
         return ((u["input_tokens"] - hit) * float(p["input_per_mtok"]) + hit * float(p["cache_hit_per_mtok"]) + u["output_tokens"] * float(p["output_per_mtok"])) / 1e6
-    p0, p1 = [], []
+    p0, p1, pax = [], [], []
     for pid, _ in dev_papers():
         lines = [json.loads(x) for x in (C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
         z = [x for x in lines if x["pass"] == 0]
         if z and usd(z[-1]) is not None:
             p0.append(usd(z[-1]))
         p1 += [usd(x) for x in lines if x["pass"] == 1 and x.get("prefix_hash") and usd(x) is not None]
+        pax += [usd(x) for x in lines if x["pass"] == K.AXES_PASS and usd(x) is not None]   # P201: the figure-label job's calls on record
     vin = vout = nfig = 0
     for f in (C.V2 / "ingest" / "final").glob("*/figures.json"):
         for g in json.loads(f.read_text(encoding="utf-8")).get("figures", []):
@@ -186,7 +187,9 @@ def plan(pids):
         ng = len(P1.groups(pid)[0]) if (C.V2 / "kb" / "pilot" / f"{pid}.elements.csv").exists() else 0
         done1 = {x["section"] for x in (json.loads(y) for y in ((C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if (C.RECORDS / f"{pid}.jsonl").exists() else []) if y.strip()) if x["pass"] == 1 and x.get("form_version") == C.X.FORM_VERSION}
         n1 = sum(1 for g in (P1.groups(pid)[0] if ng else {}) if g not in done1)
-        out.append(dict(paper=key, pid=pid, figure_calls=nf, figure_usd=round(nf * fig_usd, 3), pass0_calls=0 if have0 else 1,
+        hax = any(x["pass"] == K.AXES_PASS for x in (json.loads(y) for y in ((C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if (C.RECORDS / f"{pid}.jsonl").exists() else []) if y.strip()))
+        out.append(dict(paper=key, pid=pid, figure_calls=nf, figure_usd=round(nf * fig_usd, 3), axes_calls=0 if hax else 1,
+                        axes_usd=0 if hax else round(sum(pax or p0) / max(len(pax or p0), 1), 3), pass0_calls=0 if have0 else 1,
                         pass0_usd=0 if have0 else round(sum(p0) / max(len(p0), 1), 3), pass1_calls=n1, pass1_usd=round(n1 * sum(p1) / max(len(p1), 1), 3),
                         note="pass-1 groups from elements.csv as it stands (built again after the figure stage)"))
     print(json.dumps(out, ensure_ascii=False))

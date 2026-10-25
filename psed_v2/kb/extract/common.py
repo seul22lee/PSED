@@ -100,9 +100,17 @@ def cache_path(pid, pass_, section, h):
     return CACHE / pid / f"{pass_}_{section}_{h[:16]}_{MODEL}.json"
 
 
+ID_CHECKED = ("0ax",)                                                           # P201 (user): passes whose answers must be exactly the job's ids
+
+
+def line_failure(x):
+    """failure() of a records or cache line, with its listed ids for an ID_CHECKED pass."""
+    return failure(x.get("response"), x.get("element_ids") if x.get("pass") in ID_CHECKED else None)
+
+
 def cached(cp):
     """P196b rule 1: a cache file is a hit only when its response parses (else the request is to call)."""
-    return cp.exists() and parses(json.loads(cp.read_text(encoding="utf-8")).get("response"))
+    return cp.exists() and not line_failure(json.loads(cp.read_text(encoding="utf-8")))
 
 
 def plan(pid, jobs, thinking=None):
@@ -154,9 +162,10 @@ def call(client, prompt, rschema, thinking=None, cached=None):
                                   cache_read_tokens=u.cached_content_token_count or 0), ts
 
 
-def failure(text):
+def failure(text, ids=None):
     """P196b (user) rule 1, P200 (user) extended: why a response is a failed call ('' when it is none): it does not parse (the tolerant JSON
-    parse, figures.loads_json, the one compile uses), or a string of the parsed object (a key or a value) holds U+0000 or U+FFFD."""
+    parse, figures.loads_json, the one compile uses), or a string of the parsed object (a key or a value) holds U+0000 or U+FFFD. P201
+    (user): with ids (an ID_CHECKED pass), its answers (key answers, each an id) miss a listed id or answer an unlisted one."""
     try:
         obj = loads_json(text)
     except (ValueError, TypeError) as e:
@@ -170,7 +179,13 @@ def failure(text):
             todo += x
         elif isinstance(x, str):
             bad.update(c for c in x if c in "\x00\ufffd")
-    return "; ".join(f"U+{ord(c):04X} in a string of the parsed response ({n} times)" for c, n in sorted(bad.items()))
+    why = "; ".join(f"U+{ord(c):04X} in a string of the parsed response ({n} times)" for c, n in sorted(bad.items()))
+    if ids is not None and not why:
+        got = [a.get("id") for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict)]
+        miss, extra = [i for i in ids if i not in got], sorted({str(i) for i in got if i not in ids})
+        why = "; ".join(x for x in (f"listed ids not answered: {', '.join(miss[:20])}" if miss else "",
+                                    f"unlisted ids answered: {', '.join(extra[:20])}" if extra else "") if x)
+    return why
 
 
 def parses(text):
@@ -209,12 +224,13 @@ def run(pid, jobs, thinking=None, form_version=None):
         for job in jobs:
             pass_, section, prompt, rschema, ids = job[:5]
             pre = job[5] if len(job) > 5 else ""
+            extra = job[6] if len(job) > 6 else {}                              # P201: fields the job writes on its line (0ax: the labels)
             assert prompt.startswith(pre)
             h = request_hash(prompt, rschema, thinking)
             cp = cache_path(pid, pass_, section, h)
             if cp.exists():
                 hit = json.loads(cp.read_text(encoding="utf-8"))
-                if parses(hit.get("response")):
+                if not line_failure(hit):
                     out.append(hit)
                     continue
                 cp.unlink()                                                     # P196b rule 1: a failed response is not cached
@@ -225,7 +241,7 @@ def run(pid, jobs, thinking=None, form_version=None):
             for attempt in range(before + 1, 3):                                # P196b rule 2: the first attempt and one retry per request
                 text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
                 made += 1
-                why = failure(text)
+                why = failure(text, ids if pass_ in ID_CHECKED else None)
                 if not why:
                     break
                 list_failed(dict(pid=pid, section=section, prompt_hash=h, model=MODEL, form_version=form_version or X.FORM_VERSION, request_ts=ts,
@@ -239,7 +255,7 @@ def run(pid, jobs, thinking=None, form_version=None):
                 continue
             line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
                         form_version=form_version or X.FORM_VERSION,            # P158: compile.py applies the frozen form's rules to this line
-                        request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), **({"prefix_hash": ph} if pre else {}), response=text)
+                        request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), **({"prefix_hash": ph} if pre else {}), **extra, response=text)
             cp.parent.mkdir(parents=True, exist_ok=True)
             cp.write_text(json.dumps(line, ensure_ascii=False), encoding="utf-8")
             RECORDS.mkdir(exist_ok=True)

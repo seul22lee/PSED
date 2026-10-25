@@ -292,6 +292,15 @@ psed_v2/
   with spaces), its global aliases, a symbol of the record's own paper (a user's decision lands as an alias or a symbol); never an entry
   name (export.resolve_index names=False); a vocabularies.ambiguous_aliases key (export.ambiguous_key) only through a symbol of the paper.
   Species, material, method, structure, model lookups and the figure labels read vocab_hits as before.
+- P201 B (user): every quantity lookup of a figure label is compile.figure_quantity(pid, panel, text, kind): in figures_import the axis
+  keys, normalization denominators, the series-axis key and its parts, condition keys; in classify_part the axis key, a range symbol, a
+  legend key before '=' / ':', a legend part naming a quantity; the derived condition records of bind take that quantity (step a0 no
+  longer looks a figure label up). Answer: the latest records line of pass 0ax (kb/extract/figure_axes.py, one call per paper; the line
+  carries its labels): a quantity id, a qualifier key element / species / step (series axes, their parts, legend keys), or other (never.csv
+  as before; how ''); no answer: other, listed (compile.MISSES, how 'no 0ax answer'); a user figure_axis decision gives its panel's series
+  axis directly. Collect mode (figure_axes.py): the import (no write) and the legend parsing record every (panel, kind, text) asked: the
+  0ax label list. A 0ax response missing a listed id or answering an unlisted one is a failed call (common.failure, ID_CHECKED). grow.py
+  run: figures import, figure_axes.py, the import again, then pass 0 and pass 1 (the plan counts the 0ax call).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
