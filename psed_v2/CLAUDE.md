@@ -195,6 +195,11 @@ psed_v2/
   a pass-0 measurement unit is a measurement activity <entity>:meas:<method>; figure facts go to the measurement unit of their panel;
   a child inherits a parent's setting only when the parent holds one value of it (several: not inherited, experiments.csv
   not_inherited); binding.csv carries the compiled unit id.
+- P185 (user): material is a run's recipe field (form_pass0 version 5; recipe_fill.py --fields material refills one field;
+  compile.recipe_fill merges each field from the latest fill line holding it); compile writes the run's material setting from it (a
+  pass-1 material record stays). compile.bind: a measurement unit whose data names an item takes it from its parent (data belongs to
+  the measurement that produced it). Measurement activity rows carry their method in the method column. pass-0 helpers
+  (process_mode_fill.pass0_line, pass1_elements.units_block) read the pass-0 line with the extension's units (compile.pass0_object).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

@@ -25,8 +25,9 @@ FIELDS = C.X.RECIPE_FIELDS
 DROP = tuple(f + x for f in FIELDS for x in ("", "_quote", "_element"))
 
 
-def job(pid):
-    """(pass, section, prompt, response schema, element ids) or None when the paper has no run."""
+def job(pid, fields=FIELDS):
+    """(pass, section, prompt, response schema, element ids) or None when the paper has no run. P185: fields, the recipe fields asked
+    (a material-only refill: ['material']; compile.recipe_fill merges each field from the latest line holding it)."""
     base = PM.job(pid)                                                          # the runs, their settings and the text, as the P179 fill reads them
     if base is None:
         return None
@@ -35,10 +36,12 @@ def job(pid):
     runs = pm_schema["properties"]["recipes"]["items"]["properties"]["id"]["enum"]
     species = [i for i, e in K.V.ENTRIES.items() if e.get("type") == "species"]
     values = list(K.V.CATEGORICAL_VALUES["process_mode"])
-    defs = "; ".join(f"{f}: {K.V.ENTRIES[f]['definition']}" for f in FIELDS)
+    mats = list(K.V.MATERIALS)
+    ids = {f: (values if f == "process_mode" else mats if f == "material" else species) for f in fields}
+    defs = "; ".join(f"{f}: {K.V.ENTRIES[f]['definition']}" for f in fields)
     prompt = (
         "You read the text of one ALD paper and give, for each recipe (a deposition run) listed below, its recipe fields: "
-        f"reactant_A, reactant_B, carrier_gas (species ids: {', '.join(species)}) and process_mode (one of {', '.join(values)}). The fields: {defs}. "
+        + "; ".join(f"{f} (one of {', '.join(ids[f])})" for f in fields) + f". The fields: {defs}. "
         "A field is stated for a run when the text states it for that run, for a set of runs it belongs to, or for every deposition of the paper; a "
         "run's own name in the text stating it states it too. reactant_A and reactant_B are the reactants in the order the text gives the cycle "
         "(the precursor dosed first, then the co-reactant). For each field give the quote copied verbatim from the TEXT (the words that state it) "
@@ -46,8 +49,8 @@ def job(pid):
         "field from another field, a number or a typical process."
         "\n\nRECIPES" + rest)
     item = {"id": {"enum": runs}}
-    for f in FIELDS:
-        item[f] = {"anyOf": [{"enum": species if f != "process_mode" else values}, {"type": "null"}]}
+    for f in fields:
+        item[f] = {"anyOf": [{"enum": ids[f]}, {"type": "null"}]}
         item[f + "_quote"] = {"type": "string"}                                # P182 (user): a required string; the importer checks it
         item[f + "_element"] = {"anyOf": [{"enum": els}, {"type": "null"}]}
     schema = {"type": "object", "additionalProperties": False, "required": ["recipes"],
@@ -67,7 +70,9 @@ def null_fields(pid):
 
 def main(arg):
     pid, key = C.resolve(arg)
-    j = job(pid)
+    fields = sys.argv[sys.argv.index("--fields") + 1].split(",") if "--fields" in sys.argv else FIELDS   # P185: e.g. --fields material
+    assert set(fields) <= set(FIELDS), fields
+    j = job(pid, fields)
     if j is None:
         print(f"{key}: no run in pass 0: no call")
         return 0
@@ -93,7 +98,7 @@ def main(arg):
         if u.get("id") in fill:
             x = fill[u["id"]]
             cells = []
-            for f in FIELDS:
+            for f in fields:
                 how, _ = K.quote_found(pid, x.get(f + "_quote"), K.normalize(text.get(x.get(f + "_element") or "", "")), x.get(f + "_element"))
                 found = "-" if not x.get(f) else ("found" if how else "NOT FOUND")       # P182: compile.quote_found, the importer's check
                 cells.append(f"{f} {x.get(f) or 'null'} [{x.get(f + '_element') or '-'}; quote {found}] {x.get(f + '_quote') or ''}")

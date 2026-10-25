@@ -428,13 +428,14 @@ def recipe_fill(pid, lines=None):
     recipe_field, the paper in source_pids: id = the field, target = the value or null, parameters = the run ids, empty = every run of
     the fill) sets the field, listed. -> (line number, fields, [listed: run, field, value, reason])."""
     lines = C.lines(pid) if lines is None else lines
-    n = max((i for i, x in enumerate(lines, 1) if x["pass"] in FILL_PASSES), default=None)
+    fl = [i for i, x in enumerate(lines, 1) if x["pass"] in FILL_PASSES]
+    n = max(fl, default=None)
     if n is None:
         return None, {}, []
     out, listed, text = {}, [], C.E.texts(pid)
-    for x in (C.loads_json(lines[n - 1]["response"]).get("recipes") or []):
-        if isinstance(x, dict) and x.get("id"):
-            f_ = {}
+    for x in [y for i in fl for y in (C.loads_json(lines[i - 1]["response"]).get("recipes") or [])]:   # P185: every fill line in order; a later
+        if isinstance(x, dict) and x.get("id"):                                    # line's field replaces an earlier one (a material-only refill)
+            f_ = out.setdefault(x["id"], {})
             for f in C.X.RECIPE_FIELDS:
                 if f in x:
                     legacy = f == "process_mode" and f + "_quote" not in x
@@ -447,7 +448,6 @@ def recipe_fill(pid, lines=None):
                         elif how == "span":
                             e = ";".join(els)
                     f_.update({f: v, f + "_quote": q, f + "_element": e})
-            out[x["id"]] = f_
     hist = C.V2 / "ontology" / "history.csv"
     for h in (csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []):
         if h["kind"] != "recipe_field" or pid not in h["source_pids"].split(";") or h["id"] not in C.X.RECIPE_FIELDS:
@@ -458,6 +458,20 @@ def recipe_fill(pid, lines=None):
                 listed.append(dict(run=run, field=h["id"], value=out[run].get(h["id"]), reason=f"the user's recipe decision (history.csv, {h['date']}): {v or 'null'}"))
                 out[run].update({h["id"]: v, h["id"] + "_quote": None, h["id"] + "_element": None})
     return n, out, listed
+
+
+def pass0_object(pid, n0=None, lines=None):
+    """P185: the pass-0 object (line n0, else the latest pass-0 line) with the latest pass-0 extension's new units added (P184, records
+    pass EXTEND_PASS; a unit whose id the pass-0 line holds is left out) -> (line number, object, extension line number or None)."""
+    lines = C.lines(pid) if lines is None else lines
+    n0 = n0 or max(i for i, x in enumerate(lines, 1) if x["pass"] == 0)
+    obj = C.loads_json(lines[n0 - 1]["response"])
+    nx = max((i for i, x in enumerate(lines, 1) if x["pass"] == EXTEND_PASS), default=None)
+    if nx and isinstance(obj, dict):
+        have = {u.get("id") for u in obj.get("units") or [] if isinstance(u, dict)}
+        new = [u for u in C.loads_json(lines[nx - 1]["response"]).get("units") or [] if isinstance(u, dict) and u.get("id") and u["id"] not in have]
+        obj = {**obj, "units": list(obj.get("units") or []) + new}
+    return n0, obj, nx
 
 
 _PAPER_TEXT = {}
@@ -707,6 +721,12 @@ def bind(pid, obj, recs=None):
 
     def resolve(it, layout, fig, label, pel):
         refs = holders.get(it["ref"], []) if it["kind"] != "point" else []
+        meas_ = {u for u, _ in refs if by.get(u, {}).get("role") == "measurement"}   # P185 (user): data belongs to the measurement that
+        if meas_ and len({u for u, _ in refs}) > 1:                             # produced it: the parent of a measurement unit naming the
+            refs = [x for x in refs if x[0] not in {by[m].get("parent") for m in meas_}]   # item gives way to it
+            if len({u for u, _ in refs}) == 1:
+                it.update(unit=refs[0][0], origin="pass-0", how="pass-0 data: the measurement that produced it (P185)", data_role=refs[0][1] or it["data_role"])
+                return
         if len({u for u, _ in refs}) == 1:
             it.update(unit=refs[0][0], origin="pass-0", how="pass-0 data", data_role=refs[0][1] or it["data_role"])
             return
@@ -1184,18 +1204,20 @@ class Run:
         runs = {u["id"]: u for u in self.pass0 if isinstance(u, dict) and u.get("role") == "run" and not u.get("origin")}
         out = []
         for r in recs:
-            if r["rec"].get("quantity") == "process_mode" and r["rec"].get("about") in runs and not r.get("origin"):
-                self.drop("a1", r["eid"], r["rec"], "process_mode_from_the_recipe_field")
+            q, ab = r["rec"].get("quantity"), r["rec"].get("about")
+            if ab in runs and not r.get("origin") and q == "process_mode":       # P185: a pass-1 material record stays (the recipe field adds its own)
+                self.drop("a1", r["eid"], r["rec"], f"{q}_from_the_recipe_field")
                 continue
             out.append(r)
         for u in runs.values():
-            if u.get("process_mode"):
-                pe = (u.get("process_mode_element") or "").split(";")[0]            # P182: a quote across elements names them all
-                eid = pe if pe in self.order else (u.get("introduced_in") or [self.els[0]["element_id"]])[0]
-                out.append(dict(eid=eid, rec=dict(type="setting", quantity="process_mode", value_text=u["process_mode"], label_as_printed="process mode",
-                                                  quote=u.get("process_mode_quote") or "", about=u["id"], kind="stated", statement=None),
-                                seq=-1, form_version=C.X.FORM_VERSION, recipe_field=True))
-                self.count("a1", f"process_mode from the recipe field: {u['process_mode']}")
+            for f, lab in (("process_mode", "process mode"), ("material", "material")):   # P185 (user): material, like process_mode
+                if u.get(f):
+                    pe = (u.get(f + "_element") or "").split(";")[0]                # P182: a quote across elements names them all
+                    eid = pe if pe in self.order else (u.get("introduced_in") or [self.els[0]["element_id"]])[0]
+                    out.append(dict(eid=eid, rec=dict(type="setting", quantity=f, value_text=u[f], label_as_printed=lab,
+                                                      quote=u.get(f + "_quote") or "", about=u["id"], kind="stated", statement=None),
+                                    seq=-1, form_version=C.X.FORM_VERSION, recipe_field=True))
+                    self.count("a1", f"{f} from the recipe field: {u[f]}")
         return out
 
     # ------------------------------------------------------------------------------------------------------------ a0 (P157b, P157d)
@@ -1654,7 +1676,7 @@ class Run:
         if i not in self.meas:
             ent_row = next(r for r in self.rows_tree if r["fact_id"] == ent)
             r = {f: "" for f in F.FIELDS}
-            r.update(fact_id=i, type="activity", kind="measurement", how="inferred", parent=ent, author=self.pid,
+            r.update(fact_id=i, type="activity", kind="measurement", how="inferred", parent=ent, author=self.pid, method=method,   # P185: the method column too
                      qualifiers=f"mode={L.METHOD_MODE.get(method, 'not_stated')}", label_as_printed=f"{method or 'measurement'} of {ent_row['label_as_printed']}",
                      statement=f"the {method.replace('_', ' ') if method else 'unstated'} measurement of the specimen named {ent_row['label_as_printed']!r}")
             self.meas[i] = r
@@ -1665,7 +1687,7 @@ class Run:
         i = f"{self.key}:method:{method}"
         if i not in self.meas:
             r = {f: "" for f in F.FIELDS}
-            r.update(fact_id=i, type="activity", kind="measurement", how="inferred", parent=self.key, author=self.pid,
+            r.update(fact_id=i, type="activity", kind="measurement", how="inferred", parent=self.key, author=self.pid, method=method,   # P185
                      qualifiers=f"mode={L.METHOD_MODE.get(method, 'not_stated')}", label_as_printed=f"{method.replace('_', ' ')} (method)",
                      statement=f"the {method.replace('_', ' ')} measurement settings the paper shares")
             self.meas[i] = r

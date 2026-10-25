@@ -298,11 +298,11 @@ def units_block(pid):
     p0 = C.lines(pid, 0)
     if not p0:
         raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
-    obj = C.loads_json(p0[-1]["response"])
+    _, obj, _ = K.pass0_object(pid)                                             # P185: the latest pass-0 line with the extension's units
     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
     data = lambda it: " ".join(f"{d.get('id')}:{d.get('role') or 'null'}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
     _, fill, _ = K.recipe_fill(pid)                                       # P181 (user): the recipe fields, in words, null ones omitted
-    words = {"reactant_A": "reactant_A", "reactant_B": "reactant_B", "carrier_gas": "carrier", "process_mode": "mode"}
+    words = {"reactant_A": "reactant_A", "reactant_B": "reactant_B", "carrier_gas": "carrier", "process_mode": "mode", "material": "material"}   # P185: material
     recipe = lambda it: ", ".join(f"{words[f]} {fill[it['id']][f]}" for f in C.X.RECIPE_FIELDS if fill.get(it.get("id"), {}).get(f))   # noqa: E731
     line = lambda it: (f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"
                        + (f" | {recipe(it)}" if recipe(it) else ""))                # noqa: E731  P175

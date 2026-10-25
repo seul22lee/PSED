@@ -21,12 +21,13 @@ FIELDS = ("process_mode", "process_mode_quote", "process_mode_element")
 
 
 def pass0_line(pid):
-    """(line number, units) of the pass-0 line compile uses (Run.read: the one the pass-1 lines in use were written against)."""
+    """(line number, units) of the pass-0 line compile uses (Run.read: the one the pass-1 lines in use were written against); P185: with
+    the pass-0 extension's new units (compile.pass0_object)."""
     run = K.Run(pid)
     run.read()
     lines = C.lines(pid)
     n = next(n for n in run.lines_used if lines[n - 1]["pass"] == 0)
-    obj = C.loads_json(lines[n - 1]["response"])
+    _, obj, _ = K.pass0_object(pid, n, lines)
     return n, run, [u for u in (obj.get("units") or []) if isinstance(u, dict)]
 
 
