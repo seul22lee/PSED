@@ -1,0 +1,342 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P204</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P204</h1>
+<h2>Summary</h2><p>kb/reports/P204.summary.txt</p>
+<pre>P204: STOPPED in C before pass 1 (no listed STOP condition: a gap found in the requests; pass 1 not run, D not produced). A and B done, committed.
+A (compile only; 0 calls). A0/A5: every pass-0 prompt, pass-1 prefix and group, and 0ax prompt of the thirteen, with their response schemas (409 files), built before and after: byte-identical (two builds before also identical). Fact changes per rule (P204.A5_fact_changes.csv; content compared, ids renumber; staged compiles kb/tmp/P204/s0-s4 of the thirteen and of ela03 on the P203 records with P202 accepted). Note: with the P201 B code (no 0ax line for the other twelve, figure labels other) the thirteen&#x27;s current compile already differs from kb/compiled, which stays unrewritten; the table compares the stages.
+ A1 (symbol species): ela03&#x27;s definition of S (s5.p19, term S) is labelled &#x27;reactive sticking coefficient&#x27;; the P203 cited values for TMA (s5.p25) and SiCl4 (s5.p26) carry that label, so the step never saw them as records of S: only s5.p12&#x27;s tma was evidenced and was filled into the ZnO model runs&#x27; S. Fix: a record labelled with the meaning a paper&#x27;s definition gives a symbol is a record of that symbol; with s5.p26&#x27;s sicl4 the S records conflict and are all cleared (as in P184&#x27;s lines). The paper-wide fill now gives the generic model_reactant to model records only (P179&#x27;s rule 2): without it one yim22 definition was dropped by the note it received. Changes: ela03 (P203 records) 6 facts lose their species (4 S model inputs, 2 cited); yim20 4 definitions gain tma / n2 (their symbols&#x27; evidence); yim22 13 definitions lose model_reactant and 4 definitions return that the fill note had pushed past the form&#x27;s note pattern.
+ A2 (inputs, revising P195&#x27;s order): nearest holder first, then the declared qualifiers exactly; a species the unit&#x27;s run recipe does not hold is refused (compile.species_ok; in transforms() and in compile.derived through query.derive near=, check.py&#x27;s derivations unchanged). Changes: ela03 (P203 records) 10 knudsen_number facts no longer written (their mean free path is TMA&#x27;s; the DEZ and SiCl4 units refuse it), 1 added on the TMA FTIR specimen (851.064, its run&#x27;s own d); zou23&#x27;s 47 and gre23&#x27;s 3 deposition_rate facts unchanged; no other paper changes.
+ A3 (subset qualifiers merge): 104 content rows: subset facts merged into the fuller one (evidence united) in gor03, mat22, ela03, yim20, yim22, yli18, gao15, wer21, gre23; downstream: gor03&#x27;s runs now get a computed exposure per run (their unqualified printed exposure, merged away, no longer counts as a printed output, P195 A3), comparisons rebuilt where their settings changed (gor03, yim20, ela03).
+ A4 (front at the feature&#x27;s end): ela03&#x27;s AR-5000 specimen: the 50% penetration depth 97.6 µm (fig7b) reaches the feature depth (92 µm, 50-92 µm in kb/compiled&#x27;s tree): not written, its coated_aspect_ratio 5136.84 not computed; listed in domain_check.csv (new column reason). No other paper.
+B (0 calls). B1: the art19 example (P204.B1_example_art19.csv) now holds 33 units (16 measurement units added, method 16/16), distinguished_by on 16 (runs, specimens, model runs), name_as_printed null on all (no gold label is printed in its evidence), specimen classes 8/8, reactant_B and material with quotes on the 4 runs (reactant_A: the gold holds four values on its shared recipe node, none per run; process_mode and carrier_gas: none in the gold); every target&#x27;s example validates (art19 for twelve, gor03 for art19). B2: the 7 P203 no_knowledge answers on elements holding a number (s2.p25, s3.p28, s3.p29, s5.p29, s5.p32, s5.p33, s5.x3) fail the new schema and common.failure (P204.B2_numeric_no_knowledge.csv). Form version P204 candidate; P202 rejected for ela03.
+C. 0ax: P201&#x27;s line 52 reused (the sandbox import equals P203&#x27;s). Pass 0 (P204.C_*): attempt 1 failed (U+0000 in 15 strings: listed in failed_calls.csv, not stored), the retry parsed (line 93): 66 units (run 14, specimen 14, measurement 14, simulation 3, model run 21), distinguished_by on 46, no name, ids r1 / s1 / meas1 as the example&#x27;s; no process_mode on any run (P201: 14). Gate: all pass (units per 100 elements 31.43, unbound items 14, named after a measurement 0, panels with no layout 0.0). PASS-0 UNITS block: line 93&#x27;s 66 units and recipe fields only (P204.C_units_block.csv).
+Why stopped: the PASS-0 UNITS block (pass1_elements.units_block) prints id, role, name, parent, data and recipe, never distinguished_by. With line 93&#x27;s units unnamed and their ids r1-r14 (the example&#x27;s style), pass 1 would see r1-r4 as four identical lines (reactant_A tma, reactant_B h2o, carrier n2, material al2o3) and the ZnO runs likewise: it cannot tell which run a setting is about. P201&#x27;s pass 0 had descriptive ids, P203&#x27;s names; B1 made both go. Running pass 1 now would spend about $0.29 on a prompt whose unit attribution cannot work, with no second run allowed in this unit. Options: (1) the block prints each unit&#x27;s distinguished_by (a pass-1 prompt change for every paper whose pass-0 units carry it), then pass 1 on line 93; (2) pass 1 on line 93 as the block is now.
+Costs (P204.C_costs.csv): pass 0 $0.231 (line 93) + the failed attempt at most $0.243 = at most $0.474; pass 1 not run. Also seen: common.run prints &#x27;-1 from the cache&#x27; when a retry is made (calls made exceed the jobs); display only.
+</pre>
+<h2>A5. prompts before and after (409 files)</h2><p>kb/reports/P204.A5_prompts.txt</p>
+<pre>409 files, 0 differ
+</pre>
+<h2>A5. facts changed, per rule</h2><p>kb/reports/P204.A5_fact_changes.csv</p>
+<table><tr><th>rule</th><th>variant</th><th>paper</th><th>change</th><th>type</th><th>quantity</th><th>qualifiers</th><th>value</th><th>unit</th><th>parent</th><th>label</th><th>evidence_before</th><th>evidence_after</th></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>removed</td><td>definition</td><td>molecule_diameter</td><td></td><td></td><td>pm</td><td>yim20</td><td>Molecular diameter of Reactant A</td><td>tabu1.r6c0 | tabu1.r6c1</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>removed</td><td>definition</td><td>molecule_diameter</td><td></td><td></td><td>pm</td><td>yim20</td><td>Molecular diameter of carrier gas B</td><td>tabu1.r7c0 | tabu1.r7c1</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>added</td><td>definition</td><td>molecule_diameter</td><td>species=n2</td><td></td><td>pm</td><td>yim20</td><td>Molecular diameter of carrier gas B</td><td></td><td>tabu1.r7c0 | tabu1.r7c1</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>added</td><td>definition</td><td>molecule_diameter</td><td>species=tma</td><td></td><td>pm</td><td>yim20</td><td>Molecular diameter of Reactant A</td><td></td><td>tabu1.r6c0 | tabu1.r6c1</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>gas_phase_diffusion_coefficient</td><td></td><td></td><td>m2/s</td><td>yim22</td><td>D_A</td><td></td><td>tabu1.r4c0;tabu1.r7c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>gas_phase_diffusion_coefficient</td><td>species=model_reactant</td><td></td><td>m2/s</td><td>yim22</td><td>D_A</td><td>tabu1.r4c0;tabu1.r7c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>initial_sticking_coefficient</td><td></td><td></td><td></td><td>yim22</td><td>c</td><td></td><td>tab1.r7c0 | tabu1.r1c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>knudsen_diffusion_coefficient</td><td></td><td></td><td>m2/s</td><td>yim22</td><td>D_Kn</td><td></td><td>tabu1.r6c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>knudsen_diffusion_coefficient</td><td></td><td></td><td>m2/s</td><td>yim22</td><td>D_{\text{Kn}}</td><td></td><td>s5.p9</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>knudsen_diffusion_coefficient</td><td>species=model_reactant</td><td></td><td>m2/s</td><td>yim22</td><td>D_Kn</td><td>tabu1.r6c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>knudsen_diffusion_coefficient</td><td>species=model_reactant</td><td></td><td>m2/s</td><td>yim22</td><td>D_{\text{Kn}}</td><td>s5.p9</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>molar_mass</td><td></td><td></td><td>kg/mol</td><td>yim22</td><td>M_A</td><td></td><td>tab1.r3c0 | tabu1.r21c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>other</td><td></td><td></td><td>1/s</td><td>yim22</td><td>z_A</td><td></td><td>tabu2.r17c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>other</td><td></td><td></td><td>m s^{-1}</td><td>yim22</td><td>\bar{v}_A</td><td></td><td>tabu2.r9c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>other</td><td>species=model_reactant</td><td></td><td>1/s</td><td>yim22</td><td>z_A</td><td>tabu2.r17c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>other</td><td>species=model_reactant</td><td></td><td>m s^{-1}</td><td>yim22</td><td>\bar{v}_A</td><td>tabu2.r9c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>partial_pressure</td><td></td><td></td><td>Pa</td><td>yim22</td><td>p_A</td><td></td><td>tabu1.r27c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>partial_pressure</td><td></td><td></td><td>Pa</td><td>yim22</td><td>p_A0</td><td></td><td>tabu1.r28c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>partial_pressure</td><td></td><td></td><td>Pa</td><td>yim22</td><td>p_At</td><td></td><td>tabu1.r30c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>partial_pressure</td><td></td><td></td><td>Pa</td><td>yim22</td><td>p_{A0}</td><td></td><td>tab1.r1c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>partial_pressure</td><td>species=model_reactant</td><td></td><td>Pa</td><td>yim22</td><td>p_A</td><td>tabu1.r27c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>partial_pressure</td><td>species=model_reactant</td><td></td><td>Pa</td><td>yim22</td><td>p_A0</td><td>tabu1.r28c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>partial_pressure</td><td>species=model_reactant</td><td></td><td>Pa</td><td>yim22</td><td>p_At</td><td>tabu1.r30c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>partial_pressure</td><td>species=model_reactant</td><td></td><td>Pa</td><td>yim22</td><td>p_{A0}</td><td>tab1.r1c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>pulse_time</td><td></td><td></td><td>s</td><td>yim22</td><td>t_1</td><td></td><td>tab1.r2c0</td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>pulse_time</td><td>species=model_reactant</td><td></td><td>s</td><td>yim22</td><td>t_1</td><td>tab1.r2c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>definition</td><td>pulse_time</td><td>species=model_reactant;step=reactant_A</td><td></td><td>s</td><td>yim22</td><td>t_1</td><td>tabu2.r5c0</td><td></td></tr>
+<tr><td>A1</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>added</td><td>definition</td><td>pulse_time</td><td>step=reactant_A</td><td></td><td>s</td><td>yim22</td><td>t_1</td><td></td><td>tabu2.r5c0</td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>added</td><td>cited</td><td>initial_sticking_coefficient</td><td></td><td>0.001</td><td></td><td>ela03</td><td>reactive sticking coefficient</td><td></td><td>s5.p25</td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>added</td><td>cited</td><td>initial_sticking_coefficient</td><td></td><td>1e-08</td><td></td><td>ela03</td><td>reactive sticking coefficient</td><td></td><td>s5.p26</td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=sicl4</td><td>1e-08</td><td></td><td>ela03</td><td>reactive sticking coefficient</td><td>s5.p26</td><td></td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>cited</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.001</td><td></td><td>ela03</td><td>reactive sticking coefficient</td><td>s5.p25</td><td></td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>added</td><td>model</td><td>initial_sticking_coefficient</td><td></td><td>0.0001</td><td></td><td>ela03:mrun:m_rxn_lim</td><td>S</td><td></td><td>fig12.cap</td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>added</td><td>model</td><td>initial_sticking_coefficient</td><td></td><td>0.001</td><td></td><td>ela03:mrun:m_al2o3_1s</td><td>S</td><td></td><td>s5.p12</td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>added</td><td>model</td><td>initial_sticking_coefficient</td><td></td><td>0.007</td><td></td><td>ela03:mrun:m_diff_lim</td><td>S</td><td></td><td>fig12.cap</td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>added</td><td>model</td><td>initial_sticking_coefficient</td><td></td><td>0.007</td><td></td><td>ela03:mrun:m_zno_1s</td><td>S</td><td></td><td>s5.p15</td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>model</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.0001</td><td></td><td>ela03:mrun:m_rxn_lim</td><td>S</td><td>fig12.cap</td><td></td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>model</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.001</td><td></td><td>ela03:mrun:m_al2o3_1s</td><td>S</td><td>s5.p12</td><td></td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>model</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.007</td><td></td><td>ela03:mrun:m_diff_lim</td><td>S</td><td>fig12.cap</td><td></td></tr>
+<tr><td>A1</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>model</td><td>initial_sticking_coefficient</td><td>species=tma</td><td>0.007</td><td></td><td>ela03:mrun:m_zno_1s</td><td>S</td><td>s5.p15</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>2105.26</td><td></td><td>ela03:ent:s_zno_19nm</td><td></td><td>s5.p2;fig6a</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>400</td><td></td><td>ela03:ent:s_ftir_al2o3</td><td></td><td>s5.p2</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>400</td><td></td><td>ela03:ent:s_ftir_sio2</td><td></td><td>s5.p2</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>400</td><td></td><td>ela03:ent:s_zno_10s</td><td></td><td>s5.p2</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>400</td><td></td><td>ela03:ent:s_zno_1s</td><td></td><td>s5.p2</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>400</td><td></td><td>ela03:ent:s_zno_30s</td><td></td><td>s5.p2</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>400</td><td></td><td>ela03:ent:s_zno_3s</td><td></td><td>s5.p2</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>400</td><td></td><td>ela03:ent:s_zno_ar5000</td><td></td><td>s5.p2</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>615.385</td><td></td><td>ela03:ent:s_zno_65nm</td><td></td><td>s5.p2;fig6a</td><td></td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>added</td><td>derived</td><td>knudsen_number</td><td></td><td>851.064</td><td></td><td>ela03:ent:s_ftir_al2o3</td><td></td><td></td><td>s4.p14;s5.p2</td></tr>
+<tr><td>A2</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>knudsen_number</td><td></td><td>869.565</td><td></td><td>ela03:ent:s_zno_46nm</td><td></td><td>s5.p2;fig6a</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>added</td><td>comparison</td><td>cycle_number;exposure</td><td></td><td></td><td></td><td>gor03</td><td></td><td></td><td>s4.p3;s4.p4;fig2.cap;fig2</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>added</td><td>comparison</td><td>exposure</td><td></td><td></td><td></td><td>gor03</td><td></td><td></td><td>s4.p3;s4.p4;fig2.cap;fig2</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>evidence changed</td><td>derived</td><td>exposure</td><td>over=run</td><td>133.322</td><td>Pa s</td><td>gor03:ent:specimen_4k_l</td><td></td><td>s8.p5</td><td>s8.p5;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>added</td><td>derived</td><td>exposure</td><td>over=run</td><td>133.322</td><td>Pa s</td><td>gor03:run:run_4k_l</td><td></td><td></td><td>s8.p5;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>evidence changed</td><td>derived</td><td>exposure</td><td>over=run</td><td>93.3254</td><td>Pa s</td><td>gor03:ent:specimen_2k_l</td><td></td><td>s8.p5</td><td>s8.p5;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>added</td><td>derived</td><td>exposure</td><td>over=run</td><td>93.3254</td><td>Pa s</td><td>gor03:run:run_2k_l</td><td></td><td></td><td>s8.p5;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>evidence changed</td><td>derived</td><td>exposure</td><td>over=run</td><td>999.915</td><td>Pa s</td><td>gor03:ent:specimen_30k_l</td><td></td><td>s8.p3</td><td>s8.p3;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>added</td><td>derived</td><td>exposure</td><td>over=run</td><td>999.915</td><td>Pa s</td><td>gor03:run:run_30k_l</td><td></td><td></td><td>s8.p3;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>removed</td><td>setting</td><td>exposure</td><td></td><td>2000</td><td>L</td><td>gor03:run:run_2k_l</td><td>Langmuir</td><td>s8.p5</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>removed</td><td>setting</td><td>exposure</td><td></td><td>30000</td><td>L</td><td>gor03:run:run_30k_l</td><td>exposure</td><td>s8.p3</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>removed</td><td>setting</td><td>exposure</td><td></td><td>4000</td><td>L</td><td>gor03:run:run_4k_l</td><td>Langmuir</td><td>s8.p5</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>evidence changed</td><td>setting</td><td>exposure</td><td>species=hf_nme2_4;step=reactant_A</td><td>2000</td><td>L</td><td>gor03:run:run_2k_l</td><td>Exposures</td><td>fig2.cap</td><td>s8.p5;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>evidence changed</td><td>setting</td><td>exposure</td><td>species=hf_nme2_4;step=reactant_A</td><td>30000</td><td>L</td><td>gor03:run:run_30k_l</td><td>Exposures</td><td>fig2.cap</td><td>s8.p3;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1002_cvde.200390005</td><td>evidence changed</td><td>setting</td><td>exposure</td><td>species=hf_nme2_4;step=reactant_A</td><td>4000</td><td>L</td><td>gor03:run:run_4k_l</td><td>Exposures</td><td>fig2.cap</td><td>s8.p5;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>evidence changed</td><td>derived</td><td>element_ratio</td><td>element=H;reference_element=Mo</td><td>0.855556</td><td></td><td>mat22:run:unit_tab1_r3:film</td><td></td><td>tab1.r3c1;tab1.r3c4;tab1.r3c6;tab1.r3c7</td><td>s3.p21;tab1.r3c1;tab1.r3c4;tab1.r3c6;tab1.r3c7</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>evidence changed</td><td>derived</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=all_gases</td><td>0</td><td>%</td><td>mat22:run:run_grid_1:film</td><td></td><td>tab2.r1c1;tab2.r1c2;tab2.r1c3</td><td>s3.p51;tab2.r1c1;tab2.r1c2;tab2.r1c3</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>evidence changed</td><td>derived</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=all_gases</td><td>0</td><td>%</td><td>mat22:run:run_grid_2:film</td><td></td><td>tab2.r1c1;tab2.r1c2;tab2.r1c3</td><td>s3.p51;tab2.r1c1;tab2.r1c2;tab2.r1c3</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>evidence changed</td><td>derived</td><td>plasma_gas_ratio</td><td>gas=h2;relative_to=all_gases</td><td>0</td><td>%</td><td>mat22:run:run_grid_3:film</td><td></td><td>tab2.r1c1;tab2.r1c2;tab2.r1c3</td><td>s3.p51;tab2.r1c1;tab2.r1c2;tab2.r1c3</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>removed</td><td>observation</td><td>element_fraction</td><td>element=O</td><td>5</td><td>at.%</td><td>mat22:run:unit_tab1_r3:film:meas:rbs</td><td>O (at. %)</td><td>tab1.r3c7</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>evidence changed</td><td>observation</td><td>element_fraction</td><td>element=O;relative_to=all_atoms</td><td>5</td><td>at.%</td><td>mat22:run:unit_tab1_r3:film:meas:rbs</td><td>O content</td><td>s3.p21</td><td>s3.p21;tab1.r3c7</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>removed</td><td>setting</td><td>gas_flow_rate</td><td></td><td>10</td><td>sccm</td><td>mat22:recipe</td><td>total flow of H2S and H2</td><td>s3.p51</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>evidence changed</td><td>setting</td><td>gas_flow_rate</td><td>gas=h2s;ratio=0;step=plasma</td><td>10</td><td>sccm</td><td>mat22:recipe</td><td>H_2S flow rate</td><td>tab2.r1c1</td><td>s3.p51;tab2.r1c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>removed</td><td>setting</td><td>process_pressure</td><td></td><td>200</td><td>mTorr</td><td>mat22:recipe</td><td>mTorr</td><td>s5.p3</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_acs.chemmater.2c01154</td><td>evidence changed</td><td>setting</td><td>process_pressure</td><td>step=reactant_A</td><td>200</td><td>mTorr</td><td>mat22:recipe</td><td>chamber pressure</td><td>s5.p6</td><td>s5.p3;s5.p6</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>2 -&gt; 3 facts</td><td>comparison</td><td>pulse_time</td><td></td><td></td><td></td><td>ela03</td><td></td><td>fig10.cap | s3.p1;fig3.cap;fig3</td><td>fig10.cap | s3.p1;fig3.cap;fig3 | s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>comparison</td><td>pulse_time;pulse_time</td><td></td><td></td><td></td><td>ela03</td><td></td><td>s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>aspect_ratio</td><td></td><td>5000</td><td></td><td>ela03:run:run_zno_ar5000</td><td>aspect ratio L/d</td><td>fig7.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>aspect_ratio</td><td>stage=initial</td><td>5000</td><td></td><td>ela03:run:run_zno_ar5000</td><td>aspect ratio</td><td>s4.p11</td><td>s4.p11;fig7.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td></td><td>1</td><td>s</td><td>ela03:run:run_zno_1s</td><td>Exposure Times (s)</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td></td><td>10</td><td>s</td><td>ela03:run:run_zno_10s</td><td>Exposure Times (s)</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td></td><td>3</td><td>s</td><td>ela03:run:run_zno_3s</td><td>Exposure Times (s)</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>pulse_time</td><td>species=dez</td><td>1</td><td>s</td><td>ela03:run:run_zno_1s</td><td>exposure times</td><td>fig4.cap</td><td>fig4.cap;fig5.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>pulse_time</td><td>species=dez</td><td>10</td><td>s</td><td>ela03:run:run_zno_10s</td><td>exposure times</td><td>fig4.cap</td><td>fig4.cap;fig5.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>pulse_time</td><td>species=dez</td><td>3</td><td>s</td><td>ela03:run:run_zno_3s</td><td>exposure times</td><td>fig4.cap</td><td>fig4.cap;fig5.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>structure</td><td></td><td>anodic_alumina_membrane</td><td></td><td>ela03:recipe</td><td>AA membranes</td><td>abs.g2</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>structure</td><td>stage=initial</td><td>anodic_alumina_membrane</td><td></td><td>ela03:recipe</td><td>AA Membrane</td><td>tab1.cap</td><td>abs.g2;tab1.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>added</td><td>comparison</td><td>cycle_number</td><td></td><td></td><td></td><td>yim20</td><td>Series B</td><td></td><td>fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>removed</td><td>comparison</td><td>cycle_number</td><td></td><td></td><td></td><td>yim20</td><td>Series D</td><td>fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>evidence changed</td><td>comparison</td><td>cycle_number;feature_width</td><td></td><td></td><td></td><td>yim20</td><td>Series C</td><td>fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;tab1.r12c1</td><td>fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>added</td><td>comparison</td><td>cycle_number;pulse_time</td><td></td><td></td><td></td><td>yim20</td><td>Series B</td><td></td><td>fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;fig11.cap;fig11a;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r14c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>removed</td><td>comparison</td><td>cycle_number;pulse_time</td><td></td><td></td><td></td><td>yim20</td><td>Series D</td><td>fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;fig11.cap;fig11a;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1;tab1.r14c1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>removed</td><td>setting</td><td>feature_width</td><td></td><td>500</td><td>nm</td><td>yim20:run:run_11</td><td>Design channel height H</td><td>tab1.r12c3</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d0cp03358h</td><td>evidence changed</td><td>setting</td><td>feature_width</td><td>stage=initial</td><td>500</td><td>nm</td><td>yim20:run:run_11</td><td>design height</td><td>fig5.cap</td><td>fig5.cap;tab1.r12c3</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>molar_mass</td><td></td><td>0.028</td><td>kg/mol</td><td>yim22:sim:sim_model_a</td><td>M_l</td><td>fig2.cap;fig6.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>molar_mass</td><td>gas=n2</td><td>0.028</td><td>kg/mol</td><td>yim22:sim:sim_model_a</td><td>M_I</td><td>s12.p5;s14.p6</td><td>s12.p5;s14.p6;fig2.cap;fig6.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>molecule_diameter</td><td></td><td>3.74e-10</td><td>m</td><td>yim22:sim:sim_model_a</td><td>d_l</td><td>fig2.cap;fig6.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>molecule_diameter</td><td>gas=n2</td><td>3.74e-10</td><td>m</td><td>yim22:sim:sim_model_a</td><td>d_I</td><td>s12.p5</td><td>s12.p5;fig2.cap;fig6.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>partial_pressure</td><td></td><td>100</td><td>Pa</td><td>yim22:sim:sim_model_a</td><td>partial pressure of Reactant A</td><td>s12.p1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>partial_pressure</td><td></td><td>50</td><td>Pa</td><td>yim22:sim:sim_model_a</td><td>\rho_1</td><td>fig6.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>partial_pressure</td><td>species=model_reactant</td><td>100</td><td>Pa</td><td>yim22:sim:sim_model_a</td><td>p_{A0}</td><td>fig2.cap</td><td>s12.p1;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>partial_pressure</td><td>species=model_reactant</td><td>50</td><td>Pa</td><td>yim22:sim:sim_model_a</td><td>p_{A0}</td><td>s14.p6</td><td>s14.p6;fig6.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>pulse_time</td><td>between=runs;n=1;species=model_reactant;stat=tolerance</td><td>0.05</td><td>s</td><td>yim22:mrun:mr_fig4b_c1</td><td>t_1</td><td>fig4b</td><td>fig4b;tab1.r2c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>pulse_time</td><td>between=runs;n=1;species=model_reactant;stat=tolerance</td><td>0.1</td><td>s</td><td>yim22:mrun:mr_fig4b_c2</td><td>t_1</td><td>fig4b</td><td>fig4b;tab1.r2c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>pulse_time</td><td>between=runs;n=1;species=model_reactant;stat=tolerance</td><td>0.2</td><td>s</td><td>yim22:mrun:mr_fig4b_c3</td><td>t_1</td><td>fig4b</td><td>fig4b;tab1.r2c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>pulse_time</td><td>between=runs;n=1;species=model_reactant;stat=tolerance</td><td>0.4</td><td>s</td><td>yim22:mrun:mr_fig4b_c4</td><td>t_1</td><td>fig4b</td><td>fig4b;tab1.r2c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>pulse_time</td><td>between=runs;n=1;species=model_reactant;stat=tolerance</td><td>0.8</td><td>s</td><td>yim22:mrun:mr_fig4b_c5</td><td>t_1</td><td>fig4b</td><td>fig4b;tab1.r2c1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>pulse_time</td><td>species=model_reactant</td><td>0.05</td><td>s</td><td>yim22:mrun:mr_fig4b_c1</td><td>t_1</td><td>tab1.r2c1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>pulse_time</td><td>species=model_reactant</td><td>0.1</td><td>s</td><td>yim22:mrun:mr_fig4b_c2</td><td>t_1</td><td>tab1.r2c1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>pulse_time</td><td>species=model_reactant</td><td>0.2</td><td>s</td><td>yim22:mrun:mr_fig4b_c3</td><td>t_1</td><td>tab1.r2c1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>pulse_time</td><td>species=model_reactant</td><td>0.4</td><td>s</td><td>yim22:mrun:mr_fig4b_c4</td><td>t_1</td><td>tab1.r2c1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>pulse_time</td><td>species=model_reactant</td><td>0.8</td><td>s</td><td>yim22:mrun:mr_fig4b_c5</td><td>t_1</td><td>tab1.r2c1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>evidence changed</td><td>model</td><td>pulse_time</td><td>species=model_reactant;step=reactant_A</td><td>0.1</td><td>s</td><td>yim22:sim:sim_model_a</td><td>t_1</td><td>s14.p6</td><td>s12.p1;s14.p6</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1039_d1cp04758b</td><td>removed</td><td>model</td><td>pulse_time</td><td>step=reactant_A</td><td>0.1</td><td>s</td><td>yim22:sim:sim_model_a</td><td>pulse length</td><td>s12.p1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>removed</td><td>model</td><td>molecule_diameter</td><td></td><td>591</td><td>pm</td><td>yli18:sim:sim_ylilammi</td><td>d_A</td><td>s8.p3;fig2.cap;fig4.cap;fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>evidence changed</td><td>model</td><td>molecule_diameter</td><td>species=tma</td><td>591</td><td>pm</td><td>yli18:sim:sim_ylilammi</td><td>d_{\text{TMA}}</td><td>s5.p16</td><td>s5.p16;s8.p3;fig2.cap;fig4.cap;fig5.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>removed</td><td>model</td><td>pulse_time</td><td></td><td>0.1</td><td>s</td><td>yli18:sim:sim_ylilammi</td><td>t_p</td><td>fig4.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>evidence changed</td><td>model</td><td>pulse_time</td><td>step=reactant_A</td><td>0.1</td><td>s</td><td>yli18:sim:sim_ylilammi</td><td>t_p</td><td>s8.p9</td><td>s8.p9;fig4.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>removed</td><td>setting</td><td>feature_depth</td><td></td><td>1</td><td>mm</td><td>yli18:run:run_al2o3</td><td>length L</td><td>s8.p23</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>evidence changed</td><td>setting</td><td>feature_depth</td><td>stage=initial</td><td>1</td><td>mm</td><td>yli18:run:run_al2o3</td><td>length L of the channel</td><td>fig6.cap</td><td>s8.p23;fig6.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>removed</td><td>setting</td><td>feature_width</td><td></td><td>0.5</td><td>µm</td><td>yli18:run:run_al2o3</td><td>gap height</td><td>s8.p23</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1063_1.5028178</td><td>evidence changed</td><td>setting</td><td>feature_width</td><td>kind=target;stage=initial</td><td>0.5</td><td>µm</td><td>yli18:run:run_al2o3</td><td>channel gap height</td><td>fig6.cap</td><td>s8.p23;fig6.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_1.4903941</td><td>removed</td><td>setting</td><td>feature_width</td><td></td><td>500</td><td>nm</td><td>gao15:recipe</td><td>gap height of the cavity</td><td>s6.p1;s6.x1</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_1.4903941</td><td>evidence changed</td><td>setting</td><td>feature_width</td><td>stage=initial</td><td>500</td><td>nm</td><td>gao15:recipe</td><td>cavity height</td><td>s6.x1</td><td>s6.p1;s6.x1</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_1.4903941</td><td>removed</td><td>setting</td><td>pillar_spacing</td><td></td><td>10</td><td>µm</td><td>gao15:recipe</td><td>distance between the oxide pillars</td><td>s6.p4</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_1.4903941</td><td>evidence changed</td><td>setting</td><td>pillar_spacing</td><td>stage=initial</td><td>10</td><td>µm</td><td>gao15:recipe</td><td>pillar distance</td><td>s6.p21</td><td>s6.p4;s6.p21</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>removed</td><td>setting</td><td>gas_flow_rate</td><td></td><td>10-400</td><td>sccm</td><td>wer21:recipe</td><td>Flow</td><td>tabI.r1c2;tabI.r2c2</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>removed</td><td>setting</td><td>gas_flow_rate</td><td></td><td>200</td><td>sccm</td><td>wer21:recipe</td><td>flow</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>evidence changed</td><td>setting</td><td>gas_flow_rate</td><td>gas=o2</td><td>200</td><td>sccm</td><td>wer21:recipe</td><td>flow</td><td>s22.p8</td><td>s22.p8;fig5.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>evidence changed</td><td>setting</td><td>gas_flow_rate</td><td>gas=o2;step=plasma</td><td>10-400</td><td>sccm</td><td>wer21:recipe</td><td>flow</td><td>abs.g3</td><td>abs.g3;tabI.r1c2;tabI.r2c2</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>removed</td><td>setting</td><td>plasma_power</td><td></td><td>150</td><td>W</td><td>wer21:recipe</td><td>plasma power</td><td>s18.p1;s18.p4;tabI.r5c4;tabI.r7c4</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>removed</td><td>setting</td><td>plasma_power</td><td>stat=maximum</td><td>250</td><td>W</td><td>wer21:recipe</td><td>power</td><td>s15.p2</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>evidence changed</td><td>setting</td><td>plasma_power</td><td>stat=maximum;step=plasma</td><td>250</td><td>W</td><td>wer21:recipe</td><td>power</td><td>fig2.cap</td><td>s15.p2;fig2.cap</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>evidence changed</td><td>setting</td><td>plasma_power</td><td>step=plasma</td><td>150</td><td>W</td><td>wer21:recipe</td><td>W</td><td>s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap</td><td>s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4;tabI.r7c4</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>removed</td><td>setting</td><td>process_pressure</td><td></td><td>0.0001-0.01</td><td>mbar</td><td>wer21:recipe</td><td>Pressure</td><td>tabI.r1c3</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>removed</td><td>setting</td><td>process_pressure</td><td></td><td>0.005</td><td>mbar</td><td>wer21:recipe</td><td>pressure</td><td>s25.p13;s25.p15;tabI.r6c3</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>evidence changed</td><td>setting</td><td>process_pressure</td><td>kind=set_point</td><td>0.005</td><td>mbar</td><td>wer21:recipe</td><td>fixed pressure</td><td>fig13.cap</td><td>s25.p13;s25.p15;fig13.cap;tabI.r6c3</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0001094</td><td>evidence changed</td><td>setting</td><td>process_pressure</td><td>step=plasma</td><td>0.0001-0.01</td><td>mbar</td><td>wer21:recipe</td><td>pressure</td><td>abs.g3</td><td>abs.g3;tabI.r1c3</td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0003182</td><td>removed</td><td>observation</td><td>process_pressure</td><td></td><td>9</td><td>Torr</td><td>gre23:method:process_monitor</td><td>p</td><td>s12.p2</td><td></td></tr>
+<tr><td>A3</td><td>thirteen (repository form_versions)</td><td>10.1116_6.0003182</td><td>evidence changed</td><td>observation</td><td>process_pressure</td><td>step=hold_A</td><td>9</td><td>Torr</td><td>gre23:method:process_monitor</td><td>start of the hold step</td><td>s12.p16</td><td>s12.p2;s12.p16</td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>1 -&gt; 2 facts</td><td>comparison</td><td>pulse_time</td><td></td><td></td><td></td><td>ela03</td><td></td><td>s3.p1;fig3</td><td>s3.p1;fig3 | s3.p3;s3.p5;fig4;fig5a;fig5b</td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>aspect_ratio</td><td></td><td>5000</td><td></td><td>ela03:run:r_zno_ar5000</td><td>aspect ratio L/d</td><td>fig7.cap</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>aspect_ratio</td><td>stage=initial</td><td>5000</td><td></td><td>ela03:run:r_zno_ar5000</td><td>aspect ratio</td><td>s4.p11</td><td>s4.p11;fig7.cap</td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td></td><td>1</td><td>s</td><td>ela03:run:r_zno_1s</td><td>Exposure Times (s)</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td></td><td>10</td><td>s</td><td>ela03:run:r_zno_10s</td><td>Exposure Times (s)</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td></td><td>3</td><td>s</td><td>ela03:run:r_zno_3s</td><td>Exposure Times (s)</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td></td><td>30</td><td>s</td><td>ela03:run:r_zno_30s</td><td>Exposure Times (s)</td><td>fig5.cap</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td>species=dez</td><td>1</td><td>s</td><td>ela03:run:r_zno_1s</td><td>exposure times</td><td>fig5a</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td>species=dez</td><td>10</td><td>s</td><td>ela03:run:r_zno_10s</td><td>exposure times</td><td>fig5a</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td>species=dez</td><td>3</td><td>s</td><td>ela03:run:r_zno_3s</td><td>exposure times</td><td>fig5a</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>setting</td><td>pulse_time</td><td>species=dez</td><td>30</td><td>s</td><td>ela03:run:r_zno_30s</td><td>exposure times</td><td>fig5a</td><td></td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>pulse_time</td><td>species=dez;step=reactant_A</td><td>1</td><td>s</td><td>ela03:run:r_zno_1s</td><td>exposure times</td><td>fig4.cap</td><td>fig4.cap;fig5.cap;fig5a</td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>pulse_time</td><td>species=dez;step=reactant_A</td><td>10</td><td>s</td><td>ela03:run:r_zno_10s</td><td>exposure times</td><td>fig4.cap</td><td>fig4.cap;fig5.cap;fig5a</td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>pulse_time</td><td>species=dez;step=reactant_A</td><td>3</td><td>s</td><td>ela03:run:r_zno_3s</td><td>exposure times</td><td>fig4.cap</td><td>fig4.cap;fig5.cap;fig5a</td></tr>
+<tr><td>A3</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>evidence changed</td><td>setting</td><td>pulse_time</td><td>species=dez;step=reactant_A</td><td>30</td><td>s</td><td>ela03:run:r_zno_30s</td><td>exposure times</td><td>fig4.cap</td><td>fig4.cap;fig5.cap;fig5a</td></tr>
+<tr><td>A4</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>5136.84</td><td></td><td>ela03:ent:spec_zno_ar5000</td><td></td><td>s4.p11;fig7b</td><td></td></tr>
+<tr><td>A4</td><td>thirteen (repository form_versions)</td><td>10.1021_cm0303080</td><td>removed</td><td>observation</td><td>penetration_depth</td><td>level=50%;origin=entrance</td><td>97.6</td><td>µm</td><td>ela03:ent:spec_zno_ar5000:meas:epma</td><td>relative ZnO coverage</td><td>fig7b</td><td></td></tr>
+<tr><td>A4</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>coated_aspect_ratio</td><td>basis=AR;level=50%</td><td>5136.84</td><td></td><td>ela03:ent:s_zno_ar5000</td><td></td><td>s4.p11;fig7b</td><td></td></tr>
+<tr><td>A4</td><td>ela03 on the P203 records (P202 accepted)</td><td>10.1021_cm0303080</td><td>removed</td><td>derived</td><td>penetration_depth</td><td>level=50%</td><td>97.6</td><td>µm</td><td>ela03:ent:s_zno_ar5000:meas:measurement</td><td>penetration_depth</td><td>fig7b</td><td></td></tr>
+</table>
+<h2>B1. the art19 example before and after</h2><p>kb/reports/P204.B1_example_art19.csv</p>
+<table><tr><th>table</th><th>item</th><th>side</th><th>value</th></tr>
+<tr><td>units by role</td><td>model_run</td><td>before (P202/P203)</td><td>4</td></tr>
+<tr><td>units by role</td><td>run</td><td>before (P202/P203)</td><td>4</td></tr>
+<tr><td>units by role</td><td>simulation</td><td>before (P202/P203)</td><td>1</td></tr>
+<tr><td>units by role</td><td>specimen</td><td>before (P202/P203)</td><td>8</td></tr>
+<tr><td>units by role</td><td>measurement</td><td>after (P204 B1)</td><td>16</td></tr>
+<tr><td>units by role</td><td>model_run</td><td>after (P204 B1)</td><td>4</td></tr>
+<tr><td>units by role</td><td>run</td><td>after (P204 B1)</td><td>4</td></tr>
+<tr><td>units by role</td><td>simulation</td><td>after (P204 B1)</td><td>1</td></tr>
+<tr><td>units by role</td><td>specimen</td><td>after (P204 B1)</td><td>8</td></tr>
+<tr><td>non-null share per field</td><td>id</td><td>before (P202/P203)</td><td>17/17 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>id</td><td>after (P204 B1)</td><td>33/33 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>parent</td><td>before (P202/P203)</td><td>12/17 (71%)</td></tr>
+<tr><td>non-null share per field</td><td>parent</td><td>after (P204 B1)</td><td>28/33 (85%)</td></tr>
+<tr><td>non-null share per field</td><td>name_as_printed</td><td>before (P202/P203)</td><td>17/17 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>name_as_printed</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>role</td><td>before (P202/P203)</td><td>17/17 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>role</td><td>after (P204 B1)</td><td>33/33 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>structure_class</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>structure_class</td><td>after (P204 B1)</td><td>8/33 (24%)</td></tr>
+<tr><td>non-null share per field</td><td>specimen_class</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>specimen_class</td><td>after (P204 B1)</td><td>8/33 (24%)</td></tr>
+<tr><td>non-null share per field</td><td>experiment_kind</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>experiment_kind</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>introduced_in</td><td>before (P202/P203)</td><td>17/17 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>introduced_in</td><td>after (P204 B1)</td><td>33/33 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>data</td><td>before (P202/P203)</td><td>10/17 (59%)</td></tr>
+<tr><td>non-null share per field</td><td>data</td><td>after (P204 B1)</td><td>10/33 (30%)</td></tr>
+<tr><td>non-null share per field</td><td>evidence_quote</td><td>before (P202/P203)</td><td>17/17 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>evidence_quote</td><td>after (P204 B1)</td><td>33/33 (100%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_A</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_A</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_B</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_B</td><td>after (P204 B1)</td><td>4/33 (12%)</td></tr>
+<tr><td>non-null share per field</td><td>carrier_gas</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>carrier_gas</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>process_mode</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>process_mode</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>material</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>material</td><td>after (P204 B1)</td><td>4/33 (12%)</td></tr>
+<tr><td>non-null share per field</td><td>steps</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>steps</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>assumptions</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>assumptions</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_A_quote</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_A_quote</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_B_quote</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>reactant_B_quote</td><td>after (P204 B1)</td><td>4/33 (12%)</td></tr>
+<tr><td>non-null share per field</td><td>carrier_gas_quote</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>carrier_gas_quote</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>process_mode_quote</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>process_mode_quote</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>material_quote</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>material_quote</td><td>after (P204 B1)</td><td>4/33 (12%)</td></tr>
+<tr><td>non-null share per field</td><td>steps_quote</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>steps_quote</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>assumptions_quote</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>assumptions_quote</td><td>after (P204 B1)</td><td>0/33 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>method</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>method</td><td>after (P204 B1)</td><td>16/33 (48%)</td></tr>
+<tr><td>non-null share per field</td><td>distinguished_by</td><td>before (P202/P203)</td><td>0/17 (0%)</td></tr>
+<tr><td>non-null share per field</td><td>distinguished_by</td><td>after (P204 B1)</td><td>16/33 (48%)</td></tr>
+</table>
+<h2>B2. P203 no_knowledge answers on elements holding a number</h2><p>kb/reports/P204.B2_numeric_no_knowledge.csv</p>
+<table><tr><th>line</th><th>element</th><th>n_numbers</th><th>nk</th><th>valid_new_schema</th><th>common_failure</th></tr>
+<tr><td>74</td><td>s2.p25</td><td>6</td><td>no_knowledge</td><td>no</td><td>no_knowledge on an element holding a number: s2.p25</td></tr>
+<tr><td>75</td><td>s3.p28</td><td>1</td><td>no_knowledge</td><td>no</td><td>no_knowledge on an element holding a number: s3.p28</td></tr>
+<tr><td>75</td><td>s3.p29</td><td>1</td><td>no_knowledge</td><td>no</td><td>no_knowledge on an element holding a number: s3.p29</td></tr>
+<tr><td>77</td><td>s5.p29</td><td>2</td><td>no_knowledge</td><td>no</td><td>no_knowledge on an element holding a number: s5.p29</td></tr>
+<tr><td>77</td><td>s5.p32</td><td>5</td><td>no_knowledge</td><td>no</td><td>no_knowledge on an element holding a number: s5.p32</td></tr>
+<tr><td>77</td><td>s5.p33</td><td>2</td><td>no_knowledge</td><td>no</td><td>no_knowledge on an element holding a number: s5.p33</td></tr>
+<tr><td>77</td><td>s5.x3</td><td>8</td><td>no_knowledge</td><td>no</td><td>no_knowledge on an element holding a number: s5.x3</td></tr>
+</table>
+<h2>C. pass-0 units: P201, P203, P204</h2><p>kb/reports/P204.C_pass0_units.csv</p>
+<table><tr><th>line</th><th>pass0_run</th><th>units</th><th>run</th><th>specimen</th><th>measurement</th><th>simulation</th><th>model_run</th><th>with_name</th><th>with_distinguished_by</th><th>with_process_mode</th><th>ids_example</th></tr>
+<tr><td>53</td><td>P201 (no example)</td><td>65</td><td>14</td><td>14</td><td>19</td><td>2</td><td>16</td><td>0</td><td>44</td><td>14</td><td>run_al2o3_1s, specimen_al2o3_1s, meas_sem_al2o3_1s</td></tr>
+<tr><td>73</td><td>P203 (example without measurement units)</td><td>46</td><td>14</td><td>14</td><td>0</td><td>2</td><td>16</td><td>46</td><td>0</td><td>0</td><td>r_al2o3_1s, s_al2o3_1s, r_al2o3_3s</td></tr>
+<tr><td>93</td><td>P204 (B1 example)</td><td>66</td><td>14</td><td>14</td><td>14</td><td>3</td><td>21</td><td>0</td><td>46</td><td>0</td><td>r1, s1, meas1</td></tr>
+</table>
+<h2>C. pass-0 gate</h2><p>kb/reports/P204.C_gate_pass0.csv</p>
+<table><tr><th>paper</th><th>stage</th><th>metric</th><th>value</th><th>worst_dev_value</th><th>worst_dev_paper</th><th>verdict</th></tr>
+<tr><td>ela03</td><td>pass0</td><td>units per 100 elements</td><td>31.43</td><td>3.37</td><td>gre23</td><td>pass</td></tr>
+<tr><td>ela03</td><td>pass0</td><td>unbound items</td><td>14</td><td>14</td><td>ela03</td><td>pass</td></tr>
+<tr><td>ela03</td><td>pass0</td><td>units named after a measurement</td><td>0</td><td>0</td><td>yim20</td><td>pass</td></tr>
+<tr><td>ela03</td><td>pass0</td><td>panels with no layout (share)</td><td>0.0</td><td>0.867</td><td>gao15</td><td>pass</td></tr>
+</table>
+<h2>C. the PASS-0 UNITS block pass 1 would receive</h2><p>kb/reports/P204.C_units_block.csv</p>
+<table><tr><th>PASS-0 UNITS line (id | role | name | parent | data | recipe), as pass 1 would receive it</th></tr>
+<tr><td>r1 | run | - | - | - | reactant_A tma, reactant_B h2o, carrier n2, material al2o3</td></tr>
+<tr><td>s1 | specimen | - | r1 | -</td></tr>
+<tr><td>meas1 | measurement | - | s1 | -</td></tr>
+<tr><td>r2 | run | - | - | - | reactant_A tma, reactant_B h2o, carrier n2, material al2o3</td></tr>
+<tr><td>s2 | specimen | - | r2 | -</td></tr>
+<tr><td>meas2 | measurement | - | s2 | -</td></tr>
+<tr><td>r3 | run | - | - | - | reactant_A tma, reactant_B h2o, carrier n2, material al2o3</td></tr>
+<tr><td>s3 | specimen | - | r3 | -</td></tr>
+<tr><td>meas3 | measurement | - | s3 | -</td></tr>
+<tr><td>r4 | run | - | - | - | reactant_A tma, reactant_B h2o, carrier n2, material al2o3</td></tr>
+<tr><td>s4 | specimen | - | r4 | -</td></tr>
+<tr><td>meas4 | measurement | - | s4 | -</td></tr>
+<tr><td>r5 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s5 | specimen | - | r5 | ela03:fig5a#c1:measured</td></tr>
+<tr><td>meas5 | measurement | - | s5 | -</td></tr>
+<tr><td>r6 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s6 | specimen | - | r6 | ela03:fig5a#c2:measured ela03:fig5a#d2_1:measured ela03:fig5a#d2_2:measured</td></tr>
+<tr><td>meas6 | measurement | - | s6 | -</td></tr>
+<tr><td>r7 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s7 | specimen | - | r7 | ela03:fig5a#c3:measured ela03:fig5a#d3_1:measured ela03:fig5a#d3_2:measured</td></tr>
+<tr><td>meas7 | measurement | - | s7 | -</td></tr>
+<tr><td>r8 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s8 | specimen | - | r8 | ela03:fig5a#c4:measured ela03:fig5a#d4_1:measured</td></tr>
+<tr><td>meas8 | measurement | - | s8 | -</td></tr>
+<tr><td>r9 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s9 | specimen | - | r9 | ela03:fig6a#c1:measured</td></tr>
+<tr><td>meas9 | measurement | - | s9 | -</td></tr>
+<tr><td>r10 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s10 | specimen | - | r10 | ela03:fig6a#c2:measured ela03:fig6a#d2_1:measured ela03:fig6a#d2_2:measured</td></tr>
+<tr><td>meas10 | measurement | - | s10 | -</td></tr>
+<tr><td>r11 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s11 | specimen | - | r11 | ela03:fig6a#c3:measured ela03:fig6a#d3_1:measured ela03:fig6a#d3_2:measured</td></tr>
+<tr><td>meas11 | measurement | - | s11 | -</td></tr>
+<tr><td>r12 | run | - | - | - | reactant_A dez, reactant_B h2o, carrier n2, material zno</td></tr>
+<tr><td>s12 | specimen | - | r12 | ela03:fig7b#c1:measured ela03:fig7b#d1_1:measured ela03:fig7b#d1_2:measured</td></tr>
+<tr><td>meas12 | measurement | - | s12 | -</td></tr>
+<tr><td>r13 | run | - | - | - | reactant_A tma, reactant_B h2o, material al2o3</td></tr>
+<tr><td>s13 | specimen | - | r13 | ela03:fig8a#c1:measured</td></tr>
+<tr><td>meas13 | measurement | - | s13 | -</td></tr>
+<tr><td>r14 | run | - | - | - | reactant_A sicl4, reactant_B h2o, material sio2</td></tr>
+<tr><td>s14 | specimen | - | r14 | ela03:fig8b#c1:measured</td></tr>
+<tr><td>meas14 | measurement | - | s14 | -</td></tr>
+<tr><td>sim1 | simulation | - | - | -</td></tr>
+<tr><td>m1 | model_run | - | sim1 | ela03:fig9a#c1:simulated ela03:fig9a#d1_1:simulated ela03:fig9a#d1_2:simulated | material al2o3</td></tr>
+<tr><td>m2 | model_run | - | sim1 | ela03:fig9a#c2:simulated ela03:fig9a#d2_1:simulated | material al2o3</td></tr>
+<tr><td>m3 | model_run | - | sim1 | ela03:fig9a#c3:simulated ela03:fig9a#d3_1:simulated | material al2o3</td></tr>
+<tr><td>m4 | model_run | - | sim1 | ela03:fig9b#c1:simulated | material al2o3</td></tr>
+<tr><td>m5 | model_run | - | sim1 | ela03:fig10a#c1:simulated ela03:fig10a#d1_1:simulated ela03:fig10a#d1_2:simulated | material zno</td></tr>
+<tr><td>m6 | model_run | - | sim1 | ela03:fig10a#c2:simulated ela03:fig10a#d2_1:simulated ela03:fig10a#d2_2:simulated | material zno</td></tr>
+<tr><td>m7 | model_run | - | sim1 | ela03:fig10a#c3:simulated ela03:fig10a#d3_1:simulated ela03:fig10a#d3_2:simulated | material zno</td></tr>
+<tr><td>m8 | model_run | - | sim1 | ela03:fig10a#c4:simulated ela03:fig10a#d4_1:simulated | material zno</td></tr>
+<tr><td>m9 | model_run | - | sim1 | ela03:fig10b#c1:simulated ela03:fig10b#c2:fitted | material zno</td></tr>
+<tr><td>m10 | model_run | - | sim1 | ela03:fig11a#c1:simulated | material zno</td></tr>
+<tr><td>m11 | model_run | - | sim1 | ela03:fig11a#c2:simulated ela03:fig11a#d2_1:simulated ela03:fig11a#d2_2:simulated | material zno</td></tr>
+<tr><td>m12 | model_run | - | sim1 | ela03:fig11a#c3:simulated ela03:fig11a#d3_1:simulated ela03:fig11a#d3_2:simulated | material zno</td></tr>
+<tr><td>m13 | model_run | - | sim1 | ela03:fig11b#c1:simulated | material zno</td></tr>
+<tr><td>m14 | model_run | - | sim1 | ela03:fig12a#c1:simulated ela03:fig12a#c2:fitted | material zno</td></tr>
+<tr><td>m15 | model_run | - | sim1 | ela03:fig12b#c1:simulated ela03:fig12b#c2:fitted | material zno</td></tr>
+<tr><td>sim2 | simulation | - | - | -</td></tr>
+<tr><td>m16 | model_run | - | sim2 | ela03:fig13#c1:simulated | material zno</td></tr>
+<tr><td>m17 | model_run | - | sim2 | ela03:fig13#c2:simulated | material zno</td></tr>
+<tr><td>m18 | model_run | - | sim2 | ela03:fig13#c3:simulated | material zno</td></tr>
+<tr><td>m19 | model_run | - | sim2 | ela03:fig13#c4:simulated | material zno</td></tr>
+<tr><td>sim3 | simulation | - | - | -</td></tr>
+<tr><td>m20 | model_run | - | sim3 | ela03:fig5b#c1:fitted | material zno</td></tr>
+<tr><td>m21 | model_run | - | sim3 | ela03:fig6b#c1:fitted | material zno</td></tr>
+</table>
+<h2>C. costs</h2><p>kb/reports/P204.C_costs.csv</p>
+<table><tr><th>call</th><th>pass</th><th>request_ts</th><th>input_tokens</th><th>cache_read_tokens</th><th>output_tokens</th><th>usd</th><th>outcome</th></tr>
+<tr><td>pass 0, attempt 1</td><td>0</td><td>2026-10-25T19:17:13+00:00</td><td>65681</td><td>(not recorded)</td><td>51756</td><td>0.2433 (upper bound, no cache discount)</td><td>failed: U+0000 in a string of the parsed response (15 times) (listed in failed_calls.csv, not stored)</td></tr>
+<tr><td>pass 0, attempt 2 (records line 93)</td><td>0</td><td>2026-10-25T19:22:30+00:00</td><td>65681</td><td>63798</td><td>59888</td><td>0.2308</td><td>parsed</td></tr>
+<tr><td>pass 1</td><td>1</td><td></td><td></td><td></td><td></td><td>0</td><td>not run (stopped: see the summary)</td></tr>
+<tr><td>total</td><td></td><td></td><td></td><td></td><td></td><td>0.4741 at most</td><td></td></tr>
+</table>
+</body></html>

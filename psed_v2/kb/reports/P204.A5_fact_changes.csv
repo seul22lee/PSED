@@ -1,0 +1,160 @@
+rule,variant,paper,change,type,quantity,qualifiers,value,unit,parent,label,evidence_before,evidence_after
+A1,thirteen (repository form_versions),10.1039_d0cp03358h,removed,definition,molecule_diameter,,,pm,yim20,Molecular diameter of Reactant A,tabu1.r6c0 | tabu1.r6c1,
+A1,thirteen (repository form_versions),10.1039_d0cp03358h,removed,definition,molecule_diameter,,,pm,yim20,Molecular diameter of carrier gas B,tabu1.r7c0 | tabu1.r7c1,
+A1,thirteen (repository form_versions),10.1039_d0cp03358h,added,definition,molecule_diameter,species=n2,,pm,yim20,Molecular diameter of carrier gas B,,tabu1.r7c0 | tabu1.r7c1
+A1,thirteen (repository form_versions),10.1039_d0cp03358h,added,definition,molecule_diameter,species=tma,,pm,yim20,Molecular diameter of Reactant A,,tabu1.r6c0 | tabu1.r6c1
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,gas_phase_diffusion_coefficient,,,m2/s,yim22,D_A,,tabu1.r4c0;tabu1.r7c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,gas_phase_diffusion_coefficient,species=model_reactant,,m2/s,yim22,D_A,tabu1.r4c0;tabu1.r7c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,initial_sticking_coefficient,,,,yim22,c,,tab1.r7c0 | tabu1.r1c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,knudsen_diffusion_coefficient,,,m2/s,yim22,D_Kn,,tabu1.r6c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,knudsen_diffusion_coefficient,,,m2/s,yim22,D_{\text{Kn}},,s5.p9
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,knudsen_diffusion_coefficient,species=model_reactant,,m2/s,yim22,D_Kn,tabu1.r6c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,knudsen_diffusion_coefficient,species=model_reactant,,m2/s,yim22,D_{\text{Kn}},s5.p9,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,molar_mass,,,kg/mol,yim22,M_A,,tab1.r3c0 | tabu1.r21c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,other,,,1/s,yim22,z_A,,tabu2.r17c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,other,,,m s^{-1},yim22,\bar{v}_A,,tabu2.r9c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,other,species=model_reactant,,1/s,yim22,z_A,tabu2.r17c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,other,species=model_reactant,,m s^{-1},yim22,\bar{v}_A,tabu2.r9c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,partial_pressure,,,Pa,yim22,p_A,,tabu1.r27c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,partial_pressure,,,Pa,yim22,p_A0,,tabu1.r28c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,partial_pressure,,,Pa,yim22,p_At,,tabu1.r30c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,partial_pressure,,,Pa,yim22,p_{A0},,tab1.r1c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,partial_pressure,species=model_reactant,,Pa,yim22,p_A,tabu1.r27c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,partial_pressure,species=model_reactant,,Pa,yim22,p_A0,tabu1.r28c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,partial_pressure,species=model_reactant,,Pa,yim22,p_At,tabu1.r30c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,partial_pressure,species=model_reactant,,Pa,yim22,p_{A0},tab1.r1c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,pulse_time,,,s,yim22,t_1,,tab1.r2c0
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,pulse_time,species=model_reactant,,s,yim22,t_1,tab1.r2c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,removed,definition,pulse_time,species=model_reactant;step=reactant_A,,s,yim22,t_1,tabu2.r5c0,
+A1,thirteen (repository form_versions),10.1039_d1cp04758b,added,definition,pulse_time,step=reactant_A,,s,yim22,t_1,,tabu2.r5c0
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,added,cited,initial_sticking_coefficient,,0.001,,ela03,reactive sticking coefficient,,s5.p25
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,added,cited,initial_sticking_coefficient,,1e-08,,ela03,reactive sticking coefficient,,s5.p26
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,cited,initial_sticking_coefficient,species=sicl4,1e-08,,ela03,reactive sticking coefficient,s5.p26,
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,cited,initial_sticking_coefficient,species=tma,0.001,,ela03,reactive sticking coefficient,s5.p25,
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,added,model,initial_sticking_coefficient,,0.0001,,ela03:mrun:m_rxn_lim,S,,fig12.cap
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,added,model,initial_sticking_coefficient,,0.001,,ela03:mrun:m_al2o3_1s,S,,s5.p12
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,added,model,initial_sticking_coefficient,,0.007,,ela03:mrun:m_diff_lim,S,,fig12.cap
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,added,model,initial_sticking_coefficient,,0.007,,ela03:mrun:m_zno_1s,S,,s5.p15
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,model,initial_sticking_coefficient,species=tma,0.0001,,ela03:mrun:m_rxn_lim,S,fig12.cap,
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,model,initial_sticking_coefficient,species=tma,0.001,,ela03:mrun:m_al2o3_1s,S,s5.p12,
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,model,initial_sticking_coefficient,species=tma,0.007,,ela03:mrun:m_diff_lim,S,fig12.cap,
+A1,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,model,initial_sticking_coefficient,species=tma,0.007,,ela03:mrun:m_zno_1s,S,s5.p15,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,2105.26,,ela03:ent:s_zno_19nm,,s5.p2;fig6a,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,400,,ela03:ent:s_ftir_al2o3,,s5.p2,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,400,,ela03:ent:s_ftir_sio2,,s5.p2,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,400,,ela03:ent:s_zno_10s,,s5.p2,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,400,,ela03:ent:s_zno_1s,,s5.p2,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,400,,ela03:ent:s_zno_30s,,s5.p2,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,400,,ela03:ent:s_zno_3s,,s5.p2,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,400,,ela03:ent:s_zno_ar5000,,s5.p2,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,615.385,,ela03:ent:s_zno_65nm,,s5.p2;fig6a,
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,added,derived,knudsen_number,,851.064,,ela03:ent:s_ftir_al2o3,,,s4.p14;s5.p2
+A2,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,knudsen_number,,869.565,,ela03:ent:s_zno_46nm,,s5.p2;fig6a,
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,added,comparison,cycle_number;exposure,,,,gor03,,,s4.p3;s4.p4;fig2.cap;fig2
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,added,comparison,exposure,,,,gor03,,,s4.p3;s4.p4;fig2.cap;fig2
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,evidence changed,derived,exposure,over=run,133.322,Pa s,gor03:ent:specimen_4k_l,,s8.p5,s8.p5;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,added,derived,exposure,over=run,133.322,Pa s,gor03:run:run_4k_l,,,s8.p5;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,evidence changed,derived,exposure,over=run,93.3254,Pa s,gor03:ent:specimen_2k_l,,s8.p5,s8.p5;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,added,derived,exposure,over=run,93.3254,Pa s,gor03:run:run_2k_l,,,s8.p5;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,evidence changed,derived,exposure,over=run,999.915,Pa s,gor03:ent:specimen_30k_l,,s8.p3,s8.p3;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,added,derived,exposure,over=run,999.915,Pa s,gor03:run:run_30k_l,,,s8.p3;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,removed,setting,exposure,,2000,L,gor03:run:run_2k_l,Langmuir,s8.p5,
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,removed,setting,exposure,,30000,L,gor03:run:run_30k_l,exposure,s8.p3,
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,removed,setting,exposure,,4000,L,gor03:run:run_4k_l,Langmuir,s8.p5,
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,evidence changed,setting,exposure,species=hf_nme2_4;step=reactant_A,2000,L,gor03:run:run_2k_l,Exposures,fig2.cap,s8.p5;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,evidence changed,setting,exposure,species=hf_nme2_4;step=reactant_A,30000,L,gor03:run:run_30k_l,Exposures,fig2.cap,s8.p3;fig2.cap
+A3,thirteen (repository form_versions),10.1002_cvde.200390005,evidence changed,setting,exposure,species=hf_nme2_4;step=reactant_A,4000,L,gor03:run:run_4k_l,Exposures,fig2.cap,s8.p5;fig2.cap
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,evidence changed,derived,element_ratio,element=H;reference_element=Mo,0.855556,,mat22:run:unit_tab1_r3:film,,tab1.r3c1;tab1.r3c4;tab1.r3c6;tab1.r3c7,s3.p21;tab1.r3c1;tab1.r3c4;tab1.r3c6;tab1.r3c7
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,evidence changed,derived,plasma_gas_ratio,gas=h2;relative_to=all_gases,0,%,mat22:run:run_grid_1:film,,tab2.r1c1;tab2.r1c2;tab2.r1c3,s3.p51;tab2.r1c1;tab2.r1c2;tab2.r1c3
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,evidence changed,derived,plasma_gas_ratio,gas=h2;relative_to=all_gases,0,%,mat22:run:run_grid_2:film,,tab2.r1c1;tab2.r1c2;tab2.r1c3,s3.p51;tab2.r1c1;tab2.r1c2;tab2.r1c3
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,evidence changed,derived,plasma_gas_ratio,gas=h2;relative_to=all_gases,0,%,mat22:run:run_grid_3:film,,tab2.r1c1;tab2.r1c2;tab2.r1c3,s3.p51;tab2.r1c1;tab2.r1c2;tab2.r1c3
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,removed,observation,element_fraction,element=O,5,at.%,mat22:run:unit_tab1_r3:film:meas:rbs,O (at. %),tab1.r3c7,
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,evidence changed,observation,element_fraction,element=O;relative_to=all_atoms,5,at.%,mat22:run:unit_tab1_r3:film:meas:rbs,O content,s3.p21,s3.p21;tab1.r3c7
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,removed,setting,gas_flow_rate,,10,sccm,mat22:recipe,total flow of H2S and H2,s3.p51,
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,evidence changed,setting,gas_flow_rate,gas=h2s;ratio=0;step=plasma,10,sccm,mat22:recipe,H_2S flow rate,tab2.r1c1,s3.p51;tab2.r1c1
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,removed,setting,process_pressure,,200,mTorr,mat22:recipe,mTorr,s5.p3,
+A3,thirteen (repository form_versions),10.1021_acs.chemmater.2c01154,evidence changed,setting,process_pressure,step=reactant_A,200,mTorr,mat22:recipe,chamber pressure,s5.p6,s5.p3;s5.p6
+A3,thirteen (repository form_versions),10.1021_cm0303080,2 -> 3 facts,comparison,pulse_time,,,,ela03,,fig10.cap | s3.p1;fig3.cap;fig3,fig10.cap | s3.p1;fig3.cap;fig3 | s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b
+A3,thirteen (repository form_versions),10.1021_cm0303080,removed,comparison,pulse_time;pulse_time,,,,ela03,,s3.p4;fig4.cap;fig4;fig5.cap;fig5a;fig5b,
+A3,thirteen (repository form_versions),10.1021_cm0303080,removed,setting,aspect_ratio,,5000,,ela03:run:run_zno_ar5000,aspect ratio L/d,fig7.cap,
+A3,thirteen (repository form_versions),10.1021_cm0303080,evidence changed,setting,aspect_ratio,stage=initial,5000,,ela03:run:run_zno_ar5000,aspect ratio,s4.p11,s4.p11;fig7.cap
+A3,thirteen (repository form_versions),10.1021_cm0303080,removed,setting,pulse_time,,1,s,ela03:run:run_zno_1s,Exposure Times (s),fig5.cap,
+A3,thirteen (repository form_versions),10.1021_cm0303080,removed,setting,pulse_time,,10,s,ela03:run:run_zno_10s,Exposure Times (s),fig5.cap,
+A3,thirteen (repository form_versions),10.1021_cm0303080,removed,setting,pulse_time,,3,s,ela03:run:run_zno_3s,Exposure Times (s),fig5.cap,
+A3,thirteen (repository form_versions),10.1021_cm0303080,evidence changed,setting,pulse_time,species=dez,1,s,ela03:run:run_zno_1s,exposure times,fig4.cap,fig4.cap;fig5.cap
+A3,thirteen (repository form_versions),10.1021_cm0303080,evidence changed,setting,pulse_time,species=dez,10,s,ela03:run:run_zno_10s,exposure times,fig4.cap,fig4.cap;fig5.cap
+A3,thirteen (repository form_versions),10.1021_cm0303080,evidence changed,setting,pulse_time,species=dez,3,s,ela03:run:run_zno_3s,exposure times,fig4.cap,fig4.cap;fig5.cap
+A3,thirteen (repository form_versions),10.1021_cm0303080,removed,setting,structure,,anodic_alumina_membrane,,ela03:recipe,AA membranes,abs.g2,
+A3,thirteen (repository form_versions),10.1021_cm0303080,evidence changed,setting,structure,stage=initial,anodic_alumina_membrane,,ela03:recipe,AA Membrane,tab1.cap,abs.g2;tab1.cap
+A3,thirteen (repository form_versions),10.1039_d0cp03358h,added,comparison,cycle_number,,,,yim20,Series B,,fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1
+A3,thirteen (repository form_versions),10.1039_d0cp03358h,removed,comparison,cycle_number,,,,yim20,Series D,fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1,
+A3,thirteen (repository form_versions),10.1039_d0cp03358h,evidence changed,comparison,cycle_number;feature_width,,,,yim20,Series C,fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1;tab1.r12c1,fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r7c1;tab1.r8c1;tab1.r9c1;tab1.r10c1;tab1.r11c1
+A3,thirteen (repository form_versions),10.1039_d0cp03358h,added,comparison,cycle_number;pulse_time,,,,yim20,Series B,,fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;fig11.cap;fig11a;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r14c1
+A3,thirteen (repository form_versions),10.1039_d0cp03358h,removed,comparison,cycle_number;pulse_time,,,,yim20,Series D,fig5.cap;fig5a;fig5b;fig7.cap;fig7;fig8.cap;fig8b;fig9.cap;fig9a;fig9d;fig9e;fig9f;fig11.cap;fig11a;tab1.r4c1;tab1.r5c1;tab1.r6c1;tab1.r8c1;tab1.r10c1;tab1.r11c1;tab1.r12c1;tab1.r14c1,
+A3,thirteen (repository form_versions),10.1039_d0cp03358h,removed,setting,feature_width,,500,nm,yim20:run:run_11,Design channel height H,tab1.r12c3,
+A3,thirteen (repository form_versions),10.1039_d0cp03358h,evidence changed,setting,feature_width,stage=initial,500,nm,yim20:run:run_11,design height,fig5.cap,fig5.cap;tab1.r12c3
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,molar_mass,,0.028,kg/mol,yim22:sim:sim_model_a,M_l,fig2.cap;fig6.cap,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,molar_mass,gas=n2,0.028,kg/mol,yim22:sim:sim_model_a,M_I,s12.p5;s14.p6,s12.p5;s14.p6;fig2.cap;fig6.cap
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,molecule_diameter,,3.74e-10,m,yim22:sim:sim_model_a,d_l,fig2.cap;fig6.cap,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,molecule_diameter,gas=n2,3.74e-10,m,yim22:sim:sim_model_a,d_I,s12.p5,s12.p5;fig2.cap;fig6.cap
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,partial_pressure,,100,Pa,yim22:sim:sim_model_a,partial pressure of Reactant A,s12.p1,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,partial_pressure,,50,Pa,yim22:sim:sim_model_a,\rho_1,fig6.cap,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,partial_pressure,species=model_reactant,100,Pa,yim22:sim:sim_model_a,p_{A0},fig2.cap,s12.p1;fig2.cap
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,partial_pressure,species=model_reactant,50,Pa,yim22:sim:sim_model_a,p_{A0},s14.p6,s14.p6;fig6.cap
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,pulse_time,between=runs;n=1;species=model_reactant;stat=tolerance,0.05,s,yim22:mrun:mr_fig4b_c1,t_1,fig4b,fig4b;tab1.r2c1
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,pulse_time,between=runs;n=1;species=model_reactant;stat=tolerance,0.1,s,yim22:mrun:mr_fig4b_c2,t_1,fig4b,fig4b;tab1.r2c1
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,pulse_time,between=runs;n=1;species=model_reactant;stat=tolerance,0.2,s,yim22:mrun:mr_fig4b_c3,t_1,fig4b,fig4b;tab1.r2c1
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,pulse_time,between=runs;n=1;species=model_reactant;stat=tolerance,0.4,s,yim22:mrun:mr_fig4b_c4,t_1,fig4b,fig4b;tab1.r2c1
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,pulse_time,between=runs;n=1;species=model_reactant;stat=tolerance,0.8,s,yim22:mrun:mr_fig4b_c5,t_1,fig4b,fig4b;tab1.r2c1
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,pulse_time,species=model_reactant,0.05,s,yim22:mrun:mr_fig4b_c1,t_1,tab1.r2c1,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,pulse_time,species=model_reactant,0.1,s,yim22:mrun:mr_fig4b_c2,t_1,tab1.r2c1,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,pulse_time,species=model_reactant,0.2,s,yim22:mrun:mr_fig4b_c3,t_1,tab1.r2c1,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,pulse_time,species=model_reactant,0.4,s,yim22:mrun:mr_fig4b_c4,t_1,tab1.r2c1,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,pulse_time,species=model_reactant,0.8,s,yim22:mrun:mr_fig4b_c5,t_1,tab1.r2c1,
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,evidence changed,model,pulse_time,species=model_reactant;step=reactant_A,0.1,s,yim22:sim:sim_model_a,t_1,s14.p6,s12.p1;s14.p6
+A3,thirteen (repository form_versions),10.1039_d1cp04758b,removed,model,pulse_time,step=reactant_A,0.1,s,yim22:sim:sim_model_a,pulse length,s12.p1,
+A3,thirteen (repository form_versions),10.1063_1.5028178,removed,model,molecule_diameter,,591,pm,yli18:sim:sim_ylilammi,d_A,s8.p3;fig2.cap;fig4.cap;fig5.cap,
+A3,thirteen (repository form_versions),10.1063_1.5028178,evidence changed,model,molecule_diameter,species=tma,591,pm,yli18:sim:sim_ylilammi,d_{\text{TMA}},s5.p16,s5.p16;s8.p3;fig2.cap;fig4.cap;fig5.cap
+A3,thirteen (repository form_versions),10.1063_1.5028178,removed,model,pulse_time,,0.1,s,yli18:sim:sim_ylilammi,t_p,fig4.cap,
+A3,thirteen (repository form_versions),10.1063_1.5028178,evidence changed,model,pulse_time,step=reactant_A,0.1,s,yli18:sim:sim_ylilammi,t_p,s8.p9,s8.p9;fig4.cap
+A3,thirteen (repository form_versions),10.1063_1.5028178,removed,setting,feature_depth,,1,mm,yli18:run:run_al2o3,length L,s8.p23,
+A3,thirteen (repository form_versions),10.1063_1.5028178,evidence changed,setting,feature_depth,stage=initial,1,mm,yli18:run:run_al2o3,length L of the channel,fig6.cap,s8.p23;fig6.cap
+A3,thirteen (repository form_versions),10.1063_1.5028178,removed,setting,feature_width,,0.5,µm,yli18:run:run_al2o3,gap height,s8.p23,
+A3,thirteen (repository form_versions),10.1063_1.5028178,evidence changed,setting,feature_width,kind=target;stage=initial,0.5,µm,yli18:run:run_al2o3,channel gap height,fig6.cap,s8.p23;fig6.cap
+A3,thirteen (repository form_versions),10.1116_1.4903941,removed,setting,feature_width,,500,nm,gao15:recipe,gap height of the cavity,s6.p1;s6.x1,
+A3,thirteen (repository form_versions),10.1116_1.4903941,evidence changed,setting,feature_width,stage=initial,500,nm,gao15:recipe,cavity height,s6.x1,s6.p1;s6.x1
+A3,thirteen (repository form_versions),10.1116_1.4903941,removed,setting,pillar_spacing,,10,µm,gao15:recipe,distance between the oxide pillars,s6.p4,
+A3,thirteen (repository form_versions),10.1116_1.4903941,evidence changed,setting,pillar_spacing,stage=initial,10,µm,gao15:recipe,pillar distance,s6.p21,s6.p4;s6.p21
+A3,thirteen (repository form_versions),10.1116_6.0001094,removed,setting,gas_flow_rate,,10-400,sccm,wer21:recipe,Flow,tabI.r1c2;tabI.r2c2,
+A3,thirteen (repository form_versions),10.1116_6.0001094,removed,setting,gas_flow_rate,,200,sccm,wer21:recipe,flow,fig5.cap,
+A3,thirteen (repository form_versions),10.1116_6.0001094,evidence changed,setting,gas_flow_rate,gas=o2,200,sccm,wer21:recipe,flow,s22.p8,s22.p8;fig5.cap
+A3,thirteen (repository form_versions),10.1116_6.0001094,evidence changed,setting,gas_flow_rate,gas=o2;step=plasma,10-400,sccm,wer21:recipe,flow,abs.g3,abs.g3;tabI.r1c2;tabI.r2c2
+A3,thirteen (repository form_versions),10.1116_6.0001094,removed,setting,plasma_power,,150,W,wer21:recipe,plasma power,s18.p1;s18.p4;tabI.r5c4;tabI.r7c4,
+A3,thirteen (repository form_versions),10.1116_6.0001094,removed,setting,plasma_power,stat=maximum,250,W,wer21:recipe,power,s15.p2,
+A3,thirteen (repository form_versions),10.1116_6.0001094,evidence changed,setting,plasma_power,stat=maximum;step=plasma,250,W,wer21:recipe,power,fig2.cap,s15.p2;fig2.cap
+A3,thirteen (repository form_versions),10.1116_6.0001094,evidence changed,setting,plasma_power,step=plasma,150,W,wer21:recipe,W,s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap,s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4;tabI.r7c4
+A3,thirteen (repository form_versions),10.1116_6.0001094,removed,setting,process_pressure,,0.0001-0.01,mbar,wer21:recipe,Pressure,tabI.r1c3,
+A3,thirteen (repository form_versions),10.1116_6.0001094,removed,setting,process_pressure,,0.005,mbar,wer21:recipe,pressure,s25.p13;s25.p15;tabI.r6c3,
+A3,thirteen (repository form_versions),10.1116_6.0001094,evidence changed,setting,process_pressure,kind=set_point,0.005,mbar,wer21:recipe,fixed pressure,fig13.cap,s25.p13;s25.p15;fig13.cap;tabI.r6c3
+A3,thirteen (repository form_versions),10.1116_6.0001094,evidence changed,setting,process_pressure,step=plasma,0.0001-0.01,mbar,wer21:recipe,pressure,abs.g3,abs.g3;tabI.r1c3
+A3,thirteen (repository form_versions),10.1116_6.0003182,removed,observation,process_pressure,,9,Torr,gre23:method:process_monitor,p,s12.p2,
+A3,thirteen (repository form_versions),10.1116_6.0003182,evidence changed,observation,process_pressure,step=hold_A,9,Torr,gre23:method:process_monitor,start of the hold step,s12.p16,s12.p2;s12.p16
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,1 -> 2 facts,comparison,pulse_time,,,,ela03,,s3.p1;fig3,s3.p1;fig3 | s3.p3;s3.p5;fig4;fig5a;fig5b
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,aspect_ratio,,5000,,ela03:run:r_zno_ar5000,aspect ratio L/d,fig7.cap,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,evidence changed,setting,aspect_ratio,stage=initial,5000,,ela03:run:r_zno_ar5000,aspect ratio,s4.p11,s4.p11;fig7.cap
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,,1,s,ela03:run:r_zno_1s,Exposure Times (s),fig5.cap,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,,10,s,ela03:run:r_zno_10s,Exposure Times (s),fig5.cap,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,,3,s,ela03:run:r_zno_3s,Exposure Times (s),fig5.cap,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,,30,s,ela03:run:r_zno_30s,Exposure Times (s),fig5.cap,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,species=dez,1,s,ela03:run:r_zno_1s,exposure times,fig5a,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,species=dez,10,s,ela03:run:r_zno_10s,exposure times,fig5a,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,species=dez,3,s,ela03:run:r_zno_3s,exposure times,fig5a,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,setting,pulse_time,species=dez,30,s,ela03:run:r_zno_30s,exposure times,fig5a,
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,evidence changed,setting,pulse_time,species=dez;step=reactant_A,1,s,ela03:run:r_zno_1s,exposure times,fig4.cap,fig4.cap;fig5.cap;fig5a
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,evidence changed,setting,pulse_time,species=dez;step=reactant_A,10,s,ela03:run:r_zno_10s,exposure times,fig4.cap,fig4.cap;fig5.cap;fig5a
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,evidence changed,setting,pulse_time,species=dez;step=reactant_A,3,s,ela03:run:r_zno_3s,exposure times,fig4.cap,fig4.cap;fig5.cap;fig5a
+A3,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,evidence changed,setting,pulse_time,species=dez;step=reactant_A,30,s,ela03:run:r_zno_30s,exposure times,fig4.cap,fig4.cap;fig5.cap;fig5a
+A4,thirteen (repository form_versions),10.1021_cm0303080,removed,derived,coated_aspect_ratio,basis=AR;level=50%,5136.84,,ela03:ent:spec_zno_ar5000,,s4.p11;fig7b,
+A4,thirteen (repository form_versions),10.1021_cm0303080,removed,observation,penetration_depth,level=50%;origin=entrance,97.6,µm,ela03:ent:spec_zno_ar5000:meas:epma,relative ZnO coverage,fig7b,
+A4,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,coated_aspect_ratio,basis=AR;level=50%,5136.84,,ela03:ent:s_zno_ar5000,,s4.p11;fig7b,
+A4,ela03 on the P203 records (P202 accepted),10.1021_cm0303080,removed,derived,penetration_depth,level=50%,97.6,µm,ela03:ent:s_zno_ar5000:meas:measurement,penetration_depth,fig7b,
