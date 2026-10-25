@@ -266,7 +266,9 @@ psed_v2/
   compile lists, never changes: on one computation unit (own, measurement and P190-inherited facts, compile.unit_inputs), a
   penetration_depth above a feature_depth or a coated_aspect_ratio above an aspect_ratio, each number its printed range (a fact given
   as a range: min to max) -> <pid>.domain_check.csv. binding.py --write keeps the reason of an item whose unit is unchanged; --reason
-  TEXT is written on an item whose unit changed.
+  TEXT is written on an item whose unit changed. An element with no text (a decided empty header cell) is not sent and not required in
+  pass 1; coverage records it as no knowledge, reason empty. pass1_elements.py --form-version LABEL labels new lines (P184-r1: P184's
+  rules re-run on a later state; the prompt keeps the form's text); form_versions.csv: P184-r1 candidate for yim20 and zou23.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

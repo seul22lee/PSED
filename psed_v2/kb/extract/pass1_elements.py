@@ -327,13 +327,15 @@ def jobs(pid, flat=True, only=None):
     """[(1, group, prompt, response schema, element ids, prefix)]: prompt = the prefix, then the group's ELEMENTS (render.group);
     flat (the default, P148-cost2): the P139 record schema, accepted with the cached prefix; flat=False: record_schema() by type,
     rejected (400) as a oneOf and as an anyOf with $defs. P179: only (element ids): a group's job holds only those of its elements (a
-    re-extraction; a table or figure group still shows its whole table or figure), groups holding none are left out."""
+    re-extraction; a table or figure group still shows its whole table or figure), groups holding none are left out. P196 (user): an element
+    with no text (a decided empty header cell) is neither sent nor among the ids to answer."""
     form = C.schema("form.json")
     pre = prefix(pid, form)
     text, rows = C.E.texts(pid), C.E.load(pid)
     out = []
     for sec, whole in groups(pid)[0].items():
-        rs = [r for r in whole if only is None or r["element_id"] in only]
+        rs = [r for r in whole if (only is None or r["element_id"] in only) and (text.get(r["element_id"]) or "").strip()]   # P196 (user): an
+        #                                                                         element with no text is not sent and not required
         if not rs:
             continue
         ids = [r["element_id"] for r in rs]
@@ -350,7 +352,7 @@ def main(arg):
         import csv
         only = {r["element"] for r in csv.DictReader(open(sys.argv[sys.argv.index("--elements-from") + 1], encoding="utf-8")) if r["paper"] == key}
     js = jobs(pid, flat="--schema=typed" not in sys.argv, only=only)           # P148-cost2: flat (P139) by default; the by-type schema drew a 400
-    groups_only = [a for a in sys.argv[2:] if not a.startswith("--") and not a.endswith(".csv")]
+    groups_only = [a for i, a in enumerate(sys.argv[2:], 2) if not a.startswith("--") and not a.endswith(".csv") and sys.argv[i - 1] != "--form-version"]
     if groups_only:                                                             # optional: only these groups
         js = [j for j in js if j[1] in groups_only]
     unmapped = [j[1] for j in js if not is_section(j[1])]
@@ -362,7 +364,8 @@ def main(arg):
         print(f"{key}: prefix {pre} chars (~{pre // 4} tokens at 4 chars/token), sent once as cached content; group parts {sum(rest)} chars in all, "
               f"largest {max(rest, default=0)} ({max(js, key=lambda j: len(j[2]) - len(j[5]))[1] if js else '-'})")
         return 0
-    out, _ = C.run(pid, js, THINKING)
+    label = sys.argv[sys.argv.index("--form-version") + 1] if "--form-version" in sys.argv else None   # P196 (user): a line label (P184-r1)
+    out, _ = C.run(pid, js, THINKING, form_version=label)                       # the prompt keeps the form's text; only the line carries it
     val = Draft202012Validator(C.schema("form.json"))
     types, nk, missing, bad, nrec, unparsed = collections.Counter(), collections.Counter(), 0, 0, 0, []
     for line in out:

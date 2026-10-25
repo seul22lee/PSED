@@ -145,9 +145,10 @@ def call(client, prompt, rschema, thinking=None, cached=None):
                                   cache_read_tokens=u.cached_content_token_count or 0), ts
 
 
-def run(pid, jobs, thinking=None):
+def run(pid, jobs, thinking=None, form_version=None):
     """Every job: from the cache, else one call (cached, then appended to records/<pid>.jsonl). Returns (lines, calls made).
-    thinking (P133, pass 1): the provider's thinking setting, recorded in the line; None = the model's default (pass 0)."""
+    thinking (P133, pass 1): the provider's thinking setting, recorded in the line; None = the model's default (pass 0). P196 (user):
+    form_version labels the new lines (P184-r1: P184's rules re-run on a later state); None = export.FORM_VERSION."""
     todo = plan(pid, jobs, thinking)
     client = client_for("google", os.environ[KEY_ENV]) if todo else None
     out, made, names = [], 0, {}                                                # P148: prefix hash -> cached content name
@@ -167,7 +168,7 @@ def run(pid, jobs, thinking=None):
             text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
             made += 1
             line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
-                        form_version=X.FORM_VERSION,                            # P158: compile.py applies the frozen form's rules to this line
+                        form_version=form_version or X.FORM_VERSION,            # P158: compile.py applies the frozen form's rules to this line
                         request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), **({"prefix_hash": ph} if pre else {}), response=text)
             cp.parent.mkdir(parents=True, exist_ok=True)
             cp.write_text(json.dumps(line, ensure_ascii=False), encoding="utf-8")

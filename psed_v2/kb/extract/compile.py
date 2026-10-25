@@ -2524,7 +2524,8 @@ class Run:
         return rows
 
     def coverage(self, rows):
-        """P161: a derived unit's condition (made from its legend label, not extracted) covers no element."""
+        """P161: a derived unit's condition (made from its legend label, not extracted) covers no element. P196 (user): an element with no
+        text is no knowledge, reason empty."""
         by_el = collections.defaultdict(list)
         for f in rows:
             if "#" in f["fact_id"] and not f.get("_origin"):
@@ -2538,7 +2539,9 @@ class Run:
             eid = r["element_id"]
             a = self.answers.get(eid)
             c = dict(element_id=eid, kind=r["kind"], status="", fact_ids="", reason="", n_numbers=r["n_numbers"], n_numbers_reached="")
-            if by_el[eid]:
+            if not (self.text.get(eid) or "").strip():                          # P196 (user): an element with no text is not sent, not required
+                c.update(status="no knowledge", reason="empty")
+            elif by_el[eid]:
                 c.update(status="covered", fact_ids=";".join(f["fact_id"] for f in by_el[eid]),
                          n_numbers_reached=str(len(F.nums_of(self.text.get(eid, "")) & {round(abs(F.num(f[x])), 9) for f in by_el[eid] for x in ("value", "value_min", "value_max") if F.num(f[x]) is not None})))
             elif isinstance(a, str):
