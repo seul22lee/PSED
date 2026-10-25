@@ -33,7 +33,8 @@ RULES = """RULES (what the codebook does not say)
 Answer
 - Answer every element id of ELEMENTS once: nk = none with its records, or nk = one of the codebook's NK reasons with records empty
   (duplicate: duplicate_of = the element id it repeats). nk = none always carries at least one record; an element that gives no
-  record (a table header cell among them) answers with an NK reason.
+  record (a table header cell among them) answers with an NK reason. An element whose text holds a number answers records,
+  duplicate, citation_line or boilerplate, never no_knowledge (a table header cell may).
 Fields
 - Every field of a record is present; write null when it does not apply.
 - quote: words copied verbatim from the element, as few as identify the record; every record has one.
@@ -150,15 +151,19 @@ def flat_schema(form):
     return rec
 
 
-def response_schema(form, ids, flat=False):
+def response_schema(form, ids, flat=False, numeric=()):
     """{"answers": [{"id", "nk", "duplicate_of", "records"}]} (user, P133: element ids are values, not keys); the record is
     record_schema() (by type, P148-cost2), or with flat the P139 record. P202 (user): an answer is one of two shapes (anyOf): nk none
-    with at least one record, or nk an NK reason with no record."""
+    with at least one record, or nk an NK reason with no record. P204 (user, B2): numeric = the ids of elements holding a number (C.numeric_ids:
+    elements.csv n_numbers > 0, a table header cell excepted): they may not answer no_knowledge (one more branch, by id enum)."""
     rec, defs = (flat_schema(form), {}) if flat else record_schema(form)
     shape = lambda nk, n: {"type": "object", "required": ["id", "nk", "records"], "properties": {   # noqa: E731
         "id": {"type": "string", "enum": ids}, "nk": {"type": "string", "enum": nk}, "duplicate_of": {"type": "string"},
         "records": {"type": "array", "items": rec, **n}}}
-    item = {"anyOf": [shape(["none"], {"minItems": 1}), shape(NK_FORM, {"maxItems": 0})]}
+    may_nk = [i for i in ids if i not in set(numeric)]
+    item = {"anyOf": [shape(["none"], {"minItems": 1}), shape([n for n in NK_FORM if n != "no_knowledge"], {"maxItems": 0})]
+            + ([{**shape(["no_knowledge"], {"maxItems": 0}), "properties": {**shape(["no_knowledge"], {"maxItems": 0})["properties"],
+                                                                         "id": {"type": "string", "enum": may_nk}}}] if may_nk else [])}
     return {"type": "object", "required": ["answers"], "properties": {"answers": {"type": "array", "items": item}}, **({"$defs": defs} if defs else {})}
 
 
@@ -337,6 +342,7 @@ def jobs(pid, flat=True, only=None):
     form = C.schema("form.json")
     pre = prefix(pid, form)
     text, rows = C.E.texts(pid), C.E.load(pid)
+    numeric = C.numeric_ids(pid)                                                # P204 (user, B2)
     out = []
     for sec, whole in groups(pid)[0].items():
         rs = [r for r in whole if (only is None or r["element_id"] in only) and (text.get(r["element_id"]) or "").strip()]   # P196 (user): an
@@ -345,7 +351,7 @@ def jobs(pid, flat=True, only=None):
             continue
         ids = [r["element_id"] for r in rs]
         shown = rs if is_section(sec) else whole                                # P179: a table, figure or equation group shows its whole block
-        out.append((1, sec, pre + f"ELEMENTS (group {sec}):\n" + render.group(pid, sec, shown, text, rows), response_schema(form, ids, flat), ids, pre))
+        out.append((1, sec, pre + f"ELEMENTS (group {sec}):\n" + render.group(pid, sec, shown, text, rows), response_schema(form, ids, flat, numeric), ids, pre))
     return out
 
 

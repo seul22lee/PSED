@@ -100,12 +100,21 @@ def cache_path(pid, pass_, section, h):
     return CACHE / pid / f"{pass_}_{section}_{h[:16]}_{MODEL}.json"
 
 
+def numeric_ids(pid):
+    """P204 (user, B2): the element ids whose text holds a number (kb/pilot/<pid>.elements.csv n_numbers > 0), a table header cell
+    (row 0) excepted: they may not answer no_knowledge in pass 1."""
+    import re
+    return {r["element_id"] for r in E.load(pid) if (r.get("n_numbers") or "0").isdigit() and int(r.get("n_numbers") or 0) > 0
+            and not re.search(r"\.r0c\d+$", r["element_id"])}
+
+
 ID_CHECKED = ("0ax",)                                                           # P201 (user): passes whose answers must be exactly the job's ids
 
 
 def line_failure(x):
-    """failure() of a records or cache line, with its listed ids for an ID_CHECKED pass."""
-    return failure(x.get("response"), x.get("element_ids") if x.get("pass") in ID_CHECKED else None)
+    """failure() of a records or cache line, with its listed ids for an ID_CHECKED pass; P204 (user, B2): a pass-1 line with its paper's
+    numeric ids."""
+    return failure(x.get("response"), x.get("element_ids") if x.get("pass") in ID_CHECKED else None, numeric_ids(x["pid"]) if x.get("pass") == 1 and x.get("pid") else None)
 
 
 def cached(cp):
@@ -162,11 +171,12 @@ def call(client, prompt, rschema, thinking=None, cached=None):
                                   cache_read_tokens=u.cached_content_token_count or 0), ts
 
 
-def failure(text, ids=None):
+def failure(text, ids=None, numeric=None):
     """P196b (user) rule 1, P200 (user) extended: why a response is a failed call ('' when it is none): it does not parse (the tolerant JSON
     parse, figures.loads_json, the one compile uses), or a string of the parsed object (a key or a value) holds U+0000 or U+FFFD. P201
     (user): with ids (an ID_CHECKED pass), its answers (key answers, each an id) miss a listed id or answer an unlisted one. P202 (user):
-    an answer with nk none and no record (pass 1's answer shapes, checked here in case the provider does not enforce the schema)."""
+    an answer with nk none and no record (pass 1's answer shapes, checked here in case the provider does not enforce the schema). P204
+    (user, B2): with numeric (pass 1: numeric_ids), an answer no_knowledge for an element holding a number."""
     try:
         obj = loads_json(text)
     except (ValueError, TypeError) as e:
@@ -184,6 +194,9 @@ def failure(text, ids=None):
     empty = [str(a.get("id")) for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict) and a.get("nk") == "none" and not a.get("records")]
     if empty and not why:
         why = f"nk none with no record: {', '.join(empty[:20])}"
+    nk_num = [str(a.get("id")) for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict) and a.get("nk") == "no_knowledge" and a.get("id") in (numeric or ())]
+    if nk_num and not why:
+        why = f"no_knowledge on an element holding a number: {', '.join(nk_num[:20])}"
     if ids is not None and not why:
         got = [a.get("id") for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict)]
         miss, extra = [i for i in ids if i not in got], sorted({str(i) for i in got if i not in ids})
@@ -245,7 +258,7 @@ def run(pid, jobs, thinking=None, form_version=None):
             for attempt in range(before + 1, 3):                                # P196b rule 2: the first attempt and one retry per request
                 text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
                 made += 1
-                why = failure(text, ids if pass_ in ID_CHECKED else None)
+                why = failure(text, ids if pass_ in ID_CHECKED else None, numeric_ids(pid) if pass_ == 1 else None)
                 if not why:
                     break
                 list_failed(dict(pid=pid, section=section, prompt_hash=h, model=MODEL, form_version=form_version or X.FORM_VERSION, request_ts=ts,

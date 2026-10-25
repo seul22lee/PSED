@@ -322,6 +322,12 @@ psed_v2/
   a fact under two differing fuller facts is not merged. A4: a 50% penetration_depth whose printed range reaches every feature_depth
   its unit holds or inherits is not written (no coated_aspect_ratio from it), listed in domain_check.csv (column reason: "front at the
   feature's end").
+- P204 B (user): render.example carries the gold's measurement units (gold_measurements: method when the form's list holds it), a unit
+  whose gold label is not printed in its evidence gets name_as_printed null and distinguished_by (its own settings that differ among
+  its siblings; quantity ids only), a specimen its specimen_class / structure_class, a run its recipe fields from its own setting or the
+  nearest ancestor's single value with quotes (pass1_elements._quote, else its evidence element's words). Pass 1: an element holding a
+  number (common.numeric_ids: elements.csv n_numbers > 0, a table header cell excepted) never answers no_knowledge (an anyOf branch by
+  id enum; common.failure too). Form version P204 (form_versions.csv corpus candidate); P202 rejected for ela03.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

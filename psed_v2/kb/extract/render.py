@@ -514,9 +514,17 @@ def example(pid, form):
     gold's value where the gold gives it, else null), so the example follows any later form version: a unit's id, role, name_as_printed,
     parent, introduced_in, data (its gold curves, simulated for a model run, else measured) and evidence_quote (the words of its first
     evidence element, as SOURCES gives them; the form never takes a null quote); a table layout's table, layout and units; a panel
-    layout's panel, layout and unit."""
+    layout's panel, layout and unit. P204 (user, B1): also the gold's measurement units (gold_measurements: role measurement, method,
+    parent); a unit whose gold label is not printed in its evidence elements has name_as_printed null and distinguished_by = its own
+    settings whose values differ among its siblings (same parent, same role; all its own settings when it has none); a specimen's
+    specimen_class and structure_class from the gold row's qualifiers; a run's recipe fields (reactant_A, reactant_B, carrier_gas,
+    process_mode, material) from its own setting, else the nearest ancestor's single value (P190), each with a quote
+    (pass1_elements._quote, else the words of the setting's evidence element as SOURCES gives them). A field is null only where the
+    gold states nothing, or states it in no value the form takes (a quantity other, a method outside the form's list)."""
     from jsonschema import Draft202012Validator
-    PRE = {"run": "r", "simulation": "sim", "specimen": "s", "model_run": "m"}
+    import compile as K
+    import pass1_elements as P1
+    PRE = {"run": "r", "simulation": "sim", "specimen": "s", "model_run": "m", "measurement": "meas"}
     item = lambda k: next(x for x in form["properties"][k]["anyOf"] if x.get("type") == "array")["items"]["properties"]   # noqa: E731
     build = lambda k, gold: {f: gold.get(f) for f in item(k)}                    # noqa: E731
     for p in [p for p in reversed(list(E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
@@ -525,6 +533,12 @@ def example(pid, form):
         U = gold_units(p)
         if not {"run", "specimen", "simulation", "model_run"} <= {u["role"] for u in U}:
             continue
+        U = U + gold_measurements(p, U)                                         # P204 (user, B1)
+        G = {r["fact_id"]: r for r in _gold(p)}
+        own = collections.defaultdict(list)
+        for r in G.values():
+            if "#" in r["fact_id"] and r["type"] == "setting" and r["quantity"] and (r["value"] or r["value_text"]):
+                own[r["parent"]].append(r)
         key = E.PAPERS[p]
         n, ids = collections.Counter(), {}
         for u in U:
@@ -535,14 +549,47 @@ def example(pid, form):
         for c, e in cu.items():
             curves[e].append(c)
         text = E.texts(p)
+        check = lambda e, q: K.normalize(q) in K.normalize(text.get(e, ""))   # noqa: E731  (as pass 1's examples)
+        quals = lambda r: dict(x.split("=", 1) for x in (r.get("qualifiers") or "").split(";") if "=" in x)   # noqa: E731
+        qids, methods = set(form["$defs"]["quantity_id"]["enum"]), set(next(x for x in item("units")["method"]["anyOf"] if "enum" in x)["enum"])
+        sib = collections.defaultdict(list)
+        for u in U:
+            sib[(u["parent"], u["role"])].append(u["gid"])
+
+        def printed(u):
+            return bool(u["name"]) and any(K.normalize(u["name"]).lower() in K.normalize(text.get(e, "")).lower() for e in u["evidence"])
+
+        def distinguished(u):
+            others = [g for g in sib[(u["parent"], u["role"])] if g != u["gid"]]
+            vals = lambda g, q: {(r["value"] or r["value_text"], r["unit"]) for r in own[g] if r["quantity"] == q}   # noqa: E731
+            out = [{"quantity": r["quantity"], "value": r["value"] or r["value_text"], "unit": r["unit"] or None} for r in own[u["gid"]]
+                   if r["quantity"] in qids and (not others or any(vals(g, r["quantity"]) != vals(u["gid"], r["quantity"]) for g in others))]
+            return out or None
+
+        def recipe(gid):
+            out = {}
+            for f in ("reactant_A", "reactant_B", "carrier_gas", "process_mode", "material"):
+                x, row = gid, None
+                while x in G and row is None:
+                    held = [r for r in own[x] if r["quantity"] == f]
+                    if held:
+                        row = held[0] if len({r["value_text"] or r["value"] for r in held}) == 1 else False
+                    x = G[x]["parent"]
+                if row:
+                    out.update({f: row["value_text"] or row["value"], f + "_quote": P1._quote(row, text, check) or src(row["evidence"].split(";")[0])})
+            return out
 
         def src(e):
             m = re.fullmatch(r"(tabu?\w+?)\.r(\d+)c\d+", e)
             t = " | ".join(text[x] for x in sorted(text, key=lambda x: x) if m and re.fullmatch(rf"{m.group(1)}\.r{m.group(2)}c\d+", x)) if m else text.get(e, "")
             return " ".join(t.split()[:40])
-        unit_item = lambda u: build("units", {"id": ids[u["gid"]], "role": u["role"], "name_as_printed": u["name"] or None, "parent": ids.get(u["parent"]),   # noqa: E731
+        unit_item = lambda u: build("units", {"id": ids[u["gid"]], "role": u["role"], "name_as_printed": u["name"] if printed(u) else None,   # noqa: E731
+                                              "distinguished_by": None if printed(u) else distinguished(u), "parent": ids.get(u["parent"]),
                                               "introduced_in": u["evidence"] or None, "evidence_quote": src(u["evidence"][0]) if u["evidence"] else None,
-                                              "data": [{"id": c, "role": "simulated" if u["role"] == "model_run" else "measured"} for c in curves.get(u["gid"], [])] or None})
+                                              "data": [{"id": c, "role": "simulated" if u["role"] == "model_run" else "measured"} for c in curves.get(u["gid"], [])] or None,
+                                              "method": u.get("method") if u["role"] == "measurement" and u.get("method") in methods else None,
+                                              **({k: quals(G[u["gid"]]).get(k) for k in ("specimen_class", "structure_class")} if u["role"] == "specimen" else {}),
+                                              **(recipe(u["gid"]) if u["role"] == "run" else {})})
         tl, pl = gold_layouts(p, key)
         obj = {"units": [unit_item(u) for u in U],
                "table_layouts": [build("table_layouts", {"table": t["table"], "layout": t["layout"].split()[0], "units": [ids[x] for x in t["units"] if x in ids] or None})

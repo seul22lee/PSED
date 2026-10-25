@@ -101,14 +101,14 @@ Record types:
 - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
 - cited: a value or statement the paper attributes to another work (not a setting); quantity = the entry the value stands for, else other with a candidate; never null (P149). An element that states the paper's own value and a literature value yields both an observation (or setting) and a cited record (P150).
 
-Form rules (P158, rule 1 scoped in P163; form version P202, frozen; form.json allOf "P158 rule n"):
+Form rules (P158, rule 1 scoped in P163; form version P204, frozen; form.json allOf "P158 rule n"):
 
 - rule 1, step: a setting or observation of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163). Retired in form version P184 (user): a step is written only when the text names it; compile and form.json no longer require one.
 - rule 2, cited: a cited record carries no observation role: its kind is cited or null (measured, fitted, simulated are the roles of other records, never of a cited one).
 - rule 3, cited: kind cited only on a cited record (one field, one value: the record's type).
 - rule 4, definition and cited: quantity is never null: the entry the term or value stands for, else other with label_as_printed.
 - rule 5, other: label_as_printed is required (the label as printed, else the record's own meaning); nearest = the closest ontology id, or null.
-- species (form version P202, P179): On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty. This rule is about symbol records; settings and observations take their species from the text and the run's recipe fields.
+- species (form version P204, P179): On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty. This rule is about symbol records; settings and observations take their species from the text and the run's recipe fields.
 - nearest (a field of every record): for quantity other, the closest ontology id, else null; null for any other record.
 
 Stances (asserted, hedged, open, limitation): "likely", "may" -> hedged; "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation; asserted: stated as a finding, without hedging words (P143b)
