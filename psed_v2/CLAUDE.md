@@ -349,6 +349,22 @@ psed_v2/
   none). compile.failed_lines: a pass-0, 0x or fill line that common.failure fails is read as absent by every reader of the latest such
   line (after_pass0, latest_pass0, recipe_fill, pass0_object, Run.read, pass1_elements.units_block, process_mode_fill.pass0_line,
   gates) and listed (compile.log; stderr / stdout of the prompt builders).
+- P207 (user, compile only). 1: step e2 (compile.Run.quote_value): a value record (value, or both ends of a range) whose quote holds a
+  number (elements.numbers, P204's n_numbers: no formula digit, no figure / table / equation reference, no citation) but none equal to
+  the record's value, as printed or after converting the record's unit to a unit the quote names (equal within the quote number's
+  printed precision; the sign not compared), is dropped and listed (kb/compiled/<pid>.quote_value.csv). The quote's numbers
+  (compile.quote_numbers): plain, thousands with commas or (thin) spaces, a × 10^n, a ± b × 10^n, (a ± b) × 10^n, 10^n, number words.
+  Units: only those the quote names (user's wording; a caption's or column header's unit is not read). Not checked (user): a record
+  whose element is a figure panel (its value read from the image); a derived unit's condition. A distinguished_by part (P205) is a
+  value record with its unit's evidence_quote. 2: lists.MOLECULE_SCOPED (user: SUBSTANCE_SCOPED plus every other quantity of the species
+  qualifier's applies_to except DETECTED_PHASE crystallite_size, phase, signal_intensity, film_density): a species of kind material
+  (vocab.MATERIALS) on one is cleared after the paper-wide step, species.csv outcome 'material is not a molecule'
+  (compile.Run.material_species), and is no evidence in the conflict test. The paper-wide test (P179c) groups by (quantity, symbol);
+  A1 (user): a record whose quantity is a definition's and whose label (not a symbol) is a phrase of that definition's quote is read
+  under the symbol (a label two symbols' quotes hold names neither). 3: a transform's inputs (unit_inputs.inputs, revises P204 A2):
+  where the value comes from first (kind_rank: text, table or caption; then figure panels only; then computed_by_kb), then nearness as
+  A2 with P190 within a source (a nearest holder of several values gives none and the next source is tried), then the declared
+  qualifiers exactly. The domain check and the DERIVED entries keep their order.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

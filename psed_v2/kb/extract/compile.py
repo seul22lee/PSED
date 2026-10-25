@@ -72,6 +72,7 @@ DOMAIN_FIELDS = ["paper", "unit", "check", "fact", "value", "value_unit", "sourc
 RECIPE_CSV = ["run", "field", "value", "quote", "element"]                      # P187: kb/compiled/<pid>.recipe_fields.csv (compile stores the recipe fields)
 SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
 RANGE_FIELDS = ["paper", "element", "fact_id", "type", "quantity", "value", "unit", "as_fraction", "range", "quote", "statement"]   # P190: <pid>.out_of_range.csv
+QUOTE_VALUE_FIELDS = ["paper", "element", "type", "quantity", "label", "value", "value_min", "value_max", "unit", "quote", "quote_numbers", "quote_units", "outcome"]   # P207 (user) 1
 SPECIES_FIELDS = ["element", "label", "type", "quantity", "record_species", "definition", "own_element_names", "outcome", "species", "fact_id"]   # P179   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
@@ -145,6 +146,79 @@ def unit_symbol(u):
 def dimless(u):
     """P151 C2: the dimensionless unit ("1", "-", "") is written as an empty unit."""
     return "" if u in ("1", "-", "") else u
+
+
+EXPONENT = r"10\s*(?:\^\s*\{?\s*([-+]?\d+)\s*\}?|([-+]\d+))"                                            # P207: ^n, ^{n}, or a signed n (10−3)
+SCI_GROUP = re.compile(r"\(([^()]*)\)\s*[×x·*]\s*" + EXPONENT)                                                # P207: (a ± b) × 10^n
+SCI_NUMBER = re.compile(r"(?<![\d.])([-+]?\d+(?:\.\d+)?)\s*(?:±\s*(\d+(?:\.\d+)?)\s*)?[×x·*]\s*" + EXPONENT)   # P207: a × 10^n, a ± b × 10^n
+POWER_OF_TEN = re.compile(r"(?<![\d.×x·*])10\s*\^\s*\{?\s*([-+]?\d+)\s*\}?")                            # P207: 10^n
+NUMBER_WORDS = {w: i for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen "
+                                            "seventeen eighteen nineteen twenty".split())} | {"thirty": 30, "forty": 40, "fifty": 50, "hundred": 100, "thousand": 1000}
+
+
+def half_digit(s):
+    """+- half the last printed digit of a number as written ('0.15' -> 0.005, '5' -> 0.5); 0 when it is no number."""
+    import decimal
+    try:
+        return 0.5 * 10 ** decimal.Decimal(str(s).strip()).as_tuple().exponent
+    except (decimal.InvalidOperation, ValueError):
+        return 0.0
+
+
+def quote_numbers(quote):
+    """P207 (user) 1: the numbers a quote holds -> ([(value, half its last printed digit)], whether it holds a digit): plain numbers (the
+    absolute value too: a range '100-300' prints -300), thousands written with commas or (thin) spaces, a × 10^n, a ± b × 10^n,
+    (a ± b) × 10^n and 10^n (LaTeX, <sup>, Unicode superscript or a signed exponent after × 10), numbers in words (zero to twenty, the
+    tens to fifty, hundred, thousand). Whether the quote holds a number at all is elements.numbers (the n_numbers of P204: no digit of a
+    formula or a symbol, no figure, table or equation reference, no citation marker)."""
+    sup = str.maketrans("⁻⁺⁰¹²³⁴⁵⁶⁷⁸⁹", "-+0123456789")
+    t = re.sub(r"<sup>(.*?)</sup>", r"^{\1}", quote or "")
+    t = re.sub(r"[⁻⁺]?[⁰¹²³⁴⁵⁶⁷⁸⁹]+", lambda m: "^{" + m.group(0).translate(sup) + "}", t)
+    t = MARKUP.sub(" ", t).replace("\u2212", "-").replace("$", "")
+    t = re.sub(r"\\(?:text|mathrm|mathit|mathbf|rm)\{([^{}]*)\}", r"\1", t)
+    t = re.sub(r"\\times", "×", re.sub(r"\\cdot", "·", re.sub(r"\\pm", "±", t)))
+    t = re.sub(r"\\[,;:! ]", " ", t)
+    out = []
+    for m in SCI_GROUP.finditer(t):
+        e = int(m.group(2) or m.group(3))
+        out += [(float(n) * 10 ** e, half_digit(n) * 10 ** e) for n in NUMBER.findall(m.group(1))]
+    for m in SCI_NUMBER.finditer(t):
+        e = int(m.group(3) or m.group(4))
+        out += [(float(n) * 10 ** e, half_digit(n) * 10 ** e) for n in (m.group(1), m.group(2)) if n]
+    out += [(10.0 ** int(m.group(1)), 0.0) for m in POWER_OF_TEN.finditer(t)]
+    for s in NUMBER.findall(t) + NUMBER.findall(re.sub(r"(?<=\d)[,\s\u2009\u202f\u00a0](?=\d{3}(?!\d))", "", t)):
+        out.append((float(s), half_digit(s)))
+    out += [(float(NUMBER_WORDS[w]), 0.0) for w in re.findall(r"[a-z]+", t.lower()) if w in NUMBER_WORDS]
+    out += [(abs(v), h) for v, h in out if v < 0]
+    return list(dict.fromkeys(out)), bool(C.E.numbers(quote or ""))
+
+
+def quote_units(quote, unit):
+    """P207 (user) 1: the units.yaml units a quote names (a spelling as a whole token of the normalize()d quote) of the dimension of unit."""
+    a = V.UNIT_ALIAS.get(unit or "1", unit or "1")
+    if a not in V.UNIT_BASE:
+        return []
+    dim = V.DIMENSION_OF.get(V.UNIT_BASE[a][0], V.UNIT_BASE[a][0])
+    nq = normalize((quote or "").replace("\\AA", "Å"))
+    return sorted({s for k, s in UNIT_SYMBOL.items() if k and s != a and s in V.UNIT_BASE and V.DIMENSION_OF.get(V.UNIT_BASE[s][0], V.UNIT_BASE[s][0]) == dim
+                   and re.search(rf"(?<![a-zµ]){re.escape(k)}(?![a-z0-9])", nq)})
+
+
+def value_in_quote(v, unit, nums, units):
+    """P207 (user) 1: how a record's number equals a number of its quote: 'as printed' (the same number), 'converted to <u>' (the record's
+    unit converted to a unit the quote names, equal within the quote number's printed precision), '' when none. The value's sign is not
+    compared (a rate of decrease of ~2 mTorr/min, recorded -2)."""
+    v = abs(v)
+    if any(abs(v - c) <= 1e-9 * max(abs(v), abs(c)) for c, _ in nums):
+        return "as printed"
+    for w in units:
+        try:
+            x = L.convert(v, V.UNIT_ALIAS.get(unit or "1", unit or "1"), w)
+        except (ValueError, KeyError):
+            continue
+        if any(abs(abs(x) - c) <= h + 1e-9 * max(abs(x), abs(c)) for c, h in nums):
+            return f"converted to {w}"
+    return ""
 
 
 def alias_table(ids, entries):
@@ -1370,7 +1444,9 @@ class Run:
           4. else the species is cleared, listed 'species cleared (no evidence)' (P179; P178 listed it 'unverified (record only)').
         A definition record is held to 3 and 4 on its own text. Every such record is a log line 'a1: symbol species ...' and r['a1'].
         P204 (user, A1): a record of the symbol is also one labelled with the meaning this paper's definition record of the symbol gives it
-        (the definition's label_as_printed, its term the symbol; a meaning two symbols share names neither): it is read under the symbol."""
+        (the definition's label_as_printed, its term the symbol; a meaning two symbols share names neither): it is read under the symbol.
+        P207 (user) 2: also a record whose quantity is the definition's and whose label (not a symbol) is a phrase of the definition's quote
+        ('where S is the ALD reactive sticking coefficient'; a label two symbols' quotes hold names neither). Then material_species."""
         text, self.a1_rows = self.text, []
         letters = {m.group(1) for t in text.values() for m in UNNAMED_REACTANT.finditer(t)}
         carrier = {next(iter(vocab_hits(self.pid, "species", r["rec"]["value_text"])), r["rec"]["value_text"]) for r in recs
@@ -1396,7 +1472,7 @@ class Run:
         def row(eid):                                                           # a definition in a table: its row (the symbol and its meaning)
             m = CELL_ID.match(eid)
             return [t for x, t in text.items() if re.match(rf"^{re.escape(m.group(1))}\.r{m.group(2)}c\d+$", x)] if m else [text.get(eid, "")]
-        defs, meaning = collections.defaultdict(list), collections.defaultdict(set)
+        defs, meaning, quoted = collections.defaultdict(list), collections.defaultdict(set), []
         for r in recs:
             rec = r["rec"]
             if rec.get("type") == "definition" and isinstance(rec.get("term"), str) and rec["term"].strip():
@@ -1404,11 +1480,17 @@ class Run:
                 ml = rec.get("label_as_printed") if isinstance(rec.get("label_as_printed"), str) else ""
                 if ml.strip() and C.X.symbol_like(rec["term"]) and not C.X.symbol_like(ml):   # P204 (user, A1): the meaning the definition gives the symbol
                     meaning[C.X.norm_label(ml)].add(rec["term"].strip())
+                if C.X.symbol_like(rec["term"]) and rec.get("quantity") and isinstance(rec.get("quote"), str):   # P207 (user) 2: its quote, of its quantity
+                    quoted.append((rec["quantity"], normalize(rec["quote"]), rec["term"].strip()))
         for r in recs:
             rec = r["rec"]
             lab = rec.get("label_as_printed") if isinstance(rec.get("label_as_printed"), str) else ""
             if not C.X.symbol_like(lab) and len({C.X.symbol_key(x) for x in meaning.get(C.X.norm_label(lab), ())}) == 1:
                 lab = next(iter(meaning[C.X.norm_label(lab)]))                  # P204 (user, A1): a record labelled with a symbol's meaning is read under it
+            elif normalize(lab) and not C.X.symbol_like(lab):                   # P207 (user) 2: a label that is a phrase of a definition's quote
+                hit = {x for qq, nq, x in quoted if qq == rec.get("quantity") and re.search(rf"(?<!\w){re.escape(normalize(lab))}(?!\w)", nq)}
+                if len({C.X.symbol_key(x) for x in hit}) == 1:
+                    lab = min(hit)                                              # one symbol; its spellings (x_p, xp) in a fixed order
             if r.get("origin") or rec.get("type") not in SYMBOL_TYPES or not C.X.symbol_like(lab) or not re.search(r"[A-Za-z\\]", lab):
                 continue
             q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
@@ -1445,7 +1527,29 @@ class Run:
             self.note(f"a1: symbol species {r['eid']} {lab!r} {rec.get('type')} {rec.get('quantity')}: record {own or '-'}, definition "
                       f"{', '.join(f'{e}: {x}' for e, x in found) or '-'} -> {how}" + (f" ({sp})" if sp and sp != own else ""))
         self.symbol_species_paper(recs)
+        self.material_species(recs)                                             # P207 (user) 2
         return recs
+
+    def material_species(self, recs):
+        """a1, P207 (user) 2, after the paper-wide step: a record of a quantity whose species is a reactant or gas molecule
+        (lists.MOLECULE_SCOPED) holding a species of kind material (vocab.MATERIALS) has it cleared, listed in species.csv (outcome
+        'material is not a molecule'; a record outside the symbol step gets its row here)."""
+        mats = set(V.MATERIALS)
+        for r in recs:
+            rec = r["rec"]
+            q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
+            sp = q.get("species")
+            if not isinstance(rec.get("quantity"), str) or rec["quantity"] not in L.MOLECULE_SCOPED or not isinstance(sp, str) or sp not in mats:
+                continue
+            rec["qualifiers"] = {k: v for k, v in q.items() if k != "species"} or None
+            rec["note"] = "; ".join(x for x in (rec.get("note"), f"species cleared: {sp} is a material, not a molecule") if x)
+            if not r.get("a1"):
+                r["a1"] = dict(element=r["eid"], label=rec.get("label_as_printed") or "", type=rec.get("type"), quantity=rec.get("quantity"),
+                               record_species=sp, definition="", own_element_names="")
+                self.a1_rows.append(r["a1"])
+            r["a1"].update(outcome="material is not a molecule", species="")
+            self.count("a1", "species: material is not a molecule")
+            self.note(f"a1: species {r['eid']} {rec.get('type')} {rec.get('quantity')}: {sp} is a material, not a molecule -> cleared")
 
     def symbol_species_paper(self, recs):
         """a1, P179c (user): a symbol is paper-local, its species too (P157d). Within the paper, a symbol (export.symbol_key of the label)
@@ -1453,7 +1557,8 @@ class Run:
         record of the symbol that has none; differing evidenced species clear every record of the symbol ('symbol species conflict').
         Then a user's symbol decision (history.csv kind symbol with a species, for this paper) gives its species to the paper's symbols
         whose subscript is the decided letter, where the species is still empty. P204 (A1, P179 as written): the generic model_reactant backs
-        model records only, here too."""
+        model records only, here too. P207 (user) 2: the records of a symbol are grouped by (quantity, symbol); a material species on a
+        quantity of lists.MOLECULE_SCOPED is no evidence (material_species clears it)."""
         def put(r, sp, how, note):
             rec = r["rec"]
             q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
@@ -1462,14 +1567,15 @@ class Run:
             r["a1"].update(outcome=how, species=sp)
             self.count("a1", f"symbol species: {how}")
             self.note(f"a1: symbol species {r['eid']} {r['a1']['label']!r}: {note}")
-        by = collections.defaultdict(list)
+        by, mats = collections.defaultdict(list), set(V.MATERIALS)
         for r in recs:
             if r.get("a1"):
-                by[C.X.symbol_key(r["a1"]["label"])].append(r)
+                by[(json.dumps(r["a1"]["quantity"]), C.X.symbol_key(r["a1"]["label"]))].append(r)
         for sym, rs in by.items():
             ev = collections.defaultdict(set)
             for r in rs:
-                if r["a1"]["outcome"] in SPECIES_EVIDENCED and r["a1"]["species"]:
+                if r["a1"]["outcome"] in SPECIES_EVIDENCED and r["a1"]["species"] and not (isinstance(r["a1"]["quantity"], str) and r["a1"]["quantity"] in L.MOLECULE_SCOPED
+                                                                                           and r["a1"]["species"] in mats):
                     ev[r["a1"]["species"]].add(r["eid"])
             if len(ev) == 1:
                 (sp, els), = ev.items()
@@ -1831,6 +1937,42 @@ class Run:
                     s = rec["unit"]
                 r["unit"] = dimless(s)                                          # P151 C2
             out.append(r)
+        return out
+
+    def quote_value(self, recs):
+        """P207 (user) 1, step e2: a value record (value, or value_min and value_max: both ends) whose quote holds a number (a digit) but no
+        number equal to the record's value, as printed or after converting the record's unit to a unit the quote names (quote_numbers,
+        quote_units, value_in_quote), is dropped and listed (kb/compiled/<pid>.quote_value.csv). A derived unit's condition (no quote) is not
+        checked; nor (user) a record whose element is a figure panel (its value read from the image, its quote a label)."""
+        self.quote_value_rows, out = [], []
+        for r in recs:
+            rec = r["rec"]
+            ends = [(k, rec.get(k)) for k in (("value",) if isinstance(rec.get("value"), (int, float)) and not isinstance(rec.get("value"), bool) else ("value_min", "value_max"))
+                    if isinstance(rec.get(k), (int, float)) and not isinstance(rec.get(k), bool)]
+            if r.get("origin") or not ends or not rec.get("quote"):
+                out.append(r)
+                continue
+            if self.kind_of.get(r["eid"]) == "panel":                           # P207 (user): read from the image
+                self.count("e2", "not checked: a figure panel's record")
+                out.append(r)
+                continue
+            nums, digit = quote_numbers(rec["quote"])
+            if not digit:
+                out.append(r)
+                continue
+            units = quote_units(rec["quote"], r.get("unit") or "")
+            how = [value_in_quote(float(v), r.get("unit") or "", nums, units) for _, v in ends]
+            if all(how):
+                self.count("e2", "value in its quote: " + ", ".join(sorted(set(h.split(" to ")[0] for h in how))))
+                out.append(r)
+                continue
+            self.quote_value_rows.append(dict(paper=self.key, element=r["eid"], type=rec.get("type") or "", quantity=rec.get("quantity") or "", label=rec.get("label_as_printed") or "",
+                                              **{k: num_text(rec.get(k)) for k in ("value", "value_min", "value_max")}, unit=rec.get("unit") or "", quote=rec["quote"],
+                                              quote_numbers=" ".join(dict.fromkeys(f"{c:.6g}" for c, _ in nums)), quote_units=" ".join(units),
+                                              outcome="dropped: " + "; ".join(f"{k} {num_text(v)} not in the quote" for (k, v), h in zip(ends, how) if not h)))
+            self.drop("e2", r["eid"], rec, "value_not_in_quote", ",".join(k for (k, _), h in zip(ends, how) if not h))
+            self.note(f"e2: value not in its quote: {r['eid']} {rec.get('type')} {rec.get('quantity')} {', '.join(f'{k} {num_text(v)}' for k, v in ends)} {rec.get('unit') or ''}: "
+                      f"{rec['quote'][:120]!r}")
         return out
 
     def species(self, recs):
@@ -2597,6 +2739,28 @@ class Run:
                 return [(f, d) for f in conds if not f.get("dimension_mismatch")] if conds and len(vals) == 1 and len(conds) == len(held) else []
             return []
 
+        def inputs(u, q, need=None):
+            """P207 (user) 3, a transform's inputs (revises P204 A2): where the value comes from first (kind_rank: a text, table or caption
+            element, then figure panels only, then computed_by_kb), then nearness as A2: for the first source that gives any fact of q
+            whose qualifiers contain need, its own and measurement facts of that source, else the nearest ancestor holding such a fact
+            of that source when it holds exactly one value of it, conditions only (P190 within the source: a nearest holder of several
+            values gives none, and the next source is tried); (fact, source rank) as candidates()."""
+            fit = lambda f: f["quantity"] == q and ok(u, f) and (need or {}).items() <= quals(f).items()   # noqa: E731
+            for rk in (1, 2, 3):
+                mine = [(f, s) for f, s in local(u) if fit(f) and rank(f) == rk]
+                if mine:
+                    return [(f, s) for f, s in mine if not f.get("dimension_mismatch")]
+                for d, a in enumerate(ancestors(u), 2):
+                    held = [f for f in direct.get(a, []) if fit(f) and rank(f) == rk]
+                    if not held:
+                        continue
+                    conds = [f for f in held if EX.is_condition(f)]
+                    vals = {(f["value"], f.get("value_min") or "", f.get("value_max") or "", f.get("unit") or "") for f in conds}
+                    if conds and len(vals) == 1 and len(conds) == len(held):
+                        return [(f, d) for f in conds if not f.get("dimension_mismatch")]
+                    break
+            return []
+
         def span(f, to):
             """A fact's printed range in unit to: value +- half its last digit, or value_min - half to value_max + half."""
             if f.get("value"):
@@ -2605,7 +2769,7 @@ class Run:
                 lo, hi = F.num(f["value_min"]) - half(f["value_min"]), F.num(f["value_max"]) + half(f["value_max"])
             return sorted((to_unit(lo, f.get("unit") or "", to), to_unit(hi, f.get("unit") or "", to)))
 
-        return types.SimpleNamespace(quals=quals, tree=tree, units=units, local=local, candidates=candidates, to_unit=to_unit, half=half, rank=rank, span=span)
+        return types.SimpleNamespace(quals=quals, tree=tree, units=units, local=local, candidates=candidates, inputs=inputs, to_unit=to_unit, half=half, rank=rank, span=span)
 
     def domain_check(self, rows):
         """P196 (user) 2, every paper, list only (no value changes): on one computation unit (its own, measurement and inherited facts as
@@ -2669,9 +2833,10 @@ class Run:
         A unit's inputs: its own value facts, the results of its measurement units (the measurement activities under it, P185) and the
         conditions (settings, model inputs) of its ancestors, transitively under P190: an ancestor's value reaches a unit only when every unit
         between holds no value of that quantity and the ancestor holds exactly one value of it. A flagged fact (6b) is never an input. A
-        declared input 'q{k=v}' takes the facts of q whose qualifiers contain k=v; when several match (P204, user, A2a, revising P195's order):
-        (1) own unit, then measurement unit, then ancestor, nearest first, (2) within one level the qualifiers exactly the declared ones before
-        more qualifiers, (3) where the value comes from (kind_rank: a text, table or caption element; figure panels only; computed_by_kb); a
+        declared input 'q{k=v}' takes the facts of q whose qualifiers contain k=v; P207 (user) 3 (revising P204 A2): (0) where the value comes
+        from first (unit_inputs.inputs: kind_rank, a text, table or caption element, then figure panels only, then computed_by_kb), then when
+        several match: (1) own unit, then measurement unit, then ancestor, nearest first, (2) within one level the qualifiers exactly the
+        declared ones before more qualifiers, (3) where the value comes from (one source left after (0)); a
         fact whose species the unit's run does not use is no input (unit_inputs, A2b); values that agree within printed precision (+- half the last printed digit) are
         one value, the most precise one used; more than one value left -> 'inputs ambiguous', none -> 'inputs missing'. Inputs are
         converted to the units the function is written for (lists.convert). A3: a unit that holds a printed fact of the output (not
@@ -2683,6 +2848,7 @@ class Run:
         import itertools
         h = self.unit_inputs(rows)
         quals, tree, units, local, candidates, to_unit, half, rank = h.quals, h.tree, h.units, h.local, h.candidates, h.to_unit, h.half, h.rank
+        inputs = h.inputs                                                       # P207 (user) 3
 
         self.transform_rows, self.redundant_rows, out = [], [], []
         self.count_transforms = collections.Counter()
@@ -2697,7 +2863,7 @@ class Run:
                 for inp, fu in zip(D["inputs"], Fn["units"]):
                     q, need = L.ref_key(inp)
                     need = dict(x.split("=", 1) for x in need)
-                    cand = [(f, s) for f, s in candidates(u, q) if need.items() <= quals(f).items()]
+                    cand = inputs(u, q, need)                                                           # P207 (user) 3: (0) the source first
                     if len(cand) > 1:
                         near = min(s for _, s in cand)
                         cand = [x for x in cand if x[1] == near]                                         # (1) own, measurement unit, ancestor
@@ -2941,6 +3107,8 @@ class Run:
         self.count("d", "kept", len(recs))
         recs = self.units(recs)
         self.count("e", "kept", len(recs))
+        recs = self.quote_value(recs)                                           # P207 (user) 1
+        self.count("e2", "kept", len(recs))
         recs = self.species(recs)
         self.count("f", "kept", len(recs))
         recs = self.mentions(recs)
@@ -3004,6 +3172,7 @@ class Run:
         write_csv(OUT / f"{self.pid}.coverage.csv", F.COV_FIELDS, self.cov)
         write_csv(OUT / f"{self.pid}.dropped.csv", DROPPED_FIELDS, self.dropped)
         write_csv(OUT / f"{self.pid}.distinguished.csv", DIST_FIELDS, self.dist_rows)   # P205 (user)
+        write_csv(OUT / f"{self.pid}.quote_value.csv", QUOTE_VALUE_FIELDS, self.quote_value_rows)   # P207 (user) 1
         write_csv(OUT / f"{self.pid}.unmapped.csv", UNMAPPED_FIELDS, self.unmapped)
         facts_of = collections.defaultdict(list)                                # P179 (user): every symbol species outcome with its facts (none:
         for f in rows:                                                          # dropped later); check.py --dir: a cleared species is no problem
