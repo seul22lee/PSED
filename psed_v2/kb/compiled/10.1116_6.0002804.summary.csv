@@ -1,16 +1,16 @@
 metric,value
 ontology_hash,9270076161059235e5e6e8c9be37a0cd993dc887555e91c7c5fe79f256cad0a2
-lines_used,2;3;4;5;6;7;8;9;10;11;12;13;14
-lines_ignored,16
-facts,288
-tree_rows,234
+lines_used,2;21;22;23;24;25;26;27;28;29;30;31;32
+lines_ignored,3;4;5;6;7;8;9;10;11;12;13;14;16
+facts,325
+tree_rows,231
 derived_by_kb,0
 dropped,6
-unmapped,35
+unmapped,38
 unmapped_never,0
 promoted,41
 step_input:pass-0 extension units,1
-step_input:records,111
+step_input:records,104
 "step_input:unit derived (derived: point_per_unit, run)",58
 step_input:coordinate setting species (the axis names it),29
 step_input:condition of a derived unit (value),41
@@ -21,48 +21,38 @@ step_a0:derived legend label parsed to nothing (other),26
 step_a0:quantity promoted (quantity: name),12
 step_a1:process_mode from the recipe field: hot_wire,4
 step_a1:material from the recipe field: mo,3
-step_a1:qualifier out of scope: stage,3
-step_a1:qualifier out of scope: relative_to,2
-step_a1:qualifier out of scope: over,2
-step_a1:qualifier out of scope: mode,3
-step_a1:qualifier out of scope: ratio,2
-step_a1:qualifier out of scope: specimen_class,3
-step_a1:qualifier out of scope: structure_class,8
-step_a1:qualifier out of scope: species,1
-step_a1:qualifier out of scope: step,2
-step_a1:qualifier out of scope: gas,1
-step_a1:qualifier out of scope: phase,3
-step_a:numeric string coerced (C4),2
-step_a:kept,185
-step_b:statement_only (kept: P138 form),1
-step_b:kept,185
-step_c:quantity_other (kept),26
-step_c:kept,185
+step_a1:qualifier out of scope: surface,1
+step_a1:qualifier out of scope: species,3
+step_a1:qualifier out of scope: position,2
+step_a1:qualifier out of scope: stage,2
+step_a1:qualifier out of scope: structure_class,2
+step_a:kept,178
+step_b:statement_only (kept: P138 form),4
+step_b:kept,178
+step_c:quantity_other (kept),29
+step_c:kept,178
 step_d:quote_not_found,6
 step_d:quote found in the paper's elements concatenated (P182),1
-step_d:quote_noncontiguous (kept),4
 "step_d:derived condition (figures.json, no quote check)",67
-step_d:kept,179
-step_e:kept,179
-step_f:species_resolved,15
-step_f:kept,179
-step_h:place: claim -> paper,19
-step_h:place: cited -> paper,3
-step_h:place: about paper -> recipe,16
-step_h:place: setting about a run -> deposition,84
-"step_h:place: about paper, method -> paper method activity",11
+step_d:kept,172
+step_e:kept,172
+step_f:species_resolved,6
+step_f:kept,172
+step_h:place: claim -> paper,22
+step_h:place: cited -> paper,7
+step_h:place: about paper -> recipe,19
+step_h:place: setting about a run -> deposition,82
+"step_h:place: about paper, method -> paper method activity",8
+step_h:film of a run with several specimens,4
+step_h:specimen_created,62
+step_h:place: result about a run -> film (several specimens) measurement,3
 step_h:place: caveat -> paper,2
-step_h:specimen_created,63
+step_h:place: setting about a specimen sharing its deposition -> specimen,4
+step_h:place: result about a specimen -> its measurement,23
 step_h:place: result about a run -> film measurement,2
-step_h:place: setting about a specimen sharing its deposition -> specimen,7
-step_h:film of a run with several specimens,9
-step_h:place: result about a run -> film (several specimens) measurement,8
-step_h:place: result about a specimen -> its measurement,21
-step_h:place: definition -> paper,1
-step_h:place: about unknown -> recipe (flagged),5
-step_m:label_as_printed filled with the quantity id,15
-step_m:statement filled from the quote,154
-step_m:links resolved,11
+step_m:statement filled from the quote,140
+step_m:label_as_printed filled with the quantity id,10
+step_m:links resolved,21
 step_1c:figure label other (x),2
 step_1c:figure label other (series),2
 step_1c:figure axis dimension mismatch (values as printed),1
@@ -79,10 +69,10 @@ step_1c:peak -> observation,4
 step_1c:image -> a measurement (tem),4
 step_1c:image -> a measurement (tem_eds),4
 step_n:qualifier out of scope: species,2
-step_n:comparison replicate,7
-step_n:comparison series,5
-step_i:merged,1
-step_i:kept,288
+step_n:comparison replicate,6
+step_n:comparison series,6
+step_i:merged,5
+step_i:kept,277
 "step_j:declared, no function (not computed): unit_conversion",1
 "step_j:declared, no function (not computed): thickness_to_gpc",1
 "step_j:declared, no function (not computed): x_over_width",1
@@ -101,25 +91,26 @@ step_i:kept,288
 "step_j:declared, no function (not computed): mean_free_path",1
 "step_j:declared, no function (not computed): knudsen_number",1
 "step_j:declared, no function (not computed): body_thickness",1
-step_j:final_channel_height: inputs missing,134
-step_j:exposure_per_run: inputs missing,134
-step_j:sheet_resistance: inputs missing,134
-step_j:moles_deposited: inputs missing,134
-step_j:coating_mass_fraction: inputs missing,134
-step_j:deposition_rate: inputs missing,134
-step_j:coated_ar: inputs missing,134
-step_j:normalize_front_slope: inputs missing,134
-step_k:statement from the record,178
-step_k:statement_copies_text (reported by check),41
-step_k:statement assembled,110
-diff:setting,gold 47 compiled 109 matched 18 P 0.17 R 0.38
-diff:observation,gold 45 compiled 154 matched 29 P 0.19 R 0.64
-diff:activity,gold 23 compiled 151 matched 10 P 0.07 R 0.43
-diff:claim,gold 19 compiled 19 matched 10 P 0.53 R 0.53
-diff:cited,gold 11 compiled 3 matched 1 P 0.33 R 0.09
-diff:entity,gold 8 compiled 70 matched 8 P 0.11 R 1.00
+step_j:final_channel_height: inputs missing,133
+step_j:exposure_per_run: inputs missing,133
+step_j:sheet_resistance: inputs missing,132
+step_j:moles_deposited: inputs missing,133
+step_j:coating_mass_fraction: inputs missing,133
+step_j:deposition_rate: inputs missing,86
+step_j:coated_ar: inputs missing,133
+step_j:normalize_front_slope: inputs missing,133
+step_j:sheet_resistance: computed,1
+step_j:deposition_rate: computed,47
+step_k:statement from the record,167
+step_k:statement_copies_text (reported by check),36
+step_k:statement assembled,158
+diff:setting,gold 47 compiled 105 matched 15 P 0.14 R 0.32
+diff:observation,gold 45 compiled 141 matched 26 P 0.18 R 0.58
+diff:activity,gold 23 compiled 149 matched 10 P 0.07 R 0.43
+diff:claim,gold 19 compiled 22 matched 10 P 0.45 R 0.53
+diff:cited,gold 11 compiled 7 matched 5 P 0.71 R 0.45
+diff:entity,gold 8 compiled 69 matched 8 P 0.12 R 1.00
 diff:caveat,gold 6 compiled 2 matched 0 P 0.00 R 0.00
 diff:comparison,gold 3 compiled 12 matched 1 P 0.08 R 0.33
-diff:derived,gold 1 compiled 0 matched 0 P - R 0.00
 diff:paper,gold 1 compiled 1 matched 0 P 0.00 R 0.00
-diff:definition,gold 0 compiled 1 matched 0 P 0.00 R -
+diff:derived,gold 1 compiled 48 matched 0 P 0.00 R 0.00
