@@ -1,14 +1,14 @@
 id,decision,covers,pid,element,field,row_label,now,effect,reason
 elam_monte_carlo,add,elam monte carlo,10.1021_cm0303080,s4.p1,model,Monte Carlo computer simulation,fact: elam_monte_carlo (model: alias 'Monte Carlo computer simulation'); simulation sim_mc -> model elam_monte_carlo,yes,resolves to the entry (not the candidate's own row)
-dose,reject,dose,10.1116_6.0003182,fig1.cap,quantity,dose,unmapped (open),n/a,reject writes nothing to ontology.yaml or never.csv (by design)
+dose,reject,dose,10.1116_6.0003182,fig1.cap,quantity,dose,"not in unmapped.csv, not promoted",no effect,row not found
 material,reject,material,,,,,none,no effect,no row of this decision in the snapshot
-prisms,never -> Equipment details and sample codes,prisms (any paper),10.1116_6.0003182,s10.p2,quantity,prisms,never: Equipment details and sample codes (kept (never: prisms)),yes,
+prisms,never -> Equipment details and sample codes,prisms (any paper),10.1116_6.0003182,s10.p2,quantity,prisms,"not in unmapped.csv, not promoted",no effect,row not found
 spatial_resolution,alias -> probe_resolution,alias of probe_resolution: spatial resolution,10.1021_acs.jpcc.9b08176,s5.p3,quantity,spatial resolution,"fact: probe_resolution (quantity: alias 'spatial resolution'); fact art19:s5.p3#2 (type setting, quantity probe_resolution, parent art19:method:reflectometry)",yes,
-t_hold,alias -> pulse_time,alias of pulse_time: ,10.1116_6.0003182,s9.p7,quantity,t_hold,"fact: pulse_time (quantity: symbol 't_hold' of this paper); fact gre23:s9.p7#1 (type definition, quantity pulse_time, parent gre23)",yes,
-t_hold,alias -> pulse_time,alias of pulse_time: ,10.1116_6.0003182,eq1,quantity,t_hold,"fact: pulse_time (quantity: symbol 't_hold' of this paper); fact gre23:eq1#1 (type model, quantity pulse_time, parent gre23:recipe)",yes,
-top_surfaces,reject,top surfaces,10.1116_6.0003182,fig4b,quantity,top surfaces,unmapped (open),n/a,reject writes nothing to ontology.yaml or never.csv (by design)
-top_surfaces,reject,top surfaces,10.1116_6.0003182,fig4c,quantity,top surfaces,unmapped (open),n/a,reject writes nothing to ontology.yaml or never.csv (by design)
-top_surfaces,reject,top surfaces,10.1116_6.0003182,fig4d,quantity,top surfaces,unmapped (open),n/a,reject writes nothing to ontology.yaml or never.csv (by design)
+t_hold,alias -> pulse_time,alias of pulse_time: ,10.1116_6.0003182,s9.p7,quantity,t_hold,"not in unmapped.csv, not promoted",no effect,row not found
+t_hold,alias -> pulse_time,alias of pulse_time: ,10.1116_6.0003182,eq1,quantity,t_hold,"not in unmapped.csv, not promoted",no effect,row not found
+top_surfaces,reject,top surfaces,10.1116_6.0003182,fig4b,quantity,top surfaces,"not in unmapped.csv, not promoted",no effect,row not found
+top_surfaces,reject,top surfaces,10.1116_6.0003182,fig4c,quantity,top surfaces,"not in unmapped.csv, not promoted",no effect,row not found
+top_surfaces,reject,top surfaces,10.1116_6.0003182,fig4d,quantity,top surfaces,"not in unmapped.csv, not promoted",no effect,row not found
 heikkinen_porous_diffusion_reaction,add,heikkinen porous diffusion reaction,10.1039_d3cp05639b,abs.g1,model,diffusion–reaction model,fact: heikkinen_porous_diffusion_reaction (model: symbol 'diffusion–reaction model' of this paper); simulation sim_dr -> model heikkinen_porous_diffusion_reaction,yes,
 gordon_model,alias -> gordon_plug_flow,alias of gordon_plug_flow: Gordon model,10.1063_1.5028178,s1.p3,model,Gordon model,fact: gordon_plug_flow (model: alias 'Gordon model'); simulation sim_gordon -> model gordon_plug_flow,yes,
 monte_carlo_computer_simulation,alias -> elam_monte_carlo,alias of elam_monte_carlo: Monte Carlo computer simulation,10.1021_cm0303080,s4.p1,model,Monte Carlo computer simulation,fact: elam_monte_carlo (model: alias 'Monte Carlo computer simulation'); simulation sim_mc -> model elam_monte_carlo,yes,

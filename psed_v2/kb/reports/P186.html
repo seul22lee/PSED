@@ -1,0 +1,428 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P186</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P186</h1>
+<h2>One line per section</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P186.checks.txt</p>
+<pre>1 adoption (the P186 rule in the form_versions.csv header): P184 accepted for gao15, gre23, mat22; whole-paper matched without -&gt; with P184: gao15 99 -&gt; 106, gre23 131 -&gt; 136, mat22 462 -&gt; 487; 60 gold rows lost (13 / 21 / 26), each listed (P186.1_lost_rows.csv). 4c: audits FAIL (below), so by the rule&#x27;s second condition the three do not qualify; adopted as ordered, for the user&#x27;s decision.
+2a: before 114 of 128 mat22 grid-cell coordinates (plasma_gas_ratio, deposition_temperature from fig2 / fig4 cells) not on their pass-0 runs, derived units (ela03, zou23) had theirs; 2b: compile writes a point or cell item&#x27;s coordinates as conditions of the pass-0 unit it names (the derived units&#x27; path; a value the run already holds is skipped); after: 128 of 128.
+3 pairing on compiled units (render.compiled_units: runs, specimens incl. films, simulations, model runs, measurements; + the parent stage): gold paired without measurements 324 -&gt; 389 (mat22 specimens 0 -&gt; 49, mat23 7 -&gt; 14, zou23 4 -&gt; 8); measurements a new role (P186.3_pairing.csv).
+4 scores vs P185: T6 2170 -&gt; 2221; type drops (all in the adopted papers, rows in P186.1_lost_rows.csv): mat22 claim 27 -&gt; 23; gre23 derived 21 -&gt; 14, observation 26 -&gt; 24, caveat 7 -&gt; 6; gao15 activity 14 -&gt; 11, observation 26 -&gt; 22, caveat 1 -&gt; 0.
+4 checks: binding_regression 798 / 798; export --check 19 / 19; cards 0 errors; audits: round 1 FAIL (4), round 2 PASS, round 3 FAIL (3), round 4 FAIL (1), round 5 PASS:
+  round 1: FAIL A1 acceleration_voltage: 10.1021_acs.chemmater.2c01154:s5.p14 quantity &#x27;acceleration voltage&#x27;: row not found
+  round 1: FAIL A1 beam_energy: 10.1021_acs.chemmater.2c01154:s5.p17 quantity &#x27;beam energy&#x27;: row not found
+  round 1: FAIL A1 laser_power: 10.1021_acs.chemmater.2c01154:s5.p15 quantity &#x27;Laser power&#x27;: row not found
+  round 1: FAIL A1 voltage: 10.1021_acs.chemmater.2c01154:s5.p18 quantity &#x27;voltage&#x27;: row not found
+  round 3: FAIL A1 prisms: 10.1116_6.0003182:s10.p2 quantity &#x27;prisms&#x27;: row not found
+  round 3: FAIL A1 t_hold: 10.1116_6.0003182:s9.p7 quantity &#x27;t_hold&#x27;: row not found
+  round 3: FAIL A1 t_hold: 10.1116_6.0003182:eq1 quantity &#x27;t_hold&#x27;: row not found
+  round 4: FAIL A1 distance_between_the_oxide_pillars: 10.1116_1.4903941:s6.p4 quantity &#x27;distance between the oxide pillars&#x27;: row not found
+  (each: a grow decision&#x27;s label no longer occurs in the adopted P184 lines of that element)
+</pre>
+<h2>1. Whole-paper matched totals without and with the P184 lines</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P186.1_totals.csv</p>
+<table><tr><th>paper</th><th>gold</th><th>matched_without_P184</th><th>matched_with_P184</th><th>lost</th><th>gained</th></tr>
+<tr><td>gao15</td><td>225</td><td>99</td><td>106</td><td>13</td><td>20</td></tr>
+<tr><td>gre23</td><td>474</td><td>131</td><td>136</td><td>21</td><td>26</td></tr>
+<tr><td>mat22</td><td>1071</td><td>462</td><td>487</td><td>26</td><td>51</td></tr>
+</table>
+<h2>1. Every gold row lost by the adoption</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P186.1_lost_rows.csv</p>
+<table><tr><th>paper</th><th>element</th><th>type</th><th>quantity</th><th>value</th><th>gold_fact_id</th></tr>
+<tr><td>gao15</td><td>abs.g1;s6.p1</td><td>setting</td><td>structure</td><td>pillarhall_1</td><td>gao15:abs.g1#3</td></tr>
+<tr><td>gao15</td><td>s6.p1;s6.p16</td><td>setting</td><td>substrate</td><td>si</td><td>gao15:s6.p1#3</td></tr>
+<tr><td>gao15</td><td>s6.p12</td><td>observation</td><td>penetration_depth</td><td>100</td><td>gao15:s6.p12#3</td></tr>
+<tr><td>gao15</td><td>s6.p22;fig5b</td><td>observation</td><td>coated_aspect_ratio</td><td>130</td><td>gao15:s6.p22#4</td></tr>
+<tr><td>gao15</td><td>s7.p2;fig6</td><td>observation</td><td>coated_aspect_ratio</td><td>200</td><td>gao15:s7.p2#4</td></tr>
+<tr><td>gao15</td><td></td><td>activity</td><td></td><td></td><td>gao15:meas:ent:ti_110_50_500:infrared_microscopy</td></tr>
+<tr><td>gao15</td><td></td><td>activity</td><td></td><td></td><td>gao15:meas:ent:al_200_50_500:infrared_microscopy</td></tr>
+<tr><td>gao15</td><td></td><td>activity</td><td></td><td></td><td>gao15:meas:ent:ti_200_50_500:infrared_microscopy</td></tr>
+<tr><td>gao15</td><td>fig3i;fig3.cap</td><td>observation</td><td></td><td></td><td>gao15:fig3i#1</td></tr>
+<tr><td>gao15</td><td>s6.p12;fig3.cap</td><td>observation</td><td></td><td></td><td>gao15:s6.p12#7</td></tr>
+<tr><td>gao15</td><td>fig4.cap;fig6.cap;s6.p18</td><td>setting</td><td>material</td><td>al2o3</td><td>gao15:fig4.cap#1</td></tr>
+<tr><td>gao15</td><td>fig5.cap;fig5b</td><td>setting</td><td>feature_width</td><td>500</td><td>gao15:fig5.cap#13</td></tr>
+<tr><td>gao15</td><td>s6.p21</td><td>caveat</td><td></td><td></td><td>gao15:s6.p21#6</td></tr>
+<tr><td>gre23</td><td>s12.p6</td><td>cited</td><td>reaction_stoichiometry</td><td></td><td>gre23:s12.p6#4</td></tr>
+<tr><td>gre23</td><td>tabI.r1c4;tabI.r0c4</td><td>derived</td><td>deposited_moles_per_cycle</td><td>150</td><td>gre23:tabI.r1c4#1</td></tr>
+<tr><td>gre23</td><td>tabI.r1c5;tabI.r0c5</td><td>derived</td><td>gas_moles_per_cycle</td><td>59.3</td><td>gre23:tabI.r1c5#1</td></tr>
+<tr><td>gre23</td><td>tabI.r2c4;tabI.r0c4</td><td>derived</td><td>deposited_moles_per_cycle</td><td>217</td><td>gre23:tabI.r2c4#1</td></tr>
+<tr><td>gre23</td><td>tabI.r2c5;tabI.r0c5</td><td>derived</td><td>gas_moles_per_cycle</td><td>191</td><td>gre23:tabI.r2c5#1</td></tr>
+<tr><td>gre23</td><td>tabI.r3c4;tabI.r0c4</td><td>derived</td><td>deposited_moles_per_cycle</td><td>139</td><td>gre23:tabI.r3c4#1</td></tr>
+<tr><td>gre23</td><td>tabI.r3c5;tabI.r0c5</td><td>derived</td><td>gas_moles_per_cycle</td><td>50.8</td><td>gre23:tabI.r3c5#1</td></tr>
+<tr><td>gre23</td><td>tabII.r1c2;tabII.r0c2;tabII.cap;s14.p9;s13.p3</td><td>derived</td><td>crystallite_size</td><td>6.0</td><td>gre23:tabII.r1c2#1</td></tr>
+<tr><td>gre23</td><td>tabII.r2c2;tabII.r0c2;tabII.cap;s14.p9</td><td>derived</td><td>crystallite_size</td><td>6.0</td><td>gre23:tabII.r2c2#1</td></tr>
+<tr><td>gre23</td><td>tabII.r3c2;tabII.r0c2;tabII.cap;s14.p9;s13.p3</td><td>derived</td><td>crystallite_size</td><td>5.1</td><td>gre23:tabII.r3c2#1</td></tr>
+<tr><td>gre23</td><td>tabII.r2c4;tabII.r0c4;tabII.cap</td><td>derived</td><td>crystallite_size</td><td>57</td><td>gre23:tabII.r2c4#1</td></tr>
+<tr><td>gre23</td><td>s13.p3</td><td>claim</td><td></td><td></td><td>gre23:s13.p3#3</td></tr>
+<tr><td>gre23</td><td>s13.p3</td><td>claim</td><td></td><td></td><td>gre23:s13.p3#4</td></tr>
+<tr><td>gre23</td><td>s14.p6</td><td>claim</td><td></td><td></td><td>gre23:s14.p6#1</td></tr>
+<tr><td>gre23</td><td>s14.p8;s14.p10</td><td>claim</td><td></td><td></td><td>gre23:s14.p8#1</td></tr>
+<tr><td>gre23</td><td>s14.p10</td><td>claim</td><td></td><td></td><td>gre23:s14.p10#1</td></tr>
+<tr><td>gre23</td><td>fig6d;fig6.cap;s15.p6</td><td>observation</td><td>signal_intensity</td><td></td><td>gre23:fig6d#2</td></tr>
+<tr><td>gre23</td><td>fig6e;fig6.cap;s15.p6</td><td>observation</td><td>signal_intensity</td><td></td><td>gre23:fig6e#1</td></tr>
+<tr><td>gre23</td><td>fig6f;fig6.cap;s15.p6</td><td>observation</td><td>signal_intensity</td><td></td><td>gre23:fig6f#1</td></tr>
+<tr><td>gre23</td><td>s8.p1;s13.p4</td><td>caveat</td><td></td><td></td><td>gre23:s8.p1#13</td></tr>
+<tr><td>gre23</td><td>tabI.cap;s13.p5</td><td>caveat</td><td></td><td></td><td>gre23:tabI.cap#2</td></tr>
+<tr><td>mat22</td><td>abs.g3;s1.p8;s4.p1</td><td>claim</td><td></td><td></td><td>mat22:abs.g3#1</td></tr>
+<tr><td>mat22</td><td>abs.g4;s1.p8;s3.p45</td><td>claim</td><td></td><td></td><td>mat22:abs.g4#2</td></tr>
+<tr><td>mat22</td><td>s2.p1</td><td>cited</td><td></td><td></td><td>mat22:s2.p1#1</td></tr>
+<tr><td>mat22</td><td>s2.p11;s3.p49;s4.p1</td><td>claim</td><td></td><td></td><td>mat22:s2.p11#1</td></tr>
+<tr><td>mat22</td><td>s3.p11</td><td>claim</td><td></td><td></td><td>mat22:s3.p11#3</td></tr>
+<tr><td>mat22</td><td>s3.p16;fig5a</td><td>observation</td><td>binding_energy</td><td>232.9</td><td>mat22:s3.p16#4</td></tr>
+<tr><td>mat22</td><td>s3.p16;fig5a</td><td>observation</td><td>phase</td><td>detected</td><td>mat22:s3.p16#8</td></tr>
+<tr><td>mat22</td><td>tab1.r1c5;tab1.r1c0;tab1.r0c5;tab1.cap;s3.x4;s3.p19</td><td>observation</td><td>element_fraction</td><td></td><td>mat22:tab1.r1c5#1</td></tr>
+<tr><td>mat22</td><td>tab1.r2c5;tab1.r2c0;tab1.r0c5;tab1.cap;s3.x4;s3.p19</td><td>observation</td><td>element_fraction</td><td></td><td>mat22:tab1.r2c5#1</td></tr>
+<tr><td>mat22</td><td>tab1.r3c5;tab1.r3c0;tab1.r0c5;tab1.cap;s3.x4;s3.p19</td><td>observation</td><td>element_fraction</td><td></td><td>mat22:tab1.r3c5#1</td></tr>
+<tr><td>mat22</td><td>s3.p21</td><td>claim</td><td></td><td></td><td>mat22:s3.p21#4</td></tr>
+<tr><td>mat22</td><td>s3.p37</td><td>claim</td><td></td><td></td><td>mat22:s3.p37#3</td></tr>
+<tr><td>mat22</td><td>s3.p38</td><td>observation</td><td>carrier_density</td><td>1e22</td><td>mat22:s3.p38#2</td></tr>
+<tr><td>mat22</td><td>s3.p44</td><td>observation</td><td>film_thickness</td><td>1</td><td>mat22:s3.p44#2</td></tr>
+<tr><td>mat22</td><td>s3.p45</td><td>claim</td><td></td><td></td><td>mat22:s3.p45#1</td></tr>
+<tr><td>mat22</td><td>s3.p52</td><td>claim</td><td></td><td></td><td>mat22:s3.p52#1</td></tr>
+<tr><td>mat22</td><td>s4.p1</td><td>claim</td><td></td><td></td><td>mat22:s4.p1#1</td></tr>
+<tr><td>mat22</td><td>s5.p6</td><td>setting</td><td>gas_flow_rate</td><td>300</td><td>mat22:s5.p6#4</td></tr>
+<tr><td>mat22</td><td>s5.p6</td><td>setting</td><td>gas_flow_rate</td><td>50</td><td>mat22:s5.p6#10</td></tr>
+<tr><td>mat22</td><td>s5.p14</td><td>setting</td><td>other</td><td>3</td><td>mat22:s5.p14#1</td></tr>
+<tr><td>mat22</td><td>s5.p15</td><td>setting</td><td>other</td><td>0.6</td><td>mat22:s5.p15#2</td></tr>
+<tr><td>mat22</td><td>s5.p17</td><td>setting</td><td>other</td><td>2</td><td>mat22:s5.p17#1</td></tr>
+<tr><td>mat22</td><td>s5.p18</td><td>setting</td><td>other</td><td>200</td><td>mat22:s5.p18#1</td></tr>
+<tr><td>mat22</td><td>fig1b;s3.p5</td><td>comparison</td><td>cycle_number</td><td></td><td>mat22:cmp:cyc</td></tr>
+<tr><td>mat22</td><td>fig2;fig4;fig1a</td><td>setting</td><td>deposition_temperature</td><td>150</td><td>mat22:fig2#90</td></tr>
+<tr><td>mat22</td><td>s5.p1</td><td>caveat</td><td></td><td></td><td>mat22:s5.p1#6</td></tr>
+</table>
+<h2>2a. Grid / table coordinates of pass-0 runs, before</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P186.2a_before.csv</p>
+<table><tr><th>paper</th><th>run</th><th>source</th><th>quantity</th><th>value</th><th>on_run</th></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig2 (cell mat22:fig2#v1)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig7a#1</td></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig2 (cell mat22:fig2#v1)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig2 (cell mat22:fig2#v2)</td><td>plasma_gas_ratio</td><td>0.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig2 (cell mat22:fig2#v2)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig2 (cell mat22:fig2#v3)</td><td>plasma_gas_ratio</td><td>0.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig2 (cell mat22:fig2#v3)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig2 (cell mat22:fig2#v4)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig2 (cell mat22:fig2#v4)</td><td>deposition_temperature</td><td>50.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig2 (cell mat22:fig2#v5)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig2 (cell mat22:fig2#v5)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig2 (cell mat22:fig2#v6)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig7a#2</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig2 (cell mat22:fig2#v6)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig2 (cell mat22:fig2#v7)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig2 (cell mat22:fig2#v7)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig2 (cell mat22:fig2#v8)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig2 (cell mat22:fig2#v8)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig2 (cell mat22:fig2#v9)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig2 (cell mat22:fig2#v9)</td><td>deposition_temperature</td><td>300.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig2 (cell mat22:fig2#v10)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig2 (cell mat22:fig2#v10)</td><td>deposition_temperature</td><td>350.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig2 (cell mat22:fig2#v11)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig2 (cell mat22:fig2#v11)</td><td>deposition_temperature</td><td>450.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig2 (cell mat22:fig2#v12)</td><td>plasma_gas_ratio</td><td>0.35</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig2 (cell mat22:fig2#v12)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig2 (cell mat22:fig2#v13)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig2 (cell mat22:fig2#v13)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig2 (cell mat22:fig2#v14)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig7a#3</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig2 (cell mat22:fig2#v14)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig2 (cell mat22:fig2#v15)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig2 (cell mat22:fig2#v15)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig2 (cell mat22:fig2#v16)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig2 (cell mat22:fig2#v16)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig2 (cell mat22:fig2#v17)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig2 (cell mat22:fig2#v17)</td><td>deposition_temperature</td><td>350.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig2 (cell mat22:fig2#v18)</td><td>plasma_gas_ratio</td><td>0.65</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig2 (cell mat22:fig2#v18)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig2 (cell mat22:fig2#v19)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig7a#4</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig2 (cell mat22:fig2#v19)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig2 (cell mat22:fig2#v20)</td><td>plasma_gas_ratio</td><td>0.65</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig2 (cell mat22:fig2#v20)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig2 (cell mat22:fig2#v21)</td><td>plasma_gas_ratio</td><td>0.65</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig2 (cell mat22:fig2#v21)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig2 (cell mat22:fig2#v22)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig2 (cell mat22:fig2#v22)</td><td>deposition_temperature</td><td>50.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig2 (cell mat22:fig2#v23)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig2 (cell mat22:fig2#v23)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig2 (cell mat22:fig2#v24)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig7a#5</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig2 (cell mat22:fig2#v24)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig5.cap#2</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig2 (cell mat22:fig2#v25)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig2 (cell mat22:fig2#v25)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig2 (cell mat22:fig2#v26)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig2 (cell mat22:fig2#v26)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig2 (cell mat22:fig2#v27)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig2 (cell mat22:fig2#v27)</td><td>deposition_temperature</td><td>350.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig2 (cell mat22:fig2#v28)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig2 (cell mat22:fig2#v28)</td><td>deposition_temperature</td><td>450.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig2 (cell mat22:fig2#v29)</td><td>plasma_gas_ratio</td><td>0.94</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig2 (cell mat22:fig2#v29)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig2 (cell mat22:fig2#v30)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig7a#6</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig2 (cell mat22:fig2#v30)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig2 (cell mat22:fig2#v31)</td><td>plasma_gas_ratio</td><td>0.94</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig2 (cell mat22:fig2#v31)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig2 (cell mat22:fig2#v32)</td><td>plasma_gas_ratio</td><td>0.94</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig2 (cell mat22:fig2#v32)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig4 (cell mat22:fig4#v1)</td><td>plasma_gas_ratio</td><td>0.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig4 (cell mat22:fig4#v1)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig4 (cell mat22:fig4#v2)</td><td>plasma_gas_ratio</td><td>0.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig4 (cell mat22:fig4#v2)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig4 (cell mat22:fig4#v3)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig7a#1</td></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig4 (cell mat22:fig4#v3)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig4 (cell mat22:fig4#v4)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig4 (cell mat22:fig4#v4)</td><td>deposition_temperature</td><td>450.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig4 (cell mat22:fig4#v5)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig4 (cell mat22:fig4#v5)</td><td>deposition_temperature</td><td>350.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig4 (cell mat22:fig4#v6)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig4 (cell mat22:fig4#v6)</td><td>deposition_temperature</td><td>300.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig4 (cell mat22:fig4#v7)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig4 (cell mat22:fig4#v7)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig4 (cell mat22:fig4#v8)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig4 (cell mat22:fig4#v8)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig4 (cell mat22:fig4#v9)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig7a#2</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig4 (cell mat22:fig4#v9)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig4 (cell mat22:fig4#v10)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig4 (cell mat22:fig4#v10)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig4 (cell mat22:fig4#v11)</td><td>plasma_gas_ratio</td><td>0.2</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig4 (cell mat22:fig4#v11)</td><td>deposition_temperature</td><td>50.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig4 (cell mat22:fig4#v12)</td><td>plasma_gas_ratio</td><td>0.35</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig4 (cell mat22:fig4#v12)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig4 (cell mat22:fig4#v13)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig4 (cell mat22:fig4#v13)</td><td>deposition_temperature</td><td>350.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig4 (cell mat22:fig4#v14)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig4 (cell mat22:fig4#v14)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig4 (cell mat22:fig4#v15)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig4 (cell mat22:fig4#v15)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig4 (cell mat22:fig4#v16)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig7a#3</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig4 (cell mat22:fig4#v16)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig4 (cell mat22:fig4#v17)</td><td>plasma_gas_ratio</td><td>0.5</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig4 (cell mat22:fig4#v17)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig4 (cell mat22:fig4#v18)</td><td>plasma_gas_ratio</td><td>0.65</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig4 (cell mat22:fig4#v18)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig4 (cell mat22:fig4#v19)</td><td>plasma_gas_ratio</td><td>0.65</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig4 (cell mat22:fig4#v19)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig4 (cell mat22:fig4#v20)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig7a#4</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig4 (cell mat22:fig4#v20)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig4 (cell mat22:fig4#v21)</td><td>plasma_gas_ratio</td><td>0.65</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig4 (cell mat22:fig4#v21)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig4 (cell mat22:fig4#v22)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig4 (cell mat22:fig4#v22)</td><td>deposition_temperature</td><td>450.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig4 (cell mat22:fig4#v23)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig4 (cell mat22:fig4#v23)</td><td>deposition_temperature</td><td>350.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig4 (cell mat22:fig4#v24)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig4 (cell mat22:fig4#v24)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig4 (cell mat22:fig4#v25)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig4 (cell mat22:fig4#v25)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig4 (cell mat22:fig4#v26)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig7a#5</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig4 (cell mat22:fig4#v26)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig5.cap#2</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig4 (cell mat22:fig4#v27)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig4 (cell mat22:fig4#v27)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig4 (cell mat22:fig4#v28)</td><td>plasma_gas_ratio</td><td>0.8</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig4 (cell mat22:fig4#v28)</td><td>deposition_temperature</td><td>50.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig4 (cell mat22:fig4#v29)</td><td>plasma_gas_ratio</td><td>0.94</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig4 (cell mat22:fig4#v29)</td><td>deposition_temperature</td><td>250.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig4 (cell mat22:fig4#v30)</td><td>plasma_gas_ratio</td><td>0.94</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig4 (cell mat22:fig4#v30)</td><td>deposition_temperature</td><td>200.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig4 (cell mat22:fig4#v31)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig7a#6</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig4 (cell mat22:fig4#v31)</td><td>deposition_temperature</td><td>150.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig4 (cell mat22:fig4#v32)</td><td>plasma_gas_ratio</td><td>0.94</td><td>no</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig4 (cell mat22:fig4#v32)</td><td>deposition_temperature</td><td>100.0</td><td>no</td></tr>
+<tr><td>mat22</td><td>unit_tab1_r1</td><td>table tab1 row 1 (tab1.r1c0)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:tab1.r1c0#1</td></tr>
+<tr><td>mat22</td><td>unit_tab1_r2</td><td>table tab1 row 2 (tab1.r2c0)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:tab1.r2c0#1</td></tr>
+<tr><td>mat22</td><td>unit_tab1_r3</td><td>table tab1 row 3 (tab1.r3c0)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:tab1.r3c0#1</td></tr>
+</table>
+<h2>2a. The same, after 2b</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P186.2a_after.csv</p>
+<table><tr><th>paper</th><th>run</th><th>source</th><th>quantity</th><th>value</th><th>on_run</th></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig2 (cell mat22:fig2#v1)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig2#33</td></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig2 (cell mat22:fig2#v1)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig7a#1</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig2 (cell mat22:fig2#v2)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig2#34</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig2 (cell mat22:fig2#v2)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#35</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig2 (cell mat22:fig2#v3)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig2#36</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig2 (cell mat22:fig2#v3)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#37</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig2 (cell mat22:fig2#v4)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#38</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig2 (cell mat22:fig2#v4)</td><td>deposition_temperature</td><td>50.0</td><td>yes: mat22:fig2#39</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig2 (cell mat22:fig2#v5)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#40</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig2 (cell mat22:fig2#v5)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#41</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig2 (cell mat22:fig2#v6)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#42</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig2 (cell mat22:fig2#v6)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#43</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig2 (cell mat22:fig2#v7)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#44</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig2 (cell mat22:fig2#v7)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#45</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig2 (cell mat22:fig2#v8)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#46</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig2 (cell mat22:fig2#v8)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#47</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig2 (cell mat22:fig2#v9)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#48</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig2 (cell mat22:fig2#v9)</td><td>deposition_temperature</td><td>300.0</td><td>yes: mat22:fig2#49</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig2 (cell mat22:fig2#v10)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#50</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig2 (cell mat22:fig2#v10)</td><td>deposition_temperature</td><td>350.0</td><td>yes: mat22:fig2#51</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig2 (cell mat22:fig2#v11)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#52</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig2 (cell mat22:fig2#v11)</td><td>deposition_temperature</td><td>450.0</td><td>yes: mat22:fig2#53</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig2 (cell mat22:fig2#v12)</td><td>plasma_gas_ratio</td><td>0.35</td><td>yes: mat22:fig2#54</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig2 (cell mat22:fig2#v12)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#55</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig2 (cell mat22:fig2#v13)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#56</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig2 (cell mat22:fig2#v13)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#57</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig2 (cell mat22:fig2#v14)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#58</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig2 (cell mat22:fig2#v14)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#59</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig2 (cell mat22:fig2#v15)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#60</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig2 (cell mat22:fig2#v15)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#61</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig2 (cell mat22:fig2#v16)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#62</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig2 (cell mat22:fig2#v16)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#63</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig2 (cell mat22:fig2#v17)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#64</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig2 (cell mat22:fig2#v17)</td><td>deposition_temperature</td><td>350.0</td><td>yes: mat22:fig2#65</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig2 (cell mat22:fig2#v18)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#66</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig2 (cell mat22:fig2#v18)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#67</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig2 (cell mat22:fig2#v19)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#68</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig2 (cell mat22:fig2#v19)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#69</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig2 (cell mat22:fig2#v20)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#70</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig2 (cell mat22:fig2#v20)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#71</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig2 (cell mat22:fig2#v21)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#72</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig2 (cell mat22:fig2#v21)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#73</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig2 (cell mat22:fig2#v22)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#74</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig2 (cell mat22:fig2#v22)</td><td>deposition_temperature</td><td>50.0</td><td>yes: mat22:fig2#75</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig2 (cell mat22:fig2#v23)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#76</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig2 (cell mat22:fig2#v23)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#77</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig2 (cell mat22:fig2#v24)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#78</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig2 (cell mat22:fig2#v24)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#79</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig2 (cell mat22:fig2#v25)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#80</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig2 (cell mat22:fig2#v25)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#81</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig2 (cell mat22:fig2#v26)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#82</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig2 (cell mat22:fig2#v26)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#83</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig2 (cell mat22:fig2#v27)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#84</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig2 (cell mat22:fig2#v27)</td><td>deposition_temperature</td><td>350.0</td><td>yes: mat22:fig2#85</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig2 (cell mat22:fig2#v28)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#86</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig2 (cell mat22:fig2#v28)</td><td>deposition_temperature</td><td>450.0</td><td>yes: mat22:fig2#87</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig2 (cell mat22:fig2#v29)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#88</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig2 (cell mat22:fig2#v29)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#89</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig2 (cell mat22:fig2#v30)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#90</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig2 (cell mat22:fig2#v30)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#91</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig2 (cell mat22:fig2#v31)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#92</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig2 (cell mat22:fig2#v31)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#93</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig2 (cell mat22:fig2#v32)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#94</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig2 (cell mat22:fig2#v32)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#95</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig4 (cell mat22:fig4#v1)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig2#36</td></tr>
+<tr><td>mat22</td><td>run_grid_3</td><td>panel fig4 (cell mat22:fig4#v1)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#37</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig4 (cell mat22:fig4#v2)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig2#34</td></tr>
+<tr><td>mat22</td><td>run_grid_2</td><td>panel fig4 (cell mat22:fig4#v2)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#35</td></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig4 (cell mat22:fig4#v3)</td><td>plasma_gas_ratio</td><td>0.0</td><td>yes: mat22:fig2#33</td></tr>
+<tr><td>mat22</td><td>run_grid_1</td><td>panel fig4 (cell mat22:fig4#v3)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig7a#1</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig4 (cell mat22:fig4#v4)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#52</td></tr>
+<tr><td>mat22</td><td>run_grid_11</td><td>panel fig4 (cell mat22:fig4#v4)</td><td>deposition_temperature</td><td>450.0</td><td>yes: mat22:fig2#53</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig4 (cell mat22:fig4#v5)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#50</td></tr>
+<tr><td>mat22</td><td>run_grid_10</td><td>panel fig4 (cell mat22:fig4#v5)</td><td>deposition_temperature</td><td>350.0</td><td>yes: mat22:fig2#51</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig4 (cell mat22:fig4#v6)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#48</td></tr>
+<tr><td>mat22</td><td>run_grid_9</td><td>panel fig4 (cell mat22:fig4#v6)</td><td>deposition_temperature</td><td>300.0</td><td>yes: mat22:fig2#49</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig4 (cell mat22:fig4#v7)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#46</td></tr>
+<tr><td>mat22</td><td>run_grid_8</td><td>panel fig4 (cell mat22:fig4#v7)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#47</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig4 (cell mat22:fig4#v8)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#44</td></tr>
+<tr><td>mat22</td><td>run_grid_7</td><td>panel fig4 (cell mat22:fig4#v8)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#45</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig4 (cell mat22:fig4#v9)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#42</td></tr>
+<tr><td>mat22</td><td>run_grid_6</td><td>panel fig4 (cell mat22:fig4#v9)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#43</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig4 (cell mat22:fig4#v10)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#40</td></tr>
+<tr><td>mat22</td><td>run_grid_5</td><td>panel fig4 (cell mat22:fig4#v10)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#41</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig4 (cell mat22:fig4#v11)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:fig2#38</td></tr>
+<tr><td>mat22</td><td>run_grid_4</td><td>panel fig4 (cell mat22:fig4#v11)</td><td>deposition_temperature</td><td>50.0</td><td>yes: mat22:fig2#39</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig4 (cell mat22:fig4#v12)</td><td>plasma_gas_ratio</td><td>0.35</td><td>yes: mat22:fig2#54</td></tr>
+<tr><td>mat22</td><td>run_grid_12</td><td>panel fig4 (cell mat22:fig4#v12)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#55</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig4 (cell mat22:fig4#v13)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#64</td></tr>
+<tr><td>mat22</td><td>run_grid_17</td><td>panel fig4 (cell mat22:fig4#v13)</td><td>deposition_temperature</td><td>350.0</td><td>yes: mat22:fig2#65</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig4 (cell mat22:fig4#v14)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#62</td></tr>
+<tr><td>mat22</td><td>run_grid_16</td><td>panel fig4 (cell mat22:fig4#v14)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#63</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig4 (cell mat22:fig4#v15)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#60</td></tr>
+<tr><td>mat22</td><td>run_grid_15</td><td>panel fig4 (cell mat22:fig4#v15)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#61</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig4 (cell mat22:fig4#v16)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#58</td></tr>
+<tr><td>mat22</td><td>run_grid_14</td><td>panel fig4 (cell mat22:fig4#v16)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#59</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig4 (cell mat22:fig4#v17)</td><td>plasma_gas_ratio</td><td>0.5</td><td>yes: mat22:fig2#56</td></tr>
+<tr><td>mat22</td><td>run_grid_13</td><td>panel fig4 (cell mat22:fig4#v17)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#57</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig4 (cell mat22:fig4#v18)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#72</td></tr>
+<tr><td>mat22</td><td>run_grid_21</td><td>panel fig4 (cell mat22:fig4#v18)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#73</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig4 (cell mat22:fig4#v19)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#70</td></tr>
+<tr><td>mat22</td><td>run_grid_20</td><td>panel fig4 (cell mat22:fig4#v19)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#71</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig4 (cell mat22:fig4#v20)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#68</td></tr>
+<tr><td>mat22</td><td>run_grid_19</td><td>panel fig4 (cell mat22:fig4#v20)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#69</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig4 (cell mat22:fig4#v21)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:fig2#66</td></tr>
+<tr><td>mat22</td><td>run_grid_18</td><td>panel fig4 (cell mat22:fig4#v21)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#67</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig4 (cell mat22:fig4#v22)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#86</td></tr>
+<tr><td>mat22</td><td>run_grid_28</td><td>panel fig4 (cell mat22:fig4#v22)</td><td>deposition_temperature</td><td>450.0</td><td>yes: mat22:fig2#87</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig4 (cell mat22:fig4#v23)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#84</td></tr>
+<tr><td>mat22</td><td>run_grid_27</td><td>panel fig4 (cell mat22:fig4#v23)</td><td>deposition_temperature</td><td>350.0</td><td>yes: mat22:fig2#85</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig4 (cell mat22:fig4#v24)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#82</td></tr>
+<tr><td>mat22</td><td>run_grid_26</td><td>panel fig4 (cell mat22:fig4#v24)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#83</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig4 (cell mat22:fig4#v25)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#80</td></tr>
+<tr><td>mat22</td><td>run_grid_25</td><td>panel fig4 (cell mat22:fig4#v25)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#81</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig4 (cell mat22:fig4#v26)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#78</td></tr>
+<tr><td>mat22</td><td>run_grid_24</td><td>panel fig4 (cell mat22:fig4#v26)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#79</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig4 (cell mat22:fig4#v27)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#76</td></tr>
+<tr><td>mat22</td><td>run_grid_23</td><td>panel fig4 (cell mat22:fig4#v27)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#77</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig4 (cell mat22:fig4#v28)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:fig2#74</td></tr>
+<tr><td>mat22</td><td>run_grid_22</td><td>panel fig4 (cell mat22:fig4#v28)</td><td>deposition_temperature</td><td>50.0</td><td>yes: mat22:fig2#75</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig4 (cell mat22:fig4#v29)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#94</td></tr>
+<tr><td>mat22</td><td>run_grid_32</td><td>panel fig4 (cell mat22:fig4#v29)</td><td>deposition_temperature</td><td>250.0</td><td>yes: mat22:fig2#95</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig4 (cell mat22:fig4#v30)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#92</td></tr>
+<tr><td>mat22</td><td>run_grid_31</td><td>panel fig4 (cell mat22:fig4#v30)</td><td>deposition_temperature</td><td>200.0</td><td>yes: mat22:fig2#93</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig4 (cell mat22:fig4#v31)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#90</td></tr>
+<tr><td>mat22</td><td>run_grid_30</td><td>panel fig4 (cell mat22:fig4#v31)</td><td>deposition_temperature</td><td>150.0</td><td>yes: mat22:fig2#91</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig4 (cell mat22:fig4#v32)</td><td>plasma_gas_ratio</td><td>0.94</td><td>yes: mat22:fig2#88</td></tr>
+<tr><td>mat22</td><td>run_grid_29</td><td>panel fig4 (cell mat22:fig4#v32)</td><td>deposition_temperature</td><td>100.0</td><td>yes: mat22:fig2#89</td></tr>
+<tr><td>mat22</td><td>unit_tab1_r1</td><td>table tab1 row 1 (tab1.r1c0)</td><td>plasma_gas_ratio</td><td>0.2</td><td>yes: mat22:tab1.r1c0#1</td></tr>
+<tr><td>mat22</td><td>unit_tab1_r2</td><td>table tab1 row 2 (tab1.r2c0)</td><td>plasma_gas_ratio</td><td>0.65</td><td>yes: mat22:tab1.r2c0#1</td></tr>
+<tr><td>mat22</td><td>unit_tab1_r3</td><td>table tab1 row 3 (tab1.r3c0)</td><td>plasma_gas_ratio</td><td>0.8</td><td>yes: mat22:tab1.r3c0#1</td></tr>
+</table>
+<h2>3. Gold units against units, per paper and role: before (pass-0 units) / after (compiled units, parent stage)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P186.3_pairing.csv</p>
+<table><tr><th>paper</th><th>role</th><th>before_paired</th><th>before_missing</th><th>before_extra</th><th>after_paired</th><th>after_missing</th><th>after_extra</th><th>note</th></tr>
+<tr><td>yli18</td><td>run</td><td>2</td><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>yli18</td><td>specimen</td><td>2</td><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>yli18</td><td>simulation</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td></td></tr>
+<tr><td>yli18</td><td>model_run</td><td>9</td><td>0</td><td>0</td><td>9</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>yli18</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>4</td><td>2</td><td>0</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>yim20</td><td>run</td><td>12</td><td>3</td><td>0</td><td>12</td><td>3</td><td>0</td><td></td></tr>
+<tr><td>yim20</td><td>specimen</td><td>16</td><td>1</td><td>0</td><td>16</td><td>1</td><td>0</td><td></td></tr>
+<tr><td>yim20</td><td>simulation</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>yim20</td><td>model_run</td><td>9</td><td>1</td><td>0</td><td>9</td><td>1</td><td>0</td><td></td></tr>
+<tr><td>yim20</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>33</td><td>4</td><td>0</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>mat22</td><td>run</td><td>39</td><td>15</td><td>9</td><td>41</td><td>13</td><td>0</td><td></td></tr>
+<tr><td>mat22</td><td>specimen</td><td>0</td><td>54</td><td>0</td><td>49</td><td>5</td><td>0</td><td></td></tr>
+<tr><td>mat22</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>26</td><td>150</td><td>102</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>ela03</td><td>run</td><td>3</td><td>11</td><td>11</td><td>3</td><td>11</td><td>11</td><td></td></tr>
+<tr><td>ela03</td><td>specimen</td><td>3</td><td>11</td><td>11</td><td>3</td><td>11</td><td>11</td><td></td></tr>
+<tr><td>ela03</td><td>simulation</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>ela03</td><td>model_run</td><td>12</td><td>1</td><td>19</td><td>12</td><td>1</td><td>19</td><td></td></tr>
+<tr><td>ela03</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>3</td><td>10</td><td>15</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>hei24</td><td>simulation</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>hei24</td><td>model_run</td><td>83</td><td>0</td><td>0</td><td>83</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>gor03</td><td>run</td><td>4</td><td>0</td><td>0</td><td>4</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>gor03</td><td>specimen</td><td>4</td><td>0</td><td>0</td><td>4</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>gor03</td><td>simulation</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>gor03</td><td>model_run</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>gor03</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>2</td><td>2</td><td>0</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>gre23</td><td>run</td><td>1</td><td>3</td><td>3</td><td>2</td><td>2</td><td>2</td><td></td></tr>
+<tr><td>gre23</td><td>specimen</td><td>0</td><td>15</td><td>3</td><td>1</td><td>14</td><td>3</td><td></td></tr>
+<tr><td>gre23</td><td>simulation</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td></td></tr>
+<tr><td>gre23</td><td>model_run</td><td>0</td><td>1</td><td>2</td><td>0</td><td>1</td><td>2</td><td></td></tr>
+<tr><td>gre23</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>1</td><td>23</td><td>22</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>art19</td><td>run</td><td>4</td><td>0</td><td>4</td><td>4</td><td>0</td><td>4</td><td></td></tr>
+<tr><td>art19</td><td>specimen</td><td>8</td><td>0</td><td>0</td><td>8</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>art19</td><td>simulation</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>art19</td><td>model_run</td><td>2</td><td>2</td><td>0</td><td>2</td><td>2</td><td>0</td><td></td></tr>
+<tr><td>art19</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>10</td><td>6</td><td>0</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>zou23</td><td>run</td><td>1</td><td>1</td><td>63</td><td>2</td><td>0</td><td>62</td><td></td></tr>
+<tr><td>zou23</td><td>specimen</td><td>4</td><td>4</td><td>2</td><td>8</td><td>0</td><td>9</td><td></td></tr>
+<tr><td>zou23</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>9</td><td>11</td><td>72</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>gao15</td><td>run</td><td>8</td><td>1</td><td>0</td><td>8</td><td>1</td><td>0</td><td></td></tr>
+<tr><td>gao15</td><td>specimen</td><td>12</td><td>2</td><td>0</td><td>12</td><td>2</td><td>0</td><td></td></tr>
+<tr><td>gao15</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>14</td><td>0</td><td>0</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+<tr><td>yim22</td><td>simulation</td><td>2</td><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td></td></tr>
+<tr><td>yim22</td><td>model_run</td><td>68</td><td>0</td><td>3</td><td>68</td><td>0</td><td>3</td><td></td></tr>
+<tr><td>mat23</td><td>run</td><td>2</td><td>0</td><td>13</td><td>2</td><td>0</td><td>13</td><td></td></tr>
+<tr><td>mat23</td><td>specimen</td><td>7</td><td>7</td><td>0</td><td>14</td><td>0</td><td>2</td><td></td></tr>
+<tr><td>mat23</td><td>measurement</td><td>0</td><td>0</td><td>0</td><td>6</td><td>21</td><td>29</td><td>new role (gold measurement activities against compiled ones)</td></tr>
+</table>
+<h2>4. Score columns that changed (P185 to P186)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P186.4_score.csv</p>
+<table><tr><th>paper</th><th>column</th><th>P185</th><th>P186</th><th>dropped</th></tr>
+<tr><td>mat22</td><td>matched_T6</td><td>287</td><td>332</td><td>no</td></tr>
+<tr><td>mat22</td><td>diff_setting</td><td>68/251</td><td>122/251</td><td>no</td></tr>
+<tr><td>mat22</td><td>diff_claim</td><td>27/52</td><td>23/52</td><td>yes</td></tr>
+<tr><td>mat22</td><td>diff_entity</td><td>42/54</td><td>43/54</td><td>no</td></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>136/249</td><td>166/249</td><td>no</td></tr>
+<tr><td>mat22</td><td>diff_comparison</td><td>2/12</td><td>8/12</td><td>no</td></tr>
+<tr><td>gre23</td><td>matched_T6</td><td>149</td><td>150</td><td>no</td></tr>
+<tr><td>gre23</td><td>diff_setting</td><td>23/89</td><td>26/89</td><td>no</td></tr>
+<tr><td>gre23</td><td>diff_definition</td><td>2/16</td><td>3/16</td><td>no</td></tr>
+<tr><td>gre23</td><td>diff_derived</td><td>21/31</td><td>14/31</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_claim</td><td>11/57</td><td>18/57</td><td>no</td></tr>
+<tr><td>gre23</td><td>diff_observation</td><td>26/89</td><td>24/89</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_caveat</td><td>7/53</td><td>6/53</td><td>yes</td></tr>
+<tr><td>gre23</td><td>diff_cited</td><td>3/57</td><td>7/57</td><td>no</td></tr>
+<tr><td>gao15</td><td>matched_T6</td><td>97</td><td>102</td><td>no</td></tr>
+<tr><td>gao15</td><td>diff_setting</td><td>35/92</td><td>46/92</td><td>no</td></tr>
+<tr><td>gao15</td><td>diff_claim</td><td>6/13</td><td>9/13</td><td>no</td></tr>
+<tr><td>gao15</td><td>diff_activity</td><td>14/25</td><td>11/25</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_observation</td><td>26/44</td><td>22/44</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_caveat</td><td>1/7</td><td>0/7</td><td>yes</td></tr>
+<tr><td>gao15</td><td>diff_comparison</td><td>1/5</td><td>2/5</td><td>no</td></tr>
+</table>
+</body></html>

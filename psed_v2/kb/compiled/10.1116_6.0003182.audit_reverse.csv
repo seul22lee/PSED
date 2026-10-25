@@ -1,95 +1,116 @@
 fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
 gre23:abs.g1#1,claim,exposure,1000,Torr·s,,abs.g1,gre23:abs.g1#1,"quantity '' vs 'exposure'; value '' '' vs '1000' 'Torr·s' (canonical None vs ('exposure', 133322.0))"
-gre23:abs.g2#1,claim,deposition_temperature,,,,abs.g2,gre23:abs.g2#2,quantity '' vs 'deposition_temperature'
-gre23:abs.g3#2,setting,particle_diameter,100,nm,,abs.g3,gre23:abs.g3#1,"quantity 'exposure' vs 'particle_diameter'; value '1e4' 'Torr-s' vs '100' 'nm' (canonical ('exposure', 1333220.0) vs ('length', 100.0))"
-gre23:abs.g3#3,setting,body_thickness,1.55,mm,,abs.g3;s8.p1,gre23:abs.g3#1,"quantity 'exposure' vs 'body_thickness'; value '1e4' 'Torr-s' vs '1.55' 'mm' (canonical ('exposure', 1333220.0) vs ('length', 1550000.0))"
-gre23:abs.g3#4,setting,aspect_ratio,7800,,,abs.g3;s6.p8,gre23:abs.g3#1,"quantity 'exposure' vs 'aspect_ratio'; value '1e4' 'Torr-s' vs '7800' '' (canonical ('exposure', 1333220.0) vs ('dimensionless', 7800.0))"
-gre23:abs.g4#2,observation,growth_per_cycle,2.1,Å/cycle,,abs.g4,gre23:s14.p1#4,"quantity 'other' vs 'growth_per_cycle'; value '0.2' 'mm' vs '2.1' 'Å/cycle' (canonical ('length', 200000.0) vs ('length_per_cycle', 0.21))"
-gre23:s6.p8#4,setting,pulse_time,1920,s,,s6.p8,gre23:s6.p8#1,"quantity '' vs 'pulse_time'; value '' '' vs '1920' 's' (canonical None vs ('time', 1920.0))"
-gre23:s8.p1#2,setting,body_diameter,11.43,mm,,s8.p1,gre23:s8.p1#1,"value '11.4' 'mm' vs '11.43' 'mm' (canonical ('length', 11400000.0) vs ('length', 11430000.0))"
-gre23:s9.p2#1,definition,particle_diameter,,,,s9.p2;fig1.cap,gre23:s6.p8#5,quantity 'feature_depth' vs 'particle_diameter'
-gre23:s9.p2#3,definition,porosity,,,,s9.p2,gre23:s6.p8#5,quantity 'feature_depth' vs 'porosity'
+gre23:abs.g3#3,setting,porosity,50.5,%,,abs.g3;s8.p1,gre23:abs.g3#1,"quantity 'exposure' vs 'porosity'; value '1e4' 'Torr-s' vs '50.5' '%' (canonical ('exposure', 1333220.0) vs ('dimensionless', 0.505))"
+gre23:abs.g3#4,setting,particle_diameter,100,nm,,abs.g3,gre23:abs.g3#1,"quantity 'exposure' vs 'particle_diameter'; value '1e4' 'Torr-s' vs '100' 'nm' (canonical ('exposure', 1333220.0) vs ('length', 100.0))"
+gre23:abs.g3#5,setting,body_thickness,1.55,mm,,abs.g3;s8.p1,gre23:abs.g3#1,"quantity 'exposure' vs 'body_thickness'; value '1e4' 'Torr-s' vs '1.55' 'mm' (canonical ('exposure', 1333220.0) vs ('length', 1550000.0))"
+gre23:abs.g3#6,setting,aspect_ratio,7800,,,abs.g3;s6.p8,gre23:abs.g3#1,"quantity 'exposure' vs 'aspect_ratio'; value '1e4' 'Torr-s' vs '7800' '' (canonical ('exposure', 1333220.0) vs ('dimensionless', 7800.0))"
+gre23:abs.g4#1,observation,growth_per_cycle,0.21,nm/cycle,,abs.g4,gre23:s14.p1#4,"quantity 'other' vs 'growth_per_cycle'; value '0.2' 'mm' vs '0.21' 'nm/cycle' (canonical ('length', 200000.0) vs ('length_per_cycle', 0.21))"
+gre23:abs.g5#1,claim,,,,,abs.g5,gre23:abs.g5#1,type 'setting' vs 'claim'
+gre23:s6.p2#1,cited,aspect_ratio,100,,,s6.p2,gre23:s6.p2#1,"quantity 'partial_pressure' vs 'aspect_ratio'; value '1' 'Torr' vs '100' '' (canonical ('pressure', 133.322) vs ('dimensionless', 100.0))"
+gre23:s6.p8#5,setting,pulse_time,1920,s,,s6.p8,gre23:s6.p8#1,"quantity '' vs 'pulse_time'; value '' '' vs '1920' 's' (canonical None vs ('time', 1920.0))"
+gre23:s8.p1#4,setting,body_diameter,11.43,mm,,s8.p1,gre23:s8.p1#1,"value '11.4' 'mm' vs '11.43' 'mm' (canonical ('length', 11400000.0) vs ('length', 11430000.0))"
+gre23:s9.p2#1,definition,deposition_temperature,,,,s9.p2;fig1.cap,gre23:s6.p8#5,quantity 'feature_depth' vs 'deposition_temperature'
+gre23:s9.p2#2,definition,particle_diameter,,,,s9.p2;fig1.cap,gre23:s6.p8#5,quantity 'feature_depth' vs 'particle_diameter'
+gre23:s9.p2#4,definition,porosity,,,,s9.p2;fig1.cap,gre23:s6.p8#5,quantity 'feature_depth' vs 'porosity'
+gre23:s9.p3#1,setting,other,1,mm,,s9.p3,gre23:s9.p1#3,"value '' 'mm' vs '1' 'mm' (canonical None vs ('length', 1000000.0))"
+gre23:s9.p4#8,setting,pulse_time,1920,s,,s9.p4,gre23:s9.p4#5,"value '' 's' vs '1920' 's' (canonical None vs ('time', 1920.0))"
+gre23:s9.p4#11,setting,pulse_time,1920,s,,s9.p4,gre23:s9.p4#5,"value '' 's' vs '1920' 's' (canonical None vs ('time', 1920.0))"
 gre23:s9.p5#1,setting,other,2.17,l,,s9.p5,gre23:s9.p4#12,"quantity '' vs 'other'; value '' '' vs '2.17' 'l' (canonical None vs ('volume', 2170.0))"
 gre23:s9.p5#2,setting,carrier_gas,,,n2,s9.p5,gre23:s9.p5#2,value_text '' vs 'n2'
-gre23:s9.p6#1,setting,deposition_temperature,,°C,,s9.p6;fig6c;tabI.r3c0;tabII.r3c0,gre23:s9.p6#4,"value '120' '°C' vs '' '°C' (canonical ('temperature', 120.0) vs None)"
+gre23:s9.p6#4,setting,deposition_temperature,,°C,,s9.p6;fig5.cap;tabII.r3c0,gre23:s9.p6#4,"value '120' '°C' vs '' '°C' (canonical ('temperature', 120.0) vs None)"
 gre23:s9.p7#1,definition,pulse_time,,,,s9.p7,gre23:s9.p7#1,type 'model' vs 'definition'; quantity '' vs 'pulse_time'
 gre23:s9.p8#1,definition,purge_time,,,,s9.p8,gre23:s9.p8#1,quantity '' vs 'purge_time'
-gre23:s10.p2#1,setting,other,,,6 x 3 x 1.6 mm,s10.p2,gre23:s10.p2#1,quantity '' vs 'other'; value_text '' vs '6 x 3 x 1.6 mm'
-gre23:s10.p3#1,setting,other,30,kV,,s10.p3,gre23:s10.p3#1,"quantity '' vs 'other'; value '' '' vs '30' 'kV' (canonical None vs ('voltage', 30000.0))"
+gre23:s10.p1#1,setting,diffraction_angle,,°,,s10.p1,gre23:s10.p1#1,quantity '' vs 'diffraction_angle'
+gre23:s10.p2#1,setting,film_thickness,20,nm,,s10.p2,gre23:s10.p2#1,"quantity '' vs 'film_thickness'; value '' '' vs '20' 'nm' (canonical None vs ('length', 20.0))"
+gre23:s10.p2#2,setting,film_thickness,200,nm,,s10.p2,gre23:s10.p2#1,"quantity '' vs 'film_thickness'; value '' '' vs '200' 'nm' (canonical None vs ('length', 200.0))"
+gre23:s10.p3#1,setting,probe_resolution,50,µm,,s10.p3,gre23:s10.p3#1,"quantity '' vs 'probe_resolution'; value '' '' vs '50' 'µm' (canonical None vs ('length', 50000.0))"
 gre23:s10.p4#1,setting,probe_resolution,100,µm,,s10.p4,gre23:s10.p3#4,"quantity '' vs 'probe_resolution'; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
-gre23:s12.p1#4,setting,porosity,50.5,%,,s12.p1,gre23:s6.p8#10,"quantity 'partial_pressure' vs 'porosity'; value '9' 'Torr' vs '50.5' '%' (canonical ('pressure', 1199.9) vs ('dimensionless', 0.505))"
-gre23:s12.p1#5,derived,porosity,36.7,%,,s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'porosity'; value '2.37' 'Å/cyc' vs '36.7' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.367))"
-gre23:s12.p1#6,derived,porosity,30.6,%,,s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'porosity'; value '2.37' 'Å/cyc' vs '30.6' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.306))"
-gre23:s12.p1#7,derived,porosity,38,%,,s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'porosity'; value '2.37' 'Å/cyc' vs '38' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.38))"
+gre23:s10.p5#2,setting,binding_energy,284.8,eV,,s10.p5,gre23:s10.p5#1,"quantity 'probe_resolution' vs 'binding_energy'; value '125' 'µm' vs '284.8' 'eV' (canonical ('length', 125000.0) vs ('energy', 284.8))"
+gre23:s12.p1#1,derived,porosity,50.5,%,,s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'porosity'; value '2.37' 'Å/cyc' vs '50.5' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.505))"
+gre23:s12.p1#2,derived,porosity,36.7,%,,s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'porosity'; value '2.37' 'Å/cyc' vs '36.7' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.367))"
+gre23:s12.p1#3,derived,porosity,30.6,%,,s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'porosity'; value '2.37' 'Å/cyc' vs '30.6' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.306))"
+gre23:s12.p1#4,derived,porosity,38,%,,s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'porosity'; value '2.37' 'Å/cyc' vs '38' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.38))"
 gre23:s12.p2#1,observation,process_pressure,9,Torr,,s12.p2,gre23:s12.p2#1,"quantity '' vs 'process_pressure'; value '' '' vs '9' 'Torr' (canonical None vs ('pressure', 1199.9))"
+gre23:s12.p3#1,claim,,,,,s12.p3,gre23:s12.p2#3,type 'observation' vs 'claim'
+gre23:s12.p4#1,claim,,,,,s12.p4,gre23:eq4#1,type 'model' vs 'claim'
+gre23:s12.p6#1,definition,reaction_stoichiometry,,,,s12.p6,gre23:s12.p6#1,quantity '' vs 'reaction_stoichiometry'
+gre23:s12.p13#1,definition,other,,,,s12.p13,gre23:eq8#1,type 'model' vs 'definition'; quantity '' vs 'other'
+gre23:s12.p16#1,observation,process_pressure,9,Torr,,s12.p16,gre23:s12.x1#1,"quantity '' vs 'process_pressure'; value '' '' vs '9' 'Torr' (canonical None vs ('pressure', 1199.9))"
 gre23:s13.p1#1,claim,,,,,s13.p1,gre23:s13.p1#1,type 'observation' vs 'claim'
-gre23:s13.p1#2,claim,,,,,s13.p1,gre23:s13.p1#1,type 'observation' vs 'claim'
-gre23:s13.p2#1,observation,phase,,,al2o3,s13.p2,gre23:s13.p2#3,value_text 'detected' vs 'al2o3'
-gre23:s13.p2#2,observation,phase,,,zno,s13.p2,gre23:s13.p2#3,value_text 'detected' vs 'zno'
-gre23:s13.p2#3,observation,phase,,,zn,s13.p2,gre23:s13.p2#3,value_text 'detected' vs 'zn'
-gre23:s13.p4#1,observation,resistivity,8000,Ω·cm,,s13.p4,gre23:s13.p4#1,"value '1.3e7' 'Ω-cm' vs '8000' 'Ω·cm' (canonical ('resistivity', 130000.0) vs ('resistivity', 80.0))"
-gre23:s13.p4#2,observation,resistivity,10000000,Ω·cm,,s13.p4,gre23:s13.p4#1,"value '1.3e7' 'Ω-cm' vs '10000000' 'Ω·cm' (canonical ('resistivity', 130000.0) vs ('resistivity', 100000.0))"
-gre23:s13.p4#3,observation,resistivity,10000000,Ω·cm,,s13.p4,gre23:s13.p4#1,"value '1.3e7' 'Ω-cm' vs '10000000' 'Ω·cm' (canonical ('resistivity', 130000.0) vs ('resistivity', 100000.0))"
-gre23:s14.p1#1,claim,,,,,s14.p1,gre23:s14.p1#1,type 'observation' vs 'claim'
-gre23:fig2.cap#1,setting,structure,,,nanoparticle_compact,fig2.cap;fig1a,gre23:s9.p1#3,quantity 'other' vs 'structure'; value_text '' vs 'nanoparticle_compact'
+gre23:s13.p3#1,observation,crystallite_size,6,nm,,s13.p3;tabII.r1c2,gre23:s12.p1#5,"quantity 'mass_gain' vs 'crystallite_size'; value '28.4' '%' vs '6' 'nm' (canonical ('dimensionless', 0.284) vs ('length', 6.0))"
+gre23:s13.p3#2,observation,crystallite_size,5.1,nm,,s13.p3;tabII.r3c2,gre23:s12.p1#5,"quantity 'mass_gain' vs 'crystallite_size'; value '28.4' '%' vs '5.1' 'nm' (canonical ('dimensionless', 0.284) vs ('length', 5.1))"
 gre23:fig2a#1,observation,process_pressure,,Torr,,fig2a,gre23:s12.p2#1,quantity '' vs 'process_pressure'
-gre23:fig2b#1,observation,process_pressure,,Torr,,fig2b,gre23:s12.p2#1,quantity '' vs 'process_pressure'
 gre23:fig2c#1,observation,process_pressure,,Torr,,fig2c,gre23:s12.p2#1,quantity '' vs 'process_pressure'
 gre23:fig2d#1,observation,deposition_temperature,,°C,,fig2d,gre23:fig2d#1,quantity '' vs 'deposition_temperature'
 gre23:fig3.cap#1,setting,cycle_number,15,cycle,,fig3.cap,gre23:s9.p6#4,"quantity 'deposition_temperature' vs 'cycle_number'; value '120' '°C' vs '15' 'cycle' (canonical ('temperature', 120.0) vs ('dimensionless', 15.0))"
 gre23:fig3.cap#2,setting,process_pressure,9,Torr,,fig3.cap,gre23:s9.p6#4,"quantity 'deposition_temperature' vs 'process_pressure'; value '120' '°C' vs '9' 'Torr' (canonical ('temperature', 120.0) vs ('pressure', 1199.9))"
-gre23:fig3.cap#3,definition,pressure_rate,,,,fig3.cap,gre23:s9.p6#4,"type 'setting' vs 'definition'; quantity 'deposition_temperature' vs 'pressure_rate'; value '120' '°C' vs '' '' (canonical ('temperature', 120.0) vs None)"
-gre23:fig3a#1,observation,pressure_rise,,Torr,,fig3a,gre23:s12.x1#5,"value '450' 'mTorr' vs '' 'Torr' (canonical ('pressure', 59.9949) vs None)"
-gre23:fig3a#2,observation,pressure_rise,,Torr,,fig3a,gre23:s12.x1#5,"value '450' 'mTorr' vs '' 'Torr' (canonical ('pressure', 59.9949) vs None)"
-gre23:fig3a#3,observation,pressure_rise,,Torr,,fig3a,gre23:s12.x1#5,"value '450' 'mTorr' vs '' 'Torr' (canonical ('pressure', 59.9949) vs None)"
-gre23:fig3b#1,derived,gas_moles_per_cycle,,µmol,,fig3b,gre23:s12.p8#1,type 'observation' vs 'derived'; quantity '' vs 'gas_moles_per_cycle'
-gre23:fig3b#2,derived,gas_moles_per_cycle,,µmol,,fig3b,gre23:s12.p8#1,type 'observation' vs 'derived'; quantity '' vs 'gas_moles_per_cycle'
-gre23:fig3b#3,derived,gas_moles_per_cycle,,µmol,,fig3b,gre23:s12.p8#1,type 'observation' vs 'derived'; quantity '' vs 'gas_moles_per_cycle'
-gre23:fig3c#1,derived,pressure_rate,,mTorr/min,,fig3c,gre23:s12.p8#1,type 'observation' vs 'derived'; quantity '' vs 'pressure_rate'
-gre23:fig3c#2,derived,pressure_rate,,mTorr/min,,fig3c,gre23:s12.p8#1,type 'observation' vs 'derived'; quantity '' vs 'pressure_rate'
-gre23:fig3c#3,derived,pressure_rate,,mTorr/min,,fig3c,gre23:s12.p8#1,type 'observation' vs 'derived'; quantity '' vs 'pressure_rate'
+gre23:fig3.cap#3,definition,pressure_rise,,,,fig3.cap,gre23:s9.p6#4,"type 'setting' vs 'definition'; quantity 'deposition_temperature' vs 'pressure_rise'; value '120' '°C' vs '' '' (canonical ('temperature', 120.0) vs None)"
+gre23:fig3.cap#4,definition,gas_moles_per_cycle,,,,fig3.cap,gre23:s9.p6#4,"type 'setting' vs 'definition'; quantity 'deposition_temperature' vs 'gas_moles_per_cycle'; value '120' '°C' vs '' '' (canonical ('temperature', 120.0) vs None)"
+gre23:fig3.cap#5,definition,pressure_rate,,,,fig3.cap,gre23:s9.p6#4,"type 'setting' vs 'definition'; quantity 'deposition_temperature' vs 'pressure_rate'; value '120' '°C' vs '' '' (canonical ('temperature', 120.0) vs None)"
 gre23:fig4.cap#1,claim,,,,,fig4.cap,gre23:s13.p1#1,type 'observation' vs 'claim'
-gre23:fig4b#1,observation,other,,,white,fig4b,gre23:s13.p1#1,quantity '' vs 'other'; value_text '' vs 'white'
-gre23:fig4c#1,observation,other,,,gray,fig4c,gre23:s13.p1#1,quantity '' vs 'other'; value_text '' vs 'gray'
-gre23:fig4d#1,observation,other,,,gray,fig4d,gre23:s13.p1#1,quantity '' vs 'other'; value_text '' vs 'gray'
-gre23:fig1.cap#1,definition,porosity,,,,fig1.cap,gre23:s6.p8#5,quantity 'feature_depth' vs 'porosity'
-gre23:fig1.cap#2,definition,other,,,,fig1.cap,gre23:s6.p8#5,quantity 'feature_depth' vs 'other'
-gre23:fig1a#1,setting,substrate,,,al2o3,fig1a,gre23:s9.p1#3,quantity 'other' vs 'substrate'; value_text '' vs 'al2o3'
+gre23:tabI.cap#2,definition,porosity,,%,,tabI.cap,gre23:tabI.cap#1,quantity '' vs 'porosity'
+gre23:tabI.cap#3,definition,deposited_moles_per_cycle,,µmol,,tabI.cap,gre23:tabI.cap#1,quantity '' vs 'deposited_moles_per_cycle'
+gre23:tabI.cap#4,definition,gas_moles_per_cycle,,µmol,,tabI.cap,gre23:tabI.cap#1,quantity '' vs 'gas_moles_per_cycle'
+gre23:tabI.cap#5,definition,reaction_stoichiometry,,,,tabI.cap,gre23:tabI.cap#1,quantity '' vs 'reaction_stoichiometry'
+gre23:tabI.r1c0#1,setting,deposition_temperature,120, C,,tabI.r1c0,gre23:s12.p1#5,"type 'observation' vs 'setting'; quantity 'mass_gain' vs 'deposition_temperature'; value '28.4' '%' vs '120' '\x00C' (canonical ('dimensionless', 0.284) vs ('120', '\x00C'))"
+gre23:tabI.r1c3#1,derived,growth_per_cycle,2.37, /cycle,,tabI.r1c3,gre23:s12.p1#10,"value '2.37' 'Å/cyc' vs '2.37' '\x00/cycle' (canonical ('length_per_cycle', 0.237) vs ('2.37', '\x00/cycle'))"
+gre23:tabI.r1c4#1,derived,deposited_moles_per_cycle,150, mol,,tabI.r1c4,gre23:tabI.r1c4#1,"value '150' 'µmol/cyc' vs '150' '\x00mol' (canonical ('amount', 0.00015) vs ('150', '\x00mol'))"
+gre23:tabI.r1c5#1,derived,gas_moles_per_cycle,59.3, mol,,tabI.r1c5,gre23:tabI.r1c5#1,"value '59.3' 'µmol/cyc' vs '59.3' '\x00mol' (canonical ('amount', 5.93e-05) vs ('59.3', '\x00mol'))"
+gre23:tabI.r2c0#1,setting,deposition_temperature,160, C,,tabI.r2c0,gre23:s12.p1#6,"type 'observation' vs 'setting'; quantity 'mass_gain' vs 'deposition_temperature'; value '36.4' '%' vs '160' '\x00C' (canonical ('dimensionless', 0.364) vs ('160', '\x00C'))"
+gre23:tabI.r2c3#1,derived,growth_per_cycle,3.48, /cycle,,tabI.r2c3,gre23:s12.p1#11,"value '3.48' 'Å/cyc' vs '3.48' '\x00/cycle' (canonical ('length_per_cycle', 0.348) vs ('3.48', '\x00/cycle'))"
+gre23:tabI.r2c4#1,derived,deposited_moles_per_cycle,217, mol,,tabI.r2c4,gre23:tabI.r2c4#1,"value '217' 'µmol/cyc' vs '217' '\x00mol' (canonical ('amount', 0.000217) vs ('217', '\x00mol'))"
+gre23:tabI.r2c5#1,derived,gas_moles_per_cycle,191, mol,,tabI.r2c5,gre23:tabI.r2c5#1,"value '191' 'µmol/cyc' vs '191' '\x00mol' (canonical ('amount', 0.000191) vs ('191', '\x00mol'))"
+gre23:tabI.r3c0#1,setting,deposition_temperature,, C,,tabI.r3c0,gre23:s12.p1#7,"type 'observation' vs 'setting'; quantity 'mass_gain' vs 'deposition_temperature'; value '26.4' '%' vs '' '\x00C' (canonical ('dimensionless', 0.264) vs None)"
+gre23:tabI.r3c3#1,derived,growth_per_cycle,2.14, /cycle,,tabI.r3c3,gre23:s12.p1#12,"value '2.14' 'Å/cyc' vs '2.14' '\x00/cycle' (canonical ('length_per_cycle', 0.214) vs ('2.14', '\x00/cycle'))"
+gre23:tabI.r3c4#1,derived,deposited_moles_per_cycle,139, mol,,tabI.r3c4,gre23:tabI.r3c4#1,"value '139' 'µmol/cyc' vs '139' '\x00mol' (canonical ('amount', 0.000139) vs ('139', '\x00mol'))"
+gre23:tabI.r3c5#1,derived,gas_moles_per_cycle,50.8, mol,,tabI.r3c5,gre23:tabI.r3c5#1,"value '50.8' 'µmol/cyc' vs '50.8' '\x00mol' (canonical ('amount', 5.08e-05) vs ('50.8', '\x00mol'))"
+gre23:tabII.r0c0#1,definition,deposition_temperature,,°C,,tabII.r0c0,gre23:tabII.r1c1#1,"type 'derived' vs 'definition'; quantity 'phase_fraction' vs 'deposition_temperature'; value '23.3' 'wt%' vs '' '°C' (canonical ('dimensionless', 0.233) vs None)"
+gre23:tabII.r0c1#1,definition,phase_fraction,,wt%,,tabII.r0c1,gre23:tabII.r1c1#1,"type 'derived' vs 'definition'; value '23.3' 'wt%' vs '' 'wt%' (canonical ('dimensionless', 0.233) vs None)"
+gre23:tabII.r0c2#1,definition,crystallite_size,,nm,,tabII.r0c2,gre23:tabII.r1c2#1,"type 'derived' vs 'definition'; value '6.0' 'nm' vs '' 'nm' (canonical ('length', 6.0) vs None)"
+gre23:tabII.r0c3#1,definition,phase_fraction,,wt%,,tabII.r0c3,gre23:tabII.r2c3#1,"type 'derived' vs 'definition'; value '12.5' 'wt%' vs '' 'wt%' (canonical ('dimensionless', 0.125) vs None)"
+gre23:tabII.r0c4#1,definition,crystallite_size,,nm,,tabII.r0c4,gre23:tabII.r2c4#1,"type 'derived' vs 'definition'; value '57' 'nm' vs '' 'nm' (canonical ('length', 57.0) vs None)"
+gre23:tabII.r0c5#1,definition,resistivity,,Ω·cm,,tabII.r0c5,gre23:s13.p4#1,"type 'observation' vs 'definition'; value '1.3e7' 'Ω-cm' vs '' 'Ω·cm' (canonical ('resistivity', 130000.0) vs None)"
 gre23:tabII.r1c1#1,observation,phase_fraction,23.3,wt%,,tabII.r1c1,gre23:tabII.r1c1#1,type 'derived' vs 'observation'
 gre23:tabII.r2c1#1,observation,phase_fraction,17.1,wt%,,tabII.r2c1,gre23:tabII.r2c1#1,type 'derived' vs 'observation'
+gre23:tabII.r2c2#1,observation,crystallite_size,6,nm,,tabII.r2c2,gre23:tabII.r2c2#1,type 'derived' vs 'observation'
 gre23:tabII.r2c3#1,observation,phase_fraction,12.5,wt%,,tabII.r2c3,gre23:tabII.r2c3#1,type 'derived' vs 'observation'
+gre23:tabII.r2c4#1,observation,crystallite_size,57,nm,,tabII.r2c4,gre23:tabII.r2c4#1,type 'derived' vs 'observation'
 gre23:tabII.r3c1#1,observation,phase_fraction,17.7,wt%,,tabII.r3c1,gre23:tabII.r3c1#1,type 'derived' vs 'observation'
 gre23:abs.g3#7,setting,material,,,zno,abs.g3,gre23:abs.g3#1,"quantity 'exposure' vs 'material'; value_text '' vs 'zno'; value '1e4' 'Torr-s' vs '' '' (canonical ('exposure', 1333220.0) vs None)"
 gre23:abs.g3#8,setting,material,,,zno,abs.g3,gre23:abs.g3#1,"quantity 'exposure' vs 'material'; value_text '' vs 'zno'; value '1e4' 'Torr-s' vs '' '' (canonical ('exposure', 1333220.0) vs None)"
-gre23:fig2.cap#5,setting,material,,,zno,fig2.cap,gre23:s9.p5#3,"quantity 'gas_flow_rate' vs 'material'; value_text '' vs 'zno'; value '20' 'SCCM' vs '' '' (canonical ('gas_flow', 20.0) vs None)"
+gre23:fig2.cap#3,setting,material,,,zno,fig2.cap,gre23:s9.p5#3,"quantity 'gas_flow_rate' vs 'material'; value_text '' vs 'zno'; value '20' 'SCCM' vs '' '' (canonical ('gas_flow', 20.0) vs None)"
 gre23:fig2a#2,observation,process_pressure,,,,fig2a;fig2.cap,gre23:s12.p2#1,quantity '' vs 'process_pressure'
-gre23:fig2b#2,observation,process_pressure,,,,fig2b;fig2.cap,gre23:s12.p2#1,quantity '' vs 'process_pressure'
+gre23:fig2b#1,observation,process_pressure,,,,fig2b;fig2.cap,gre23:s12.p2#1,quantity '' vs 'process_pressure'
 gre23:fig2c#2,observation,process_pressure,,,,fig2c;fig2.cap,gre23:s12.p2#1,quantity '' vs 'process_pressure'
 gre23:fig2d#2,observation,deposition_temperature,,,,fig2d;fig2.cap,gre23:s12.p2#1,quantity '' vs 'deposition_temperature'
-gre23:fig3a#4,observation,pressure_rise,,,,fig3a;fig3.cap,gre23:s12.x1#5,"value '450' 'mTorr' vs '' '' (canonical ('pressure', 59.9949) vs None)"
-gre23:fig3a#5,observation,pressure_rise,,,,fig3a;fig3.cap,gre23:s12.x1#5,"value '450' 'mTorr' vs '' '' (canonical ('pressure', 59.9949) vs None)"
-gre23:fig3a#6,observation,pressure_rise,,,,fig3a;fig3.cap,gre23:s12.x1#5,"value '450' 'mTorr' vs '' '' (canonical ('pressure', 59.9949) vs None)"
-gre23:fig3b#4,observation,gas_moles_per_cycle,,,,fig3b;fig3.cap,gre23:s12.x1#1,quantity '' vs 'gas_moles_per_cycle'
-gre23:fig3b#5,observation,gas_moles_per_cycle,,,,fig3b;fig3.cap,gre23:s12.x1#1,quantity '' vs 'gas_moles_per_cycle'
-gre23:fig3b#6,observation,gas_moles_per_cycle,,,,fig3b;fig3.cap,gre23:s12.x1#1,quantity '' vs 'gas_moles_per_cycle'
-gre23:fig3c#4,observation,pressure_rate,,,,fig3c;fig3.cap,gre23:s12.x1#1,quantity '' vs 'pressure_rate'
-gre23:fig3c#5,observation,pressure_rate,,,,fig3c;fig3.cap,gre23:s12.x1#1,quantity '' vs 'pressure_rate'
-gre23:fig3c#6,observation,pressure_rate,,,,fig3c;fig3.cap,gre23:s12.x1#1,quantity '' vs 'pressure_rate'
+gre23:fig3a#1,observation,pressure_rise,,,,fig3a;fig3.cap,gre23:s12.x1#5,"value '450' 'mTorr' vs '' '' (canonical ('pressure', 59.9949) vs None)"
+gre23:fig3a#2,observation,pressure_rise,,,,fig3a;fig3.cap,gre23:s12.x1#5,"value '450' 'mTorr' vs '' '' (canonical ('pressure', 59.9949) vs None)"
+gre23:fig3a#3,observation,pressure_rise,,,,fig3a;fig3.cap,gre23:s12.x1#5,"value '450' 'mTorr' vs '' '' (canonical ('pressure', 59.9949) vs None)"
+gre23:fig3b#1,observation,gas_moles_per_cycle,,,,fig3b;fig3.cap,gre23:s12.x1#1,quantity '' vs 'gas_moles_per_cycle'
+gre23:fig3b#2,observation,gas_moles_per_cycle,,,,fig3b;fig3.cap,gre23:s12.x1#1,quantity '' vs 'gas_moles_per_cycle'
+gre23:fig3b#3,observation,gas_moles_per_cycle,,,,fig3b;fig3.cap,gre23:s12.x1#1,quantity '' vs 'gas_moles_per_cycle'
+gre23:fig3c#1,observation,pressure_rate,,,,fig3c;fig3.cap,gre23:s12.x1#1,quantity '' vs 'pressure_rate'
+gre23:fig3c#2,observation,pressure_rate,,,,fig3c;fig3.cap,gre23:s12.x1#1,quantity '' vs 'pressure_rate'
+gre23:fig3c#3,observation,pressure_rate,,,,fig3c;fig3.cap,gre23:s12.x1#1,quantity '' vs 'pressure_rate'
+gre23:fig6d#1,observation,distance,,,,fig6d;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6d#2,observation,distance,,,,fig6d;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6d#3,observation,distance,,,,fig6d;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6d#4,observation,distance,,,,fig6d;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
-gre23:fig6d#5,observation,distance,,,,fig6d;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
+gre23:fig6e#1,observation,distance,,,,fig6e;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6e#2,observation,distance,,,,fig6e;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6e#3,observation,distance,,,,fig6e;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6e#4,observation,distance,,,,fig6e;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
-gre23:fig6e#5,observation,distance,,,,fig6e;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
+gre23:fig6f#1,observation,distance,,,,fig6f;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6f#2,observation,distance,,,,fig6f;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6f#3,observation,distance,,,,fig6f;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
 gre23:fig6f#4,observation,distance,,,,fig6f;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
-gre23:fig6f#5,observation,distance,,,,fig6f;fig6.cap,gre23:s14.p1#1,quantity '' vs 'distance'
-gre23:s12.p1#11,derived,coating_mass_fraction,22.12,%,,s12.p1;tabI.r1c1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'coating_mass_fraction'; value '2.37' 'Å/cyc' vs '22.12' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.2212))"
-gre23:s9.p4#12,derived,deposition_rate,0.08887,nm/h,,s9.p4;s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'deposition_rate'; value '2.37' 'Å/cyc' vs '0.08887' 'nm/h' (canonical ('length_per_cycle', 0.237) vs ('length_per_time', 0.08887))"
-gre23:s12.p1#12,derived,coating_mass_fraction,26.69,%,,s12.p1;tabI.r2c1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'coating_mass_fraction'; value '2.37' 'Å/cyc' vs '26.69' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.2669))"
-gre23:s9.p4#13,derived,deposition_rate,0.1305,nm/h,,s9.p4;s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'deposition_rate'; value '2.37' 'Å/cyc' vs '0.1305' 'nm/h' (canonical ('length_per_cycle', 0.237) vs ('length_per_time', 0.1305))"
-gre23:s12.p1#13,derived,coating_mass_fraction,20.89,%,,s12.p1;tabI.r3c1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'coating_mass_fraction'; value '2.37' 'Å/cyc' vs '20.89' '%' (canonical ('length_per_cycle', 0.237) vs ('dimensionless', 0.2089))"
-gre23:abs.g4#3,derived,deposition_rate,0.07875,nm/h,,abs.g4;s9.p4,gre23:s12.p1#12,"quantity 'growth_per_cycle' vs 'deposition_rate'; value '2.14' 'Å/cyc' vs '0.07875' 'nm/h' (canonical ('length_per_cycle', 0.214) vs ('length_per_time', 0.07875))"
+gre23:s13.p3#5,derived,sheet_resistance,2.748e+13,Ω/sq,,s13.p3;tabII.r1c5,gre23:tabII.r1c1#1,"quantity 'phase_fraction' vs 'sheet_resistance'; value '23.3' 'wt%' vs '2.748e+13' 'Ω/sq' (canonical ('dimensionless', 0.233) vs ('resistance', 27480000000000.0))"
+gre23:tabI.r1c1#2,derived,coating_mass_fraction,22.12,%,,tabI.r1c1,gre23:s12.p1#5,"type 'observation' vs 'derived'; quantity 'mass_gain' vs 'coating_mass_fraction'; value '28.4' '%' vs '22.12' '%' (canonical ('dimensionless', 0.284) vs ('dimensionless', 0.2212))"
+gre23:abs.g3#9,derived,shell_volume_fraction,15.42,%,,abs.g3;s8.p1;s13.p3,gre23:s6.p8#7,"quantity 'aspect_ratio' vs 'shell_volume_fraction'; value '7800' '' vs '15.42' '%' (canonical ('dimensionless', 7800.0) vs ('dimensionless', 0.1542))"
+gre23:s9.p4#14,derived,deposition_rate,0.08887,nm/h,,s9.p4;s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'deposition_rate'; value '2.37' 'Å/cyc' vs '0.08887' 'nm/h' (canonical ('length_per_cycle', 0.237) vs ('length_per_time', 0.08887))"
+gre23:tabI.r2c1#2,derived,coating_mass_fraction,26.69,%,,tabI.r2c1,gre23:s12.p1#6,"type 'observation' vs 'derived'; quantity 'mass_gain' vs 'coating_mass_fraction'; value '36.4' '%' vs '26.69' '%' (canonical ('dimensionless', 0.364) vs ('dimensionless', 0.2669))"
+gre23:s9.p4#15,derived,deposition_rate,0.1305,nm/h,,s9.p4;s12.p1,gre23:s12.p1#10,"quantity 'growth_per_cycle' vs 'deposition_rate'; value '2.37' 'Å/cyc' vs '0.1305' 'nm/h' (canonical ('length_per_cycle', 0.237) vs ('length_per_time', 0.1305))"
+gre23:s13.p3#6,derived,sheet_resistance,2.804e+13,Ω/sq,,s13.p3;tabII.r3c5,gre23:tabII.r1c1#1,"quantity 'phase_fraction' vs 'sheet_resistance'; value '23.3' 'wt%' vs '2.804e+13' 'Ω/sq' (canonical ('dimensionless', 0.233) vs ('resistance', 28040000000000.0))"
+gre23:tabI.r3c1#2,derived,coating_mass_fraction,20.89,%,,tabI.r3c1,gre23:s12.p1#7,"type 'observation' vs 'derived'; quantity 'mass_gain' vs 'coating_mass_fraction'; value '26.4' '%' vs '20.89' '%' (canonical ('dimensionless', 0.264) vs ('dimensionless', 0.2089))"
+gre23:abs.g3#10,derived,shell_volume_fraction,13.83,%,,abs.g3;s8.p1;s13.p3,gre23:s6.p8#7,"quantity 'aspect_ratio' vs 'shell_volume_fraction'; value '7800' '' vs '13.83' '%' (canonical ('dimensionless', 7800.0) vs ('dimensionless', 0.1383))"
+gre23:abs.g4#2,derived,deposition_rate,0.07875,nm/h,,abs.g4;s9.p4,gre23:s12.p1#12,"quantity 'growth_per_cycle' vs 'deposition_rate'; value '2.14' 'Å/cyc' vs '0.07875' 'nm/h' (canonical ('length_per_cycle', 0.214) vs ('length_per_time', 0.07875))"

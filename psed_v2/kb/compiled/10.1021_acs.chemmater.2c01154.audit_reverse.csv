@@ -1,57 +1,52 @@
 fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
-mat22:abs.g1#1,claim,,,,,abs.g1,mat22:abs.g1#3,type 'setting' vs 'claim'; quantity 'material' vs ''; value_text 'mos2' vs ''
-mat22:abs.g2#1,claim,deposition_temperature,100,°C,,abs.g2,mat22:abs.g2#1,"quantity '' vs 'deposition_temperature'; value '' '' vs '100' '°C' (canonical None vs ('temperature', 100.0))"
-mat22:s2.p8#3,cited,crystallinity,,,amorphous,s2.p8,mat22:s2.p4#3,quantity '' vs 'crystallinity'; value_text '' vs 'amorphous'
-mat22:s2.p9#2,cited,deposition_temperature,150,°C,,s2.p9,mat22:s2.p9#2,"value '300' '°C' vs '150' '°C' (canonical ('temperature', 300.0) vs ('temperature', 150.0))"
+mat22:s2.p8#3,cited,deposition_temperature,150,°C,,s2.p8;s2.p9,mat22:s2.p8#3,"value '' '°C' vs '150' '°C' (canonical None vs ('temperature', 150.0))"
 mat22:s2.p10#1,claim,deposition_temperature,100,°C,,s2.p10,mat22:abs.g2#1,"quantity '' vs 'deposition_temperature'; value '' '' vs '100' '°C' (canonical None vs ('temperature', 100.0))"
-mat22:s3.p4#1,observation,crystallinity,,,amorphous,s3.p4,mat22:s3.p4#1,quantity '' vs 'crystallinity'; value_text '' vs 'amorphous'
-mat22:s3.p4#2,observation,crystallinity,,,polycrystalline,s3.p4,mat22:s3.p4#1,quantity '' vs 'crystallinity'; value_text '' vs 'polycrystalline'
+mat22:s3.p1#1,setting,reactant_A,,,mo_ntbu2_nme22,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'reactant_A'; value_text '' vs 'mo_ntbu2_nme22'
+mat22:s3.p4#1,observation,crystallinity,,,polycrystalline,s3.p4,mat22:s3.p4#1,quantity '' vs 'crystallinity'; value_text '' vs 'polycrystalline'
 mat22:s3.p5#1,observation,film_thickness,1,nm,,s3.p5,mat22:s3.p5#4,"value '' 'nm' vs '1' 'nm' (canonical None vs ('length', 1.0))"
 mat22:s3.p6#1,observation,thickness_nonuniformity,3.3,%,,s3.p6,mat22:s3.p6#1,quantity 'film_thickness' vs 'thickness_nonuniformity'
-mat22:s3.p6#2,observation,film_thickness,5,nm,,s3.p6,mat22:s3.p6#1,"value '3.3' '%' vs '5' 'nm' (canonical ('dimensionless', 0.033) vs ('length', 5.0))"
 mat22:s3.p6#3,observation,film_thickness,5,nm,,s3.p6,mat22:s3.p6#1,"value '3.3' '%' vs '5' 'nm' (canonical ('dimensionless', 0.033) vs ('length', 5.0))"
-mat22:s3.p8#4,observation,film_thickness,5,nm,,s3.p8,mat22:s3.p8#2,"quantity 'other' vs 'film_thickness'; value '' '' vs '5' 'nm' (canonical None vs ('length', 5.0))"
-mat22:s3.x1#1,setting,cycle_number,140,cycle,,s3.x1;s3.x2,mat22:fig2.cap#1,"value '' '' vs '140' 'cycle' (canonical None vs ('dimensionless', 140.0))"
-mat22:s3.p9#1,observation,crystallite_size,10,nm,,s3.p9,mat22:s3.p9#1,"value '' 'nm' vs '10' 'nm' (canonical None vs ('length', 10.0))"
-mat22:s3.p14#2,claim,,,,,s3.p14;s3.p15,mat22:s3.p14#1,type 'observation' vs 'claim'
-mat22:s3.p19#1,setting,film_thickness,50,nm,,s3.p19,mat22:s3.p19#5,"quantity 'substrate' vs 'film_thickness'; value_text 'glassy_carbon' vs ''; value '' '' vs '50' 'nm' (canonical None vs ('length', 50.0))"
-mat22:s3.x5#1,setting,cycle_number,500,cycle,,s3.x5;fig6.cap,mat22:s3.p22#2,"type 'observation' vs 'setting'; quantity 'film_thickness' vs 'cycle_number'; value '' 'nm' vs '500' 'cycle' (canonical None vs ('dimensionless', 500.0))"
-mat22:s3.p27#1,observation,growth_per_cycle,,nm/cycle,,s3.p27,mat22:s3.p27#1,quantity '' vs 'growth_per_cycle'
-mat22:s3.p36#1,observation,mobility,0.01,cm2/(V·s),,s3.p36,mat22:s3.p36#2,"value '' 'cm2 V-1 s-1' vs '0.01' 'cm2/(V·s)' (canonical None vs ('mobility', 1e-06))"
-mat22:s3.p44#1,observation,film_thickness,3,nm,,s3.p44,mat22:s3.p44#1,"value '' 'nm' vs '3' 'nm' (canonical None vs ('length', 3.0))"
+mat22:s3.p14#1,claim,,,,,s3.p14;s3.p15,mat22:s3.p14#1,type 'observation' vs 'claim'
+mat22:s3.x3#1,setting,deposition_temperature,150,°C,,s3.x3;fig5.cap,mat22:s3.p14#1,"type 'observation' vs 'setting'; quantity '' vs 'deposition_temperature'; value '' '' vs '150' '°C' (canonical None vs ('temperature', 150.0))"
+mat22:s3.x5#1,setting,film_thickness,50,nm,,s3.x5,mat22:s3.p22#2,"type 'observation' vs 'setting'; value '' 'nm' vs '50' 'nm' (canonical None vs ('length', 50.0))"
+mat22:s3.x5#2,setting,cycle_number,500,cycle,,s3.x5;fig6.cap,mat22:s3.p22#2,"type 'observation' vs 'setting'; quantity 'film_thickness' vs 'cycle_number'; value '' 'nm' vs '500' 'cycle' (canonical None vs ('dimensionless', 500.0))"
+mat22:s3.p20#1,claim,,,,,s3.p20,mat22:s3.p20#1,type 'observation' vs 'claim'
+mat22:s3.p21#3,observation,element_fraction,6,at.%,,s3.p21,mat22:tab1.r1c4#1,"value '6.4' 'at. %' vs '6' 'at.%' (canonical ('dimensionless', 0.064) vs ('dimensionless', 0.06))"
+mat22:s3.p21#4,observation,element_fraction,12,at.%,,s3.p21,mat22:tab1.r1c4#1,"value '6.4' 'at. %' vs '12' 'at.%' (canonical ('dimensionless', 0.064) vs ('dimensionless', 0.12))"
+mat22:s3.p24#1,claim,,,,,s3.p24,mat22:s3.p23#2,type 'cited' vs 'claim'
 mat22:s3.p51#1,setting,gas_flow_rate,10,sccm,,s3.p51,mat22:s3.p51#2,quantity 'other' vs 'gas_flow_rate'
+mat22:s4.p1#2,claim,resistivity,,Ω·cm,,s4.p1,mat22:abs.g2#1,quantity '' vs 'resistivity'
+mat22:s4.p2#1,claim,carrier_density,1e+21,1/cm3,,s4.p2,mat22:s3.p39#2,"quantity '' vs 'carrier_density'; value '' '' vs '1e+21' '1/cm3' (canonical None vs ('number_density', 1e+27))"
 mat22:s5.p1#1,setting,reactor,,,Oxford Instruments FlexAL,s5.p1,mat22:s5.p1#1,value_text 'Oxford Instruments FlexAL PEALD' vs 'Oxford Instruments FlexAL'
-mat22:s5.p1#2,setting,plasma_power,13.56,MHz,,s5.p1,mat22:s5.p1#1,"quantity 'reactor' vs 'plasma_power'; value_text 'Oxford Instruments FlexAL PEALD' vs ''; value '' '' vs '13.56' 'MHz' (canonical None vs ('13.56', 'MHz'))"
-mat22:s5.p1#3,setting,plasma_configuration,,,remote,s5.p1,mat22:s5.p1#1,quantity 'reactor' vs 'plasma_configuration'; value_text 'Oxford Instruments FlexAL PEALD' vs 'remote'
-mat22:s5.p1#5,setting,wall_temperature,150,°C,,s5.p1,mat22:s5.p1#3,"value '' '°C' vs '150' '°C' (canonical None vs ('temperature', 423.15))"
-mat22:s5.p2#2,setting,film_thickness,450,nm,,s5.p2,mat22:s5.p2#1,"quantity 'substrate' vs 'film_thickness'; value_text 'sio2' vs ''; value '' '' vs '450' 'nm' (canonical None vs ('length', 450.0))"
-mat22:s5.p2#3,setting,film_thickness,90,nm,,s5.p2,mat22:s5.p2#1,"quantity 'substrate' vs 'film_thickness'; value_text 'sio2' vs ''; value '' '' vs '90' 'nm' (canonical None vs ('length', 90.0))"
-mat22:s5.p3#1,setting,carrier_gas,,,ar,s5.p3,mat22:s5.p3#1,quantity 'other' vs 'carrier_gas'; value_text '1 × 1 to 3 × 3 cm2' vs 'ar'
-mat22:s5.p3#2,setting,process_pressure,200,mTorr,,s5.p3,mat22:s5.p3#1,"quantity 'other' vs 'process_pressure'; value_text '1 × 1 to 3 × 3 cm2' vs ''; value '' '' vs '200' 'mTorr' (canonical None vs ('pressure', 26.6644))"
-mat22:s5.p4#4,setting,gas_flow_rate,50,sccm,,s5.p4;s5.p5,mat22:s3.p51#2,"quantity 'other' vs 'gas_flow_rate'; value '10' 'sccm' vs '50' 'sccm' (canonical ('gas_flow', 10.0) vs ('gas_flow', 50.0))"
-mat22:s5.p6#5,setting,plasma_power,100,W,,s5.p6,mat22:s5.p4#3,"quantity 'process_pressure' vs 'plasma_power'; value '6' 'mTorr' vs '100' 'W' (canonical ('pressure', 0.799932) vs ('power', 100.0))"
-mat22:s5.p15#2,setting,objective_magnification,50,,,s5.p15,mat22:s5.p15#1,"quantity 'other' vs 'objective_magnification'; value '514' 'nm' vs '50' '' (canonical ('length', 514.0) vs ('dimensionless', 50.0))"
+mat22:s5.p1#3,setting,wall_temperature,150,°C,,s5.p1,mat22:s5.p1#3,"value '' '°C' vs '150' '°C' (canonical None vs ('temperature', 423.15))"
+mat22:s5.p1#4,caveat,deposition_temperature,,,,s5.p1,mat22:s5.p1#6,quantity '' vs 'deposition_temperature'
+mat22:s5.p3#1,setting,process_pressure,200,mTorr,,s5.p3,mat22:s5.p3#1,"quantity 'other' vs 'process_pressure'; value_text '1 × 1 to 3 × 3 cm2' vs ''; value '' '' vs '200' 'mTorr' (canonical None vs ('pressure', 26.6644))"
+mat22:s5.p4#4,setting,gas_flow_rate,50,sccm,,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'gas_flow_rate'; value '10' 'sccm' vs '50' 'sccm' (canonical ('gas_flow', 10.0) vs ('gas_flow', 50.0))"
+mat22:s5.p6#4,setting,plasma_power,100,W,,s5.p6,mat22:s5.p4#3,"quantity 'process_pressure' vs 'plasma_power'; value '6' 'mTorr' vs '100' 'W' (canonical ('pressure', 0.799932) vs ('power', 100.0))"
+mat22:s5.p9#1,caveat,film_thickness,,,,s5.p9,mat22:s5.p9#5,quantity '' vs 'film_thickness'
+mat22:s5.p10#1,caveat,film_thickness,,,,s5.p10,mat22:s5.p10#3,quantity '' vs 'film_thickness'
+mat22:s5.p15#1,setting,objective_magnification,50,,,s5.p15,mat22:s5.p15#1,"quantity 'other' vs 'objective_magnification'; value '514' 'nm' vs '50' '' (canonical ('length', 514.0) vs ('dimensionless', 50.0))"
 mat22:s5.p16#2,setting,binding_energy,284.8,eV,,s5.p16,mat22:s5.p16#1,"quantity 'probe_resolution' vs 'binding_energy'; value '400' 'µm' vs '284.8' 'eV' (canonical ('length', 400000.0) vs ('energy', 284.8))"
 mat22:fig1b#1,observation,raman_shift,382.5,cm-1,,fig1b,mat22:s3.p5#2,"quantity '' vs 'raman_shift'; value '' '' vs '382.5' 'cm-1' (canonical None vs ('wavenumber', 382.5))"
 mat22:fig1b#2,observation,raman_shift,406.5,cm-1,,fig1b,mat22:s3.p5#2,"quantity '' vs 'raman_shift'; value '' '' vs '406.5' 'cm-1' (canonical None vs ('wavenumber', 406.5))"
-mat22:fig1.cap#2,setting,material,,,mos2,fig1.cap;fig1d,mat22:s3.p6#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'mos2'; value '100' '°C' vs '' '' (canonical ('temperature', 100.0) vs None)"
-mat22:fig1d#1,setting,substrate,,,pet,fig1d,mat22:s3.p6#3,"quantity 'deposition_temperature' vs 'substrate'; value_text '' vs 'pet'; value '100' '°C' vs '' '' (canonical ('temperature', 100.0) vs None)"
-mat22:fig1d#3,setting,plasma_gas_ratio,0.8,,,fig1d,mat22:s3.p6#3,"quantity 'deposition_temperature' vs 'plasma_gas_ratio'; value '100' '°C' vs '0.8' '' (canonical ('temperature', 100.0) vs ('dimensionless', 0.8))"
 mat22:fig3a#1,observation,crystallinity,,,crystalline,fig3a,mat22:s3.p8#2,quantity 'other' vs 'crystallinity'; value_text '' vs 'crystalline'
-mat22:fig3b#1,cited,,,,,fig3b,mat22:fig3b#1,type 'observation' vs 'cited'
-mat22:fig5.cap#1,setting,cycle_number,140,cycle,,fig5.cap,mat22:s3.p14#1,"type 'observation' vs 'setting'; quantity '' vs 'cycle_number'; value '' '' vs '140' 'cycle' (canonical None vs ('dimensionless', 140.0))"
-mat22:fig5.cap#2,setting,deposition_temperature,150,°C,,fig5.cap,mat22:s3.p14#1,"type 'observation' vs 'setting'; quantity '' vs 'deposition_temperature'; value '' '' vs '150' '°C' (canonical None vs ('temperature', 150.0))"
-mat22:fig6.cap#1,claim,,,,,fig6.cap,mat22:fig6a#1,type 'observation' vs 'claim'
-mat22:fig6.cap#2,setting,deposition_temperature,150,°C,,fig6.cap,mat22:s3.p22#2,"type 'observation' vs 'setting'; quantity 'film_thickness' vs 'deposition_temperature'; value '' 'nm' vs '150' '°C' (canonical None vs ('temperature', 150.0))"
-mat22:fig6.cap#3,setting,plasma_gas_ratio,0.65,,,fig6.cap,mat22:s3.p22#2,"type 'observation' vs 'setting'; quantity 'film_thickness' vs 'plasma_gas_ratio'; value '' 'nm' vs '0.65' '' (canonical None vs ('dimensionless', 0.65))"
+mat22:fig5a#1,observation,binding_energy,228.6,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '228.6' 'eV' (canonical ('energy', 228.9) vs ('energy', 228.6))"
+mat22:fig5a#2,observation,binding_energy,235.8,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '235.8' 'eV' (canonical ('energy', 228.9) vs ('energy', 235.8))"
+mat22:fig5a#3,observation,binding_energy,232.7,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '232.7' 'eV' (canonical ('energy', 228.9) vs ('energy', 232.7))"
+mat22:fig5a#4,observation,binding_energy,229.4,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '229.4' 'eV' (canonical ('energy', 228.9) vs ('energy', 229.4))"
+mat22:fig5a#5,observation,binding_energy,233.5,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '233.5' 'eV' (canonical ('energy', 228.9) vs ('energy', 233.5))"
+mat22:fig5a#6,observation,binding_energy,229.4,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '229.4' 'eV' (canonical ('energy', 228.9) vs ('energy', 229.4))"
+mat22:fig5a#7,observation,binding_energy,226.6,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '226.6' 'eV' (canonical ('energy', 228.9) vs ('energy', 226.6))"
+mat22:fig5a#8,observation,binding_energy,226,eV,,fig5a,mat22:s3.p16#1,"value '228.9' 'eV' vs '226' 'eV' (canonical ('energy', 228.9) vs ('energy', 226.0))"
+mat22:fig5b#1,observation,binding_energy,161.2,eV,,fig5b,mat22:s3.p17#2,"value '162.4' 'eV' vs '161.2' 'eV' (canonical ('energy', 162.4) vs ('energy', 161.2))"
+mat22:fig5b#2,observation,binding_energy,164.6,eV,,fig5b,mat22:s3.p17#2,"value '162.4' 'eV' vs '164.6' 'eV' (canonical ('energy', 162.4) vs ('energy', 164.6))"
+mat22:fig5b#3,observation,binding_energy,163.4,eV,,fig5b,mat22:s3.p17#2,"value '162.4' 'eV' vs '163.4' 'eV' (canonical ('energy', 162.4) vs ('energy', 163.4))"
+mat22:fig5b#4,observation,binding_energy,163.4,eV,,fig5b,mat22:s3.p17#2,"value '162.4' 'eV' vs '163.4' 'eV' (canonical ('energy', 162.4) vs ('energy', 163.4))"
+mat22:fig5b#5,observation,binding_energy,162.2,eV,,fig5b,mat22:s3.p17#2,"value '162.4' 'eV' vs '162.2' 'eV' (canonical ('energy', 162.4) vs ('energy', 162.2))"
+mat22:fig6.cap#1,setting,deposition_temperature,150,°C,,fig6.cap,mat22:s3.p22#2,"type 'observation' vs 'setting'; quantity 'film_thickness' vs 'deposition_temperature'; value '' 'nm' vs '150' '°C' (canonical None vs ('temperature', 150.0))"
+mat22:fig6.cap#2,setting,plasma_gas_ratio,0.65,,,fig6.cap,mat22:s3.p22#2,"type 'observation' vs 'setting'; quantity 'film_thickness' vs 'plasma_gas_ratio'; value '' 'nm' vs '0.65' '' (canonical None vs ('dimensionless', 0.65))"
 mat22:fig7.cap#1,claim,,,,,fig7.cap,mat22:s3.p27#1,type 'observation' vs 'claim'
-mat22:fig7a#1,setting,plasma_gas_ratio,0,,,fig7a,mat22:s3.p27#1,"type 'observation' vs 'setting'; quantity '' vs 'plasma_gas_ratio'; value '' '' vs '0' '' (canonical None vs ('dimensionless', 0.0))"
-mat22:fig7a#2,setting,plasma_gas_ratio,0.2,,,fig7a,mat22:s3.p27#1,"type 'observation' vs 'setting'; quantity '' vs 'plasma_gas_ratio'; value '' '' vs '0.2' '' (canonical None vs ('dimensionless', 0.2))"
-mat22:fig7a#3,setting,plasma_gas_ratio,0.5,,,fig7a,mat22:s3.p27#1,"type 'observation' vs 'setting'; quantity '' vs 'plasma_gas_ratio'; value '' '' vs '0.5' '' (canonical None vs ('dimensionless', 0.5))"
-mat22:fig7a#4,setting,plasma_gas_ratio,0.65,,,fig7a,mat22:s3.p27#1,"type 'observation' vs 'setting'; quantity '' vs 'plasma_gas_ratio'; value '' '' vs '0.65' '' (canonical None vs ('dimensionless', 0.65))"
-mat22:fig7a#5,setting,plasma_gas_ratio,0.8,,,fig7a,mat22:s3.p27#1,"type 'observation' vs 'setting'; quantity '' vs 'plasma_gas_ratio'; value '' '' vs '0.8' '' (canonical None vs ('dimensionless', 0.8))"
-mat22:fig7a#6,setting,plasma_gas_ratio,0.94,,,fig7a,mat22:s3.p27#1,"type 'observation' vs 'setting'; quantity '' vs 'plasma_gas_ratio'; value '' '' vs '0.94' '' (canonical None vs ('dimensionless', 0.94))"
-mat22:fig8.cap#1,claim,resistivity,,,,fig8.cap,mat22:s3.p33#1,quantity '' vs 'resistivity'
+mat22:fig7a#1,setting,deposition_temperature,150,°C,,fig7a,mat22:s3.p27#1,"type 'observation' vs 'setting'; quantity '' vs 'deposition_temperature'; value '' '' vs '150' '°C' (canonical None vs ('temperature', 150.0))"
 mat22:fig9.cap#1,claim,,,,,fig9.cap,mat22:s3.p48#4,type 'observation' vs 'claim'
 mat22:fig9a#1,observation,raman_shift,145,cm-1,,fig9a,mat22:s3.p46#2,"quantity 'element_ratio' vs 'raman_shift'; value '4.0' '' vs '145' 'cm-1' (canonical ('dimensionless', 4.0) vs ('wavenumber', 145.0))"
 mat22:fig9a#2,observation,raman_shift,174,cm-1,,fig9a,mat22:s3.p46#2,"quantity 'element_ratio' vs 'raman_shift'; value '4.0' '' vs '174' 'cm-1' (canonical ('dimensionless', 4.0) vs ('wavenumber', 174.0))"
@@ -65,9 +60,12 @@ mat22:fig9b#3,observation,raman_shift,376,cm-1,,fig9b,mat22:s3.p48#4,"quantity '
 mat22:fig9b#4,observation,raman_shift,520,cm-1,,fig9b,mat22:s3.p48#4,"quantity '' vs 'raman_shift'; value '' '' vs '520' 'cm-1' (canonical None vs ('wavenumber', 520.0))"
 mat22:tab1.cap#1,claim,,,,,tab1.cap,mat22:s3.p19#8,type 'caveat' vs 'claim'
 mat22:tab1.r1c3#1,observation,film_density,3.2,g/cm3,,tab1.r1c3,mat22:tab1.r1c3#1,type 'derived' vs 'observation'
+mat22:tab1.r1c5#1,observation,element_fraction,,at.%,<dl.,tab1.r1c5,mat22:tab1.r1c5#1,value_text '' vs '<dl.'
 mat22:tab1.r2c3#1,observation,film_density,4,g/cm3,,tab1.r2c3,mat22:tab1.r2c3#1,type 'derived' vs 'observation'
+mat22:tab1.r2c5#1,observation,element_fraction,,at.%,<dl.,tab1.r2c5,mat22:tab1.r2c5#1,value_text '' vs '<dl.'
 mat22:tab1.r3c0#1,setting,plasma_gas_ratio,0.8,,,tab1.r3c0,mat22:tab1.r3c1#1,"type 'observation' vs 'setting'; quantity 'element_ratio' vs 'plasma_gas_ratio'; value '1.8' '' vs '0.8' '' (canonical ('dimensionless', 1.8) vs ('dimensionless', 0.8))"
 mat22:tab1.r3c3#1,observation,film_density,3.1,g/cm3,,tab1.r3c3,mat22:tab1.r3c3#1,type 'derived' vs 'observation'
+mat22:tab1.r3c5#1,observation,element_fraction,,at.%,<dl.,tab1.r3c5,mat22:tab1.r3c5#1,value_text '' vs '<dl.'
 mat22:tab2.r1c0#1,setting,plasma_gas_ratio,0,,,tab2.r1c0,mat22:tab2.r1c1#1,"quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '10' 'sccm' vs '0' '' (canonical ('gas_flow', 10.0) vs ('dimensionless', 0.0))"
 mat22:tab2.r2c0#1,setting,plasma_gas_ratio,0.2,,,tab2.r2c0,mat22:tab2.r2c1#1,"quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '0.2' '' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.2))"
 mat22:tab2.r3c0#1,setting,plasma_gas_ratio,0.35,,,tab2.r3c0,mat22:tab2.r3c1#1,"quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '6.5' 'sccm' vs '0.35' '' (canonical ('gas_flow', 6.5) vs ('dimensionless', 0.35))"
@@ -75,107 +73,108 @@ mat22:tab2.r4c0#1,setting,plasma_gas_ratio,0.5,,,tab2.r4c0,mat22:tab2.r4c1#1,"qu
 mat22:tab2.r5c0#1,setting,plasma_gas_ratio,0.65,,,tab2.r5c0,mat22:tab2.r5c1#1,"quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '3.5' 'sccm' vs '0.65' '' (canonical ('gas_flow', 3.5) vs ('dimensionless', 0.65))"
 mat22:tab2.r6c0#1,setting,plasma_gas_ratio,0.8,,,tab2.r6c0,mat22:tab2.r6c1#1,"quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '0.8' '' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.8))"
 mat22:tab2.r7c0#1,setting,plasma_gas_ratio,0.94,,,tab2.r7c0,mat22:tab2.r7c1#1,"quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '0.94' '' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.94))"
-mat22:s3.p1#2,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#6,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#3,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#7,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#6,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#4,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#8,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#7,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#5,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#9,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#8,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#6,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#10,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#9,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#7,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#11,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#10,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#8,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#12,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#11,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#9,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#13,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#12,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#10,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#14,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#13,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#11,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#15,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#14,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#12,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#16,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#15,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#13,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#17,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#16,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#14,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#18,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#17,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#15,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#19,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#18,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#16,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#20,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#19,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#17,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#21,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#20,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#18,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#22,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#21,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#19,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#23,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#22,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#20,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#24,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#23,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#21,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#25,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#24,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#22,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#26,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#25,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#23,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#27,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#26,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#24,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#28,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#27,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#25,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#29,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#28,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#26,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#30,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#29,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#27,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#31,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#30,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#28,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#32,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#31,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#29,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#33,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#32,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#30,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#34,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#33,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#31,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#35,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#34,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#32,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#36,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#35,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#33,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#37,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s5.p4#36,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#34,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s3.p19#3,setting,material,,,mos2,s3.p19,mat22:s3.p19#5,quantity 'substrate' vs 'material'; value_text 'glassy_carbon' vs 'mos2'
+mat22:s5.p4#37,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
 mat22:s3.p1#35,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s3.p19#4,setting,material,,,mos2,s3.p19,mat22:s3.p19#5,quantity 'substrate' vs 'material'; value_text 'glassy_carbon' vs 'mos2'
+mat22:s3.p19#2,setting,material,,,mos2,s3.p19,mat22:s3.p19#5,quantity 'substrate' vs 'material'; value_text 'glassy_carbon' vs 'mos2'
 mat22:s3.p1#36,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s3.p19#5,setting,material,,,mos2,s3.p19,mat22:s3.p19#5,quantity 'substrate' vs 'material'; value_text 'glassy_carbon' vs 'mos2'
+mat22:s3.p19#3,setting,material,,,mos2,s3.p19,mat22:s3.p19#5,quantity 'substrate' vs 'material'; value_text 'glassy_carbon' vs 'mos2'
 mat22:s3.p1#37,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:fig1.cap#3,setting,material,,,mos2,fig1.cap,mat22:s3.p6#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'mos2'; value '100' '°C' vs '' '' (canonical ('temperature', 100.0) vs None)"
+mat22:s3.p19#4,setting,material,,,mos2,s3.p19,mat22:s3.p19#5,quantity 'substrate' vs 'material'; value_text 'glassy_carbon' vs 'mos2'
 mat22:s3.p1#38,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
+mat22:fig1.cap#9,setting,material,,,mos2,fig1.cap,mat22:s3.p6#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'mos2'; value '100' '°C' vs '' '' (canonical ('temperature', 100.0) vs None)"
 mat22:s3.p1#39,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:fig3.cap#2,setting,material,,,mos2,fig3.cap,mat22:s3.p8#1,"quantity 'cycle_number' vs 'material'; value_text '' vs 'mos2'; value '50' '' vs '' '' (canonical ('dimensionless', 50.0) vs None)"
+mat22:fig1.cap#10,setting,material,,,mos2,fig1.cap,mat22:s3.p6#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'mos2'; value '100' '°C' vs '' '' (canonical ('temperature', 100.0) vs None)"
 mat22:s3.p1#40,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s5.p4#38,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:fig3.cap#2,setting,material,,,mos2,fig3.cap,mat22:s3.p8#1,"quantity 'cycle_number' vs 'material'; value_text '' vs 'mos2'; value '50' '' vs '' '' (canonical ('dimensionless', 50.0) vs None)"
 mat22:s3.p1#41,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:fig6.cap#5,setting,material,,,mos2,fig6.cap,mat22:s3.p22#2,type 'observation' vs 'setting'; quantity 'film_thickness' vs 'material'; value_text '' vs 'mos2'
+mat22:s5.p4#38,setting,material,,,mos2,s5.p4,mat22:s3.p51#2,"quantity 'other' vs 'material'; value_text '' vs 'mos2'; value '10' 'sccm' vs '' '' (canonical ('gas_flow', 10.0) vs None)"
+mat22:s3.p1#42,setting,process_mode,,,plasma,s3.p1,mat22:s3.p1#1,type 'definition' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
+mat22:fig6.cap#4,setting,material,,,mos2,fig6.cap,mat22:s3.p22#2,type 'observation' vs 'setting'; quantity 'film_thickness' vs 'material'; value_text '' vs 'mos2'
+mat22:s3.p45#1,setting,process_mode,,,plasma,s3.p45,mat22:abs.g4#2,type 'claim' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
 mat22:s3.p45#2,setting,process_mode,,,plasma,s3.p45,mat22:abs.g4#2,type 'claim' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s3.p45#3,setting,process_mode,,,plasma,s3.p45,mat22:abs.g4#2,type 'claim' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
-mat22:s2.p9#3,setting,process_mode,,,plasma,s2.p9,mat22:s2.p9#1,type 'cited' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
+mat22:s2.p9#2,setting,process_mode,,,plasma,s2.p9,mat22:s2.p9#1,type 'cited' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
 mat22:s3.p46#4,setting,material,,,ws2,s3.p46,mat22:s5.p8#4,"quantity 'plasma_gas_ratio' vs 'material'; value_text '' vs 'ws2'; value '0.80' '' vs '' '' (canonical ('dimensionless', 0.8) vs None)"
-mat22:s2.p9#4,setting,process_mode,,,thermal,s2.p9,mat22:s2.p9#1,type 'cited' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
-mat22:s2.p9#5,setting,process_mode,,,plasma,s2.p9,mat22:s2.p9#1,type 'cited' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
+mat22:s2.p9#3,setting,process_mode,,,thermal,s2.p9,mat22:s2.p9#1,type 'cited' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'thermal'
+mat22:s2.p9#4,setting,process_mode,,,plasma,s2.p9,mat22:s2.p9#1,type 'cited' vs 'setting'; quantity '' vs 'process_mode'; value_text '' vs 'plasma'
 mat22:s3.p5#3,setting,material,,,mos2,s3.p5,mat22:fig1b#7,"quantity 'plasma_gas_ratio' vs 'material'; value_text '' vs 'mos2'; value '0.80' '' vs '' '' (canonical ('dimensionless', 0.8) vs None)"
 mat22:fig1b#3,observation,raman_shift,382.5,cm-1,,fig1b;fig1.cap,mat22:s3.p4#1,"quantity '' vs 'raman_shift'; value '' '' vs '382.5' 'cm-1' (canonical None vs ('wavenumber', 382.5))"
 mat22:fig1b#4,observation,raman_shift,406.5,cm-1,,fig1b;fig1.cap,mat22:s3.p4#1,"quantity '' vs 'raman_shift'; value '' '' vs '406.5' 'cm-1' (canonical None vs ('wavenumber', 406.5))"
-mat22:fig5a#1,observation,binding_energy,228.6,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '228.6' 'eV' (canonical ('energy', 228.9) vs ('energy', 228.6))"
-mat22:fig5a#2,observation,binding_energy,235.8,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '235.8' 'eV' (canonical ('energy', 228.9) vs ('energy', 235.8))"
-mat22:fig5a#3,observation,binding_energy,232.7,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '232.7' 'eV' (canonical ('energy', 228.9) vs ('energy', 232.7))"
-mat22:fig5a#4,observation,binding_energy,229.4,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '229.4' 'eV' (canonical ('energy', 228.9) vs ('energy', 229.4))"
-mat22:fig5a#5,observation,binding_energy,233.5,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '233.5' 'eV' (canonical ('energy', 228.9) vs ('energy', 233.5))"
-mat22:fig5a#6,observation,binding_energy,229.4,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '229.4' 'eV' (canonical ('energy', 228.9) vs ('energy', 229.4))"
-mat22:fig5a#7,observation,binding_energy,226.6,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '226.6' 'eV' (canonical ('energy', 228.9) vs ('energy', 226.6))"
-mat22:fig5a#8,observation,binding_energy,226,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '226' 'eV' (canonical ('energy', 228.9) vs ('energy', 226.0))"
-mat22:fig5b#1,observation,binding_energy,161.2,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '161.2' 'eV' (canonical ('energy', 162.4) vs ('energy', 161.2))"
-mat22:fig5b#2,observation,binding_energy,164.6,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '164.6' 'eV' (canonical ('energy', 162.4) vs ('energy', 164.6))"
-mat22:fig5b#3,observation,binding_energy,163.4,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '163.4' 'eV' (canonical ('energy', 162.4) vs ('energy', 163.4))"
-mat22:fig5b#4,observation,binding_energy,163.4,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '163.4' 'eV' (canonical ('energy', 162.4) vs ('energy', 163.4))"
-mat22:fig5b#5,observation,binding_energy,162.2,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '162.2' 'eV' (canonical ('energy', 162.4) vs ('energy', 162.2))"
+mat22:fig5a#9,observation,binding_energy,228.6,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '228.6' 'eV' (canonical ('energy', 228.9) vs ('energy', 228.6))"
+mat22:fig5a#10,observation,binding_energy,235.8,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '235.8' 'eV' (canonical ('energy', 228.9) vs ('energy', 235.8))"
+mat22:fig5a#11,observation,binding_energy,232.7,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '232.7' 'eV' (canonical ('energy', 228.9) vs ('energy', 232.7))"
+mat22:fig5a#12,observation,binding_energy,229.4,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '229.4' 'eV' (canonical ('energy', 228.9) vs ('energy', 229.4))"
+mat22:fig5a#13,observation,binding_energy,233.5,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '233.5' 'eV' (canonical ('energy', 228.9) vs ('energy', 233.5))"
+mat22:fig5a#14,observation,binding_energy,229.4,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '229.4' 'eV' (canonical ('energy', 228.9) vs ('energy', 229.4))"
+mat22:fig5a#15,observation,binding_energy,226.6,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '226.6' 'eV' (canonical ('energy', 228.9) vs ('energy', 226.6))"
+mat22:fig5a#16,observation,binding_energy,226,eV,,fig5a;fig5.cap,mat22:s3.p16#1,"value '228.9' 'eV' vs '226' 'eV' (canonical ('energy', 228.9) vs ('energy', 226.0))"
+mat22:fig5b#6,observation,binding_energy,161.2,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '161.2' 'eV' (canonical ('energy', 162.4) vs ('energy', 161.2))"
+mat22:fig5b#7,observation,binding_energy,164.6,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '164.6' 'eV' (canonical ('energy', 162.4) vs ('energy', 164.6))"
+mat22:fig5b#8,observation,binding_energy,163.4,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '163.4' 'eV' (canonical ('energy', 162.4) vs ('energy', 163.4))"
+mat22:fig5b#9,observation,binding_energy,163.4,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '163.4' 'eV' (canonical ('energy', 162.4) vs ('energy', 163.4))"
+mat22:fig5b#10,observation,binding_energy,162.2,eV,,fig5b;fig5.cap,mat22:s3.p17#2,"value '162.4' 'eV' vs '162.2' 'eV' (canonical ('energy', 162.4) vs ('energy', 162.2))"
 mat22:fig9a#7,observation,raman_shift,145,cm-1,,fig9a;fig9.cap,mat22:s3.p46#2,"quantity 'element_ratio' vs 'raman_shift'; value '4.0' '' vs '145' 'cm-1' (canonical ('dimensionless', 4.0) vs ('wavenumber', 145.0))"
 mat22:fig9a#8,observation,raman_shift,174,cm-1,,fig9a;fig9.cap,mat22:s3.p46#2,"quantity 'element_ratio' vs 'raman_shift'; value '4.0' '' vs '174' 'cm-1' (canonical ('dimensionless', 4.0) vs ('wavenumber', 174.0))"
 mat22:fig9a#9,observation,raman_shift,347,cm-1,,fig9a;fig9.cap,mat22:s3.p46#2,"quantity 'element_ratio' vs 'raman_shift'; value '4.0' '' vs '347' 'cm-1' (canonical ('dimensionless', 4.0) vs ('wavenumber', 347.0))"
@@ -186,7 +185,49 @@ mat22:fig9b#5,observation,raman_shift,233,cm-1,,fig9b;fig9.cap,mat22:s3.p46#3,"q
 mat22:fig9b#6,observation,raman_shift,334,cm-1,,fig9b;fig9.cap,mat22:s3.p46#3,"quantity 'element_ratio' vs 'raman_shift'; value '2.1' '' vs '334' 'cm-1' (canonical ('dimensionless', 2.1) vs ('wavenumber', 334.0))"
 mat22:fig9b#7,observation,raman_shift,376,cm-1,,fig9b;fig9.cap,mat22:s3.p46#3,"quantity 'element_ratio' vs 'raman_shift'; value '2.1' '' vs '376' 'cm-1' (canonical ('dimensionless', 2.1) vs ('wavenumber', 376.0))"
 mat22:fig9b#8,observation,raman_shift,520,cm-1,,fig9b;fig9.cap,mat22:s3.p46#3,"quantity 'element_ratio' vs 'raman_shift'; value '2.1' '' vs '520' 'cm-1' (canonical ('dimensionless', 2.1) vs ('wavenumber', 520.0))"
-mat22:s3.p6#5,derived,sheet_resistance,6e+05,Ω/sq,,s3.p6,mat22:s3.p6#1,"type 'observation' vs 'derived'; quantity 'film_thickness' vs 'sheet_resistance'; value '3.3' '%' vs '6e+05' 'Ω/sq' (canonical ('dimensionless', 0.033) vs ('resistance', 600000.0))"
-mat22:tab1.r1c1#2,derived,element_ratio,0.3259,,,tab1.r1c1;tab1.r1c4;tab1.r1c6;tab1.r1c7,mat22:tab1.r1c1#1,"type 'observation' vs 'derived'; value '3.7' '' vs '0.3259' '' (canonical ('dimensionless', 3.7) vs ('dimensionless', 0.3259))"
-mat22:tab1.r2c1#2,derived,element_ratio,0.4203,,,tab1.r2c1;tab1.r2c4;tab1.r2c6;tab1.r2c7,mat22:tab1.r2c1#1,"type 'observation' vs 'derived'; value '2.1' '' vs '0.4203' '' (canonical ('dimensionless', 2.1) vs ('dimensionless', 0.4203))"
+mat22:tab2.r6c1#2,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:s3.p6#5,derived,sheet_resistance,6e+05,Ω/sq,,s3.p6;fig1.cap,mat22:s3.p1#1,"type 'definition' vs 'derived'; quantity '' vs 'sheet_resistance'; value '' '' vs '6e+05' 'Ω/sq' (canonical None vs ('resistance', 600000.0))"
+mat22:tab2.r6c1#3,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r6c1#4,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r6c1#5,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r4c1#2,derived,plasma_gas_ratio,10,%,,tab2.r4c1;tab2.r4c2;tab2.r4c3,mat22:tab2.r4c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '5' 'sccm' vs '10' '%' (canonical ('gas_flow', 5.0) vs ('dimensionless', 0.1))"
+mat22:tab2.r5c1#2,derived,plasma_gas_ratio,13,%,,tab2.r5c1;tab2.r5c2;tab2.r5c3,mat22:tab2.r5c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '3.5' 'sccm' vs '13' '%' (canonical ('gas_flow', 3.5) vs ('dimensionless', 0.13))"
 mat22:tab1.r3c1#2,derived,element_ratio,0.8556,,,tab1.r3c1;tab1.r3c4;tab1.r3c6;tab1.r3c7,mat22:tab1.r3c1#1,"type 'observation' vs 'derived'; value '1.8' '' vs '0.8556' '' (canonical ('dimensionless', 1.8) vs ('dimensionless', 0.8556))"
+mat22:tab2.r6c1#6,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab1.r1c1#2,derived,element_ratio,0.3259,,,tab1.r1c1;tab1.r1c4;tab1.r1c6;tab1.r1c7,mat22:tab1.r1c1#1,"type 'observation' vs 'derived'; value '3.7' '' vs '0.3259' '' (canonical ('dimensionless', 3.7) vs ('dimensionless', 0.3259))"
+mat22:tab2.r2c1#2,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab1.r2c1#2,derived,element_ratio,0.4203,,,tab1.r2c1;tab1.r2c4;tab1.r2c6;tab1.r2c7,mat22:tab1.r2c1#1,"type 'observation' vs 'derived'; value '2.1' '' vs '0.4203' '' (canonical ('dimensionless', 2.1) vs ('dimensionless', 0.4203))"
+mat22:tab2.r5c1#3,derived,plasma_gas_ratio,13,%,,tab2.r5c1;tab2.r5c2;tab2.r5c3,mat22:tab2.r5c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '3.5' 'sccm' vs '13' '%' (canonical ('gas_flow', 3.5) vs ('dimensionless', 0.13))"
+mat22:tab2.r2c1#3,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r5c1#4,derived,plasma_gas_ratio,13,%,,tab2.r5c1;tab2.r5c2;tab2.r5c3,mat22:tab2.r5c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '3.5' 'sccm' vs '13' '%' (canonical ('gas_flow', 3.5) vs ('dimensionless', 0.13))"
+mat22:tab2.r5c1#5,derived,plasma_gas_ratio,13,%,,tab2.r5c1;tab2.r5c2;tab2.r5c3,mat22:tab2.r5c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '3.5' 'sccm' vs '13' '%' (canonical ('gas_flow', 3.5) vs ('dimensionless', 0.13))"
+mat22:tab2.r6c1#7,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r1c1#2,derived,plasma_gas_ratio,0,%,,tab2.r1c1;tab2.r1c2;tab2.r1c3,mat22:tab2.r1c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '10' 'sccm' vs '0' '%' (canonical ('gas_flow', 10.0) vs ('dimensionless', 0.0))"
+mat22:tab2.r1c1#3,derived,plasma_gas_ratio,0,%,,tab2.r1c1;tab2.r1c2;tab2.r1c3,mat22:tab2.r1c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '10' 'sccm' vs '0' '%' (canonical ('gas_flow', 10.0) vs ('dimensionless', 0.0))"
+mat22:tab2.r1c1#4,derived,plasma_gas_ratio,0,%,,tab2.r1c1;tab2.r1c2;tab2.r1c3,mat22:tab2.r1c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '10' 'sccm' vs '0' '%' (canonical ('gas_flow', 10.0) vs ('dimensionless', 0.0))"
+mat22:tab2.r2c1#4,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r2c1#5,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r2c1#6,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r2c1#7,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r2c1#8,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r2c1#9,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r2c1#10,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"
+mat22:tab2.r3c1#2,derived,plasma_gas_ratio,7,%,,tab2.r3c1;tab2.r3c2;tab2.r3c3,mat22:tab2.r3c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '6.5' 'sccm' vs '7' '%' (canonical ('gas_flow', 6.5) vs ('dimensionless', 0.07))"
+mat22:tab2.r4c1#3,derived,plasma_gas_ratio,10,%,,tab2.r4c1;tab2.r4c2;tab2.r4c3,mat22:tab2.r4c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '5' 'sccm' vs '10' '%' (canonical ('gas_flow', 5.0) vs ('dimensionless', 0.1))"
+mat22:tab2.r4c1#4,derived,plasma_gas_ratio,10,%,,tab2.r4c1;tab2.r4c2;tab2.r4c3,mat22:tab2.r4c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '5' 'sccm' vs '10' '%' (canonical ('gas_flow', 5.0) vs ('dimensionless', 0.1))"
+mat22:tab2.r4c1#5,derived,plasma_gas_ratio,10,%,,tab2.r4c1;tab2.r4c2;tab2.r4c3,mat22:tab2.r4c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '5' 'sccm' vs '10' '%' (canonical ('gas_flow', 5.0) vs ('dimensionless', 0.1))"
+mat22:tab2.r4c1#6,derived,plasma_gas_ratio,10,%,,tab2.r4c1;tab2.r4c2;tab2.r4c3,mat22:tab2.r4c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '5' 'sccm' vs '10' '%' (canonical ('gas_flow', 5.0) vs ('dimensionless', 0.1))"
+mat22:tab2.r5c1#6,derived,plasma_gas_ratio,13,%,,tab2.r5c1;tab2.r5c2;tab2.r5c3,mat22:tab2.r5c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '3.5' 'sccm' vs '13' '%' (canonical ('gas_flow', 3.5) vs ('dimensionless', 0.13))"
+mat22:tab2.r5c1#7,derived,plasma_gas_ratio,13,%,,tab2.r5c1;tab2.r5c2;tab2.r5c3,mat22:tab2.r5c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '3.5' 'sccm' vs '13' '%' (canonical ('gas_flow', 3.5) vs ('dimensionless', 0.13))"
+mat22:tab2.r6c1#8,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r6c1#9,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r6c1#10,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r6c1#11,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r6c1#12,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r6c1#13,derived,plasma_gas_ratio,16,%,,tab2.r6c1;tab2.r6c2;tab2.r6c3,mat22:tab2.r6c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '16' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.16))"
+mat22:tab2.r7c1#2,derived,plasma_gas_ratio,60,%,,tab2.r7c1;tab2.r7c2;tab2.r7c3,mat22:tab2.r7c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '60' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.6))"
+mat22:tab2.r7c1#3,derived,plasma_gas_ratio,60,%,,tab2.r7c1;tab2.r7c2;tab2.r7c3,mat22:tab2.r7c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '60' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.6))"
+mat22:tab2.r7c1#4,derived,plasma_gas_ratio,60,%,,tab2.r7c1;tab2.r7c2;tab2.r7c3,mat22:tab2.r7c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '60' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.6))"
+mat22:tab2.r7c1#5,derived,plasma_gas_ratio,60,%,,tab2.r7c1;tab2.r7c2;tab2.r7c3,mat22:tab2.r7c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '2' 'sccm' vs '60' '%' (canonical ('gas_flow', 2.0) vs ('dimensionless', 0.6))"
+mat22:tab2.r4c1#7,derived,plasma_gas_ratio,10,%,,tab2.r4c1;tab2.r4c2;tab2.r4c3,mat22:tab2.r4c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '5' 'sccm' vs '10' '%' (canonical ('gas_flow', 5.0) vs ('dimensionless', 0.1))"
+mat22:tab2.r2c1#11,derived,plasma_gas_ratio,4,%,,tab2.r2c1;tab2.r2c2;tab2.r2c3,mat22:tab2.r2c1#1,"type 'setting' vs 'derived'; quantity 'gas_flow_rate' vs 'plasma_gas_ratio'; value '8' 'sccm' vs '4' '%' (canonical ('gas_flow', 8.0) vs ('dimensionless', 0.04))"

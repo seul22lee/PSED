@@ -1,0 +1,14 @@
+1 adoption (the P186 rule in the form_versions.csv header): P184 accepted for gao15, gre23, mat22; whole-paper matched without -> with P184: gao15 99 -> 106, gre23 131 -> 136, mat22 462 -> 487; 60 gold rows lost (13 / 21 / 26), each listed (P186.1_lost_rows.csv). 4c: audits FAIL (below), so by the rule's second condition the three do not qualify; adopted as ordered, for the user's decision.
+2a: before 114 of 128 mat22 grid-cell coordinates (plasma_gas_ratio, deposition_temperature from fig2 / fig4 cells) not on their pass-0 runs, derived units (ela03, zou23) had theirs; 2b: compile writes a point or cell item's coordinates as conditions of the pass-0 unit it names (the derived units' path; a value the run already holds is skipped); after: 128 of 128.
+3 pairing on compiled units (render.compiled_units: runs, specimens incl. films, simulations, model runs, measurements; + the parent stage): gold paired without measurements 324 -> 389 (mat22 specimens 0 -> 49, mat23 7 -> 14, zou23 4 -> 8); measurements a new role (P186.3_pairing.csv).
+4 scores vs P185: T6 2170 -> 2221; type drops (all in the adopted papers, rows in P186.1_lost_rows.csv): mat22 claim 27 -> 23; gre23 derived 21 -> 14, observation 26 -> 24, caveat 7 -> 6; gao15 activity 14 -> 11, observation 26 -> 22, caveat 1 -> 0.
+4 checks: binding_regression 798 / 798; export --check 19 / 19; cards 0 errors; audits: round 1 FAIL (4), round 2 PASS, round 3 FAIL (3), round 4 FAIL (1), round 5 PASS:
+  round 1: FAIL A1 acceleration_voltage: 10.1021_acs.chemmater.2c01154:s5.p14 quantity 'acceleration voltage': row not found
+  round 1: FAIL A1 beam_energy: 10.1021_acs.chemmater.2c01154:s5.p17 quantity 'beam energy': row not found
+  round 1: FAIL A1 laser_power: 10.1021_acs.chemmater.2c01154:s5.p15 quantity 'Laser power': row not found
+  round 1: FAIL A1 voltage: 10.1021_acs.chemmater.2c01154:s5.p18 quantity 'voltage': row not found
+  round 3: FAIL A1 prisms: 10.1116_6.0003182:s10.p2 quantity 'prisms': row not found
+  round 3: FAIL A1 t_hold: 10.1116_6.0003182:s9.p7 quantity 't_hold': row not found
+  round 3: FAIL A1 t_hold: 10.1116_6.0003182:eq1 quantity 't_hold': row not found
+  round 4: FAIL A1 distance_between_the_oxide_pillars: 10.1116_1.4903941:s6.p4 quantity 'distance between the oxide pillars': row not found
+  (each: a grow decision's label no longer occurs in the adopted P184 lines of that element)
