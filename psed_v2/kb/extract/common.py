@@ -165,7 +165,8 @@ def call(client, prompt, rschema, thinking=None, cached=None):
 def failure(text, ids=None):
     """P196b (user) rule 1, P200 (user) extended: why a response is a failed call ('' when it is none): it does not parse (the tolerant JSON
     parse, figures.loads_json, the one compile uses), or a string of the parsed object (a key or a value) holds U+0000 or U+FFFD. P201
-    (user): with ids (an ID_CHECKED pass), its answers (key answers, each an id) miss a listed id or answer an unlisted one."""
+    (user): with ids (an ID_CHECKED pass), its answers (key answers, each an id) miss a listed id or answer an unlisted one. P202 (user):
+    an answer with nk none and no record (pass 1's answer shapes, checked here in case the provider does not enforce the schema)."""
     try:
         obj = loads_json(text)
     except (ValueError, TypeError) as e:
@@ -180,6 +181,9 @@ def failure(text, ids=None):
         elif isinstance(x, str):
             bad.update(c for c in x if c in "\x00\ufffd")
     why = "; ".join(f"U+{ord(c):04X} in a string of the parsed response ({n} times)" for c, n in sorted(bad.items()))
+    empty = [str(a.get("id")) for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict) and a.get("nk") == "none" and not a.get("records")]
+    if empty and not why:
+        why = f"nk none with no record: {', '.join(empty[:20])}"
     if ids is not None and not why:
         got = [a.get("id") for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict)]
         miss, extra = [i for i in ids if i not in got], sorted({str(i) for i in got if i not in ids})

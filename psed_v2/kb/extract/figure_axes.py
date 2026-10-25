@@ -78,7 +78,9 @@ Answer with JSON matching the form.""",
                   "type": "object", "additionalProperties": False, "required": ["id", "label_as_printed", "answer", "candidate", "quote"],
                   "properties": {"id": {"enum": ids or ["none"]}, "label_as_printed": {"type": "string"}, "answer": {"enum": answers},
                                  "candidate": {"anyOf": [{"type": "string"}, {"type": "null"}]}, "quote": {"type": "string"}}}}}}
-    return (K.AXES_PASS, "axes", prompt, C.provider_schema(schema), ids, "", {"labels": labels})
+    ps = C.provider_schema(schema)
+    ps["properties"]["answers"]["items"]["properties"]["id"]["enum"] = ids or ["none"]   # P202 (user): set after provider_schema (no length limit)
+    return (K.AXES_PASS, "axes", prompt, ps, ids, "", {"labels": labels})
 
 
 def main(arg):

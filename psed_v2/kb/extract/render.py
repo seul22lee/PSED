@@ -508,11 +508,17 @@ def pair_units(pid, key, units, measurements=False):
 
 def example(pid, form):
     """One example in the pass-0 form: the gold units and layouts of the last dev paper in index order other than pid (never held-out)
-    whose gold has runs, specimens, a simulation and model runs; ids role prefix + number; curves from gold_curve_units; every field
-    present (null when the gold has none); then SOURCES: each unit's first evidence element with its text (a table row's cells joined,
-    a caption), at most 40 words. Validated against form_pass0.json."""
+    whose gold has runs, specimens, a simulation and model runs; ids role prefix + number; curves from gold_curve_units; then SOURCES:
+    each unit's first evidence element with its text (a table row's cells joined, a caption), at most 40 words. Validated against
+    form_pass0.json. P202 (user): every unit and layout is built from form_pass0.json's own item schema (every property present, the
+    gold's value where the gold gives it, else null), so the example follows any later form version: a unit's id, role, name_as_printed,
+    parent, introduced_in, data (its gold curves, simulated for a model run, else measured) and evidence_quote (the words of its first
+    evidence element, as SOURCES gives them; the form never takes a null quote); a table layout's table, layout and units; a panel
+    layout's panel, layout and unit."""
     from jsonschema import Draft202012Validator
     PRE = {"run": "r", "simulation": "sim", "specimen": "s", "model_run": "m"}
+    item = lambda k: next(x for x in form["properties"][k]["anyOf"] if x.get("type") == "array")["items"]["properties"]   # noqa: E731
+    build = lambda k, gold: {f: gold.get(f) for f in item(k)}                    # noqa: E731
     for p in [p for p in reversed(list(E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
         if not (C.V2 / "kb" / "pilot" / f"{p}.facts.csv").exists():             # P201: a paper with no gold (wer21, P171) gives no example
             continue
@@ -528,24 +534,25 @@ def example(pid, form):
         curves = collections.defaultdict(list)
         for c, e in cu.items():
             curves[e].append(c)
-        unit_item = lambda u: {"id": ids[u["gid"]], "role": u["role"], "name_as_printed": u["name"] or None, "parent": ids.get(u["parent"]),
-                               "introduced_in": u["evidence"] or None, "evidence_quote": None, "data": curves.get(u["gid"]) or None,
-                               "structure_class": None, "specimen_class": None, "experiment_kind": None}
-        tl, pl = gold_layouts(p, key)
-        obj = {"units": [unit_item(u) for u in U],
-               "table_layouts": [{"table": t["table"], "layout": t["layout"].split()[0], "unit_name_cells": None, "units": [ids[x] for x in t["units"] if x in ids] or None}
-                                 for t in tl if not t["minority_cells"]] or None,
-               "panel_layouts": [{"panel": x["panel"], "layout": x["layout"], "unit": ids.get(x["units"][0]) if x["layout"] == "panel_one_unit" and x["units"] else None,
-                                  "axis_quantities": None, "value_quantity": None} for x in pl if x["layout"] in ("curve_per_unit", "panel_one_unit", "point_per_unit")] or None}
-        errs = list(Draft202012Validator(form).iter_errors(obj))
-        if errs:
-            continue
         text = E.texts(p)
 
         def src(e):
             m = re.fullmatch(r"(tabu?\w+?)\.r(\d+)c\d+", e)
             t = " | ".join(text[x] for x in sorted(text, key=lambda x: x) if m and re.fullmatch(rf"{m.group(1)}\.r{m.group(2)}c\d+", x)) if m else text.get(e, "")
             return " ".join(t.split()[:40])
+        unit_item = lambda u: build("units", {"id": ids[u["gid"]], "role": u["role"], "name_as_printed": u["name"] or None, "parent": ids.get(u["parent"]),   # noqa: E731
+                                              "introduced_in": u["evidence"] or None, "evidence_quote": src(u["evidence"][0]) if u["evidence"] else None,
+                                              "data": [{"id": c, "role": "simulated" if u["role"] == "model_run" else "measured"} for c in curves.get(u["gid"], [])] or None})
+        tl, pl = gold_layouts(p, key)
+        obj = {"units": [unit_item(u) for u in U],
+               "table_layouts": [build("table_layouts", {"table": t["table"], "layout": t["layout"].split()[0], "units": [ids[x] for x in t["units"] if x in ids] or None})
+                                 for t in tl if not t["minority_cells"]] or None,
+               "panel_layouts": [build("panel_layouts", {"panel": x["panel"], "layout": x["layout"],
+                                                         "unit": ids.get(x["units"][0]) if x["layout"] == "panel_one_unit" and x["units"] else None})
+                                 for x in pl if x["layout"] in ("curve_per_unit", "panel_one_unit", "point_per_unit")] or None}
+        errs = list(Draft202012Validator(form).iter_errors(obj))
+        if errs:
+            continue
         sources = "\n".join(f"{ids[u['gid']]} <- {u['evidence'][0]}: {src(u['evidence'][0])}" for u in U if u["evidence"])
         return f"(paper {key})\n" + json.dumps(obj, ensure_ascii=False) + "\nSOURCES (the element each unit comes from):\n" + sources
     return "(no example)"

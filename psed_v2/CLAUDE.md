@@ -303,6 +303,15 @@ psed_v2/
   run: figures import, figure_axes.py, the import again, then pass 0 and pass 1 (the plan counts the 0ax call). render.example skips a
   paper with no gold. The PASS-0 UNITS block reads a unit's recipe fields as compile does (its fill entry, nulls too, over its own).
   form_versions.csv: P184-r2 candidate for ela03 (pass 0 and pass 1 on the 0ax figure labels, records lines 52-72; sandbox kb/tmp/P201).
+- P202 (user): render.example builds each unit and layout from form_pass0.json's own item schema (every property present, the gold's
+  value where the gold gives it, else null; evidence_quote = the words of the unit's first evidence element; data = its gold curves,
+  simulated for a model run, else measured): it had given no example since the form's units grew required fields (the P201 note "no
+  gold has all four unit roles" was wrong: six do). Pass-1 answers are one of two shapes (anyOf): nk none with at least one record, or
+  an NK reason with no record (a header cell answers with a reason); common.failure fails an answer nk none with no record. Form
+  version P202 (P184's record rules plus that constraint): form_versions.csv corpus candidate; P184-r2 rejected for ela03 (P201: pass 0
+  ran without its example). Pass 0 (and its 0x extension) sends every id field as an enum of the paper's ids, set after
+  provider_schema: introduced_in (element ids), data ids (compile.data_ids: figures.json curves, values, sets, derived), a table
+  layout's table (table ids) and unit_name_cells (table cells), a panel layout's panel (panel elements); 0ax label ids likewise.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

@@ -32,7 +32,8 @@ INTRO = "You extract the knowledge of an ALD paper, one group of its elements pe
 RULES = """RULES (what the codebook does not say)
 Answer
 - Answer every element id of ELEMENTS once: nk = none with its records, or nk = one of the codebook's NK reasons with records empty
-  (duplicate: duplicate_of = the element id it repeats).
+  (duplicate: duplicate_of = the element id it repeats). nk = none always carries at least one record; an element that gives no
+  record (a table header cell among them) answers with an NK reason.
 Fields
 - Every field of a record is present; write null when it does not apply.
 - quote: words copied verbatim from the element, as few as identify the record; every record has one.
@@ -150,11 +151,14 @@ def flat_schema(form):
 
 
 def response_schema(form, ids, flat=False):
-    """{"answers": [{"id", "nk", "duplicate_of", "records"}]} (user, P133: element ids are values, not keys; no union: nk = none means
-    the records apply, else records is empty); the record is record_schema() (by type, P148-cost2), or with flat the P139 record."""
+    """{"answers": [{"id", "nk", "duplicate_of", "records"}]} (user, P133: element ids are values, not keys); the record is
+    record_schema() (by type, P148-cost2), or with flat the P139 record. P202 (user): an answer is one of two shapes (anyOf): nk none
+    with at least one record, or nk an NK reason with no record."""
     rec, defs = (flat_schema(form), {}) if flat else record_schema(form)
-    item = {"type": "object", "required": ["id", "nk", "records"], "properties": {"id": {"type": "string", "enum": ids},
-            "nk": {"type": "string", "enum": ["none"] + NK_FORM}, "duplicate_of": {"type": "string"}, "records": {"type": "array", "items": rec}}}
+    shape = lambda nk, n: {"type": "object", "required": ["id", "nk", "records"], "properties": {   # noqa: E731
+        "id": {"type": "string", "enum": ids}, "nk": {"type": "string", "enum": nk}, "duplicate_of": {"type": "string"},
+        "records": {"type": "array", "items": rec, **n}}}
+    item = {"anyOf": [shape(["none"], {"minItems": 1}), shape(NK_FORM, {"maxItems": 0})]}
     return {"type": "object", "required": ["answers"], "properties": {"answers": {"type": "array", "items": item}}, **({"$defs": defs} if defs else {})}
 
 

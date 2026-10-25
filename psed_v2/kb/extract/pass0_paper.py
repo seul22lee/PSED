@@ -66,13 +66,37 @@ PANEL LAYOUTS (one per figure panel of FIGURES below):
 Every field is present; null when it does not apply. Answer with JSON matching the form."""
 
 
+def id_enums(pid, s):
+    """P202 (user): pass 0's provider schema s (a units list, and the layouts when s has them) with every id field an enum of this
+    paper's ids, set after provider_schema (no enum length limit; as pass 1's answer ids): a unit's introduced_in (the element ids) and
+    data ids (compile.data_ids: figures.json curves, values, sets, derived); a table layout's table (the table ids) and unit_name_cells
+    (the table cells); a panel layout's panel (the panel elements). Returns s."""
+    import compile as K
+    els = C.E.load(pid)
+    eids, data = [r["element_id"] for r in els], K.data_ids(pid)
+    tables, cells = sorted({r["section"] for r in els if r["kind"] == "table_cell"}), [r["element_id"] for r in els if r["kind"] == "table_cell"]
+    panels = [r["element_id"] for r in els if r["kind"] == "panel"]
+    props = lambda k: s["properties"][k]["items"]["properties"] if k in s["properties"] else None   # noqa: E731
+    u = props("units")
+    u["introduced_in"]["items"]["enum"] = eids
+    if data:
+        u["data"]["items"]["properties"]["id"]["enum"] = data
+    if props("table_layouts") and tables:
+        props("table_layouts")["table"]["enum"] = tables + [None]
+        if cells:
+            props("table_layouts")["unit_name_cells"]["items"]["enum"] = cells
+    if props("panel_layouts") and panels:
+        props("panel_layouts")["panel"]["enum"] = panels + [None]
+    return s
+
+
 def jobs(pid):
     form = C.schema("form_pass0.json")
     prompt = "\n\n".join([instruction(), "CODEBOOK:\n" + render.codebook(), "EXAMPLE (another paper's gold, in the form):\n" + render.example(pid, form),
                           "TABLES (markdown, then cell ids):\n" + render.tables(pid), "FIGURES (caption, panels: id | type | what it shows, curves: id | panel | series label | x | y | "
                           "conditions):\n" + render.figures(pid), "ELEMENT INDEX (id, kind, locator):\n" + render.index(pid),
                           "PAPER (document.md):\n" + render.document(pid)])
-    return [(0, "paper", prompt, C.provider_schema(form), [])]
+    return [(0, "paper", prompt, id_enums(pid, C.provider_schema(form)), [])]
 
 
 THINKING = {"thinking_level": "MEDIUM"}                                         # user, P138 (was LOW, P133b); recorded in the line and the cache key

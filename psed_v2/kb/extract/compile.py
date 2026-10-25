@@ -249,6 +249,16 @@ def series_axis(pid):
     return out
 
 
+DATA_SECTIONS = ("curves", "values", "sets", "derived")                        # the figures.json records a pass-0 data id may name (P202: its enum)
+
+
+def data_ids(pid):
+    """P202 (user): the ids a pass-0 data entry may name: kb/<pid>.figures.json's curves, values, sets and derived records."""
+    p = C.V2 / "kb" / f"{pid}.figures.json"
+    F = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    return [x["id"] for sec in DATA_SECTIONS for x in F.get(sec) or [] if x.get("id")]
+
+
 AXES_PASS = "0ax"                                                               # P201 (user): the records line of the figure-label job (figure_axes.py)
 COLLECT = None                                                                  # P201: {(pid, panel, kind, text): context} while figure_axes.py collects
 _AXES = {}
@@ -822,7 +832,7 @@ def bind(pid, obj, recs=None):
     for u in units:
         for d in u.get("data") or []:
             holders[d.get("id") if isinstance(d, dict) else d].append((u["id"], d.get("role") if isinstance(d, dict) else None))
-    known = {x.get("id") for sec in ("curves", "values", "sets", "derived") for x in Fj.get(sec) or []}
+    known = {x.get("id") for sec in DATA_SECTIONS for x in Fj.get(sec) or []}
     refs_unknown = [(u, i) for i, us in holders.items() if i not in known for u, _ in us]
     vecs = unit_vectors(pid, units, recs) if recs is not None else {}
     sims, runs = [u["id"] for u in units if u.get("role") == "simulation"], [u["id"] for u in units if u.get("role") == "run"]

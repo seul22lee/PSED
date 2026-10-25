@@ -69,7 +69,7 @@ def job(pid):
                              "panel_methods": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": ["panel", "method"],
                                                                           "properties": {"panel": {"enum": panels or ["none"]},
                                                                                          "method": {"anyOf": [{"enum": methods}, {"type": "null"}]}}}}}}
-    return (K.EXTEND_PASS, "units", prompt, C.provider_schema(schema), [])
+    return (K.EXTEND_PASS, "units", prompt, P0.id_enums(pid, C.provider_schema(schema)), [])   # P202: the unit id fields as pass 0's
 
 
 def main(arg):
