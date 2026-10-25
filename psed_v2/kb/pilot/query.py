@@ -758,9 +758,12 @@ def _matches(f, q, need):
     return all(have.get(k) == v for k, v in need.items())
 
 
-def _candidates(T, ent, spec, need):
+def _candidates(T, ent, spec, need, near=None):
     """The facts that can serve an input, nearest first: the entity's results and its run's, its condition vector, its input
-    entities' results and settings, then (scope paper) every fact of the paper, then the assumed facts; each as (fact, source)."""
+    entities' results and settings, then (scope paper) every fact of the paper, then the assumed facts; each as (fact, source).
+    P204 (user, A2; compile's call only, near given): within a pool the facts are ordered by the level of the node holding them (the
+    entity, its parent, ... the paper root; a fact off the chain last), then the declared alternative, then the declared qualifiers
+    exactly before more qualifiers; a fact near['ok'](ent, f) refuses (a species the entity's run does not use) is no input."""
     pools = [("result", [f for fs in T.results(ent).values() for f in fs] + [f for fs in T.run_results(ent).values() for f in fs])]
     for i in T.inputs_of(ent):                                                  # what the entity was made from: the same physical thing (P9)
         pools.append((f"input {T.label(i)}", [f for fs in T.results(i).values() for f in fs] + [f for f in T.own(i) if f["type"] == "setting"]))
@@ -768,12 +771,19 @@ def _candidates(T, ent, spec, need):
     if spec["scope"] == "paper":
         pools.append(("paper", [f for f in T.rows if "#" in f["fact_id"] and f["type"] in ("setting", "observation", "derived", "model", "cited")]))
     pools.append(("assumed", [u for u in ASSUMED if not u["links"] or any(l.split(":")[0] == T.key for l in u["links"].split(";"))]))   # an assumed fact serves the papers its links name; a constant without links serves all
-    out = []
+    out, chain = [], T.chain(ent)
     for src, pool in pools:
-        for q in spec["q"].split("|"):
+        if near:
+            pool = [f for f in pool if src == "assumed" or near["ok"](ent, f)]
+        found = []
+        for ai, q in enumerate(spec["q"].split("|")):
             hits = ranked([f for f in pool if _matches(f, q, need) and (f["value"] or f["value_min"] or f["value_max"]) and "stat" not in quals(f)])
             exact = [f for f in hits if set(quals(f).items()) == set(need.items())]
-            out += [(f, src) for f in exact] + [(f, src) for f in hits if f not in exact]
+            found += [(ai, 0 if f in exact else 1, n, f) for n, f in enumerate(exact + [f for f in hits if f not in exact])]
+        if near:
+            lvl = lambda f: chain.index(f.get("parent")) if f.get("parent") in chain else len(chain)   # noqa: E731
+            found.sort(key=lambda x: (lvl(x[3]),) + x[:3])
+        out += [(f, src) for *_, f in found]
         if out and not spec["all"]:
             return out
     return out
@@ -799,16 +809,16 @@ def derived_keys(q, need=None):
 _DERIVE_CACHE = {}
 
 
-def derive(T, ent, did, _stack=()):
-    if not _stack and (T.key, ent, did) in _DERIVE_CACHE:
-        return _DERIVE_CACHE[(T.key, ent, did)]
-    out = _derive(T, ent, did, _stack)
+def derive(T, ent, did, _stack=(), near=None):
+    if not _stack and (T.key, ent, did, near is not None) in _DERIVE_CACHE:
+        return _DERIVE_CACHE[(T.key, ent, did, near is not None)]
+    out = _derive(T, ent, did, _stack, near)
     if not _stack:
-        _DERIVE_CACHE[(T.key, ent, did)] = out
+        _DERIVE_CACHE[(T.key, ent, did, near is not None)] = out
     return out
 
 
-def _derive(T, ent, did, _stack=()):
+def _derive(T, ent, did, _stack=(), near=None):
     """A derived quantity of an entity: {value, unit, inputs: [(name, fact id, value as used, unit, source)], assumed: [ids],
     notes: [...], chain: [derived ids used]} or {error}. Never derived when the entity already has the quantity as a measured or
     stated value (P7): then {error, stated: the fact}. An input that is itself a derived quantity is derived in turn, unless that
@@ -826,7 +836,7 @@ def _derive(T, ent, did, _stack=()):
                 return dict(error=f"no formula for {subs['@material'] or 'the material'}")
             args[spec["name"]] = L.FORMULA_METALS[subs["@material"]]; continue
         need = {k: subs.get(v, v) for k, v in (p.split("=", 1) for p in spec["quals"].split(";") if "=" in p)}
-        cands = _candidates(T, ent, spec, need)
+        cands = _candidates(T, ent, spec, need, near)
         if spec["all"]:
             vals = []
             for f, src in cands:
@@ -837,7 +847,7 @@ def _derive(T, ent, did, _stack=()):
             continue
         dk = next((k for k in derived_keys(spec["q"].split("|")[0], need) if k not in stack), None)
         if not cands and dk:
-            sub = derive(T, ent, dk, _stack=stack)
+            sub = derive(T, ent, dk, _stack=stack, near=near)
             chain += sub.get("chain", [])
             if "error" in sub:
                 return dict(error=f"{spec['name']}: {sub['error']}")

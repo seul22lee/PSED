@@ -67,7 +67,7 @@ REDUNDANT_FIELDS = ["paper", "unit", "transform", "printed_fact", "printed_value
                     "computed_unit", "computed_range", "outcome"]                  # P194 1d: <pid>.transform_redundant.csv
 DOMAIN_CHECKS = (("penetration_depth", "feature_depth"), ("coated_aspect_ratio", "aspect_ratio"))   # P196 (user) 2: the first never above the second
 DOMAIN_FIELDS = ["paper", "unit", "check", "fact", "value", "value_unit", "source", "data_kind", "other_fact", "other_value", "other_unit", "other_source",
-                 "other_data_kind", "compared_in", "ranges"]
+                 "other_data_kind", "compared_in", "ranges", "reason"]
 RECIPE_CSV = ["run", "field", "value", "quote", "element"]                      # P187: kb/compiled/<pid>.recipe_fields.csv (compile stores the recipe fields)
 SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
 RANGE_FIELDS = ["paper", "element", "fact_id", "type", "quantity", "value", "unit", "as_fraction", "range", "quote", "statement"]   # P190: <pid>.out_of_range.csv
@@ -1237,7 +1237,9 @@ class Run:
           3. else the record's own element (its text; a table cell with its column and row header cells; the label's subscript when
              it is a species name) naming the record's species keeps it.
           4. else the species is cleared, listed 'species cleared (no evidence)' (P179; P178 listed it 'unverified (record only)').
-        A definition record is held to 3 and 4 on its own text. Every such record is a log line 'a1: symbol species ...' and r['a1']."""
+        A definition record is held to 3 and 4 on its own text. Every such record is a log line 'a1: symbol species ...' and r['a1'].
+        P204 (user, A1): a record of the symbol is also one labelled with the meaning this paper's definition record of the symbol gives it
+        (the definition's label_as_printed, its term the symbol; a meaning two symbols share names neither): it is read under the symbol."""
         text, self.a1_rows = self.text, []
         letters = {m.group(1) for t in text.values() for m in UNNAMED_REACTANT.finditer(t)}
         carrier = {next(iter(vocab_hits(self.pid, "species", r["rec"]["value_text"])), r["rec"]["value_text"]) for r in recs
@@ -1263,14 +1265,19 @@ class Run:
         def row(eid):                                                           # a definition in a table: its row (the symbol and its meaning)
             m = CELL_ID.match(eid)
             return [t for x, t in text.items() if re.match(rf"^{re.escape(m.group(1))}\.r{m.group(2)}c\d+$", x)] if m else [text.get(eid, "")]
-        defs = collections.defaultdict(list)
+        defs, meaning = collections.defaultdict(list), collections.defaultdict(set)
         for r in recs:
             rec = r["rec"]
             if rec.get("type") == "definition" and isinstance(rec.get("term"), str) and rec["term"].strip():
                 defs[C.X.symbol_key(rec["term"])].append((r["eid"], names([rec.get("quote") or "", rec.get("label_as_printed") or ""] + row(r["eid"]), rec["term"])))
+                ml = rec.get("label_as_printed") if isinstance(rec.get("label_as_printed"), str) else ""
+                if ml.strip() and C.X.symbol_like(rec["term"]) and not C.X.symbol_like(ml):   # P204 (user, A1): the meaning the definition gives the symbol
+                    meaning[C.X.norm_label(ml)].add(rec["term"].strip())
         for r in recs:
             rec = r["rec"]
             lab = rec.get("label_as_printed") if isinstance(rec.get("label_as_printed"), str) else ""
+            if not C.X.symbol_like(lab) and len({C.X.symbol_key(x) for x in meaning.get(C.X.norm_label(lab), ())}) == 1:
+                lab = next(iter(meaning[C.X.norm_label(lab)]))                  # P204 (user, A1): a record labelled with a symbol's meaning is read under it
             if r.get("origin") or rec.get("type") not in SYMBOL_TYPES or not C.X.symbol_like(lab) or not re.search(r"[A-Za-z\\]", lab):
                 continue
             q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
@@ -1314,7 +1321,8 @@ class Run:
         whose species is evidenced in any record (kept, backed by, from or corrected from the definition) gives that species to every
         record of the symbol that has none; differing evidenced species clear every record of the symbol ('symbol species conflict').
         Then a user's symbol decision (history.csv kind symbol with a species, for this paper) gives its species to the paper's symbols
-        whose subscript is the decided letter, where the species is still empty."""
+        whose subscript is the decided letter, where the species is still empty. P204 (A1, P179 as written): the generic model_reactant backs
+        model records only, here too."""
         def put(r, sp, how, note):
             rec = r["rec"]
             q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
@@ -1335,7 +1343,7 @@ class Run:
             if len(ev) == 1:
                 (sp, els), = ev.items()
                 for r in rs:
-                    if not r["a1"]["species"]:
+                    if not r["a1"]["species"] and (sp != "model_reactant" or r["a1"]["type"] == "model"):
                         put(r, sp, "from the symbol's evidence in this paper", f"species {sp} from the symbol's evidence in this paper ({', '.join(sorted(els))})")
             elif len(ev) > 1:
                 for r in rs:
@@ -2288,7 +2296,34 @@ class Run:
                 continue
             seen.setdefault(key, f)
             out.append(f)
-        return out
+        return self.merge_subsets(out)
+
+    def merge_subsets(self, items):
+        """P204 (user, A3; replaces P175's identical-key condition for this case only): two value facts on the same unit with the same type,
+        quantity, value (or range), unit and value_text, one fact's qualifiers a strict subset of the other's, are one fact: the fuller
+        qualifiers kept, all evidence kept (element order). Qualifiers that differ in a shared key never merge; a fact whose fuller facts
+        differ among themselves (species tma and species h2o) is not merged."""
+        quals = lambda f: dict(x.split("=", 1) for x in (f.get("qualifiers") or "").split(";") if "=" in x)   # noqa: E731
+        groups = collections.defaultdict(list)
+        for f in items:
+            if text_key(f) is None and any(f[x] for x in VALUE_KEYS):
+                groups[tuple(f[x] for x in DEDUPE_KEY if x != "qualifiers")].append(f)
+        drop = set()
+        for fs in groups.values():
+            for f in fs if len(fs) > 1 else []:
+                sup = [g for g in fs if g is not f and id(g) not in drop and quals(f).items() < quals(g).items()]
+                if not sup:
+                    continue
+                full = max(sup, key=lambda g: len(quals(g)))
+                if any(not quals(g).items() <= quals(full).items() for g in sup):
+                    self.count("i", "subset qualifiers, fuller facts differ (not merged)")
+                    continue
+                full["evidence"] = ";".join(sorted(set(full["evidence"].split(";")) | set(f["evidence"].split(";")), key=self.order.get))
+                drop.add(id(f))
+                self.count("i", "merged into the fact with the fuller qualifiers")
+                self.note(f"i: merged {f['evidence']} ({f['quantity']} {f['value'] or f['value_text']} {f['qualifiers'] or '-'}) into the fact with "
+                          f"qualifiers {full['qualifiers']} ({full['evidence']})")
+        return [f for f in items if id(f) not in drop]
 
     def ids(self, items):
         n = collections.Counter()
@@ -2330,13 +2365,39 @@ class Run:
                 self.count("6b", "dimension mismatch flagged")
         return rows
 
+    def species_ok(self, rows):
+        """P204 (user, A2b): f -> whether a fact may be an input of unit u: a fact qualified by a species is no input for a unit whose run's
+        recipe (reactant_A / reactant_B of the unit's pass-0 unit, else of its nearest ancestor that has them) does not hold that species;
+        a unit with no recipe reactants refuses nothing (matching only; nothing is filled)."""
+        parent = {r["fact_id"]: r.get("parent") for r in rows if "#" not in r["fact_id"]}
+        by_row = {nid: u for u in self.pass0 if isinstance(u, dict) for nid, _ in [self.node.get(u.get("id"), ("", ""))] if nid}
+        memo = {}
+
+        def reactants(u):
+            if u not in memo:
+                x, seen, memo[u] = u, set(), set()
+                while x and x not in seen:
+                    seen.add(x)
+                    sp = {by_row.get(x, {}).get(k) for k in ("reactant_A", "reactant_B")} - {None, ""}
+                    if sp:
+                        memo[u] = sp
+                        break
+                    x = parent.get(x)
+            return memo[u]
+
+        def ok(u, f):
+            sp = dict(x.split("=", 1) for x in (f.get("qualifiers") or "").split(";") if "=" in x).get("species", "")
+            return not sp or not reactants(u) or sp in reactants(u)
+        return ok
+
     def unit_inputs(self, rows, ranges=False):
         """P195 (user) A1: the computation units (runs, specimens with the compiler's films, simulations, model runs) and the facts a unit
         holds or inherits, shared by transforms() and domain_check(): local(u) its own facts (source 0) and its measurement units' results
         (1); candidates(u, q) those of quantity q, flagged facts left out, else (it holds none) the nearest ancestor's conditions of q when
         that ancestor holds exactly one value of it (source 2 and up, every unit between holding none, P190); to_unit, half (+- half the
         last printed digit), rank (kind_rank) and span(f) (a fact's printed range: value +- half, or value_min - half to value_max + half).
-        ranges=True (the domain check) takes the facts given as a range (value_min / value_max) too; transform inputs take single values."""
+        ranges=True (the domain check) takes the facts given as a range (value_min / value_max) too; transform inputs take single values.
+        P204 (user, A2b): a fact whose species the unit's run does not use is none of the unit's inputs (species_ok)."""
         import decimal
         import types
         import experiments as EX
@@ -2388,15 +2449,16 @@ class Run:
                 return 0.0
 
         rank = lambda f: kind_rank(f, self.kind_of)                             # noqa: E731
+        ok = self.species_ok(rows)                                              # P204 (user, A2b)
 
         def candidates(u, q):
             """(fact, source rank) of q for unit u: its own and measurement facts; if it holds none, the nearest ancestor's conditions of q
             when that ancestor holds exactly one value of it (every unit between holding none)."""
-            mine = [(f, s) for f, s in local(u) if f["quantity"] == q]
+            mine = [(f, s) for f, s in local(u) if f["quantity"] == q and ok(u, f)]
             if mine:
                 return [(f, s) for f, s in mine if not f.get("dimension_mismatch")]
             for d, a in enumerate(ancestors(u), 2):
-                held = [f for f in direct.get(a, []) if f["quantity"] == q]
+                held = [f for f in direct.get(a, []) if f["quantity"] == q and ok(u, f)]
                 if not held:
                     continue
                 conds = [f for f in held if EX.is_condition(f)]
@@ -2437,8 +2499,38 @@ class Run:
                                             other_unit=fb.get("unit") or "", other_source=src(sb), other_data_kind=fb.get("data_kind") or "",
                                             compared_in=to or "1", ranges=f"{ra[0]:.6g}-{ra[1]:.6g} > {rb[0]:.6g}-{rb[1]:.6g}"))
                             self.count("j", f"domain check: {qa} > {qb}")
-        self.domain_rows = out
+        self.domain_rows = getattr(self, "front_rows", []) + out                 # P204 (user, A4): the penetration depths not written, first
         return rows
+
+    def front_at_end(self, rows):
+        """P204 (user, A4; replaces P196's list-only rule for this case): a penetration_depth at level 50% held by a computation unit (its own
+        or its measurement units', unit_inputs) whose printed range reaches the unit's feature_depth (every feature_depth the unit holds or
+        inherits: the penetration depth's upper end at or above the feature depth's lower end, each +- half its last printed digit, in the
+        feature_depth's unit) is not written, so no coated_aspect_ratio is computed from it; listed in domain_check.csv with the reason
+        "front at the feature's end". A unit with no feature_depth: as before. The figure import and its derived records are unchanged."""
+        h = self.unit_inputs(rows, ranges=True)
+        to = L.UNITS.get("feature_depth") or ""
+        src = lambda s: "own" if s == 0 else "measurement unit" if s == 1 else f"ancestor (level {s - 1})"   # noqa: E731
+        drop, self.front_rows = set(), []
+        for u in h.units:
+            fds = h.candidates(u, "feature_depth")
+            for f, s in h.candidates(u, "penetration_depth") if fds else []:
+                if s > 1 or h.quals(f).get("level") != "50%" or f["fact_id"] in drop:
+                    continue
+                try:
+                    ra, rbs = h.span(f, to), [(h.span(g, to), g, sg) for g, sg in fds]
+                except (ValueError, KeyError):
+                    continue
+                if all(ra[1] >= rb[0] for rb, _, _ in rbs):
+                    drop.add(f["fact_id"])
+                    rb, g, sg = rbs[0]
+                    self.front_rows.append(dict(paper=self.key, unit=u, check="penetration_depth at or beyond feature_depth", fact=f["fact_id"],
+                                                value=f["value"] or f"{f['value_min']}-{f['value_max']}", value_unit=f.get("unit") or "", source=src(s),
+                                                data_kind=f.get("data_kind") or "", other_fact=g["fact_id"], other_value=g["value"] or f"{g['value_min']}-{g['value_max']}",
+                                                other_unit=g.get("unit") or "", other_source=src(sg), other_data_kind=g.get("data_kind") or "", compared_in=to or "1",
+                                                ranges=f"{ra[0]:.6g}-{ra[1]:.6g} reaches {rb[0]:.6g}-{rb[1]:.6g}", reason="front at the feature's end"))
+                    self.count("j", "penetration_depth at the feature's end (not written)")
+        return [r for r in rows if r["fact_id"] not in drop]
 
     def transforms(self, rows):
         """j, P194 / P195 (user) A1, A3: every transform declared in ontology.yaml (vocab.TRANSFORMS) with a function in lists.TRANSFORM_FN,
@@ -2446,9 +2538,10 @@ class Run:
         A unit's inputs: its own value facts, the results of its measurement units (the measurement activities under it, P185) and the
         conditions (settings, model inputs) of its ancestors, transitively under P190: an ancestor's value reaches a unit only when every unit
         between holds no value of that quantity and the ancestor holds exactly one value of it. A flagged fact (6b) is never an input. A
-        declared input 'q{k=v}' takes the facts of q whose qualifiers contain k=v; when several match: (1) the qualifiers exactly the declared
-        ones, (2) where the value comes from (kind_rank: a text, table or caption element; figure panels only; computed_by_kb), (3) own unit,
-        then measurement unit, then ancestor, nearest first; values that agree within printed precision (+- half the last printed digit) are
+        declared input 'q{k=v}' takes the facts of q whose qualifiers contain k=v; when several match (P204, user, A2a, revising P195's order):
+        (1) own unit, then measurement unit, then ancestor, nearest first, (2) within one level the qualifiers exactly the declared ones before
+        more qualifiers, (3) where the value comes from (kind_rank: a text, table or caption element; figure panels only; computed_by_kb); a
+        fact whose species the unit's run does not use is no input (unit_inputs, A2b); values that agree within printed precision (+- half the last printed digit) are
         one value, the most precise one used; more than one value left -> 'inputs ambiguous', none -> 'inputs missing'. Inputs are
         converted to the units the function is written for (lists.convert). A3: a unit that holds a printed fact of the output (not
         computed_by_kb, qualifiers not in conflict, not an input of the computation) keeps it; the transform is computed and compared (each
@@ -2475,11 +2568,11 @@ class Run:
                     need = dict(x.split("=", 1) for x in need)
                     cand = [(f, s) for f, s in candidates(u, q) if need.items() <= quals(f).items()]
                     if len(cand) > 1:
-                        cand = [x for x in cand if quals(x[0]) == need] or cand                         # (1) the declared qualifiers exactly
-                        best = min(rank(f) for f, _ in cand)
-                        cand = [x for x in cand if rank(x[0]) == best]                                   # (2) where the value comes from
                         near = min(s for _, s in cand)
-                        cand = [x for x in cand if x[1] == near]                                         # (3) own, measurement unit, ancestor
+                        cand = [x for x in cand if x[1] == near]                                         # (1) own, measurement unit, ancestor
+                        cand = [x for x in cand if quals(x[0]) == need] or cand                         # (2) the declared qualifiers exactly
+                        best = min(rank(f) for f, _ in cand)
+                        cand = [x for x in cand if rank(x[0]) == best]                                   # (3) where the value comes from
                     try:
                         vals = {f"{to_unit(F.num(f['value']), f.get('unit') or '', fu):.12g}" for f, _ in cand}
                         if len(vals) > 1:                               # P195 (user): values agreeing within printed precision are one value
@@ -2574,7 +2667,8 @@ class Run:
     def derived(self, rows):
         """j: lists.DERIVED through query.derive on the compiled tree, one derived row per entity and derived id when every input is a
         compiled fact (no assumed fact); caveats and claim nodes through query; comparisons not built (D8). P179 (user): no process_mode
-        is derived (the recipe field, Run.recipe_process_mode)."""
+        is derived (the recipe field, Run.recipe_process_mode). P204 (user, A2): its inputs nearest holder first, a species the unit's run
+        does not use refused (query.derive near=)."""
         import query as Q
         self.write_facts(rows)
         here, Q.HERE = Q.HERE, OUT
@@ -2584,11 +2678,12 @@ class Run:
             Q.HERE = here
         ids = {r["fact_id"] for r in rows}
         byid = {r["fact_id"]: r for r in rows}
+        near = dict(ok=self.species_ok(rows))                                   # P204 (user, A2): nearest holder first; a species the unit's run does not use is no input
         out, errors = [], collections.Counter()
         for e in T.entities():
             for did in [k for k, D_ in L.DERIVED.items() if not D_.get("transform")]:   # P194 (user): a moved entry is computed by transforms()
                 try:
-                    d = Q.derive(T, e, did)
+                    d = Q.derive(T, e, did, near=near)
                 except (KeyError, ValueError) as ex:                            # P138: an input query cannot convert (e.g. cycle -> 1): logged
                     errors[f"derive raised: {ex}"[:60]] += 1; continue
                 if "error" in d:
@@ -2753,6 +2848,7 @@ class Run:
         rows = tree + list(self.meas.values()) + items                         # tree holds the figure entities (rows_tree)
         rows = rows + self.comparisons(rows)                                    # P143b: from the condition vectors
         rows = self.flag_dimensions(rows)                                       # P194 (user) 6b
+        rows = self.front_at_end(rows)                                          # P204 (user, A4): a 50% penetration depth at its feature's end is not written
         rows = self.derived(rows)                                               # the lists.DERIVED entries no declaration takes (cycle_time first)
         rows = self.flag_dimensions(rows)
         rows = self.transforms(rows)                                            # P194 (user) 1: the declared transforms

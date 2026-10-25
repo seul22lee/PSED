@@ -312,6 +312,16 @@ psed_v2/
   ran without its example). Pass 0 (and its 0x extension) sends every id field as an enum of the paper's ids, set after
   provider_schema: introduced_in (element ids), data ids (compile.data_ids: figures.json curves, values, sets, derived), a table
   layout's table (table ids) and unit_name_cells (table cells), a panel layout's panel (panel elements); 0ax label ids likewise.
+- P204 A (user, compile only): A1 symbol species (P178/P179/P179c as written): a record labelled with the meaning a paper's definition
+  record gives a symbol (its label_as_printed, its term the symbol) is a record of that symbol; the paper-wide fill gives the generic
+  model_reactant to model records only. A2 transform and DERIVED inputs (revises P195's order): nearest holder first (own, measurement
+  units, ancestors nearest first), then the declared qualifiers exactly; a fact qualified by a species is no input for a unit whose run's
+  recipe reactant_A / reactant_B (compile.species_ok; a unit with no recipe reactants refuses none) does not hold it (query.derive
+  near=, compile's call only; check.py's derivations unchanged). A3: two value facts on one unit with the same type, quantity, value
+  (or range), unit and value_text, one's qualifiers a strict subset of the other's, are one fact (the fuller qualifiers, all evidence);
+  a fact under two differing fuller facts is not merged. A4: a 50% penetration_depth whose printed range reaches every feature_depth
+  its unit holds or inherits is not written (no coated_aspect_ratio from it), listed in domain_check.csv (column reason: "front at the
+  feature's end").
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
