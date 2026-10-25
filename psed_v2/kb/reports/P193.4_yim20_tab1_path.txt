@@ -1,0 +1,9 @@
+yim20 tab1: how the header text reaches each column (ids and counts; the texts: kb/reports/P193.4.text.csv, git-ignored)
+source: Marker Table block /page/3/Table/3 (ingest/marker/10.1039_d0cp03358h/blocks.json), page 4; the PDF text layer in its box runs upward (rotated 90) 1561 (the ingest's rule check: not checkable, rotated table: the text layer is not upright)
+html: 19 rows; header rows (<th> rows at the top) 1; row 0 has 17 <th> cells, colspan > 1: 0, rowspan > 1: 0
+body rows: 18; html cells per body row: {15: 12, 16: 6}; rowspan cells: 6 (column 0 of rows 1, 4, 7, 10, 13, 16, rowspan 3, 3, 3, 3, 3, 3), colspan cells: 0
+grid (structure_marker._table_markdown places each cell at the first free column, a rowspan cell carried down): header width 17, body width per row {16: 18}
+_table_markdown: every row padded to the widest (17): each body row gets 1 empty cell at column 16; n_hdr = 1 (the <th> rows at the top), so markdown row 0 = html row 0 as it is; tabulate writes the github table
+elements.py: table_lines() drops the |---| line; row i, column j = the position of the cell after splitting the markdown line at '|'; an empty cell gets no element id: header elements tab1.r0c0-r0c16 (17); body elements in column 16: 0
+pass 1 (render.group, table group): the caption line, the markdown as ingested and the cell-id map, then 'r = row, c = column, r0 = header'; nothing ties a header cell to a body column other than its position j
+PDF positions (P193.4_columns.csv): header sent at column j sits over the values sent at column j: c0 yes, c1 yes, c2 yes, c3 yes, c4 yes, c5 yes, c6 yes, c7 yes, c8 yes, c9 yes, c10 yes, c11 yes, c12 no (c11), c13 undecided, c14 no (c13), c15 no (c14), c16 no (c15)
