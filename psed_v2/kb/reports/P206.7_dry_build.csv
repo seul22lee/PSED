@@ -1,0 +1,17 @@
+paper,job,check,result,detail
+yim22,pass 0,provider schema is valid JSON Schema,pass,6636 chars
+yim22,pass 0,"units: array, minItems 1, not nullable, required",pass,"{""type"": ""array"", ""minItems"": 1}"
+yim22,pass 0,id fields plain strings (no enum),pass,"introduced_in: {""type"": ""string"", ""minLength"": 1}; data id: {""type"": ""string"", ""minLength"": 1}; table: {""type"": [""string"", ""null""], ""minLength"": 1}; unit_name_cells: {""type"": ""string"", ""minLength"": 1}; panel: {""type"": [""string"", ""null""], ""minLength"": 1}"
+yim22,pass 0,example valid against form_pass0.json,pass,"(paper art19): 19105 chars; units by role {'run': 3, 'specimen': 3, 'simulation': 1, 'model_run': 3, 'measurement': 3}; table layouts 1, panel layouts 2; SOURCES lines 13"
+ela03,pass 0,provider schema is valid JSON Schema,pass,6636 chars
+ela03,pass 0,"units: array, minItems 1, not nullable, required",pass,"{""type"": ""array"", ""minItems"": 1}"
+ela03,pass 0,id fields plain strings (no enum),pass,"introduced_in: {""type"": ""string"", ""minLength"": 1}; data id: {""type"": ""string"", ""minLength"": 1}; table: {""type"": [""string"", ""null""], ""minLength"": 1}; unit_name_cells: {""type"": ""string"", ""minLength"": 1}; panel: {""type"": [""string"", ""null""], ""minLength"": 1}"
+ela03,pass 0,example valid against form_pass0.json,pass,"(paper art19): 19105 chars; units by role {'run': 3, 'specimen': 3, 'simulation': 1, 'model_run': 3, 'measurement': 3}; table layouts 1, panel layouts 2; SOURCES lines 13"
+yim22,readers,failed pass-0 / 0x / fill lines,pass,"records lines that are failed calls (common.failure), not read: 50 (pass 0: no unit (units null))"
+yim22,readers,pass0_object reads the latest pass-0 line that is no failed call,pass,line 1 (76 units with extension line 30)
+yim22,pass 1,every group schema valid; PASS-0 UNITS from line 1 (its units and the extension line 30 units),pass,17 groups; prefix 107894 chars; PASS-0 UNITS block 76 unit lines
+-,common.failure (pass 0),units null,pass,no unit (units null)
+-,common.failure (pass 0),units empty,pass,no unit (units empty)
+-,common.failure (pass 0),one unit,pass,(no failure)
+-,common.failure (pass 0),pre-P144 list,pass,(no failure)
+-,common.failure (0x),units empty is an answer (user: pass 0 only),pass,(no failure)
