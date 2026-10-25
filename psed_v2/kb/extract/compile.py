@@ -193,25 +193,35 @@ def quote_numbers(quote):
     return list(dict.fromkeys(out)), bool(C.E.numbers(quote or ""))
 
 
+def dimension_units(unit):
+    """P207b (user): every units.yaml unit of the dimension of unit, unit itself left out ([] when units.yaml does not know it)."""
+    a = V.UNIT_ALIAS.get(unit or "1", unit or "1")
+    if a not in V.UNIT_BASE:
+        return []
+    dim = V.DIMENSION_OF.get(V.UNIT_BASE[a][0], V.UNIT_BASE[a][0])
+    return sorted(s for s, (d, _) in V.UNIT_BASE.items() if s != a and V.DIMENSION_OF.get(d, d) == dim)
+
+
 def quote_units(quote, unit):
-    """P207 (user) 1: the units.yaml units a quote names (a spelling as a whole token of the normalize()d quote) of the dimension of unit."""
+    """P207 (user) 1: the units.yaml units a quote names (a spelling as a whole token of the normalize()d quote) of the dimension of unit,
+    unit itself included (P207b: none named = the quote names no unit)."""
     a = V.UNIT_ALIAS.get(unit or "1", unit or "1")
     if a not in V.UNIT_BASE:
         return []
     dim = V.DIMENSION_OF.get(V.UNIT_BASE[a][0], V.UNIT_BASE[a][0])
     nq = normalize((quote or "").replace("\\AA", "Å"))
-    return sorted({s for k, s in UNIT_SYMBOL.items() if k and s != a and s in V.UNIT_BASE and V.DIMENSION_OF.get(V.UNIT_BASE[s][0], V.UNIT_BASE[s][0]) == dim
+    return sorted({s for k, s in UNIT_SYMBOL.items() if k and s in V.UNIT_BASE and V.DIMENSION_OF.get(V.UNIT_BASE[s][0], V.UNIT_BASE[s][0]) == dim
                    and re.search(rf"(?<![a-zµ]){re.escape(k)}(?![a-z0-9])", nq)})
 
 
 def value_in_quote(v, unit, nums, units):
     """P207 (user) 1: how a record's number equals a number of its quote: 'as printed' (the same number), 'converted to <u>' (the record's
-    unit converted to a unit the quote names, equal within the quote number's printed precision), '' when none. The value's sign is not
-    compared (a rate of decrease of ~2 mTorr/min, recorded -2)."""
+    unit converted to one of units, equal within the quote number's printed precision), '' when none. The value's sign is not compared
+    (a rate of decrease of ~2 mTorr/min, recorded -2)."""
     v = abs(v)
     if any(abs(v - c) <= 1e-9 * max(abs(v), abs(c)) for c, _ in nums):
         return "as printed"
-    for w in units:
+    for w in [w for w in units if w != V.UNIT_ALIAS.get(unit or "1", unit or "1")]:
         try:
             x = L.convert(v, V.UNIT_ALIAS.get(unit or "1", unit or "1"), w)
         except (ValueError, KeyError):
@@ -1943,7 +1953,9 @@ class Run:
         """P207 (user) 1, step e2: a value record (value, or value_min and value_max: both ends) whose quote holds a number (a digit) but no
         number equal to the record's value, as printed or after converting the record's unit to a unit the quote names (quote_numbers,
         quote_units, value_in_quote), is dropped and listed (kb/compiled/<pid>.quote_value.csv). A derived unit's condition (no quote) is not
-        checked; nor (user) a record whose element is a figure panel (its value read from the image, its quote a label)."""
+        checked; nor (user) a record whose element is a figure panel (its value read from the image, its quote a label). P207b (user): a quote
+        that names no unit of the record's dimension is compared for the number only: the record's value in any unit of its dimension
+        (dimension_units: the value as printed before a conversion) against the quote's numbers, the unit not checked."""
         self.quote_value_rows, out = [], []
         for r in recs:
             rec = r["rec"]
@@ -1961,7 +1973,9 @@ class Run:
                 out.append(r)
                 continue
             units = quote_units(rec["quote"], r.get("unit") or "")
-            how = [value_in_quote(float(v), r.get("unit") or "", nums, units) for _, v in ends]
+            how = [value_in_quote(float(v), r.get("unit") or "", nums, units or dimension_units(r.get("unit") or "")) for _, v in ends]
+            if not units:                                                       # P207b (user): the number only, the unit not checked
+                how = [h and h + " (the quote names no unit)" for h in how]
             if all(how):
                 self.count("e2", "value in its quote: " + ", ".join(sorted(set(h.split(" to ")[0] for h in how))))
                 out.append(r)

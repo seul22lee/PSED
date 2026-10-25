@@ -354,9 +354,11 @@ psed_v2/
   the record's value, as printed or after converting the record's unit to a unit the quote names (equal within the quote number's
   printed precision; the sign not compared), is dropped and listed (kb/compiled/<pid>.quote_value.csv). The quote's numbers
   (compile.quote_numbers): plain, thousands with commas or (thin) spaces, a × 10^n, a ± b × 10^n, (a ± b) × 10^n, 10^n, number words.
-  Units: only those the quote names (user's wording; a caption's or column header's unit is not read). Not checked (user): a record
-  whose element is a figure panel (its value read from the image); a derived unit's condition. A distinguished_by part (P205) is a
-  value record with its unit's evidence_quote. 2: lists.MOLECULE_SCOPED (user: SUBSTANCE_SCOPED plus every other quantity of the species
+  Units: only those the quote names (a caption's or column header's unit is not read); P207b (user): a quote that names no unit of
+  the record's dimension is compared for the number only (the record's value in any unit of its dimension, compile.dimension_units:
+  the value as printed before a conversion; the unit not checked); a quote naming one is checked as above. Not checked (user): a
+  record whose element is a figure panel (its value read from the image); a derived unit's condition. A distinguished_by part (P205)
+  is a value record with its unit's evidence_quote and stays checked (P207b, user). 2: lists.MOLECULE_SCOPED (user: SUBSTANCE_SCOPED plus every other quantity of the species
   qualifier's applies_to except DETECTED_PHASE crystallite_size, phase, signal_intensity, film_density): a species of kind material
   (vocab.MATERIALS) on one is cleared after the paper-wide step, species.csv outcome 'material is not a molecule'
   (compile.Run.material_species), and is no evidence in the conflict test. The paper-wide test (P179c) groups by (quantity, symbol);
