@@ -1,5 +1,12 @@
 pid,element,field,label,unit,record_key,class,candidate_at_snapshot,why
-10.1002_cvde.200390005,s4.p4,quantity,excess over the saturation dose,%,excess over the saturation dose,pending candidate excess_over_the_saturation_dose,excess_over_the_saturation_dose,
+10.1002_cvde.200390005,eq8,quantity,CF,1,cf,new since apply → next round,,candidate cf: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1002_cvde.200390005,s7.p7,quantity,cross-sectional area of the hole,,cross-sectional area of the hole,new since apply → next round,,candidate cross_sectional_area_of_the_hole: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1002_cvde.200390005,eq9,quantity,J,,j,new since apply → next round,,candidate j: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1002_cvde.200390005,fig2.cap,quantity,white bar,µm,white bar,new since apply → next round,,candidate white_bar: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1002_cvde.200390005,fig2,quantity,Cross-sections,,cross-sections,new since apply → next round,,candidate cross_sections: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1002_cvde.200390005,fig2,quantity,Cross-sections,,cross-sections,new since apply → next round,,candidate cross_sections: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1002_cvde.200390005,fig2,quantity,Cross-sections,,cross-sections,new since apply → next round,,candidate cross_sections: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1002_cvde.200390005,fig1.cap,structure,hole,,hole,other,,the value row of the categorical structure: propose makes no candidate of it (P168)
 10.1021_cm0303080,s3.p29,quantity,scanning electron microscope,,scanning electron microscope,new since apply → next round,,candidate scanning_electron_microscope: not in R2_apply.decision_rows.csv; carried into the next propose
 10.1021_cm0303080,s4.p5,quantity,increments,µm,increments,new since apply → next round,,candidate increments: not in R2_apply.decision_rows.csv; carried into the next propose
 10.1021_cm0303080,s4.p9,quantity,functional form,,functional form,new since apply → next round,,candidate functional_form: not in R2_apply.decision_rows.csv; carried into the next propose
@@ -46,22 +53,26 @@ pid,element,field,label,unit,record_key,class,candidate_at_snapshot,why
 10.1021_cm0303080,fig12b,axis,Normalized Integrated Coverage,,normalized integrated coverage,pending candidate normalized_integrated_coverage,,
 10.1021_cm0303080,fig12b,axis,L,µm,l,other,,"a value without a quantity: no record key, or the label is only a units.yaml spelling"
 10.1039_d3cp05639b,s2.p9,quantity,shape factor,1,shape factor,pending candidate shape_factor,shape_factor,
-10.1039_d3cp05639b,s4.p4,quantity,shape factor s,1,shape factor s,pending candidate shape_factor_s,shape_factor,
-10.1039_d3cp05639b,s8.p3,quantity,normalized penetration depth for sphere,1,normalized penetration depth for sphere,pending candidate normalized_penetration_depth_for_sphere,normalized_penetration_depth_for_sphere,
-10.1039_d3cp05639b,fig1.cap,quantity,shape factor s,1,shape factor s,pending candidate shape_factor_s,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig1.cap,quantity,shape factor s,1,shape factor s,pending candidate shape_factor_s,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig1.cap,quantity,shape factor s,1,shape factor s,pending candidate shape_factor_s,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig2a,quantity,s,1,s,pending candidate shape_factor_for_a_particle,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig2a,quantity,s,1,s,pending candidate shape_factor_for_a_particle,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig2a,quantity,s,1,s,pending candidate shape_factor_for_a_particle,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig2b,quantity,s,1,s,pending candidate shape_factor_for_a_particle,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig2b,quantity,s,1,s,pending candidate shape_factor_for_a_particle,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,fig2b,quantity,s,1,s,pending candidate shape_factor_for_a_particle,shape_factor;shape_factor;shape_factor,
-10.1039_d3cp05639b,tab1.cap,quantity,Baseline parameters for porous media,,baseline parameters for porous media,other,baseline_parameters_for_porous_media,candidate baseline_parameters_for_porous_media decided in round 2 (reject): a rejected label is written nowhere (by design)
-10.1039_d3cp05639b,tabu1.r0c0,quantity,ALD,,ald,other,atomic_layer_deposition,candidate atomic_layer_deposition decided in round 2 (reject): a rejected label is written nowhere (by design)
-10.1039_d3cp05639b,tabu1.r1c0,quantity,Shape factor,1,shape factor,pending candidate shape_factor,shape_factor,
-10.1039_d3cp05639b,tabu1.r21c0,quantity,Shape factor for a particle,1,shape factor for a particle,pending candidate shape_factor_for_a_particle,shape_factor,
-10.1039_d3cp05639b,tabu1.r24c0,quantity,SCM,,scm,other,shrinking_core_model,candidate shrinking_core_model decided in round 2 (reject): a rejected label is written nowhere (by design)
+10.1039_d3cp05639b,s4.p4,quantity,shape factor,1,shape factor,pending candidate shape_factor,,
+10.1039_d3cp05639b,s4.p16,quantity,surface area of adsorption sites,m2,surface area of adsorption sites,new since apply → next round,,candidate surface_area_of_adsorption_sites: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1039_d3cp05639b,s4.p21,quantity,discretized points,1,discretized points,new since apply → next round,,candidate discretized_points: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1039_d3cp05639b,fig1.cap,quantity,shape factor s,,shape factor s,pending candidate shape_factor_s,,
+10.1039_d3cp05639b,fig1a,quantity,shape factor s,1,shape factor s,pending candidate shape_factor_s,,
+10.1039_d3cp05639b,fig1b,quantity,shape factor s,1,shape factor s,pending candidate shape_factor_s,,
+10.1039_d3cp05639b,fig1c,quantity,shape factor s,1,shape factor s,pending candidate shape_factor_s,,
+10.1039_d3cp05639b,fig2.cap,quantity,shape factor,1,shape factor,pending candidate shape_factor,,
+10.1039_d3cp05639b,fig2a,quantity,s,1,s,new since apply → next round,shape_factor;shape_factor;shape_factor,"regrouped since apply: candidate shape_factor at the snapshot, shape_factor_for_a_particle_s_a_1 now; carried into the next propose"
+10.1039_d3cp05639b,fig2a,quantity,s,1,s,new since apply → next round,shape_factor;shape_factor;shape_factor,"regrouped since apply: candidate shape_factor at the snapshot, shape_factor_for_a_particle_s_a_1 now; carried into the next propose"
+10.1039_d3cp05639b,fig2a,quantity,s,1,s,new since apply → next round,shape_factor;shape_factor;shape_factor,"regrouped since apply: candidate shape_factor at the snapshot, shape_factor_for_a_particle_s_a_1 now; carried into the next propose"
+10.1039_d3cp05639b,fig2b,quantity,s,1,s,new since apply → next round,shape_factor;shape_factor;shape_factor,"regrouped since apply: candidate shape_factor at the snapshot, shape_factor_for_a_particle_s_a_1 now; carried into the next propose"
+10.1039_d3cp05639b,fig2b,quantity,s,1,s,new since apply → next round,shape_factor;shape_factor;shape_factor,"regrouped since apply: candidate shape_factor at the snapshot, shape_factor_for_a_particle_s_a_1 now; carried into the next propose"
+10.1039_d3cp05639b,fig2b,quantity,s,1,s,new since apply → next round,shape_factor;shape_factor;shape_factor,"regrouped since apply: candidate shape_factor at the snapshot, shape_factor_for_a_particle_s_a_1 now; carried into the next propose"
+10.1039_d3cp05639b,tabu1.r1c0,quantity,Shape factor; a = s + 1,1,shape factor; a = s + 1,new since apply → next round,,candidate shape_factor_a_s_1: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1039_d3cp05639b,tabu1.r13c0,quantity,Height,m,height,new since apply → next round,,candidate height: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1039_d3cp05639b,tabu1.r18c0,quantity,Radial coordinate,m,radial coordinate,new since apply → next round,,candidate radial_coordinate: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1039_d3cp05639b,tabu1.r21c0,quantity,Shape factor for a particle; s = a - 1,1,shape factor for a particle; s = a - 1,new since apply → next round,,candidate shape_factor_for_a_particle_s_a_1: not in R2_apply.decision_rows.csv; carried into the next propose
+10.1039_d3cp05639b,tabu2.r2c0,quantity,Catalyst particle volume (\text{m}^3),m3,catalyst particle volume (m3),new since apply → next round,,candidate catalyst_particle_volume decided in round 2 (never -> Model internals): the row was born after apply; carried into the next propose
+10.1039_d3cp05639b,tabu2.r2c0,unit,Catalyst particle volume (\text{m}^3),m3,catalyst particle volume (m3),new since apply → next round,,candidate catalyst_particle_volume decided in round 2 (never -> Model internals): the row was born after apply; carried into the next propose
 10.1039_d3cp05639b,fig3,axis,geometry,,geometry,pending candidate geometry,,
 10.1039_d3cp05639b,fig4,axis,"ξ_{θ=1/2,sphere}",-,"ξθ=1/2,sphere",pending candidate 1_2_sphere,,
 10.1039_d3cp05639b,fig4,axis,"1 − [r_{θ=1/2,slab} / r_{θ=1/2,sphere}]",%,"1 − [rθ=1/2,slab / rθ=1/2,sphere]",new since apply → next round,,candidate 1 decided in round 5 (reject): the row was born after apply; carried into the next propose

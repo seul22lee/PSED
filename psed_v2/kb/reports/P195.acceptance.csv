@@ -1,0 +1,29 @@
+row,expected,got,result
+gre23 deposition_rate specimen_120,0.0889 nm/h (± 0.0005),0.088875 nm/h (computed),pass
+gre23 deposition_rate specimen_160,0.1305 nm/h (± 0.0005),0.1305 nm/h (computed),pass
+gre23 deposition_rate specimen_120_160,0.0803 nm/h (± 0.0005),"0.08025 nm/h (computed; growth_per_cycle: values agree within printed precision, the most precise used)",pass
+yim20 final_channel_height sample_1,393.4 nm (± 0.1),393.4 nm,pass
+yim20 final_channel_height sample_2,391.0 nm (± 0.1),391 nm,pass
+yim20 final_channel_height sample_3,393.2 nm (± 0.1),393.2 nm,pass
+yim20 final_channel_height sample_4,404.4 nm (± 0.1),404.4 nm,pass
+yim20 final_channel_height sample_5,400.0 nm (± 0.1),400 nm,pass
+yim20 final_channel_height sample_6,394.2 nm (± 0.1),394.2 nm,pass
+yim20 final_channel_height sample_7,4.4 nm (± 0.1),4.4 nm,pass
+yim20 final_channel_height sample_8,397.8 nm (± 0.1),397.8 nm,pass
+yim20 final_channel_height sample_9,1902.4 nm (± 0.1),1902.4 nm,pass
+yim20 final_channel_height sample_10,448.0 nm (± 0.1),448 nm,pass
+yim20 final_channel_height sample_11,301.4 nm (± 0.1),301.4 nm,pass
+yim20 final_channel_height sample_12,399.6 nm (± 0.1),399.6 nm,pass
+yim20 final_channel_height sample_13,400.4 nm (± 0.1),400.4 nm,pass
+yim20 final_channel_height sample_14,398.0 nm (± 0.1),398 nm,pass
+yim20 final_channel_height sample_15,396.2 nm (± 0.1),396.2 nm,pass
+yim20 final_channel_height sample_16,402.2 nm (± 0.1),402.2 nm,pass
+no cycle_time fact of kind computed_by_kb,0,0,pass
+no deposition_rate whose cycle_time is not printed,0,0,pass
+yim20 (P184 lines): the 16 front_slope facts carry dimension_mismatch,16 of 16,16 of 16 (dimensionless vs length),pass
+yim20: no front_slope fact is a transform input,0,0,pass
+binding_regression,798 / 798,"798 items, 0 lost their unit",pass
+audits 1-5,PASS,"R1 PASS, R2 PASS, R3 PASS, R4 PASS, R5 PASS",pass
+export --check,pass,20 / 20,pass
+cards,0 errors,"13 pages, 0 JS errors (two cards ticked each)",pass
+check.py on the gold: unknown-qualifier rows,0,"0 (check.check() on the 13 gold papers; the full check.py run stops in check_cards on a stale kb/pilot/reports/pilot.html of 2026-10-19, KeyError ela03:fig10b#d2_1, before P195)",pass

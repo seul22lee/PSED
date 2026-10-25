@@ -1,54 +1,44 @@
 fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
 hei24:abs.g1#1,claim,,,,,abs.g1,hei24:abs.g1#1,type 'model' vs 'claim'
 hei24:s2.p1#1,claim,,,,,s2.p1,,no gold row on this element
-hei24:s2.p2#1,claim,,,,,s2.p2,,no gold row on this element
-hei24:s2.p3#1,cited,exposure,,,,s2.p3,,no gold row on this element
-hei24:s2.p8#1,claim,,,,,s2.p8,,no gold row on this element
+hei24:s2.p3#1,cited,exposure,,Pa s,,s2.p3,,no gold row on this element
+hei24:s2.p7#1,model,effective_diffusion_coefficient,,m2/s,,s2.p7,hei24:s2.p7#1,type 'claim' vs 'model'; quantity '' vs 'effective_diffusion_coefficient'
 hei24:s2.p9#1,definition,other,,,,s2.p9,hei24:tabu1.r18c0#1,quantity 'distance' vs 'other'
-hei24:s2.p10#1,cited,exposure,,,,s2.p10,hei24:s2.p9#1,type 'model' vs 'cited'; quantity '' vs 'exposure'
-hei24:s2.p11#1,claim,,,,,s2.p11,hei24:abs.g1#1,type 'model' vs 'claim'
-hei24:s4.p1#1,claim,,,,,s4.p1,hei24:s4.p1#1,type 'model' vs 'claim'
+hei24:s4.p3#2,definition,surface_to_pore_volume_ratio,,1/m,,s4.p3,hei24:tabu1.r2c0#1,quantity 'specific_surface_area' vs 'surface_to_pore_volume_ratio'
+hei24:s4.p3#4,definition,surface_coverage,,,,s4.p3,hei24:tabu1.r2c0#1,quantity 'specific_surface_area' vs 'surface_coverage'
 hei24:s4.p4#1,definition,other,,,,s4.p4,hei24:tabu1.r1c0#1,quantity '' vs 'other'
+hei24:s4.p10#2,definition,deposition_temperature,,K,,s4.p10,hei24:tabu1.r9c0#1,quantity 'feature_width' vs 'deposition_temperature'
+hei24:s4.p16#1,definition,other,,m2,,s4.p16,hei24:tabu1.r23c0#1,quantity '' vs 'other'
 hei24:s4.p21#1,setting,other,300,,,s4.p21,hei24:s4.p21#1,type 'model' vs 'setting'
-hei24:s5.p2#1,setting,partial_pressure,100,Pa,,s5.p2,hei24:s5.p2#1,type 'model' vs 'setting'
-hei24:s5.p2#2,setting,deposition_temperature,150,°C,,s5.p2;s10.p3,hei24:fig7.cap#3,"quantity 'exposure' vs 'deposition_temperature'; value '1e5' 'Pa·s' vs '150' '°C' (canonical ('exposure', 100000.0) vs ('temperature', 150.0))"
 hei24:s7.p1#1,observation,penetration_depth,177,µm,,s7.p1,hei24:s7.p1#3,type 'derived' vs 'observation'
 hei24:s7.p1#2,observation,penetration_depth,133,µm,,s7.p1,hei24:s7.p1#3,"type 'derived' vs 'observation'; value '177' 'µm' vs '133' 'µm' (canonical ('length', 177000.0) vs ('length', 133000.0))"
 hei24:s7.p1#3,observation,penetration_depth,114,µm,,s7.p1,hei24:s7.p1#3,"type 'derived' vs 'observation'; value '177' 'µm' vs '114' 'µm' (canonical ('length', 177000.0) vs ('length', 114000.0))"
-hei24:s8.x1#1,claim,exposure,100000,Pa s,,s8.x1,hei24:s8.x1#1,"quantity '' vs 'exposure'; value '' '' vs '100000' 'Pa s' (canonical None vs ('exposure', 100000.0))"
-hei24:s8.p3#2,definition,other,,,,s8.p3,hei24:s8.p3#1,type 'claim' vs 'definition'; quantity '' vs 'other'
-hei24:s8.p3#3,observation,penetration_depth,229,µm,,s8.p3;s8.p4,hei24:s8.p4#2,type 'derived' vs 'observation'
-hei24:s8.p4#1,observation,penetration_depth,161,µm,,s8.p4,hei24:s8.p4#2,"type 'derived' vs 'observation'; value '229' 'µm' vs '161' 'µm' (canonical ('length', 229000.0) vs ('length', 161000.0))"
-hei24:s10.p2#1,setting,specific_surface_area,,m2/g,,s10.p2;fig7.cap,hei24:fig7.cap#1,quantity 'structure' vs 'specific_surface_area'; value_text 'porous_sphere' vs ''
-hei24:s10.p2#2,setting,particle_diameter,,nm,,s10.p2,hei24:s10.p1#1,type 'claim' vs 'setting'; quantity '' vs 'particle_diameter'
+hei24:s8.p2#1,setting,particle_radius,200,µm,,s8.p2,hei24:s8.p2#1,"type 'caveat' vs 'setting'; quantity '' vs 'particle_radius'; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
+hei24:s8.x1#1,observation,penetration_depth,50,µm,,s8.x1,hei24:s8.x1#1,"type 'claim' vs 'observation'; quantity '' vs 'penetration_depth'; value '' '' vs '50' 'µm' (canonical None vs ('length', 50000.0))"
+hei24:s8.x1#2,claim,particle_radius,275,µm,,s8.x1,hei24:s8.x1#1,"quantity '' vs 'particle_radius'; value '' '' vs '275' 'µm' (canonical None vs ('length', 275000.0))"
+hei24:s8.x1#3,claim,particle_radius,225,µm,,s8.x1,hei24:s8.x1#1,"quantity '' vs 'particle_radius'; value '' '' vs '225' 'µm' (canonical None vs ('length', 225000.0))"
+hei24:s8.p3#1,claim,particle_radius,600,µm,,s8.p3,hei24:s8.p3#1,"quantity '' vs 'particle_radius'; value '' '' vs '600' 'µm' (canonical None vs ('length', 600000.0))"
+hei24:s8.p3#2,observation,penetration_depth,229,µm,,s8.p3;s8.p4,hei24:s8.p4#2,type 'derived' vs 'observation'
+hei24:s8.p3#3,observation,penetration_depth,161,µm,,s8.p3;s8.p4,hei24:s8.p4#2,"type 'derived' vs 'observation'; value '229' 'µm' vs '161' 'µm' (canonical ('length', 229000.0) vs ('length', 161000.0))"
+hei24:s9.p2#1,setting,tortuosity_over_porosity,,,,s9.p2,hei24:s9.x1#1,type 'claim' vs 'setting'; quantity '' vs 'tortuosity_over_porosity'
+hei24:s10.p2#1,setting,specific_surface_area,,m2/g,,s10.p2,hei24:s10.p2#1,type 'model' vs 'setting'
+hei24:s10.p2#2,setting,feature_width,,nm,,s10.p2,hei24:s10.p2#2,type 'model' vs 'setting'
 hei24:s10.p2#3,setting,pore_volume,,cm3/g,,s10.p2,hei24:s10.p1#1,type 'claim' vs 'setting'; quantity '' vs 'pore_volume'
+hei24:s10.p3#1,setting,deposition_temperature,150,K,423 K,s10.p3,hei24:fig7.cap#3,"quantity 'exposure' vs 'deposition_temperature'; value_text '' vs '423 K'; value '1e5' 'Pa·s' vs '150' 'K' (canonical ('exposure', 100000.0) vs ('temperature', -123.15))"
 hei24:s11.p1#1,cited,penetration_depth,,,,s11.p1,hei24:s11.p1#1,type 'claim' vs 'cited'; quantity '' vs 'penetration_depth'
-hei24:fig1.cap#1,model,other,0,,,fig1.cap,,no gold row on this element
-hei24:fig1.cap#2,model,other,1,,,fig1.cap,,no gold row on this element
-hei24:fig1.cap#3,model,other,2,,,fig1.cap,,no gold row on this element
+hei24:s12.p5#1,claim,,,,,s12.p5,hei24:abs.g4#1,type 'model' vs 'claim'
+hei24:fig1.cap#1,definition,other,,,,fig1.cap,,no gold row on this element
+hei24:fig1a#1,setting,structure,,,porous_slab,fig1a,,no gold row on this element
+hei24:fig1a#2,setting,other,0,,,fig1a,,no gold row on this element
 hei24:fig1b#1,setting,structure,,,porous_cylinder,fig1b,,no gold row on this element
+hei24:fig1b#2,setting,other,1,,,fig1b,,no gold row on this element
+hei24:fig1c#2,setting,other,2,,,fig1c,,no gold row on this element
+hei24:fig2.cap#1,definition,other,,,,fig2.cap,hei24:s7.p1#1,type 'claim' vs 'definition'; quantity '' vs 'other'
 hei24:fig3.cap#1,definition,penetration_depth,,,,fig3.cap,hei24:fig3#1,type 'model' vs 'definition'
-hei24:fig6.cap#1,setting,pulse_time,500,s,,fig6.cap,hei24:fig5.cap#1,type 'model' vs 'setting'
-hei24:fig6.cap#3,setting,molar_mass,100,g/mol,,fig6.cap;fig6c,hei24:fig5.cap#19,"value '50' 'g/mol' vs '100' 'g/mol' (canonical ('molar_mass', 50.0) vs ('molar_mass', 100.0))"
-hei24:fig6.cap#8,setting,molar_mass,100,g/mol,,fig6.cap;fig6d,hei24:fig5.cap#27,"value '50' 'g/mol' vs '100' 'g/mol' (canonical ('molar_mass', 50.0) vs ('molar_mass', 100.0))"
-hei24:fig6.cap#14,setting,saturation_density,4,nm-2,,fig6.cap;fig6e,hei24:fig5.cap#35,"value '1' 'nm-2' vs '4' 'nm-2' (canonical ('areal_density', 1.0) vs ('areal_density', 4.0))"
-hei24:fig6.cap#19,setting,saturation_density,4,nm-2,,fig6.cap;fig6f,hei24:fig5.cap#43,"value '1' 'nm-2' vs '4' 'nm-2' (canonical ('areal_density', 1.0) vs ('areal_density', 4.0))"
-hei24:fig6.cap#34,setting,feature_width,20,nm,,fig6.cap;fig6k,hei24:fig5.cap#91,"value '5' 'nm' vs '20' 'nm' (canonical ('length', 5.0) vs ('length', 20.0))"
-hei24:fig6.cap#39,setting,feature_width,20,nm,,fig6.cap;fig6l,hei24:fig5.cap#99,"value '5' 'nm' vs '20' 'nm' (canonical ('length', 5.0) vs ('length', 20.0))"
+hei24:fig5.cap#1,setting,pulse_time,500,s,,fig5.cap,hei24:fig5.cap#2,"quantity 'structure' vs 'pulse_time'; value_text 'porous_sphere' vs ''; value '' '' vs '500' 's' (canonical None vs ('time', 500.0))"
 hei24:fig7.cap#1,definition,penetration_depth,,,,fig7.cap,hei24:fig7a#1,type 'model' vs 'definition'
-hei24:fig7.cap#2,setting,deposition_temperature,423,K,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'deposition_temperature'; value_text 'porous_sphere' vs ''; value '' '' vs '423' 'K' (canonical None vs ('temperature', 149.85))"
-hei24:fig7.cap#3,setting,feature_width,,nm,,fig7.cap,hei24:fig7.cap#1,quantity 'structure' vs 'feature_width'; value_text 'porous_sphere' vs ''
-hei24:fig7a#1,setting,body_diameter,300,µm,,fig7a,hei24:fig7.cap#1,"quantity 'structure' vs 'body_diameter'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:fig7b#1,setting,body_diameter,300,µm,,fig7b,hei24:fig7.cap#1,"quantity 'structure' vs 'body_diameter'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:tab1.cap#1,setting,other,,,,tab1.cap,hei24:tab1.r2c0#1,"type 'model' vs 'setting'; value '1' '' vs '' '' (canonical ('dimensionless', 1.0) vs None)"
-hei24:tab1.r1c0#1,definition,porosity,,,,tab1.r1c0,hei24:tab1.r1c0#1,"type 'model' vs 'definition'; value '50' '%' vs '' '' (canonical ('dimensionless', 0.5) vs None)"
-hei24:tab1.r2c0#1,definition,tortuosity,,,,tab1.r2c0,hei24:tab1.r2c0#1,"type 'model' vs 'definition'; quantity 'other' vs 'tortuosity'; value '1' '' vs '' '' (canonical ('dimensionless', 1.0) vs None)"
 hei24:tab1.r2c1#1,model,tortuosity,1,,,tab1.r2c1,hei24:tab1.r2c0#1,quantity 'other' vs 'tortuosity'
-hei24:tab1.r3c0#1,definition,feature_width,,,,tab1.r3c0,hei24:tab1.r3c0#1,"type 'model' vs 'definition'; value '20' 'nm' vs '' '' (canonical ('length', 20.0) vs None)"
-hei24:tab1.r4c0#1,definition,specific_surface_area,,,,tab1.r4c0,hei24:tab1.r4c0#1,"type 'model' vs 'definition'; value '200' 'm2/g' vs '' '' (canonical ('area_per_mass', 200.0) vs None)"
-hei24:tab1.r5c0#1,definition,pore_volume,,,,tab1.r5c0,hei24:tab1.r5c0#1,"type 'model' vs 'definition'; quantity 'other' vs 'pore_volume'; value '6e-7' 'm3/g' vs '' '' (canonical ('volume_per_mass', 6e-07) vs None)"
 hei24:tab1.r5c1#1,model,pore_volume,6e-07,m3/g,,tab1.r5c1,hei24:tab1.r5c0#1,quantity 'other' vs 'pore_volume'
-hei24:tab1.r6c0#1,definition,particle_diameter,,,,tab1.r6c0,hei24:tab1.r6c0#1,"type 'model' vs 'definition'; quantity 'feature_depth' vs 'particle_diameter'; value '300' 'µm' vs '' '' (canonical ('length', 300000.0) vs None)"
 hei24:tab1.r6c1#1,model,particle_radius,0.0003,m,,tab1.r6c1,hei24:tab1.r6c0#1,quantity 'feature_depth' vs 'particle_radius'
 hei24:tab2.cap#1,model,,,,,tab2.cap,hei24:tab2.r1c0#1,"quantity 'molar_mass' vs ''; value '100' 'g/mol' vs '' '' (canonical ('molar_mass', 100.0) vs None)"
 hei24:tab2.r2c0#1,definition,initial_sticking_coefficient,,,,tab2.r2c0,hei24:tab2.r2c0#1,"type 'model' vs 'definition'; value '0.02' '' vs '' '' (canonical ('dimensionless', 0.02) vs None)"
@@ -58,25 +48,22 @@ hei24:tab2.r5c0#1,definition,deposition_temperature,,,,tab2.r5c0,hei24:tab2.r5c0
 hei24:tab2.r6c0#1,definition,pulse_time,,,,tab2.r6c0,hei24:tab2.r6c0#1,"type 'model' vs 'definition'; value '500' 's' vs '' '' (canonical ('time', 500.0) vs None)"
 hei24:tab2.r6c1#1,model,pulse_time,100,s,,tab2.r6c1,hei24:tab2.r6c0#1,"value '500' 's' vs '100' 's' (canonical ('time', 500.0) vs ('time', 100.0))"
 hei24:tab2.r6c1#2,model,pulse_time,1000,s,,tab2.r6c1,hei24:tab2.r6c0#1,"value '500' 's' vs '1000' 's' (canonical ('time', 500.0) vs ('time', 1000.0))"
-hei24:tabu1.r0c0#1,definition,other,,,,tabu1.r0c0,hei24:tabu1.r0c0#1,quantity '' vs 'other'
 hei24:tabu1.r1c0#1,definition,other,,,,tabu1.r1c0,hei24:tabu1.r1c0#1,quantity '' vs 'other'
 hei24:tabu1.r3c0#1,definition,other,,m2,,tabu1.r3c0,hei24:tabu1.r3c0#1,quantity '' vs 'other'
 hei24:tabu1.r6c0#1,definition,gas_phase_diffusion_coefficient,,m2/s,,tabu1.r6c0,hei24:tabu1.r6c0#1,quantity '' vs 'gas_phase_diffusion_coefficient'
 hei24:tabu1.r10c0#1,definition,other,,m/s,,tabu1.r10c0,hei24:tabu1.r10c0#1,quantity '' vs 'other'
-hei24:tabu1.r13c0#1,definition,feature_depth,,m,,tabu1.r13c0,hei24:tabu1.r13c0#1,quantity '' vs 'feature_depth'
+hei24:tabu1.r13c0#1,definition,other,,m,,tabu1.r13c0,hei24:tabu1.r13c0#1,quantity '' vs 'other'
 hei24:tabu1.r14c0#1,definition,other,,J/K,,tabu1.r14c0,hei24:tabu1.r14c0#1,quantity '' vs 'other'
 hei24:tabu1.r15c0#1,definition,other,,g,,tabu1.r15c0,hei24:tabu1.r15c0#1,quantity 'molar_mass' vs 'other'
-hei24:tabu1.r20c0#1,definition,body_diameter,,m,,tabu1.r20c0,hei24:tabu1.r20c0#1,quantity 'feature_depth' vs 'body_diameter'
+hei24:tabu1.r18c0#1,definition,other,,m,,tabu1.r18c0,hei24:tabu1.r18c0#1,quantity 'distance' vs 'other'
+hei24:tabu1.r20c0#1,definition,particle_radius,,m,,tabu1.r20c0,hei24:tabu1.r20c0#1,quantity 'feature_depth' vs 'particle_radius'
 hei24:tabu1.r21c0#1,definition,other,,,,tabu1.r21c0,hei24:tabu1.r21c0#1,quantity '' vs 'other'
-hei24:tabu1.r22c0#1,definition,surface_to_pore_volume_ratio,,1/m,,tabu1.r22c0,hei24:tabu1.r22c0#1,quantity '' vs 'surface_to_pore_volume_ratio'
+hei24:tabu1.r22c0#1,definition,surface_to_pore_volume_ratio,,,,tabu1.r22c0,hei24:tabu1.r22c0#1,quantity '' vs 'surface_to_pore_volume_ratio'
 hei24:tabu1.r23c0#1,definition,other,,m2,,tabu1.r23c0,hei24:tabu1.r23c0#1,quantity '' vs 'other'
-hei24:tabu1.r24c0#1,definition,other,,,,tabu1.r24c0,hei24:tabu1.r24c0#1,quantity '' vs 'other'
 hei24:tabu1.r26c0#1,definition,time,,s,,tabu1.r26c0,hei24:tabu1.r26c0#1,quantity 'pulse_time' vs 'time'
 hei24:tabu1.r27c0#1,definition,tortuosity,,,,tabu1.r27c0,hei24:tabu1.r27c0#1,quantity '' vs 'tortuosity'
 hei24:tabu2.r1c0#1,definition,pore_volume,,m3/g,,tabu2.r1c0,hei24:tabu2.r1c0#1,quantity '' vs 'pore_volume'
-hei24:tabu2.r1c1#1,definition,pore_volume,,m3/g,,tabu2.r1c1,hei24:tabu2.r1c0#1,quantity '' vs 'pore_volume'
 hei24:tabu2.r2c0#1,definition,other,,m3,,tabu2.r2c0,hei24:tabu2.r2c0#1,quantity '' vs 'other'
-hei24:tabu2.r2c1#1,definition,other,,m3,,tabu2.r2c1,hei24:tabu2.r2c0#1,quantity '' vs 'other'
 hei24:fig5.cap#3,setting,tortuosity_over_porosity,2,,,fig5.cap,hei24:fig5.cap#3,"value '1' '' vs '2' '' (canonical ('dimensionless', 1.0) vs ('dimensionless', 2.0))"
 hei24:fig5.cap#8,setting,tortuosity_over_porosity,2,,,fig5.cap,hei24:fig5.cap#3,"value '1' '' vs '2' '' (canonical ('dimensionless', 1.0) vs ('dimensionless', 2.0))"
 hei24:fig5.cap#13,setting,molar_mass,100,g/mol,,fig5.cap,hei24:fig5.cap#19,"value '50' 'g/mol' vs '100' 'g/mol' (canonical ('molar_mass', 50.0) vs ('molar_mass', 100.0))"
@@ -85,41 +72,87 @@ hei24:fig5.cap#24,setting,saturation_density,4,nm-2,,fig5.cap,hei24:fig5.cap#35,
 hei24:fig5.cap#29,setting,saturation_density,4,nm-2,,fig5.cap,hei24:fig5.cap#35,"value '1' 'nm-2' vs '4' 'nm-2' (canonical ('areal_density', 1.0) vs ('areal_density', 4.0))"
 hei24:fig5.cap#54,setting,feature_width,20,nm,,fig5.cap,hei24:fig5.cap#91,"value '5' 'nm' vs '20' 'nm' (canonical ('length', 5.0) vs ('length', 20.0))"
 hei24:fig5.cap#59,setting,feature_width,20,nm,,fig5.cap,hei24:fig5.cap#91,"value '5' 'nm' vs '20' 'nm' (canonical ('length', 5.0) vs ('length', 20.0))"
-hei24:fig6.cap#42,setting,tortuosity_over_porosity,1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '1' '' (canonical ('time', 500.0) vs ('dimensionless', 1.0))"
-hei24:fig6.cap#43,setting,tortuosity_over_porosity,2,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '2' '' (canonical ('time', 500.0) vs ('dimensionless', 2.0))"
-hei24:fig6.cap#44,setting,tortuosity_over_porosity,3,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '3' '' (canonical ('time', 500.0) vs ('dimensionless', 3.0))"
-hei24:fig6.cap#45,setting,tortuosity_over_porosity,4,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '4' '' (canonical ('time', 500.0) vs ('dimensionless', 4.0))"
-hei24:fig6.cap#46,setting,tortuosity_over_porosity,5,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '5' '' (canonical ('time', 500.0) vs ('dimensionless', 5.0))"
-hei24:fig6.cap#47,setting,tortuosity_over_porosity,1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '1' '' (canonical ('time', 500.0) vs ('dimensionless', 1.0))"
-hei24:fig6.cap#48,setting,tortuosity_over_porosity,2,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '2' '' (canonical ('time', 500.0) vs ('dimensionless', 2.0))"
-hei24:fig6.cap#49,setting,tortuosity_over_porosity,3,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '3' '' (canonical ('time', 500.0) vs ('dimensionless', 3.0))"
-hei24:fig6.cap#50,setting,tortuosity_over_porosity,4,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '4' '' (canonical ('time', 500.0) vs ('dimensionless', 4.0))"
-hei24:fig6.cap#51,setting,tortuosity_over_porosity,5,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '5' '' (canonical ('time', 500.0) vs ('dimensionless', 5.0))"
-hei24:fig6.cap#52,setting,surface_to_pore_volume_ratio,100000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '100000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 100000000.0))"
-hei24:fig6.cap#53,setting,surface_to_pore_volume_ratio,200000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '200000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 200000000.0))"
-hei24:fig6.cap#54,setting,surface_to_pore_volume_ratio,300000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '300000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 300000000.0))"
-hei24:fig6.cap#55,setting,surface_to_pore_volume_ratio,400000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '400000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 400000000.0))"
-hei24:fig6.cap#56,setting,surface_to_pore_volume_ratio,500000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '500000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 500000000.0))"
-hei24:fig6.cap#57,setting,surface_to_pore_volume_ratio,100000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '100000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 100000000.0))"
-hei24:fig6.cap#58,setting,surface_to_pore_volume_ratio,200000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '200000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 200000000.0))"
-hei24:fig6.cap#59,setting,surface_to_pore_volume_ratio,300000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '300000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 300000000.0))"
-hei24:fig6.cap#60,setting,surface_to_pore_volume_ratio,400000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '400000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 400000000.0))"
-hei24:fig6.cap#61,setting,surface_to_pore_volume_ratio,500000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '500000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 500000000.0))"
-hei24:fig7.cap#4,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:fig7.cap#6,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
-hei24:fig7.cap#8,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
-hei24:fig7.cap#10,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:fig7.cap#12,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
-hei24:fig7.cap#14,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
-hei24:fig7.cap#16,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:fig7.cap#18,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
-hei24:fig7.cap#20,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
-hei24:fig7.cap#22,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:fig7.cap#24,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
-hei24:fig7.cap#26,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
-hei24:fig7.cap#28,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:fig7.cap#30,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
-hei24:fig7.cap#32,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
-hei24:fig7.cap#34,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
-hei24:fig7.cap#36,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
-hei24:fig7.cap#38,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+hei24:fig6.cap#2,setting,tortuosity_over_porosity,1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '1' '' (canonical ('time', 500.0) vs ('dimensionless', 1.0))"
+hei24:fig6.cap#3,setting,tortuosity_over_porosity,2,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '2' '' (canonical ('time', 500.0) vs ('dimensionless', 2.0))"
+hei24:fig6.cap#4,setting,tortuosity_over_porosity,3,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '3' '' (canonical ('time', 500.0) vs ('dimensionless', 3.0))"
+hei24:fig6.cap#5,setting,tortuosity_over_porosity,4,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '4' '' (canonical ('time', 500.0) vs ('dimensionless', 4.0))"
+hei24:fig6.cap#6,setting,tortuosity_over_porosity,5,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '5' '' (canonical ('time', 500.0) vs ('dimensionless', 5.0))"
+hei24:fig6.cap#7,setting,tortuosity_over_porosity,1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '1' '' (canonical ('time', 500.0) vs ('dimensionless', 1.0))"
+hei24:fig6.cap#8,setting,tortuosity_over_porosity,2,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '2' '' (canonical ('time', 500.0) vs ('dimensionless', 2.0))"
+hei24:fig6.cap#9,setting,tortuosity_over_porosity,3,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '3' '' (canonical ('time', 500.0) vs ('dimensionless', 3.0))"
+hei24:fig6.cap#10,setting,tortuosity_over_porosity,4,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '4' '' (canonical ('time', 500.0) vs ('dimensionless', 4.0))"
+hei24:fig6.cap#11,setting,tortuosity_over_porosity,5,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'tortuosity_over_porosity'; value '500' 's' vs '5' '' (canonical ('time', 500.0) vs ('dimensionless', 5.0))"
+hei24:fig6.cap#12,setting,molar_mass,50,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '50' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 50.0))"
+hei24:fig6.cap#13,setting,molar_mass,100,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '100' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 100.0))"
+hei24:fig6.cap#14,setting,molar_mass,150,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '150' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 150.0))"
+hei24:fig6.cap#15,setting,molar_mass,200,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '200' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 200.0))"
+hei24:fig6.cap#16,setting,molar_mass,250,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '250' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 250.0))"
+hei24:fig6.cap#17,setting,molar_mass,50,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '50' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 50.0))"
+hei24:fig6.cap#18,setting,molar_mass,100,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '100' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 100.0))"
+hei24:fig6.cap#19,setting,molar_mass,150,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '150' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 150.0))"
+hei24:fig6.cap#20,setting,molar_mass,200,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '200' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 200.0))"
+hei24:fig6.cap#21,setting,molar_mass,250,g/mol,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'molar_mass'; value '500' 's' vs '250' 'g/mol' (canonical ('time', 500.0) vs ('molar_mass', 250.0))"
+hei24:fig6.cap#22,setting,saturation_density,1,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '1' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 1.0))"
+hei24:fig6.cap#23,setting,saturation_density,2,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '2' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 2.0))"
+hei24:fig6.cap#24,setting,saturation_density,4,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '4' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 4.0))"
+hei24:fig6.cap#25,setting,saturation_density,6,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '6' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 6.0))"
+hei24:fig6.cap#26,setting,saturation_density,8,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '8' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 8.0))"
+hei24:fig6.cap#27,setting,saturation_density,1,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '1' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 1.0))"
+hei24:fig6.cap#28,setting,saturation_density,2,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '2' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 2.0))"
+hei24:fig6.cap#29,setting,saturation_density,4,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '4' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 4.0))"
+hei24:fig6.cap#30,setting,saturation_density,6,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '6' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 6.0))"
+hei24:fig6.cap#31,setting,saturation_density,8,nm-2,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'saturation_density'; value '500' 's' vs '8' 'nm-2' (canonical ('time', 500.0) vs ('areal_density', 8.0))"
+hei24:fig6.cap#32,setting,surface_to_pore_volume_ratio,100000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '100000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 100000000.0))"
+hei24:fig6.cap#33,setting,surface_to_pore_volume_ratio,200000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '200000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 200000000.0))"
+hei24:fig6.cap#34,setting,surface_to_pore_volume_ratio,300000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '300000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 300000000.0))"
+hei24:fig6.cap#35,setting,surface_to_pore_volume_ratio,400000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '400000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 400000000.0))"
+hei24:fig6.cap#36,setting,surface_to_pore_volume_ratio,500000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '500000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 500000000.0))"
+hei24:fig6.cap#37,setting,surface_to_pore_volume_ratio,100000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '100000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 100000000.0))"
+hei24:fig6.cap#38,setting,surface_to_pore_volume_ratio,200000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '200000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 200000000.0))"
+hei24:fig6.cap#39,setting,surface_to_pore_volume_ratio,300000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '300000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 300000000.0))"
+hei24:fig6.cap#40,setting,surface_to_pore_volume_ratio,400000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '400000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 400000000.0))"
+hei24:fig6.cap#41,setting,surface_to_pore_volume_ratio,500000000,1/m,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'surface_to_pore_volume_ratio'; value '500' 's' vs '500000000' '1/m' (canonical ('time', 500.0) vs ('inverse_length', 500000000.0))"
+hei24:fig6.cap#42,setting,initial_sticking_coefficient,0.0001,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.0001' '' (canonical ('time', 500.0) vs ('dimensionless', 0.0001))"
+hei24:fig6.cap#43,setting,initial_sticking_coefficient,0.001,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.001' '' (canonical ('time', 500.0) vs ('dimensionless', 0.001))"
+hei24:fig6.cap#44,setting,initial_sticking_coefficient,0.01,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.01' '' (canonical ('time', 500.0) vs ('dimensionless', 0.01))"
+hei24:fig6.cap#45,setting,initial_sticking_coefficient,0.1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.1' '' (canonical ('time', 500.0) vs ('dimensionless', 0.1))"
+hei24:fig6.cap#46,setting,initial_sticking_coefficient,1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '1' '' (canonical ('time', 500.0) vs ('dimensionless', 1.0))"
+hei24:fig6.cap#47,setting,initial_sticking_coefficient,0.0001,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.0001' '' (canonical ('time', 500.0) vs ('dimensionless', 0.0001))"
+hei24:fig6.cap#48,setting,initial_sticking_coefficient,0.001,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.001' '' (canonical ('time', 500.0) vs ('dimensionless', 0.001))"
+hei24:fig6.cap#49,setting,initial_sticking_coefficient,0.01,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.01' '' (canonical ('time', 500.0) vs ('dimensionless', 0.01))"
+hei24:fig6.cap#50,setting,initial_sticking_coefficient,0.1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '0.1' '' (canonical ('time', 500.0) vs ('dimensionless', 0.1))"
+hei24:fig6.cap#51,setting,initial_sticking_coefficient,1,,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'initial_sticking_coefficient'; value '500' 's' vs '1' '' (canonical ('time', 500.0) vs ('dimensionless', 1.0))"
+hei24:fig6.cap#52,setting,feature_width,5,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '5' 'nm' (canonical ('time', 500.0) vs ('length', 5.0))"
+hei24:fig6.cap#53,setting,feature_width,10,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '10' 'nm' (canonical ('time', 500.0) vs ('length', 10.0))"
+hei24:fig6.cap#54,setting,feature_width,20,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '20' 'nm' (canonical ('time', 500.0) vs ('length', 20.0))"
+hei24:fig6.cap#55,setting,feature_width,30,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '30' 'nm' (canonical ('time', 500.0) vs ('length', 30.0))"
+hei24:fig6.cap#56,setting,feature_width,40,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '40' 'nm' (canonical ('time', 500.0) vs ('length', 40.0))"
+hei24:fig6.cap#57,setting,feature_width,5,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '5' 'nm' (canonical ('time', 500.0) vs ('length', 5.0))"
+hei24:fig6.cap#58,setting,feature_width,10,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '10' 'nm' (canonical ('time', 500.0) vs ('length', 10.0))"
+hei24:fig6.cap#59,setting,feature_width,20,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '20' 'nm' (canonical ('time', 500.0) vs ('length', 20.0))"
+hei24:fig6.cap#60,setting,feature_width,30,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '30' 'nm' (canonical ('time', 500.0) vs ('length', 30.0))"
+hei24:fig6.cap#61,setting,feature_width,40,nm,,fig6.cap,hei24:fig5.cap#1,"type 'model' vs 'setting'; quantity 'pulse_time' vs 'feature_width'; value '500' 's' vs '40' 'nm' (canonical ('time', 500.0) vs ('length', 40.0))"
+hei24:fig7.cap#5,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
+hei24:fig7.cap#7,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
+hei24:fig7.cap#9,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+hei24:fig7.cap#11,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
+hei24:fig7.cap#13,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
+hei24:fig7.cap#15,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+hei24:fig7.cap#17,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
+hei24:fig7.cap#19,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
+hei24:fig7.cap#21,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+hei24:fig7.cap#23,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
+hei24:fig7.cap#25,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
+hei24:fig7.cap#27,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+hei24:fig7.cap#29,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
+hei24:fig7.cap#31,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
+hei24:fig7.cap#33,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+hei24:fig7.cap#35,setting,particle_radius,300,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '300' 'µm' (canonical None vs ('length', 300000.0))"
+hei24:fig7.cap#37,setting,particle_radius,200,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '200' 'µm' (canonical None vs ('length', 200000.0))"
+hei24:fig7.cap#39,setting,particle_radius,100,µm,,fig7.cap,hei24:fig7.cap#1,"quantity 'structure' vs 'particle_radius'; value_text 'porous_sphere' vs ''; value '' '' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+hei24:s8.x1#4,derived,coated_aspect_ratio,2500,,,s8.x1;tab1.r3c1,hei24:s8.x1#2,"quantity 'feature_depth' vs 'coated_aspect_ratio'; value '275' 'µm' vs '2500' '' (canonical ('length', 275000.0) vs ('dimensionless', 2500.0))"
+hei24:s7.p1#4,derived,coated_aspect_ratio,8850,,,s7.p1;tab1.r3c1,hei24:s7.p1#3,"quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '177' 'µm' vs '8850' '' (canonical ('length', 177000.0) vs ('dimensionless', 8850.0))"
+hei24:s7.p1#5,derived,coated_aspect_ratio,6650,,,s7.p1;tab1.r3c1,hei24:s7.p1#3,"quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '177' 'µm' vs '6650' '' (canonical ('length', 177000.0) vs ('dimensionless', 6650.0))"
+hei24:s7.p1#6,derived,coated_aspect_ratio,5700,,,s7.p1;tab1.r3c1,hei24:s7.p1#3,"quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '177' 'µm' vs '5700' '' (canonical ('length', 177000.0) vs ('dimensionless', 5700.0))"
+hei24:s8.p3#4,derived,coated_aspect_ratio,11450,,,s8.p3;s8.p4;tab1.r3c1,hei24:s8.p4#2,"quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '229' 'µm' vs '11450' '' (canonical ('length', 229000.0) vs ('dimensionless', 11450.0))"
+hei24:s8.p3#5,derived,coated_aspect_ratio,8050,,,s8.p3;s8.p4;tab1.r3c1,hei24:s8.p4#2,"quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '229' 'µm' vs '8050' '' (canonical ('length', 229000.0) vs ('dimensionless', 8050.0))"
