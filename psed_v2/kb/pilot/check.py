@@ -1787,15 +1787,16 @@ def check_unit_table():
     return err
 
 
-def check_dimensions():
+def check_dimensions(src=None):
     """P108: every value record's unit matches its quantity's dimension (units.yaml): the facts' values (spread facts included), the
     imported figure values (cells, peaks), the derived scalars and both axes of every curve. A mismatch is fixed in the facts (rule a) or by
-    an entry's definitions with their own units and the records' definition qualifier (rule b); never by a forced unit."""
+    an entry's definitions with their own units and the records' definition qualifier (rule b); never by a forced unit. P189 (user): src =
+    the --dir directory: the facts of its papers (the figure records are the dataset run's)."""
     import json
     dims = unit_dimensions()
     err, n = [], 0
-    for pid in list(KEYS) + ["user"]:
-        for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
+    for pid in list(KEYS) + (["user"] if src is None else []):
+        for f in rd((src or HERE) / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
             q = f["quantity"]
             if "#" not in f["fact_id"] or not q or q == "other" or f["type"] in ("caveat", "claim") or not (f["value"] or f["value_min"] or f["value_max"]):
                 continue
@@ -1803,7 +1804,7 @@ def check_dimensions():
             m = dimension_problem(q, f["unit"], dict(p.split("=", 1) for p in f["qualifiers"].split(";") if "=" in p), dims)
             if m:
                 err.append(f"{f['fact_id']}: {q} in {f['unit']!r}: {m} (P108)")
-    for pid in KEYS:
+    for pid in KEYS if src is None else []:
         p = HERE.parent / f"{pid}.figures.json"
         if not p.exists():
             continue
@@ -2159,6 +2160,11 @@ if __name__ == "__main__":
                 print("  ", e)
             bad += bool(err)
     if DIR:
+        err = check_dimensions(DIR)                                             # P189 (user): the dimension check on the compiled facts
+        print(f"== dimensions (P108) ({DIR}): {'OK' if not err else f'{len(err)} problems'}")
+        for e in err[:40]:
+            print("  ", e)
+        bad += bool(err)
         sys.exit(1 if bad else 0)
     err = check_vocabulary()
     print(f"== vocabulary: {'OK' if not err else f'{len(err)} problems'}")

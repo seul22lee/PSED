@@ -1138,7 +1138,7 @@ def audit_round(n):
     paper is "symbol (paper-local)", no head-noun test). A3: every open row, classified; every pending candidate of the
     round's papers accounted for. Acceptance: A1 every covered row has its effect, except a reject (by design), a paper with no compiled
     output and the unit row of a promoted record (a units.yaml matter); A2 no disagree; A3 no unclassified row, no pending candidate
-    lost a row. P162: A3 is open_rows() (a row born after apply: NEW_SINCE_APPLY, carried, not a failure); A1 also reads the papers of rows
+    lost a row (P189, user: a row an adopted re-extraction retired, retired_by, is dormant, listed with the version, not lost). P162: A3 is open_rows() (a row born after apply: NEW_SINCE_APPLY, carried, not a failure); A1 also reads the papers of rows
     a propose carried into the round (carried_rows). Returns the failures (printed by the caller, never silenced)."""
     rnd = next((r for r in rounds() if r["round"] == str(n)), None)
     if rnd is None:
@@ -1302,9 +1302,14 @@ def audit_round(n):
                                 detail=f"no compiled output for {x['pids']} (its paper is not compiled)"))
             continue
         lost = [r for r in at if (r["pid"], r["element"], r["field"]) not in open_now]   # P176: closed; a row regrouped since apply is still open
+        dorm = [(r, ret) for r in lost for ret in [retired_by(r["pid"], r["element"], r["label"])] if ret]   # P189 (user): dormant, as A1's (P187)
+        lost = [r for r in lost if not any(r is d for d, _ in dorm)]
         ok = not lost and bool(now or at)
-        a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=len(at), open_rows_now=len(now), accounted="yes" if ok else "NO",
-                        detail="; ".join(f"{r['pid']}:{r['element']} {r['field']} '{r['label']}' is no longer open" for r in lost) or ("" if now else "no open row")))
+        a3p.append(dict(candidate=cid, first_round=x["first_round"], pids=x["pids"], rows_at_snapshot=len(at), open_rows_now=len(now),
+                        accounted=("dormant" if dorm else "yes") if ok else "NO",
+                        detail="; ".join([f"{r['pid']}:{r['element']} {r['field']} '{r['label']}' is no longer open" for r in lost]
+                                         + [f"{r['pid']}:{r['element']} {r['field']} '{r['label']}' dormant: the records were replaced by the adopted {ret} lines, "
+                                            f"which no longer give the label as other (retired by {ret})" for r, ret in dorm]) or ("" if now else "no open row")))
         if not ok:
             fails.append(f"A3 pending {cid}: " + (a3p[-1]["detail"] or "no open row"))
     write(REPORTS / f"R{n}_apply.A3_pending.csv", A3P_COLS, a3p)

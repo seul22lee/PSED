@@ -218,6 +218,12 @@ psed_v2/
   excludes, in the paper's words, with assumptions_quote; null when not stated; form_pass0 version 7; export --check 18):
   recipe_fill.py --assumptions, one call per paper with a simulation (section assumptions); compile.recipe_fill imports it under the
   recipe contract and stores it in recipe_fields.csv; nothing derives from it, the PASS-0 UNITS block does not show it.
+- P189 (user): a curve's legend conditions are written onto the unit it binds to, pass-0 or derived, on the coordinates' path (P186; a
+  value pass 1 already gives the unit is skipped; a legend part's element is the caption first, as a derived unit's). The activity
+  matcher reads a gold measurement's method from its id (<entity>:meas:<method>, <paper>:method:<method>); a paper's method
+  activities pair under the paper root; the P189 activity counts are the baseline (P187's held 95 wrong-method matches).
+  check.py --dir runs the dimension check (P108) on the compiled facts. A paper without a gold: a form version's lines are adopted
+  when every 4c check passes, with the inspection 5a-5h before and after; the user vetoes by name (form_versions.csv header).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

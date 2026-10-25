@@ -383,7 +383,7 @@ def gold_measurements(pid, units):
         kids[r["parent"]].append(r)
     return [dict(gid=r["fact_id"], role="measurement", name=r["label_as_printed"], parent=r["parent"], esi_only=False, gold_shape="",
                  evidence=list(dict.fromkeys([e for e in r["evidence"].split(";") if e] + [e for c in kids.get(r["fact_id"], []) for e in c["evidence"].split(";") if e])),
-                 method=r["method"] or r["label_as_printed"].replace(" ", "_"))
+                 method=r["method"] or (r["fact_id"].split(":")[-1] if ":meas:" in r["fact_id"] else r["label_as_printed"].replace(" ", "_")))   # P189: the id's method
             for r in rows if r["type"] == "activity" and r["kind"] == "measurement" and "#" not in r["fact_id"] and r["parent"] in ids]
 
 

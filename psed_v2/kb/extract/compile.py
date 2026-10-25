@@ -988,21 +988,24 @@ class Run:
             if isinstance(r["rec"].get("about"), str) and isinstance(r["rec"].get("quantity"), str):
                 have[r["rec"]["about"]].add((r["rec"]["quantity"], str(r["rec"].get("value") if r["rec"].get("value") is not None else r["rec"].get("value_text"))))
         coord_units, seen = [], set()                                            # P186 (user): a point or cell item's coordinates are conditions of
-        for it in self.binding["items"]:                                         # the pass-0 unit it names, as of a derived unit (one path)
-            u = by0.get(it.get("unit") or "")
+        for it in self.binding["items"]:                                         # the pass-0 unit it names, as of a derived unit (one path); P189
+            u = by0.get(it.get("unit") or "")                                    # (user): a curve's legend conditions too
             if not u or it.get("origin") != "pass-0":
                 continue
-            conds = []
+            conds = {True: [], False: []}
             for c in it.get("vector") or []:
-                k_ = (u["id"], c.get("quantity"), str(c.get("value")))
-                if c.get("coord") and c["kind"] in CONDITION_KINDS and k_ not in seen and (c.get("quantity"), str(c.get("value"))) not in have[u["id"]]:
-                    seen.add(k_); conds.append(c)
-            ev = [e for e in (it["panel"].split("~")[0], re.sub(r"[a-z]+$", "", it["panel"].split("~")[0]) + ".cap") if e in self.order]
-            if conds and ev:
-                coord_units.append(dict(id=u["id"], role=u.get("role"), origin="panel coordinates", conditions=conds, introduced_in=ev, panel=it["panel"], series_axis=""))
+                named = c.get("quantity") not in (None, "", "other")
+                k_ = (u["id"], c.get("quantity"), str(c.get("value"))) if named else (u["id"], c.get("key"))
+                if c["kind"] in CONDITION_KINDS and k_ not in seen and (c.get("quantity"), str(c.get("value"))) not in have[u["id"]]:
+                    seen.add(k_); conds[bool(c.get("coord"))].append(c)
+            panel, cap = it["panel"].split("~")[0], re.sub(r"[a-z]+$", "", it["panel"].split("~")[0]) + ".cap"
+            for coord, ev in ((True, [e for e in (panel, cap) if e in self.order]), (False, [e for e in (cap, panel) if e in self.order])):   # a legend
+                if conds[coord] and ev:                                          # part's element: the caption first, as a derived unit's
+                    coord_units.append(dict(id=u["id"], role=u.get("role"), origin="panel coordinates" if coord else "legend conditions", conditions=conds[coord],
+                                            introduced_in=ev, panel=it["panel"], series_axis=""))
         for u in self.from_curves + coord_units:
             if u in coord_units:
-                self.count("input", f"coordinates of a pass-0 unit ({u['role']})")
+                self.count("input", f"{'coordinates' if u['origin'] == 'panel coordinates' else 'legend conditions'} of a pass-0 unit ({u['role']})")
             else:
                 self.count("input", f"unit derived ({u['origin']}, {u['role']})")
             dkind = "model_input" if u["role"] == "model_run" else "stated"
@@ -2431,21 +2434,25 @@ def match_key(f):
 
 
 def meas_method(f):
-    """P188: a measurement activity's method: its method field, else its id's last part (compiled) or its label (gold), snake case."""
-    return f.get("method") or (f["fact_id"].split(":")[-1] if ":meas:" in f["fact_id"] else re.sub(r"\W+", "_", f.get("label_as_printed", "").strip().lower()))
+    """P188: a measurement activity's method: its method field, else its id's method part (P189 (user): <entity>:meas:<method>, or
+    <paper>:method:<method> for a paper's method activity), else its label, snake case."""
+    i = f["fact_id"]
+    return f.get("method") or (i.split(":")[-1] if ":meas:" in i else i.split(":method:", 1)[1] if ":method:" in i
+                               else re.sub(r"\W+", "_", f.get("label_as_printed", "").strip().lower()))
 
 
 def matches(g, c, pairs=None):
     """A gold row g and a compiled row c match: a shared evidence element and equal match_key; D13: a gold model row without a value
     matches a model row on a shared element whatever its quantity. P188 (user): two measurement activities match by (entity, method):
     the same method, the compiled one's entity paired with the gold one's (pairs: gold unit id -> compiled unit ids, render.pair_units;
-    not checked when pairs is None); the evidence is compared only when both carry it."""
+    not checked when pairs is None; P189: a paper's method activities, both under the paper root, pair); the evidence is compared only
+    when both carry it."""
     if g["type"] == c["type"] == "activity" and g.get("kind") == c.get("kind") == "measurement":
         if meas_method(g) != meas_method(c):
             return False
         if g["evidence"] and c["evidence"] and not set(g["evidence"].split(";")) & set(c["evidence"].split(";")):
             return False
-        return pairs is None or c["parent"] in pairs.get(g["parent"], ())
+        return pairs is None or c["parent"] in pairs.get(g["parent"], ()) or (c["parent"] == g["parent"] and ":" not in g["parent"])   # P189: the paper root
     if not set(g["evidence"].split(";")) & set(c["evidence"].split(";")):
         return False
     if g["type"] == "model" and not (g["value"] or g["value_min"] or g["value_max"] or g["value_text"]):
