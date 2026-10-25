@@ -356,7 +356,8 @@ def build(onto, pmap):
         VALUE_ALIASES={k: {str(v): [str(a) for a in al] for v, al in d.items()} for k, d in voc.get("value_aliases", {}).items() if k != "joint"},
         PILOT_MAP={r["pilot_id"]: dict(kind=r["kind"], disposition=r["disposition"], entry_id=r["entry_id"], qualifiers=r["qualifiers"]) for r in pmap},
         FROM_OTHER={lab: e["id"] for e in live for lab in e.get("from_other", [])},   # P131b: printed label -> the entry promoted from the free label other[label]
-        TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", "")) for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them
+        TRANSFORMS=[dict(id=t["id"], inputs=[str(x) for x in t["inputs"]], output=str(t["output"]), formula=t.get("formula", ""), carry=[str(x) for x in t.get("carry") or []])
+                    for t in onto.get("transforms", [])],   # P84: the A/B label rule reads them; P194: carry (qualifier keys the output takes from its first input)
     )
 
 
@@ -485,7 +486,7 @@ def form_defs(onto):
             "species": {"enum": ids("species")},
             "material": {"enum": sorted(e["id"] for e in live if e["type"] == "species" and e.get("kind") == "material")},
             "structure": {"enum": ids("structure")},                            # P136 2c: the value_text of a structure setting
-            "definition": {"enum": sorted({d["id"] for e in live for d in (e.get("definitions") or [])})},
+            **({"definition": {"enum": sorted(defs)}} if (defs := {d["id"] for e in live for d in (e.get("definitions") or [])}) else {}),   # P194: only while an entry has definitions
             "element": {"type": "string", "pattern": "^[A-Z][a-z]?$"}}          # the ontology has no element list: the form of a symbol
 
 

@@ -1683,8 +1683,8 @@ def check_bases():
     for pid in list(KEYS) + ["user"]:
         for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
             q = f["quantity"]
-            if "#" not in f["fact_id"] or not q or q == "other" or f["type"] in ("caveat", "claim") or "stat=" in f["qualifiers"] or L.ENTRIES.get(q, {}).get("definitions"):
-                continue                                                        # P108 (b): an entry with definitions carries one dimension per definition (check_dimensions)
+            if "#" not in f["fact_id"] or not q or q == "other" or f["type"] in ("caveat", "claim") or "stat=" in f["qualifiers"]:
+                continue
             if f["value"] or f["value_min"] or f["value_max"]:
                 u = L.UNIT_ALIAS.get(f["unit"], f["unit"])
                 if u and u not in L.UNIT_BASE:
@@ -1705,42 +1705,8 @@ def check_bases():
     return err
 
 
-def unit_dimensions():
-    """{unit symbol or variant: dimension} from ontology/units.yaml (P108)."""
-    import yaml
-    out = {}
-    for u in yaml.safe_load((HERE.parent.parent / "ontology" / "units.yaml").read_text(encoding="utf-8"))["units"]:
-        for v in [u["symbol"]] + list(u["variants"]):
-            out.setdefault(str(v), u["dimension"])
-    return out
-
-
-def dimension_problem(q, unit, quals, dims):
-    """P108: '' when a record's unit fits its quantity, else the mismatch. % and '1' (or no unit) are dimensionless; a signal quantity takes
-    signal or dimensionless units; a count takes a count or no unit; a categorical takes no unit; a relative spread (stat relative_sd) is
-    dimensionless whatever the quantity; an entry with definitions (P108 b) is checked against the definition the record's qualifier names,
-    and a record without that qualifier is a problem."""
-    e = L.ENTRIES.get(q)
-    if not e:
-        return f"no entry {q}"
-    u = L.UNIT_ALIAS.get(unit, unit) if unit else ""                             # no unit stays no unit (the generated alias would read '' as the dimensionless '1')
-    d = dims.get(u) if u else "dimensionless"
-    if e["type"] == "categorical":
-        return "" if not u else f"unit {unit!r} on a categorical"
-    if quals.get("stat") in ("relative_sd",) and d == "dimensionless":
-        return ""
-    ed = e.get("dimension")
-    if e.get("definitions"):
-        did = quals.get("definition")
-        dd = next((x for x in e["definitions"] if x["id"] == did), None)
-        if not dd:
-            return f"no definition qualifier (the entry has definitions {[x['id'] for x in e['definitions']]})"
-        ed = dd.get("dimension") or dims.get(str(dd.get("unit", "")), "")
-    if d is None:
-        return f"unit {unit!r} not in units.yaml"
-    if d == ed or (ed == "signal" and d in ("signal", "dimensionless")) or (ed == "count" and d in ("count", "dimensionless")):
-        return ""
-    return f"{d} vs {ed}"
+unit_dimensions = L.unit_dimensions                                             # P194: the P108 rule lives in lists.py (compile flags facts with it)
+dimension_problem = L.dimension_problem
 
 
 def check_unit_table():
@@ -1753,9 +1719,6 @@ def check_unit_table():
     for q, e in L.ENTRIES.items():
         if e.get("unit") and not ok(str(e["unit"])):
             err.append(f"entry {q}: unit {e['unit']!r} is not in the unit table (P122)")
-        for d in e.get("definitions") or []:
-            if d.get("unit") and not ok(str(d["unit"])):
-                err.append(f"entry {q}: definition unit {d['unit']!r} is not in the unit table (P122)")
     for pid in list(KEYS) + ["user"]:
         for f in rd(HERE / (f"{pid}.facts.csv" if pid != "user" else "user.facts.csv")):
             if "#" in f["fact_id"] and f["quantity"] in L.ENTRIES and f["unit"] and (f["value"] or f["value_min"] or f["value_max"]):
@@ -1790,7 +1753,7 @@ def check_unit_table():
 def check_dimensions(src=None):
     """P108: every value record's unit matches its quantity's dimension (units.yaml): the facts' values (spread facts included), the
     imported figure values (cells, peaks), the derived scalars and both axes of every curve. A mismatch is fixed in the facts (rule a) or by
-    an entry's definitions with their own units and the records' definition qualifier (rule b); never by a forced unit. P189 (user): src =
+    (P194: no entry definitions any more, rule b retired); never by a forced unit. P189 (user): src =
     the --dir directory: the facts of its papers (the figure records are the dataset run's)."""
     import json
     dims = unit_dimensions()
@@ -1822,7 +1785,7 @@ def check_dimensions(src=None):
                     m = dimension_problem(c[ax]["quantity"], c[ax].get("unit", ""), {}, dims)
                     if m:
                         err.append(f"{c['id']}: {ax} {c[ax]['quantity']} in {c[ax].get('unit')!r}: {m} (P108)")
-    print(f"== dimensions (P108): {n} value records (facts, cells, peaks, derived, curve axes) against units.yaml; {sum(1 for e in L.ENTRIES.values() if e.get('definitions'))} entries with definitions")
+    print(f"== dimensions (P108): {n} value records (facts, cells, peaks, derived, curve axes) against units.yaml")
     return err
 
 

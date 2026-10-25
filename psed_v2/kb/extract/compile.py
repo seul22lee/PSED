@@ -7,7 +7,8 @@
 Input: the groups of pass1_elements.groups(pid); per group the latest pass-1 line of that section name (lines of a name no group has
 are ignored); the latest pass-0 line. Steps: a0 resolve_other (P157b: a value held as other or outside the vocabulary, matched to the
 generated vocab by its record key, symbols only in their own paper (P157d); never.csv -> unmapped.csv column never; <pid>.promoted.csv), a1 symbol species (P178: a symbol's species from the paper's definition), a schema (form.json), b type rules, c grounding, d quote, e units, f species/structure
-ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (query layer), k statements, l coverage,
+ids, g mentions, h tree and placement (place(), the pilot rule), i dedupe, j derived (lists.DERIVED through the query layer, then P194
+the declared transforms, transforms()), k statements, l coverage,
 m facts.csv. Then the diff against the gold pilot/<pid>.facts.csv (read only). P148 (C6, user correction in P148 D): a record is
 dropped for a form.json error (any validator, after the numeric strings are coerced, C4; the reason names the validator), a quote not
 found (after C3), or a pass-0 data id not in figures.json; every other finding is logged and the record kept.
@@ -36,12 +37,27 @@ UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candid
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "unit_fact_id", "origin", "role", "how", "reason", "facts"]   # P184: the compiled unit id
+FACT_FIELDS = F.FIELDS + ["dimension_mismatch"]                                  # P194 (user): compiled facts carry the dimension flag (6b)
+MIGRATED_FIELDS = ["paper", "element", "type", "label_as_printed", "form_version", "quantity_before", "definition", "quantity_after"]   # P194 2e
+TRANSFORM_FIELDS = ["paper", "unit", "transform", "outcome", "inputs", "output_fact", "value", "unit_of_value"]   # P194 1a-1c: <pid>.transforms.csv
+REDUNDANT_FIELDS = ["paper", "unit", "transform", "printed_fact", "printed_value", "printed_unit", "printed_range", "computed_fact", "computed_value",
+                    "computed_unit", "computed_range", "outcome"]                  # P194 1d: <pid>.transform_redundant.csv
 RECIPE_CSV = ["run", "field", "value", "quote", "element"]                      # P187: kb/compiled/<pid>.recipe_fields.csv (compile stores the recipe fields)
 SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
 RANGE_FIELDS = ["paper", "element", "fact_id", "type", "quantity", "value", "unit", "as_fraction", "range", "quote", "statement"]   # P190: <pid>.out_of_range.csv
 SPECIES_FIELDS = ["element", "label", "type", "quantity", "record_species", "definition", "own_element_names", "outcome", "species", "fact_id"]   # P179   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
+
+
+def migrate_definition(q, quals):
+    """P194 (user) 2e, every form version: the qualifier key definition is gone (it served only front_slope): a front_slope with
+    definition=normalized is normalized_front_slope, with definition=thickness_per_cycle it stays front_slope; the key is removed.
+    quals: {key: value}. Returns (quantity, qualifiers without the key, the definition value or None when the key was absent)."""
+    if not isinstance(quals, dict) or "definition" not in quals:
+        return q, quals, None
+    d = quals["definition"]
+    return ("normalized_front_slope" if q == "front_slope" and d == "normalized" else q), {k: v for k, v in quals.items() if k != "definition"}, d
 
 
 def num_text(v):
@@ -68,8 +84,8 @@ def normalize(t):
     spaces -> space; \\text{..} / \\mathrm{..} -> content; unicode NFKC; μ (U+03BC) and \\mu -> µ (U+00B5); \\circ / ^\\circ -> °;
     \\times -> ×; ◦C / ° C / deg C -> °C (P146); $ _ ^ { } and markdown * dropped; P160 (the ela03 pass-0 quotes): a LaTeX -- / --- and a
     unicode dash -> -, \\approx \\sim \\gg \\ll \\pm \\le(q) \\ge(q) \\cdot -> their symbol, no space around a math symbol, before , . ; : ) % or after
-    (, none around °; whitespace collapsed; casefolded (P140 C1)."""
-    t = MARKUP.sub("", t or "").replace("\u2212", "-")
+    (, none around °; whitespace collapsed; casefolded (P140 C1). P194 (user): the table-cell separator | reads as whitespace."""
+    t = MARKUP.sub("", t or "").replace("\u2212", "-").replace("|", " ")
     t = re.sub(r"[\u00a0\u2007\u2009\u200a\u202f]", " ", t)
     t = re.sub(r"\\(?:text|mathrm)\{([^{}]*)\}", r"\1", t)
     t = re.sub(r"\^?\{?\\circ\}?\s*", "°", t)                                       # P136 1b: ^\circ C -> °C
@@ -550,8 +566,6 @@ def accepted_versions(key):
     st = {r["version"]: r["status"] for r in rows if not r["paper"]}
     st.update({r["version"]: r["status"] for r in rows if r["paper"] == key})
     return {v for v, x in st.items() if x == "accepted"}
-PURGE_QUANTITIES = ("purge_time",)                                              # P177c: of form rule 1's step quantities (export.STEP_QUANTITIES)
-#                                                                                 a purge time names its half-cycle's purge, a pulse time or an exposure its dose
 CONDITION_KINDS = ("value", "name", "species", "other", "never")
 
 
@@ -1008,7 +1022,6 @@ class Run:
             self.note(f"input: binding invariant: {v}")
         self.from_curves = self.binding["units"]
         self.pass0 = list(self.pass0) + self.from_curves
-        recipe = self.recipe(recs)
         by0 = {u["id"]: u for u in self.pass0 if isinstance(u, dict) and u.get("id") and not u.get("origin")}
         have = collections.defaultdict(set)                                     # the values pass 1 already gives a unit
         for r in recs:
@@ -1046,13 +1059,6 @@ class Run:
                 if len(sp) == 1:                                                # P178 (user): a coordinate axis that names one species: species=
                     rec["qualifiers"] = {"species": next(iter(sp))}
                     self.count("input", "coordinate setting species (the axis names it)")
-                if c.get("coord") and c.get("quantity") in C.X.STEP_QUANTITIES:  # P177c (user): a coordinate axis that names a species
-                    step = self.axis_step(c, recipe)
-                    if step:
-                        rec["qualifiers"] = {"step": step[0], **(rec.get("qualifiers") or {})}
-                        if step[1]:
-                            rec["note"] = step[1]
-                        self.count("input", f"coordinate setting step {step[0]}" + (" (flagged)" if step[1] else ""))
                 if c["kind"] == "species":                                      # P166: step a0 resolves the species name (value_text)
                     rec.update(quantity=c["quantity"], value_text=c["key"], kind=dkind, label_as_printed=u.get("series_axis") or c["quantity"])
                 recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"],
@@ -1062,32 +1068,6 @@ class Run:
         if self.from_curves:
             self.note(f"input: {len(self.from_curves)} units derived from curves (P161): " + ", ".join(u["id"] for u in self.from_curves))
         return recs
-
-    def recipe(self, recs):
-        """P177c (user): the paper's recipe as {species id: 'A' | 'B'}: the half-cycle whose reactant_A / reactant_B setting (pass 1) names
-        the species (value_text resolved by vocab_hits); a species named in both halves is in neither."""
-        half = collections.defaultdict(set)
-        for r in recs:
-            rec = r["rec"]
-            if rec.get("type") == "setting" and rec.get("quantity") in ("reactant_A", "reactant_B") and isinstance(rec.get("value_text"), str):
-                hit = vocab_hits(self.pid, "species", rec["value_text"])
-                if len(hit) == 1:
-                    half[next(iter(hit))].add(rec["quantity"][-1])
-        return {s: next(iter(h)) for s, h in half.items() if len(h) == 1}
-
-    def axis_step(self, c, recipe):
-        """P177c (user): the step of a setting derived from a coordinate axis whose label names a species (species_named): the half-cycle
-        in which the recipe lists it (reactant_A -> reactant_A / purge_A, reactant_B -> reactant_B / purge_B; a purge time its purge, a
-        pulse time or an exposure its dose); a species not in the recipe -> none, flagged. Returns (step, flag); None when the label names
-        no species."""
-        sp = species_named(self.pid, c["key"])
-        if not sp:
-            return None
-        halves = {recipe.get(s) for s in sp}
-        if len(halves) != 1 or None in halves:
-            return "none", f"step none: the axis '{c['key']}' names {', '.join(sorted(sp))}, no one species of the paper's recipe (reactant_A / reactant_B) (P177c)"
-        h = halves.pop()
-        return (f"purge_{h}" if c["quantity"] in PURGE_QUANTITIES else f"reactant_{h}"), ""
 
     # ------------------------------------------------------------------------------------------------------------ a1 (P178, P179)
     def symbol_species(self, recs):
@@ -2163,6 +2143,195 @@ class Run:
         self.id_count = n
         return items
 
+    def migrate(self, recs):
+        """P194 (user) 2e, every form version: compile.migrate_definition on every record (front_slope definition=normalized ->
+        normalized_front_slope; the definition key removed); each migrated record listed in kb/compiled/<pid>.migrated.csv."""
+        self.migrated = []
+        for r in recs:
+            rec = r["rec"]
+            q, rest, d = migrate_definition(rec.get("quantity"), rec.get("qualifiers"))
+            if d is None:
+                continue
+            self.migrated.append(dict(paper=self.key, element=r["eid"], type=rec.get("type", ""), label_as_printed=rec.get("label_as_printed") or "",
+                                      form_version=r.get("form_version") or "none", quantity_before=rec.get("quantity") or "", definition=d, quantity_after=q or ""))
+            rec["quantity"], rec["qualifiers"] = q, (rest or None)
+            self.count("a0", f"definition qualifier migrated: {self.migrated[-1]['quantity_before']} {d} -> {q}")
+        return recs
+
+    def flag_dimensions(self, rows):
+        """P194 (user) 6b, every paper and form version: a value fact whose unit's dimension differs from its entry's (lists.dimension_problem,
+        the check.py --dir dimension check of P189) keeps its value and unit as written and gets dimension_mismatch = the mismatch; a
+        flagged fact is not unit-converted (canon), not a transform input (transforms) and not compared (canon, graph_page)."""
+        dims = getattr(self, "_dims", None) or L.unit_dimensions()
+        self._dims = dims
+        for f in rows:
+            q = f.get("quantity") or ""
+            if "#" not in f.get("fact_id", "") or not q or q == "other" or f.get("type") in ("caveat", "claim") or not (f.get("value") or f.get("value_min") or f.get("value_max")):
+                continue
+            m = L.dimension_problem(q, f.get("unit") or "", dict(x.split("=", 1) for x in (f.get("qualifiers") or "").split(";") if "=" in x), dims)
+            if m and not f.get("dimension_mismatch"):
+                f["dimension_mismatch"] = m
+                self.count("6b", "dimension mismatch flagged")
+        return rows
+
+    def transforms(self, rows):
+        """j, P194 (user) 1a-1d: every transform declared in ontology.yaml (vocab.TRANSFORMS) with a function in lists.TRANSFORM_FN, per unit
+        (an entity row: specimen, film, model run, derived unit). A unit's facts: the value facts under it (directly or under its measurement
+        activities), not flagged (6b), a computed_by_kb fact only for a quantity the unit holds no printed fact of (the lists.DERIVED entries
+        no declaration takes run first: a cycle_time they give is a deposition_rate input); plus, for a quantity it holds no value of, its
+        parent's single value (P190, as unit_vectors). A declared input 'q{k=v}' takes the unit's facts of q whose qualifiers contain k=v; several: the one whose qualifiers
+        equal the declared ones; still several -> 'inputs ambiguous', none -> 'inputs missing' (nothing computed). Each input converted to the
+        unit the function is written for (lists.convert); the output: a derived fact of the output quantity, kind computed_by_kb, inputs = the
+        input fact ids, evidence = theirs, its declared qualifiers plus the declaration's carry keys from its first input, in the output's
+        lists.UNITS unit. 1d: a printed (not computed_by_kb) fact of the output quantity under the unit whose qualifiers do not conflict is
+        compared: each printed number spans +- half its last printed digit, the output range is the extreme over the corner combinations
+        of the input ranges; overlap = agree: the printed fact is dropped; else both kept (<pid>.transform_redundant.csv)."""
+        import decimal
+        import itertools
+        quals = lambda f: dict(x.split("=", 1) for x in (f.get("qualifiers") or "").split(";") if "=" in x)   # noqa: E731
+        tree = {r["fact_id"]: r for r in rows if "#" not in r["fact_id"]}
+        ents = [r["fact_id"] for r in rows if r.get("type") == "entity" and "#" not in r["fact_id"]]
+        es = set(ents)
+
+        def owner(f):                                                           # the entity a fact is about: its nearest entity ancestor
+            p, seen = f.get("parent"), set()
+            while p and p not in es and p not in seen:
+                seen.add(p)
+                p = tree.get(p, {}).get("parent")
+            return p if p in es else None
+        value = lambda f: F.num(f["value"]) if f.get("value") else None         # noqa: E731
+        facts = [f for f in rows if "#" in f["fact_id"] and f.get("type") not in ("claim", "caveat", "definition", "cited") and value(f) is not None]
+        own, direct = collections.defaultdict(list), collections.defaultdict(list)
+        for f in facts:
+            e = owner(f)
+            if e:
+                own[e].append(f)
+            direct[f.get("parent")].append(f)
+        usable = lambda f: not f.get("dimension_mismatch")                      # noqa: E731
+        printed_first = lambda fs: [f for f in fs if f.get("data_kind") != "computed_by_kb"] or fs   # noqa: E731  a computed fact only when nothing printed
+
+        def to_unit(v, u, to):
+            a = V.UNIT_ALIAS.get(u, u) if u else ""
+            if to in ("", "1"):
+                if not a or a == "1":
+                    return v
+                dim, fac = V.UNIT_BASE.get(a, (None, None))
+                if dim == "count":
+                    return v
+                if dim == "dimensionless":
+                    return v * fac / V.UNIT_BASE.get("1", ("", 1))[1]
+                raise ValueError(f"{u} is not dimensionless")
+            if not a:
+                raise ValueError("no unit")
+            return L.convert(v, a, to)
+
+        def half(s):
+            try:
+                return 0.5 * 10 ** decimal.Decimal(str(s).strip()).as_tuple().exponent
+            except (decimal.InvalidOperation, ValueError):
+                return 0.0
+
+        def pool(e, q):
+            mine = [f for f in own.get(e, []) if f["quantity"] == q]
+            if mine:
+                return printed_first([f for f in mine if usable(f)])
+            par = printed_first([f for f in direct.get(tree.get(e, {}).get("parent"), []) if f["quantity"] == q])   # P190: the parent's single value
+            return [par[0]] if par and usable(par[0]) and len({(f["value"], f["unit"]) for f in par}) == 1 else []
+
+        self.transform_rows, self.redundant_rows, out, drop = [], [], [], set()
+        self.count_transforms = collections.Counter()
+        decl = {d["id"]: d for d in L.TRANSFORMS}
+        for tid in decl:
+            if tid not in L.TRANSFORM_FN:
+                self.count("j", f"declared, no function (not computed): {tid}")
+        for e in ents:
+            for tid, Fn in L.TRANSFORM_FN.items():
+                D = decl[tid]
+                picks, outcome = [], ""
+                for inp in D["inputs"]:
+                    q, need = L.ref_key(inp)
+                    need = dict(x.split("=", 1) for x in need)
+                    cand = [f for f in pool(e, q) if need.items() <= quals(f).items()]
+                    if len(cand) > 1:
+                        cand = [f for f in cand if quals(f) == need]
+                        if len(cand) != 1:
+                            outcome = outcome or "inputs ambiguous"
+                    if not cand:
+                        outcome = outcome or "inputs missing"
+                    picks.append(cand[0] if len(cand) == 1 else None)
+                found = [f for f in picks if f]
+                if outcome:
+                    if found:                                                   # a unit holding none of the inputs is not listed
+                        self.transform_rows.append(dict(paper=self.key, unit=e, transform=tid, outcome=outcome, inputs=";".join(f["fact_id"] for f in found),
+                                                        output_fact="", value="", unit_of_value=""))
+                    self.count("j", f"{tid}: {outcome}" + ("" if found else " (no input at all)"))
+                    continue
+                try:
+                    vals = [to_unit(F.num(f["value"]), f.get("unit") or "", u) for f, u in zip(picks, Fn["units"])]
+                    v = Fn["fn"](*vals)
+                    oq, oneed = L.ref_key(D["output"])
+                    ou = L.UNITS.get(oq)
+                    unit = Fn["unit"]
+                    if ou is not None:
+                        v, unit = to_unit(v, Fn["unit"], ou), ou
+                except (ValueError, KeyError, ZeroDivisionError) as ex:
+                    self.transform_rows.append(dict(paper=self.key, unit=e, transform=tid, outcome=f"not computed: {ex}"[:120], inputs=";".join(f["fact_id"] for f in picks),
+                                                    output_fact="", value="", unit_of_value=""))
+                    self.count("j", f"{tid}: not computed ({type(ex).__name__})")
+                    continue
+                q0 = quals(picks[0])
+                oquals = {**dict(x.split("=", 1) for x in oneed), **{k: q0[k] for k in D.get("carry") or [] if k in q0}}
+                ev = sorted({x for f in picks for x in f["evidence"].split(";") if x}, key=lambda x: self.order.get(x, 10 ** 6))
+                f = {x: "" for x in FACT_FIELDS}
+                f.update(type="derived", quantity=oq, qualifiers=";".join(f"{k}={w}" for k, w in sorted(oquals.items())), value=f"{v:.4g}", unit=unit,
+                         data_kind="computed_by_kb", method="calculation", inputs=";".join(dict.fromkeys(x["fact_id"] for x in picks)), evidence=";".join(ev),
+                         parent=e, author=self.pid, mentions=tree[e].get("label_as_printed", ""), definition_note=f"computed by transform {tid}: {D['formula']}")
+                self.id_count[ev[0]] += 1
+                f["fact_id"] = f"{self.key}:{ev[0]}#{self.id_count[ev[0]]}"
+                out.append(f)
+                self.count_transforms[tid] += 1
+                self.count("j", f"{tid}: computed")
+                self.transform_rows.append(dict(paper=self.key, unit=e, transform=tid, outcome="computed", inputs=f["inputs"], output_fact=f["fact_id"], value=f["value"], unit_of_value=unit))
+                rng = []                                                        # 1d: the output range from the input ranges (corner combinations)
+                for x, u in zip(picks, Fn["units"]):
+                    h = half(x["value"])
+                    rng.append(sorted(to_unit(F.num(x["value"]) + s * h, x.get("unit") or "", u) for s in (-1, 1)))
+                corners = []
+                for c in itertools.product(*rng):
+                    try:
+                        corners.append(Fn["fn"](*c))
+                    except ZeroDivisionError:
+                        pass
+                lo, hi = (min(corners), max(corners)) if corners else (v, v)
+                if ou is not None:
+                    lo, hi = sorted((to_unit(lo, Fn["unit"], ou), to_unit(hi, Fn["unit"], ou)))
+                for pf in own.get(e, []):
+                    pq = quals(pf)
+                    if pf["quantity"] != oq or pf.get("data_kind") == "computed_by_kb" or any(k in pq and pq[k] != w for k, w in oquals.items()) \
+                            or any(pf is x for x in picks):                    # an input of this computation is not a printed value of its output
+                        continue
+                    row = dict(paper=self.key, unit=e, transform=tid, printed_fact=pf["fact_id"], printed_value=pf["value"], printed_unit=pf.get("unit") or "",
+                               computed_fact=f["fact_id"], computed_value=f["value"], computed_unit=unit, computed_range=f"{lo:.6g} to {hi:.6g}")
+                    try:
+                        if pf.get("dimension_mismatch"):
+                            raise ValueError("flagged (6b)")
+                        ph = half(pf["value"])
+                        plo, phi = sorted(to_unit(F.num(pf["value"]) + s * ph, pf.get("unit") or "", unit) for s in (-1, 1))
+                    except (ValueError, KeyError) as ex:
+                        row.update(printed_range="", outcome=f"not comparable: {ex}"[:100])
+                        self.redundant_rows.append(row)
+                        continue
+                    agree = max(lo, plo) <= min(hi, phi)
+                    row.update(printed_range=f"{plo:.6g} to {phi:.6g}", outcome="agree: printed fact dropped" if agree else "disagree: both kept")
+                    self.redundant_rows.append(row)
+                    self.count("j", f"1d {tid}: {'agree' if agree else 'disagree'}")
+                    if agree:
+                        drop.add(pf["fact_id"])
+        self.note(f"j: transforms (P194): {sum(self.count_transforms.values())} computed facts ({dict(self.count_transforms)}); declared without a function: "
+                  + ", ".join(t_ for t_ in decl if t_ not in L.TRANSFORM_FN) + "; lists.DERIVED entries with no declaration (left running): "
+                  + ", ".join(k for k, D_ in L.DERIVED.items() if not D_.get("transform")) + f"; 1d printed facts dropped: {len(drop)}")
+        return [r for r in rows if r["fact_id"] not in drop] + out
+
     def derived(self, rows):
         """j: lists.DERIVED through query.derive on the compiled tree, one derived row per entity and derived id when every input is a
         compiled fact (no assumed fact); caveats and claim nodes through query; comparisons not built (D8). P179 (user): no process_mode
@@ -2178,7 +2347,7 @@ class Run:
         byid = {r["fact_id"]: r for r in rows}
         out, errors = [], collections.Counter()
         for e in T.entities():
-            for did in L.DERIVED:
+            for did in [k for k, D_ in L.DERIVED.items() if not D_.get("transform")]:   # P194 (user): a moved entry is computed by transforms()
                 try:
                     d = Q.derive(T, e, did)
                 except (KeyError, ValueError) as ex:                            # P138: an input query cannot convert (e.g. cycle -> 1): logged
@@ -2188,8 +2357,10 @@ class Run:
                 ins = [u[1] for u in d["inputs"]]
                 if d["assumed"] or not all(i in ids for i in ins):
                     self.count("j", "derived_needs_outside_fact"); continue
+                if any(byid[i].get("dimension_mismatch") for i in ins):             # P194 6b: a flagged fact is no input
+                    self.count("j", "derived from a flagged fact (not written)"); continue
                 q, _ = L.derived_key(did)
-                f = {x: "" for x in F.FIELDS}
+                f = {x: "" for x in FACT_FIELDS}
                 ev = sorted({x for i in ins for x in byid[i]["evidence"].split(";")}, key=self.order.get)
                 f.update(type="derived", quantity=q, qualifiers=L.DERIVED[did].get("qualifiers", ""), value=f"{d['value']:.4g}", unit=d["unit"], data_kind="computed_by_kb",
                          method="calculation", inputs=";".join(dict.fromkeys(ins)), evidence=";".join(ev), parent=e, author=self.pid,
@@ -2283,10 +2454,11 @@ class Run:
     # ------------------------------------------------------------------------------------------------------------ write
     def write_facts(self, rows):
         OUT.mkdir(exist_ok=True)
-        write_csv(OUT / f"{self.pid}.facts.csv", F.FIELDS, rows)
+        write_csv(OUT / f"{self.pid}.facts.csv", FACT_FIELDS, rows)
 
     def run(self):
         recs = self.read()
+        recs = self.migrate(recs)                                               # P194 (user) 2e
         recs = self.resolve_other(recs)                                         # P157b
         recs = self.symbol_species(recs)                                        # P178, P179 (user)
         recs = self.recipe_process_mode(recs)                                   # P179 (user)
@@ -2338,7 +2510,11 @@ class Run:
                 self.note(f"m: {f['fact_id']}: kind_filled stated")
         rows = tree + list(self.meas.values()) + items                         # tree holds the figure entities (rows_tree)
         rows = rows + self.comparisons(rows)                                    # P143b: from the condition vectors
-        rows = self.derived(rows)
+        rows = self.flag_dimensions(rows)                                       # P194 (user) 6b
+        rows = self.derived(rows)                                               # the lists.DERIVED entries no declaration takes (cycle_time first)
+        rows = self.flag_dimensions(rows)
+        rows = self.transforms(rows)                                            # P194 (user) 1: the declared transforms
+        rows = self.flag_dimensions(rows)
         self.scope_facts([f for f in rows if f.get("type") == "derived"], "derived")   # P182
         rows = self.statements(rows)
         self.range_rows = out_of_range(self.pid, rows)                          # P190 (user): kept, listed
@@ -2357,6 +2533,9 @@ class Run:
                 facts_of[id(f["_a1"])].append(f["fact_id"])
         write_csv(OUT / f"{self.pid}.qualifier_scope.csv", SCOPE_FIELDS, self.scope_rows)   # P182 (user)
         write_csv(OUT / f"{self.pid}.out_of_range.csv", RANGE_FIELDS, self.range_rows)   # P190 (user)
+        write_csv(OUT / f"{self.pid}.migrated.csv", MIGRATED_FIELDS, self.migrated)      # P194 (user) 2e
+        write_csv(OUT / f"{self.pid}.transforms.csv", TRANSFORM_FIELDS, self.transform_rows)   # P194 (user) 1
+        write_csv(OUT / f"{self.pid}.transform_redundant.csv", REDUNDANT_FIELDS, self.redundant_rows)   # P194 (user) 1d
         write_csv(OUT / f"{self.pid}.recipe_fields.csv", RECIPE_CSV, [dict(run=i, field=f, value=json.dumps(x[f]) if isinstance(x.get(f), list) else x.get(f) or "",
                                                                           quote=x.get(f + "_quote") or "", element=x.get(f + "_element") or "")
                                                                      for i, x in self.fill.items() for f in C.X.RECIPE_FIELDS + C.X.MODEL_FIELDS if x.get(f)])   # P187: stored, nothing derives from steps; P188: nor from assumptions
@@ -2446,6 +2625,8 @@ def canon(f):
     v = F.num(f["value"]) if f["value"] else None
     if v is None:
         return None
+    if f.get("dimension_mismatch"):                                             # P194 (user) 6b: a flagged fact is not unit-converted
+        return f["value"], f["unit"]
     u = V.UNIT_ALIAS.get(f["unit"], f["unit"])
     for to in (L.UNITS.get(f["quantity"]), "K" if u == "°C" else None):
         if to is not None:
@@ -2468,7 +2649,7 @@ def out_of_range(pid, rows):
     out = []
     for f in rows:
         rg = (V.ENTRIES.get(f.get("quantity") or "") or {}).get("range")
-        if not rg or "#" not in f.get("fact_id", ""):
+        if not rg or "#" not in f.get("fact_id", "") or f.get("dimension_mismatch"):   # P194 6b: a flagged fact is not converted, not compared
             continue
         for k in ("value", "value_min", "value_max"):
             c = canon(dict(value=f.get(k) or "", unit=f.get("unit") or "", quantity=f["quantity"]))
@@ -2511,16 +2692,84 @@ def matches(g, c, pairs=None):
     return match_key(g) == match_key(c)
 
 
+def _q(f, k):
+    return dict(x.split("=", 1) for x in (f.get("qualifiers") or "").split(";") if "=" in x).get(k, "")
+
+
+def agreement(g, c, pairs=None):
+    """P194 (user) 4: the tie-break weight of an accepted pair: 1 each for the same step, the same species, and the parent (render.pair_units
+    pairs the gold row's parent with the fact's; without pairs, the same parent)."""
+    par = c.get("parent") in pairs.get(g.get("parent"), ()) if pairs is not None else c.get("parent") == g.get("parent")
+    return int(_q(g, "step") == _q(c, "step")) + int(_q(g, "species") == _q(c, "species")) + int(bool(par))
+
+
+def assign(gold, comp, pairs=None):
+    """P194 (user) 4: the matcher's one-to-one assignment (it replaces first come): over the pairs matches() accepts, the most matched pairs,
+    then the most agreements on step, on species and on parent (agreement(); a tie-break weight, never a filter). Solved per connected
+    component of the accepted pairs (scipy.optimize.linear_sum_assignment; weight 3n + 1 per pair plus its agreement, n the component's
+    smaller side, so a further pair always outweighs every tie-break). Returns {gold index: compiled index}."""
+    from scipy.optimize import linear_sum_assignment
+    by_el, meas = collections.defaultdict(list), []
+    for j, c in enumerate(comp):
+        for e in (c.get("evidence") or "").split(";"):
+            if e:
+                by_el[e].append(j)
+        if c.get("type") == "activity" and c.get("kind") == "measurement":
+            meas.append(j)                                                      # P188: a measurement activity may match without evidence
+    edges = collections.defaultdict(dict)
+    for i, g in enumerate(gold):
+        cand = {j for e in (g.get("evidence") or "").split(";") if e for j in by_el.get(e, ())}
+        if g.get("type") == "activity" and g.get("kind") == "measurement":
+            cand |= set(meas)
+        for j in cand:
+            if matches(g, comp[j], pairs):
+                edges[i][j] = agreement(g, comp[j], pairs)
+    parent = {}
+
+    def find(x):
+        while parent.setdefault(x, x) != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+    for i, js in edges.items():
+        for j in js:
+            parent[find(("g", i))] = find(("c", j))
+    comps = collections.defaultdict(lambda: (set(), set()))
+    for i, js in edges.items():
+        for j in js:
+            gs, cs = comps[find(("g", i))]
+            gs.add(i)
+            cs.add(j)
+    out = {}
+    for gs, cs in comps.values():
+        gl, cl = sorted(gs), sorted(cs)
+        big = 3 * min(len(gl), len(cl)) + 1
+        W = [[(big + edges[i][j]) if j in edges[i] else 0 for j in cl] for i in gl]
+        r, c = linear_sum_assignment(W, maximize=True)
+        out.update({gl[a]: cl[b] for a, b in zip(r, c) if W[a][b]})
+    return out
+
+
 GOLD_RESOLVED = {}
+GOLD_MIGRATED = {}                                                              # P194 2e: the gold rows read through migrate_definition
 
 
 def gold_rows(pid):
     """P165 (user): the gold rows of kb/pilot/<pid>.facts.csv (the file is never written) as every matcher reads them: a row of quantity
     other is read through step a0's lookup (vocab_hits on its label_as_printed: the current ids, names, aliases and this paper's
-    symbols); one id -> that quantity, as the compiler would give the record. GOLD_RESOLVED[pid] lists each resolution."""
+    symbols); one id -> that quantity, as the compiler would give the record. GOLD_RESOLVED[pid] lists each resolution. P194 (user): a
+    row's definition qualifier read through migrate_definition, as the records are (GOLD_MIGRATED[pid])."""
     rows = list(csv.DictReader((C.V2 / "kb" / "pilot" / f"{pid}.facts.csv").open(encoding="utf-8")))
     log = GOLD_RESOLVED.setdefault(pid, [])
     log.clear()
+    mig = GOLD_MIGRATED.setdefault(pid, [])
+    mig.clear()
+    for g in rows:                                                              # P194 (user) 2e: the gold read through the same migration as the records
+        kv = [x.split("=", 1) for x in g["qualifiers"].split(";") if "=" in x]
+        q, rest, d = migrate_definition(g["quantity"], dict(kv))
+        if d is not None:
+            mig.append(dict(fact_id=g["fact_id"], type=g["type"], quantity_before=g["quantity"], definition=d, quantity_after=q))
+            g["quantity"], g["qualifiers"] = q, ";".join(f"{k}={v}" for k, v in kv if k in rest)
     for g in rows:
         if g["quantity"] == "other" and g["label_as_printed"].strip():
             hits = vocab_hits(pid, "quantity", g["label_as_printed"])
@@ -2533,7 +2782,8 @@ def gold_rows(pid):
 
 def diff(run):
     """Gold kb/pilot/<pid>.facts.csv (gold_rows, P165) against the compiled rows by matches() (P134 key, canonical units, D13); one gold
-    row per compiled row, first come. P172: a paper without a gold file (wer21, papers 14+) has an empty diff."""
+    row per compiled row by assign() (P194 (user): one-to-one, most pairs, then agreement; it replaced first come); run.match_pairs keeps
+    the pairs (gold fact id, compiled fact id). P172: a paper without a gold file (wer21, papers 14+) has an empty diff."""
     if not (C.V2 / "kb" / "pilot" / f"{run.pid}.facts.csv").exists():
         return [], [f"no gold: kb/pilot/{run.pid}.facts.csv absent (not scored)"]
     gold = gold_rows(run.pid)
@@ -2541,15 +2791,9 @@ def diff(run):
     import render                                                               # P188: the units paired, for measurement activities
     pr = render.pair_units(run.pid, run.key, render.compiled_units(run.pid, comp), measurements=True)
     pairs = {g: set(ps) for g, ps in pr["pair_of"].items()}
-    free = list(range(len(gold)))
-    matched = collections.Counter()
-    for c in comp:
-        for j in free:
-            g = gold[j]
-            if matches(g, c, pairs):
-                matched[c["type"]] += 1
-                free.remove(j)
-                break
+    m = assign(gold, comp, pairs)
+    run.match_pairs = [(gold[i]["fact_id"], comp[j]["fact_id"]) for i, j in sorted(m.items())]
+    matched = collections.Counter(comp[j]["type"] for j in m.values())
     gn, cn = collections.Counter(f["type"] for f in gold), collections.Counter(f["type"] for f in comp)
     table = []
     for t in sorted(set(gn) | set(cn), key=lambda t: -gn[t]):

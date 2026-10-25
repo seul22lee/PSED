@@ -64,13 +64,9 @@ def score_rows(key, run, table, tree_errs):
     out += [row("about", k, n) for k, n in ab.most_common()]
     gold = K.gold_rows(run.pid)                                                 # P165: a gold other row read through step a0's lookup
     G, CR = {g["fact_id"]: g for g in gold}, {c["fact_id"]: c for c in run.rows}
-    free, pk = list(range(len(gold))), collections.Counter()
-    for c in run.rows:                                                          # the pairs of compile.diff: one gold row per compiled row, first come
-        j = next((j for j in free if K.matches(gold[j], c)), None)
-        if j is None:
-            continue
-        free.remove(j)
-        a, b = parent_kind(G, gold[j]["fact_id"]), parent_kind(CR, c["fact_id"])
+    pk = collections.Counter()
+    for gid, cid in getattr(run, "match_pairs", []):                            # the pairs of compile.diff (P194: compile.assign, one-to-one)
+        a, b = parent_kind(G, gid), parent_kind(CR, cid)
         pk["parent kind = gold" if a == b else f"differs: gold {a} / compiled {b}"] += 1
     out += [row("placement", k, n) for k, n in pk.most_common()]
     return out

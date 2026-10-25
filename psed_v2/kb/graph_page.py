@@ -295,7 +295,12 @@ def fact_text(f):
     return EXP.text(f) or (f"curve {f['points_ref']}" if f["points_ref"] else "(no value)")
 
 
+NOT_COMPARED = "not compared: dimension mismatch"                              # P194 (user) 6b: a flagged fact is shown, never compared
+
+
 def fact_canon(f):
+    if f.get("dimension_mismatch"):
+        return NOT_COMPARED
     if f["value"]:
         return str(K.canon(f))
     return (EXP.text(f) or f["points_ref"]).lower()
@@ -392,7 +397,7 @@ def card_html(T, side, e, other=None, other_T=None, tags=()):
 
     def cell(f, mine, theirs):
         k = fact_key(f)
-        cls = "" if not other else "only" if k not in theirs else "diff" if mine[k] != theirs[k] else ""
+        cls = "" if not other or NOT_COMPARED in mine[k] | theirs.get(k, set()) else "only" if k not in theirs else "diff" if mine[k] != theirs[k] else ""
         tip = f" title='other side: {html.escape('; '.join(sorted(theirs[k])))}'" if cls == "diff" else ""
         return f"<li class='{cls}'{tip}>{html.escape(k)} = {html.escape(fact_text(f))}</li>"
     acts = " · ".join(f"{k}: {html.escape(T.R[a]['label_as_printed'] or a)}" for k in ("deposition", "simulation") for a in [T.act(e, k)] if a)
@@ -426,6 +431,8 @@ def fact_val(f):
             return float(x) if x not in ("", None) else None
         except ValueError:
             return None
+    if f.get("dimension_mismatch"):                                             # P194 6b: shown, not converted, not compared
+        return dict(t=f"{fact_text(f)} [dimension mismatch: {f['dimension_mismatch']}]", v=None, lo=None, hi=None, c="", u="", x=1)
     return dict(t=fact_text(f), v=num(f["value"]), lo=num(f["value_min"]), hi=num(f["value_max"]), c=f["censor"],
                 u="" if f["unit"] in ("1", "-") else f["unit"])
 
@@ -508,9 +515,10 @@ function table(ids){
   let h='<table><tr><th>quantity [qualifiers]</th>'+ids.map(id=>'<th><a href="#'+esc(id)+'">'+esc(label(id))+'</a></th>').join('')+'</tr>';
   for(const[part,name]of[['cond','conditions'],['res','results']]){const{keys,m}=per(ids,part);
     h+='<tr class="part"><th colspan="'+(ids.length+1)+'">'+name+' ('+keys.length+')</th></tr>';
-    for(const k of keys){const first=ids.find(id=>m[id][k]);const v0=m[first][k].vals.find(v=>v.v!=null||v.lo!=null||v.hi!=null);
+    for(const k of keys){const first=ids.find(id=>m[id][k]&&!m[id][k].vals.some(v=>v.x))||ids.find(id=>m[id][k]);const v0=m[first][k].vals.find(v=>v.v!=null||v.lo!=null||v.hi!=null);
       const ru=v0?v0.u:null;let ref=null;h+='<tr><th>'+esc(k)+'</th>';
       for(const id of ids){const x=m[id][k];if(!x){h+='<td class="miss">—</td>';continue;}
+        if(x.vals.some(v=>v.x)){h+='<td title="dimension mismatch: not compared">'+x.vals.map(v=>esc(v.t)).join('; ')+'</td>';continue;}   // P194 6b
         const cs=x.vals.map(v=>cellv(v,ru)),key=cs.map(c=>c.k).sort().join(';');if(ref===null)ref=key;
         const tip=cs.filter(c=>c.orig).map(c=>'as printed: '+c.orig).join('; ');
         h+='<td class="'+(key!==ref?'diff':'')+'"'+(tip?' title="'+esc(tip)+'"':'')+'>'+cs.map(c=>esc(c.t)).join('; ')+'</td>';}

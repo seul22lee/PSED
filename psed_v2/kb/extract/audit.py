@@ -161,6 +161,9 @@ def main(arg):
     run, records, fate, rows = traced_run(pid)
     comp = [r for r in rows if "#" in r["fact_id"]]
     CR, GR = {r["fact_id"]: r for r in rows}, {r["fact_id"]: r for r in gold}
+    import render                                                               # P194 (user): the matcher's one-to-one assignment (compile.assign)
+    pr = render.pair_units(run.pid, run.key, render.compiled_units(run.pid, rows), measurements=True)
+    assigned = {gold[i]["fact_id"]: comp[j]["fact_id"] for i, j in K.assign(gold, comp, {g: set(ps) for g, ps in pr["pair_of"].items()}).items()}
     out, texts, matched_c = [], [], set()
     for g in gold:
         ev = [e for e in g["evidence"].split(";") if e]
@@ -193,7 +196,7 @@ def main(arg):
         drops = [(r, fate[id(r["rec"])]) for r in hits if fate.get(id(r["rec"]), ("",))[0] == "drop"]
         good = [(r, c) for r, c in facts if matches(g, c)]
         if good:
-            r, c = good[0]
+            r, c = next(((r, c) for r, c in good if c["fact_id"] == assigned.get(g["fact_id"])), good[0])   # P194: the assigned fact when it is one of them
             matched_c.add(c["fact_id"])
             a.update(stage="T6 matched", jsonl_record=rec_json(r), compiled_row=c["fact_id"])
             pc, pg = parent_class(CR, c["fact_id"]), parent_class(GR, g["fact_id"])

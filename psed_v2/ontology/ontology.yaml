@@ -553,7 +553,7 @@ entries:
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [coated EAR, coated (E)AR]
-    symbols: [{text: coated (E)AR, paper: 10.1039_d0cp03358h}, {text: coated (E)AR, paper: 10.1116_6.0003182}, {text: x̃50%, paper: ''}, {text: 'PD^{50%} / cavity height', paper: 10.1021_acs.jpcc.9b08176}]
+    symbols: [{text: coated (E)AR, paper: 10.1039_d0cp03358h}, {text: coated (E)AR, paper: 10.1116_6.0003182}, {text: 'PD^{50%} / cavity height', paper: 10.1021_acs.jpcc.9b08176}, {text: x̃₅₀%, paper: 10.1039_d1cp04758b}]
     base: {source: cremers_2019, section: "Sec. II H; second half of the split of schema_miner MaterialProperties/Conformality/AspectRatio (path recorded on aspect_ratio)"}
     evidence: ["Yim2020 Table 1", "gre23 Fig. 6 (the Zn profile through the compact: the coating reaches the full half-thickness, AR 7800)", "gre23 Sec. III C (s14.p1)"]
 
@@ -941,13 +941,13 @@ entries:
     origin: extension
     role: coordinate
     category: test_structure
-    definition: "Distance from the feature entrance divided by the feature width, x/w (Yim 2020: x̃ = x/H)."
+    definition: "Distance from the feature entrance divided by the feature width, x/w (Yim 2020: x̃ = x/H); a coordinate: a position along the structure; a single result value at a thickness level is not this entry (penetration_depth, coated_aspect_ratio)."
     dimension: dimensionless
     unit: "1"
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [Dimensionless distance x̃, dimensionless distance, Distance / cavity height]
-    symbols: [{text: '\tilde{x}', paper: 10.1039_d1cp04758b}, {text: x̃₅₀%, paper: 10.1039_d1cp04758b}]
+    symbols: [{text: '\tilde{x}', paper: 10.1039_d1cp04758b}]
     base: {}
     evidence: ["Yim2020 Fig. 9b", "Yim2020 Fig. 9c", "Yim2020 Fig. 9e", "Yim2020 Fig. 9f", "Yim2020 Fig. 10b", "Yim2020 Fig. 10c", "Yim2020 Fig. 10e", "Yim2020 Fig. 10f"]
 
@@ -1677,18 +1677,30 @@ entries:
     attribute: true
     label: "front slope"
     name: "front slope"
-    definition: "The slope of a saturation profile at its half-thickness point, as thickness per cycle or as normalized thickness per unit of dimensionless distance (yim20 Table 1); an attribute of a profile, stored as data, not a concept (Sec. 18.7)."
-    definitions:   # P108 (b): two definitions with their own dimension; a record carries definition=<id> (the comparability axis), never a forced unit
-      - {id: normalized, unit: "1", dimension: dimensionless, text: "dθ/dx̃: the slope of the normalized thickness θ against the dimensionless distance x̃ (yim20 Table 1 column 'Slope dθ/dx̃'; yim22 Table 3)"}
-      - {id: thickness_per_cycle, unit: nm, dimension: length, text: "d(S/N)/dx̃: the slope of the scaled thickness S/N (nm per cycle) against the dimensionless distance x̃, printed in nm (yim20 Table 1 column 'Slope d(S/N)/dx̃')"}
-    dimension: dimensionless
-    unit: "1"
-    qudt_quantity_kind: "quantitykind:DimensionlessRatio"
-    qudt_unit: "unit:UNITLESS"
+    definition: "d(S/N)/dx̃: the slope of the scaled thickness S/N (nm per cycle) against the dimensionless distance x̃, printed in nm (yim20 Table 1 column 'Slope d(S/N)/dx̃')"   # P194 (user): one dimension; the normalized slope is normalized_front_slope
+    dimension: length
+    unit: nm
+    qudt_quantity_kind: "quantitykind:Length"
+    qudt_unit: "unit:NanoM"
     aliases: ["Slope dθ/dx̃", "Slope d(S/N)/dx̃", "front slope"]
     symbols: [{text: '|d(s/N)/dx̃| at x̃₅₀%', paper: 10.1039_d1cp04758b}]
     base: {}
     evidence: ["yim20 Table 1", "yim20 Fig. 9"]
+  - id: normalized_front_slope   # P194 (user): the normalized definition of the former front_slope
+    type: quantity
+    origin: extension
+    role: output
+    category: conformality
+    attribute: true
+    label: "normalized front slope"
+    name: "normalized front slope"
+    definition: "dθ/dx̃: the slope of the normalized thickness θ against the dimensionless distance x̃ (yim20 Table 1 column 'Slope dθ/dx̃'; yim22 Table 3)"
+    dimension: dimensionless
+    unit: "1"
+    qudt_quantity_kind: "quantitykind:DimensionlessRatio"
+    qudt_unit: "unit:UNITLESS"
+    base: {}
+    evidence: ["yim20 Table 1", "yim22 Table 3"]
 
   - id: fit_r2
     type: quantity
@@ -3487,7 +3499,7 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: x_over_width,        inputs: [distance, feature_width],   output: dimensionless_distance, formula: "x / w"}
   - {id: normalize_thickness, inputs: [film_thickness, "film_thickness{position=reference}"], output: normalized_thickness, formula: "d(x) / d_ref"}
   - {id: aspect_ratio,        inputs: [feature_depth, feature_width], output: aspect_ratio,        formula: "L / w  (Cremers Eq. 11)"}
-  - {id: coated_ar,           inputs: [penetration_depth, feature_width], output: "coated_aspect_ratio{basis=AR}", formula: "PD / w"}
+  - {id: coated_ar,           inputs: [penetration_depth, feature_width], output: "coated_aspect_ratio{basis=AR}", formula: "PD / w", carry: [level]}   # P194 (user): the output takes level from its first input
   - {id: exposure,            inputs: [partial_pressure, pulse_time], output: exposure,            formula: "p * t  (Cremers Sec. II D)"}
   - {id: step_coverage,       inputs: ["film_thickness{position=bottom}", "film_thickness{position=top}"], output: step_coverage, formula: "d_bottom / d_top"}
   - {id: final_channel_height, inputs: [feature_width, "film_thickness{position=plateau}"], output: "feature_width{stage=final}", formula: "H - 2 S_IIb (P51)"}
@@ -3508,9 +3520,9 @@ transforms:   # Sec. 9; the pilot's derived quantities (lists.DERIVED computes t
   - {id: mean_free_path,      inputs: [deposition_temperature, partial_pressure], output: mean_free_path, formula: "k_B T / (sqrt(2) pi d^2 p), d the molecular diameter (an assumed fact) (P58)"}
   - {id: knudsen_number,      inputs: [mean_free_path, feature_width], output: knudsen_number, formula: "lambda / w (the hydraulic diameter, the pore or particle diameter) (P58)"}
   - {id: body_thickness,      inputs: [feature_depth, entry_sides], output: body_thickness,  formula: "L × entry sides: the full thickness of a body the reactant enters from one or two faces (P78)"}
+  - {id: normalize_front_slope, inputs: [front_slope, "growth_per_cycle{position=plateau}"], output: normalized_front_slope, formula: "front slope / plateau GPC", note: "S/N is thickness per cycle, so the printed nm of front_slope is per cycle; the quotient is dimensionless (P194, user)"}
 qualifiers:   # closed lists; adding a value is allowed and is logged (log: values added from the pilot, 2026-10-16, Sec. 18)
   # P182 (user): applies_to = which entries may carry the key: a list of entry ids and selectors ({field: value}; present = the field is set), any (every value fact) or unit (an attribute of a unit, never on a value fact); the entries' own qualifiers lists are derived from it (export.entry_qualifiers)
-  definition: {meaning: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)", values: definition ids, log: "P108 (b): the definition an entry with definitions: a record follows (front_slope: normalized | thickness_per_cycle)", applies_to: {definitions: present}, applies_to_reason: "an entry with definitions: front_slope"}
   step:      {meaning: "which step of the ALD cycle the value is about: the reactant_A / reactant_B pulse, the purge_A / purge_B, the plasma step, a hold_A / hold_B (static exposure), or none (not step-specific).", values: [reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none], source: "Cremers Sec. I four steps; Popov Reactant A/B", log: "plasma, hold_A, hold_B, none: mat22 plasma step, gre23 static holds", value_definitions: {reactant_A: "the exposure step of the run's reactant_A species", purge_A: "the purge after the exposure step of the run's reactant_A species", reactant_B: "the exposure step of the run's reactant_B species", purge_B: "the purge after the exposure step of the run's reactant_B species", plasma: "the plasma exposure step (reactant_B delivered as a plasma)", hold_A: "a static (closed-valve) exposure of reactant A", hold_B: "a static (closed-valve) exposure of reactant B", none: "not step-specific"}, applies_to: [pulse_time, purge_time, exposure, process_pressure, deposition_temperature, gas_flow_rate, plasma_power, pressure_rise, pressure_rate, time_to_maximum, gas_moles_per_cycle], applies_to_reason: "the cycle step a value is about: the step times, exposure (form rule P158 1), the conditions set per step (pressure, temperature, flows, plasma power) and the per-step monitoring values"}   # P181 (user): one definition per value, naming the run's recipe field
   species:   {meaning: "the substance a value is about (a species id): a reactant, a carrier or background gas, or a detected phase", values: species ids, log: "P179 (user): the meaning; values: species entries only", applies_to: [pulse_time, purge_time, partial_pressure, exposure, source_temperature, precursor_purity, initial_sticking_coefficient, recombination_probability, adsorption_equilibrium_constant, saturation_density, knudsen_number, mean_free_path, molar_mass, molecule_diameter, gas_phase_diffusion_coefficient, knudsen_diffusion_coefficient, effective_diffusion_coefficient, reactant_number_density, gas_moles_per_cycle, crystallite_size, phase, signal_intensity, film_density], applies_to_reason: "the substance a value is about: a property or amount of a reactant or gas molecule, a delivery setting of one reactant (P181 step fill; lists.SUBSTANCE_SCOPED), or a detected phase; + film_density: the gold's film density of a named phase, mos2 (mat22) (user, P182 step 3)"}
   gas:       {meaning: "the gas a value is about (a species id): the gas of a flow rate, of a plasma-feed share or of a partial pressure", values: species ids, applies_to: [gas_flow_rate, plasma_gas_ratio, partial_pressure, annealing_temperature, molar_mass, molecule_diameter], applies_to_reason: "the gas of a flow rate, of a plasma-feed share or of a partial pressure; the annealing atmosphere; + molar_mass, molecule_diameter: the gold's molar mass and molecule diameter of the background gas n2 (yim22) (user, P182 step 3)"}
@@ -3519,7 +3531,7 @@ qualifiers:   # closed lists; adding a value is allowed and is logged (log: valu
   phase:     {meaning: "Sec. 18.3: the phase a phase_fraction is of", values: species ids, log: "Sec. 18.3: the phase a phase_fraction is of", applies_to: [phase_fraction], applies_to_reason: "the phase a phase_fraction is of"}
   position:  {meaning: "where on the structure the value was taken: planar (the flat surface), top (the entrance), sidewall, bottom, entrance, plateau (the constant-thickness region), local, outside (outside the channel), interface.", values: [planar, top, sidewall, bottom, local, entrance, plateau, outside, interface], source: "Cremers Fig. 7; LHAR: outside the channel = planar, channel entrance = top", log: "local, entrance, plateau, outside, interface: yim20 profile regions, mat22 interface layer", applies_to: [film_thickness, growth_per_cycle, step_coverage, surface_coverage, roughness, feature_width], applies_to_reason: "values taken at a place on the structure: thickness, growth, coverage, roughness, a structure dimension measured at a place"}
   reference: {meaning: "the thickness a normalized thickness is divided by: top, planar, plateau, entrance, maximum, assumed_saturation, stated (the authors give it), bulk.", values: [top, planar, assumed_saturation, plateau, entrance, maximum, stated, bulk], log: "plateau, entrance, maximum, stated: normalization references of the pilot; bulk: a bulk reference value (P8)", applies_to: [normalized_thickness, front_slope, film_density], applies_to_reason: "the thickness a normalized thickness (and the slope of a normalized profile) is divided by; + film_density: the gold's film density relative to bulk (mat22) (user, P182 step 3)"}
-  level:     {meaning: "the thickness fraction or front position that defines a penetration depth: 50%, 80%, front_start, front_end, maximum.", values: ["50%", "80%", front_start, front_end, maximum], source: "Cremers PD50%, PD80%", log: "front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum", applies_to: [penetration_depth, pressure_rise, dimensionless_distance, coated_aspect_ratio], applies_to_reason: "the fraction or front position that defines a penetration depth (also as a dimensionless distance); the maximum of a pressure rise; + coated_aspect_ratio: the gold's coated aspect ratio at PD50% / front_start / front_end (art19, gao15, yim22) (user, P182 step 3)"}
+  level:     {meaning: "the thickness fraction or front position that defines a penetration depth: 50%, 80%, front_start, front_end, maximum.", values: ["50%", "80%", front_start, front_end, maximum], source: "Cremers PD50%, PD80%", log: "front_start, front_end, maximum: yim20 front positions, gre23 pressure maximum", applies_to: [penetration_depth, pressure_rise, coated_aspect_ratio], applies_to_reason: "the fraction or front position that defines a penetration depth; the maximum of a pressure rise; + coated_aspect_ratio: the gold's coated aspect ratio at PD50% / front_start / front_end (art19, gao15, yim22) (user, P182 step 3)"}
   basis:     {meaning: "the aspect ratio a value is computed on: AR (geometric) or EAR (equivalent).", values: [AR, EAR], source: "Cremers Sec. II G", applies_to: [coated_aspect_ratio], applies_to_reason: "the aspect ratio a coated aspect ratio is computed on"}
   surface:   {meaning: "the material of the surface a surface reaction happens on (a material id): a recombination probability on Al2O3", values: material ids, applies_to: [recombination_probability, reaction_stoichiometry], applies_to_reason: "the surface a surface reaction happens on; + reaction_stoichiometry: the gold's reaction stoichiometry on sio2 (gre23) (user, P182 step 3)"}
   kind:      {meaning: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures", values: [set_point, measured, default, option, target, estimated], log: "pilot P16, P18: how a setting value is meant (a default inherited, an option not inherited, a target, a set point against a measured value); P131: estimated, a condition the paper estimates rather than sets or measures", evidence: ['gre23:s9.p6#12 (s9.p6;s12.p6)', 'gre23:s9.p6#13 (s9.p6)'], applies_to: any, applies_to_reason: "how a setting value is meant: a setting of any quantity; every value fact"}
