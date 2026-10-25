@@ -1,0 +1,14 @@
+stage,rule,code,replaced
+s00_P201A,P201 A (the kb/compiled state),3c5204a0,
+s01_P201B,P201 B: figure_quantity (a figure label takes its 0ax answer; none: other),2026463a,
+s02_P202,P202: compile.data_ids,0897d7fe,
+s03_P204A1,P204 A1: a record labelled with a symbol's meaning; model_reactant fill to model records,0897d7fe,compile.py = P202 + the A1 hunks of 6d3da000
+s04_P204A2,"P204 A2: transform / DERIVED inputs nearest first, species_ok",0897d7fe,compile.py = + the A2 hunks; query.py of 6d3da000
+s05_P204A3,P204 A3: merge_subsets,0897d7fe,compile.py = + the A3 hunk; query.py of 6d3da000
+s06_P204A4,P204 A4: front_at_end,6d3da000,
+s07_P204BC,"P204 B, C (no compile rule: request side)",23801511,
+s08_P205,P205: distinguished_by parts written as facts,ba9ee93f,
+s09_P206b,"P206, P206b: failed lines read as absent, unknown pass-0 ids dropped and listed",7182fd5a,
+s10_P207r1,P207 rule 1 with P207b: value against quote,7182fd5a,compile.py = P206b + the rule-1 hunks of 4bc21048 and 849ead1b
+s11_P207r2,"P207 rule 2: species kind; (quantity, symbol); the definition quote",7182fd5a,compile.py = + the rule-2 hunks; lists.py of 2fedf44e
+s12_P207r3,P207 rule 3: transform inputs where the value comes from first (= HEAD 2fedf44e),2fedf44e,
