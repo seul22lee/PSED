@@ -196,12 +196,13 @@ def never_index(entries):
     return parts, sup, sparts
 
 
-def resolve_index(entries, materials):
+def resolve_index(entries, materials, names=True):
     """P157d: the lookup tables of compile.py resolve_other and of ontology.html's ambiguous keys. entries: {id: dict(type, name,
     aliases, symbols, replaced_by)} (vocab.ENTRIES or ontology.yaml); materials: the material species ids. Returns (words, symbols):
     words[kind][norm_label(text)] = {id: how} over the id, the id with spaces, the name and the aliases (never the label);
     symbols[kind][(paper, symbol_key(text))] = {id: text}. kind: quantity (quantity and categorical entries), method, structure,
-    species, material, model (P168: a simulation unit's printed name). A key under two ids is ambiguous."""
+    species, material, model (P168: a simulation unit's printed name). A key under two ids is ambiguous. P201 (user): names=False leaves
+    the names out (step a0's quantity lookup of a record key)."""
     live = {i: e for i, e in entries.items() if not e.get("replaced_by")}
     kinds = {"quantity": [i for i, e in live.items() if e["type"] in ("quantity", "categorical")], "method": [i for i, e in live.items() if e["type"] == "method"],
              "structure": [i for i, e in live.items() if e["type"] == "structure"], "species": [i for i, e in live.items() if e["type"] == "species"],
@@ -211,7 +212,7 @@ def resolve_index(entries, materials):
         w, sy = {}, {}
         for i in ids:
             e = live[i]
-            for t, how in [(i, "id"), (i.replace("_", " "), "id"), (e.get("name", ""), "name")] + [(str(a), "alias") for a in e.get("aliases") or []]:
+            for t, how in [(i, "id"), (i.replace("_", " "), "id")] + [(e.get("name", ""), "name")] * names + [(str(a), "alias") for a in e.get("aliases") or []]:
                 k = norm_label(t) if t else ""
                 if k:
                     w.setdefault(k, {}).setdefault(i, f"{how} '{t}'")

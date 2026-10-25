@@ -192,6 +192,21 @@ def vocab_hits(pid, kind, text):
     return hits
 
 
+RECORD_WORDS = C.X.resolve_index(V.ENTRIES, L.MATERIALS, names=False)[0]["quantity"]   # P201 (user): a record key never resolves through a name
+AMBIGUOUS_KEYS = {C.X.ambiguous_key(k) for k in V.AMBIGUOUS_ALIASES}
+
+
+def record_quantity_hits(pid, text):
+    """P201 (user): step a0's quantity lookup of a record key (kind quantity only): the quantity and categorical ids (as written and with
+    spaces) and their global aliases (export.norm_label), never an entry name; a vocabularies.ambiguous_aliases key (export.ambiguous_key)
+    only through a symbol of this paper. A user's decision reaches it as an alias or a symbol (grow.py apply). Every other kind, and the
+    figure labels, read vocab_hits (names included)."""
+    hits = {} if C.X.ambiguous_key(text) in AMBIGUOUS_KEYS else dict(RECORD_WORDS.get(C.X.norm_label(text), {}))
+    for i, t in SYMBOLS["quantity"].get((pid, C.X.symbol_key(text)), {}).items():
+        hits.setdefault(i, f"symbol '{t}' of this paper")
+    return hits
+
+
 def never_of(pid, text):
     """The never.csv row of a record key: a word (any paper, export.norm_label) or a symbol of this paper (export.symbol_key); else None."""
     return (NEVER.get(C.X.norm_label(text)) or NEVER_SYMBOLS.get((pid, C.X.symbol_key(text)))) if text.strip() else None
@@ -1347,7 +1362,7 @@ class Run:
             for field, text, kind in todo:
                 if not text.strip():
                     continue
-                hits = vocab_hits(self.pid, kind, text)
+                hits = record_quantity_hits(self.pid, text) if kind == "quantity" else vocab_hits(self.pid, kind, text)   # P201 (user)
                 meaning = " ".join(((rec.get("candidate") or {}).get("definition_quote") or "").split()) if field == "quantity" else text
                 if len(hits) == 1:
                     (i, how), = hits.items()

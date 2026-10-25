@@ -288,6 +288,10 @@ psed_v2/
   only (compile.paper_version: the version of its last accepting form_versions row; a paper without one: the corpus rows), and a 0x or
   fill line only between the pass-0 line in use and the next pass-0 line (compile.after_pass0). grow.retired_by (the audits' dormant
   test) reads exactly those lines: it calls compile.paper_version (no version list of its own).
+- P201 A (user): step a0's quantity lookup of a record key (compile.record_quantity_hits, kind quantity only): the entry id (as written and
+  with spaces), its global aliases, a symbol of the record's own paper (a user's decision lands as an alias or a symbol); never an entry
+  name (export.resolve_index names=False); a vocabularies.ambiguous_aliases key (export.ambiguous_key) only through a symbol of the paper.
+  Species, material, method, structure, model lookups and the figure labels read vocab_hits as before.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
