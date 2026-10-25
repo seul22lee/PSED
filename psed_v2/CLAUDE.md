@@ -206,6 +206,12 @@ psed_v2/
   holds is skipped). render.pair_units pairs gold units against compiled units too (render.compiled_units: runs, specimens incl.
   films, simulations, model runs, measurements; gold measurements by gold_measurements) and has a parent stage (the one unpaired
   unit of the role under a paired parent; among several, the method or the own settings decide).
+- P187 (user): audit A1 outcome dormant (grow.retired_by): a decision row no compiled row produces because an adopted
+  re-extraction (a version accepted for that paper) replaced the element's records and no longer gives the label as other; listed
+  with the version, not a failure. Recipe fields gain steps (the cycle's step sequence, step values; form_pass0 version 6); compile
+  stores the recipe fields in kb/compiled/<pid>.recipe_fields.csv, nothing derives from steps, the PASS-0 UNITS block does not show it.
+  recipe_fill.py --refill-nulls: one call per paper, the runs with a null field and those fields (section recipe_refill: compile fills
+  only fields still null).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

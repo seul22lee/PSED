@@ -25,23 +25,29 @@ FIELDS = C.X.RECIPE_FIELDS
 DROP = tuple(f + x for f in FIELDS for x in ("", "_quote", "_element"))
 
 
-def job(pid, fields=FIELDS):
+def job(pid, fields=FIELDS, only=None, section="recipe"):
     """(pass, section, prompt, response schema, element ids) or None when the paper has no run. P185: fields, the recipe fields asked
-    (a material-only refill: ['material']; compile.recipe_fill merges each field from the latest line holding it)."""
+    (a material-only refill: ['material']; compile.recipe_fill merges each field from the latest line holding it). P187: only, the run
+    ids asked (the others left out of RECIPES and of the response); section recipe_refill: compile fills only the fields still null."""
     base = PM.job(pid)                                                          # the runs, their settings and the text, as the P179 fill reads them
     if base is None:
         return None
     _, _, pm_prompt, pm_schema, els = base
     head, rest = pm_prompt.split("\n\nRECIPES", 1)
     runs = pm_schema["properties"]["recipes"]["items"]["properties"]["id"]["enum"]
+    if only is not None:                                                        # P187: the runs asked, their RECIPES lines only
+        runs = [r for r in runs if r in only]
+        rl, tx = rest.split("\n\nTEXT", 1)
+        rest = "\n".join(l for l in rl.split("\n") if " | " not in l or l.split(" | ")[0] in runs) + "\n\nTEXT" + tx
     species = [i for i, e in K.V.ENTRIES.items() if e.get("type") == "species"]
     values = list(K.V.CATEGORICAL_VALUES["process_mode"])
     mats = list(K.V.MATERIALS)
-    ids = {f: (values if f == "process_mode" else mats if f == "material" else species) for f in fields}
-    defs = "; ".join(f"{f}: {K.V.ENTRIES[f]['definition']}" for f in fields)
+    steps = [str(v) for v in K.V.QUALIFIERS["step"] if str(v) != "none"] if isinstance(K.V.QUALIFIERS.get("step"), (list, set, tuple)) else []
+    ids = {f: (values if f == "process_mode" else mats if f == "material" else steps if f == "steps" else species) for f in fields}
+    defs = "; ".join(f"{f}: {K.V.ENTRIES[f]['definition']}" if f in K.V.ENTRIES else f"{f}: the steps of one ALD cycle in the order the paper gives them (the step qualifier's values)" for f in fields)
     prompt = (
         "You read the text of one ALD paper and give, for each recipe (a deposition run) listed below, its recipe fields: "
-        + "; ".join(f"{f} (one of {', '.join(ids[f])})" for f in fields) + f". The fields: {defs}. "
+        + "; ".join(f"{f} (" + ("the cycle's step sequence in order, each one of " if f == "steps" else "one of ") + f"{', '.join(ids[f])})" for f in fields) + f". The fields: {defs}. "
         "A field is stated for a run when the text states it for that run, for a set of runs it belongs to, or for every deposition of the paper; a "
         "run's own name in the text stating it states it too. reactant_A and reactant_B are the reactants in the order the text gives the cycle "
         "(the precursor dosed first, then the co-reactant). For each field give the quote copied verbatim from the TEXT (the words that state it) "
@@ -50,12 +56,12 @@ def job(pid, fields=FIELDS):
         "\n\nRECIPES" + rest)
     item = {"id": {"enum": runs}}
     for f in fields:
-        item[f] = {"anyOf": [{"enum": ids[f]}, {"type": "null"}]}
+        item[f] = {"anyOf": [{"type": "array", "minItems": 1, "items": {"enum": ids[f]}} if f == "steps" else {"enum": ids[f]}, {"type": "null"}]}
         item[f + "_quote"] = {"type": "string"}                                # P182 (user): a required string; the importer checks it
         item[f + "_element"] = {"anyOf": [{"enum": els}, {"type": "null"}]}
     schema = {"type": "object", "additionalProperties": False, "required": ["recipes"],
               "properties": {"recipes": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(item), "properties": item}}}}
-    return (K.RECIPE_FILL_PASS, "recipe", prompt, schema, els)
+    return (K.RECIPE_FILL_PASS, section, prompt, schema, els)
 
 
 def null_fields(pid):
@@ -72,7 +78,15 @@ def main(arg):
     pid, key = C.resolve(arg)
     fields = sys.argv[sys.argv.index("--fields") + 1].split(",") if "--fields" in sys.argv else FIELDS   # P185: e.g. --fields material
     assert set(fields) <= set(FIELDS), fields
-    j = job(pid, fields)
+    if "--refill-nulls" in sys.argv:                                            # P187 (user): every run with a null field, the null fields only
+        nf = null_fields(pid)
+        if not nf:
+            print(f"{key}: no null recipe field: no call")
+            return 0
+        fields = [f for f in FIELDS if any(f in fs for fs in nf.values())]
+        j = job(pid, fields, only=set(nf), section="recipe_refill")
+    else:
+        j = job(pid, fields)
     if j is None:
         print(f"{key}: no run in pass 0: no call")
         return 0

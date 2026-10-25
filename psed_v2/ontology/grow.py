@@ -82,6 +82,35 @@ def doi_of():
 
 
 # ---------------------------------------------------------------- files
+def retired_by(pid, element, label):
+    """P187 (user): the form version that retired a decision's row: a version accepted for this paper alone (ontology/form_versions.csv,
+    a row with the paper) whose pass-1 lines answer the element, none of its records there carrying the label as quantity other (the
+    adopted re-extraction no longer prints it). '' when no such version, or when the adopted lines still give the label as other."""
+    key = PAPERS.get(pid, pid)
+    fv = HERE / "form_versions.csv"
+    acc = [r["version"] for r in csv.DictReader(x for x in fv.open(encoding="utf-8") if not x.startswith("#"))
+           if r["paper"] == key and r["status"] == "accepted"] if fv.exists() else []
+    path = RECORDS / f"{pid}.jsonl"
+    if not acc or not path.exists():
+        return ""
+    lab, seen = X.norm_label(label), ""
+    for ln in path.read_text(encoding="utf-8").splitlines():
+        x = json.loads(ln) if ln.strip() else {}
+        if x.get("pass") != 1 or x.get("form_version") not in acc:
+            continue
+        txt = re.sub(r"^```(?:json)?\s*|\s*```$", "", (x.get("response") or "").strip())
+        try:
+            resp = json.loads(txt)
+        except ValueError:
+            continue
+        for a in resp.get("answers") or [] if isinstance(resp, dict) else []:
+            if isinstance(a, dict) and a.get("id") == element:
+                seen = x["form_version"]
+                if any(isinstance(r, dict) and r.get("quantity") == "other" and X.norm_label(str(r.get("label_as_printed") or "")) == lab for r in a.get("records") or []):
+                    return ""
+    return seen
+
+
 def rd(p):
     return list(csv.DictReader(p.open(newline="", encoding="utf-8"))) if p.exists() else []
 
@@ -1196,6 +1225,11 @@ def audit_round(n):
                 if p:
                     taken_pro.add((r["pid"], pro[r["pid"]].index(p)))
                 ok = bool(p) and ((act == "alias" and p["id"] == h["target"]) or (act == "add" and p["id"] == cid))
+                ret = retired_by(r["pid"], r["element"], r["label"]) if not p else ""     # P187 (user): dormant, not a failure
+                if ret:
+                    a1.append(dict(row, now="not in unmapped.csv, not promoted", effect="dormant",
+                                   reason=f"dormant: the records were replaced by the adopted {ret} lines, which no longer give the label as other (retired by {ret})"))
+                    continue
                 a1.append(dict(row, now=f"fact: {p['id']} ({p['lookup']}); {p['outcome']}" if p else "not in unmapped.csv, not promoted",
                                effect="yes" if ok else "no effect", reason="" if ok else (f"promoted to {p['id']}" if p else "row not found")))
                 if not ok and act != "reject":

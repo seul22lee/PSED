@@ -36,6 +36,7 @@ UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candid
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "unit_fact_id", "origin", "role", "how", "reason", "facts"]   # P184: the compiled unit id
+RECIPE_CSV = ["run", "field", "value", "quote", "element"]                      # P187: kb/compiled/<pid>.recipe_fields.csv (compile stores the recipe fields)
 SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
 SPECIES_FIELDS = ["element", "label", "type", "quantity", "record_species", "definition", "own_element_names", "outcome", "species", "fact_id"]   # P179   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
@@ -433,11 +434,11 @@ def recipe_fill(pid, lines=None):
     if n is None:
         return None, {}, []
     out, listed, text = {}, [], C.E.texts(pid)
-    for x in [y for i in fl for y in (C.loads_json(lines[i - 1]["response"]).get("recipes") or [])]:   # P185: every fill line in order; a later
-        if isinstance(x, dict) and x.get("id"):                                    # line's field replaces an earlier one (a material-only refill)
-            f_ = out.setdefault(x["id"], {})
-            for f in C.X.RECIPE_FIELDS:
-                if f in x:
+    for x, refill in [(y, lines[i - 1].get("section") == "recipe_refill") for i in fl for y in (C.loads_json(lines[i - 1]["response"]).get("recipes") or [])]:
+        if isinstance(x, dict) and x.get("id"):                                    # P185: every fill line in order; a later line's field replaces an
+            f_ = out.setdefault(x["id"], {})                                       # earlier one (a material-only refill); P187: a refill line
+            for f in C.X.RECIPE_FIELDS:                                            # (section recipe_refill) fills only the fields still null
+                if f in x and not (refill and f_.get(f)):
                     legacy = f == "process_mode" and f + "_quote" not in x
                     v, q, e = x.get(f), x.get("quote") if legacy else x.get(f + "_quote"), x.get("element") if legacy else x.get(f + "_element")
                     if v:
@@ -2320,6 +2321,9 @@ class Run:
             if f.get("_a1"):
                 facts_of[id(f["_a1"])].append(f["fact_id"])
         write_csv(OUT / f"{self.pid}.qualifier_scope.csv", SCOPE_FIELDS, self.scope_rows)   # P182 (user)
+        write_csv(OUT / f"{self.pid}.recipe_fields.csv", RECIPE_CSV, [dict(run=i, field=f, value=json.dumps(x[f]) if isinstance(x.get(f), list) else x.get(f) or "",
+                                                                          quote=x.get(f + "_quote") or "", element=x.get(f + "_element") or "")
+                                                                     for i, x in self.fill.items() for f in C.X.RECIPE_FIELDS if x.get(f)])   # P187: stored, nothing derives from steps
         write_csv(OUT / f"{self.pid}.species.csv", SPECIES_FIELDS, [dict(x, fact_id=";".join(facts_of.get(id(x), []))) for x in self.a1_rows])
         made = collections.defaultdict(list)                                    # P177c (user): bind()'s outcome per item with the facts it gave
         for f in rows:                                                          # (check.py --dir reads it: a fact of a bound item may carry points_ref)

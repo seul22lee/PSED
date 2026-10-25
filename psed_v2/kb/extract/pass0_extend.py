@@ -79,9 +79,9 @@ def main(arg):
         C.plan(pid, [j], THINKING)
         print(f"{key}: prompt {len(j[2])} chars (~{int(len(j[2]) / 3.1)} tokens)")
         return 0
+    _, _, units = PM.pass0_line(pid)                                            # P187: the current units, read before the new line is written
     out, _ = C.run(pid, [j], THINKING)
     resp = C.loads_json(out[0]["response"])
-    _, _, units = PM.pass0_line(pid)
     have = {u.get("id") for u in units}
     new = [u for u in resp.get("units") or [] if isinstance(u, dict)]
     rep = [u.get("id") for u in new if u.get("id") in have]

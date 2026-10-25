@@ -374,10 +374,10 @@ NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
 FORM_CATEGORICALS = ["crystallinity"]                                          # P149 F3 (user): a categorical output whose value_text is its vocabularies list
 FORM_VERSION = "P184"                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; P179: the species rule; P184: qualifiers only when stated, step as named; common.run writes it on every new line
-PASS0_FORM_VERSION = 5                                                          # P179 (user): version 2: process_mode on runs (1: P144-P178); P181: 3, the recipe fields; P184: 4, measurements, method, distinguished_by, panel method; P185: 5, material a recipe field
+PASS0_FORM_VERSION = 6                                                          # P179 (user): version 2: process_mode on runs (1: P144-P178); P181: 3, the recipe fields; P184: 4, measurements, method, distinguished_by, panel method; P185: 5, material a recipe field; P187: 6, steps
 QUALIFIER_RULE = ("A qualifier is written only when the element's text states that property (the step named, the statistic named, the position "
                   "named). A key the text does not state is left out; qualifiers may be empty.")   # P184 (user): CODEBOOK and pass1_elements RULES
-RECIPE_FIELDS = ["reactant_A", "reactant_B", "carrier_gas", "process_mode", "material"]   # P185 (user): material       # P181 (user): a run's (a model's) recipe fields, each with <field>_quote
+RECIPE_FIELDS = ["reactant_A", "reactant_B", "carrier_gas", "process_mode", "material", "steps"]   # P185 (user): material; P187: steps (the cycle's step sequence)       # P181 (user): a run's (a model's) recipe fields, each with <field>_quote
 SPECIES_RULE = ("On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or "
                 "header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's "
                 "letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty. This rule is about symbol records; settings and "
@@ -590,6 +590,7 @@ def pass0_schema(onto, L):
           **{f: {"enum": [e["id"] for e in onto["entries"] if e["type"] == "species"]} for f in RECIPE_FIELDS[:3]},   # P181 (user): species entries
           "process_mode": {"enum": [str(v) for v in onto["vocabularies"]["process_mode"]]},                # P179 (user): a run's process mode as the paper states it
           "material": {"enum": sorted(e["id"] for e in onto["entries"] if e["type"] == "species" and e.get("kind") == "material")},   # P185 (user): the run's film material
+          "steps": {"type": "array", "minItems": 1, "items": {"enum": [str(v) for v in onto["qualifiers"]["step"]["values"] if v != "none"]}},   # P187 (user): the cycle's steps in order
           **{f"{f}_quote": {"type": "string", "minLength": 1} for f in RECIPE_FIELDS},                    # P179, P181: the words that state it (required with a value)
           "method": {"enum": sorted(m for m, x in L.METHOD_MEASUREMENT.items() if x)},                   # P184 (user): a measurement's method, an ontology method id
           "distinguished_by": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": False, "required": ["quantity", "value", "unit"],   # P184 (user): a unit
@@ -617,7 +618,7 @@ def pass0_schema(onto, L):
                                                                    "properties": {k: (v if (name, k) in P0_NOT_NULL else nullable(v)) for k, v in fields.items()},
                                                                    **({"allOf": [{"if": {"properties": {"role": {"enum": ["specimen", "model_run"]}}, "required": ["role"]},
                                                                                   "then": {"properties": {"parent": {"type": "string", "minLength": 1}}}},   # P146
-                                                                                 *[{"if": {"properties": {f: {"type": "string"}}, "required": [f]},   # P179, P181: a value needs its quote
+                                                                                 *[{"if": {"properties": {f: {"type": "array" if f == "steps" else "string"}}, "required": [f]},   # P179, P181: a value needs its quote
                                                                                     "then": {"properties": {f"{f}_quote": {"type": "string", "minLength": 1}}}} for f in RECIPE_FIELDS],
                                                                                  {"if": {"properties": {"role": {"const": "measurement"}}, "required": ["role"]},   # P184: a measurement has its method
                                                                                   "then": {"properties": {"method": {"type": "string"}, "parent": {"type": "string", "minLength": 1}}}}]}
@@ -1214,10 +1215,12 @@ def run_checks(onto):
     for f in RECIPE_FIELDS:
         if f not in props or f + "_quote" not in props or f not in unit.get("required", []):
             bad.append(f"{f}: not a field of form_pass0.json with its quote")
-        elif f not in ("process_mode", "material") and sorted((props[f].get("anyOf") or [props[f]])[0].get("enum", [])) != species:
+        elif f not in ("process_mode", "material", "steps") and sorted((props[f].get("anyOf") or [props[f]])[0].get("enum", [])) != species:
             bad.append(f"{f}: its values are not the species entries")
         elif f == "material" and sorted((props[f].get("anyOf") or [props[f]])[0].get("enum", [])) != sorted(e["id"] for e in entries if e["type"] == "species" and e.get("kind") == "material"):
             bad.append("material: its values are not the material entries")             # P185
+        elif f == "steps" and sorted(((props[f].get("anyOf") or [props[f]])[0].get("items") or {}).get("enum", [])) != sorted(str(v) for v in onto["qualifiers"]["step"]["values"] if v != "none"):
+            bad.append("steps: its values are not the step vocabulary")                   # P187
         if f + "_quote" not in rules:
             bad.append(f"{f}: a value without its quote is not refused")
     out.append(("18. pass-0 recipe fields (P181): reactant_A, reactant_B, carrier_gas (species entries) and process_mode on the units of form_pass0.json, each value with its quote",
