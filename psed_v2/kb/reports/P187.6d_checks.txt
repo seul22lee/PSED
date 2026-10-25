@@ -1,0 +1,22 @@
+calls: pass-0 extension 9 ($0.99) + recipe refill 11 ($0.24; hei24 and yim22 have no run) = 20 calls, $1.23; the extension added 66 units (yli18 2, yim20 6, gor03 3, art19 16, yim22 2, wer21 37; ela03, hei24, mat23 none), no id repeats a pass-0 line's.
+audit dormant: 12 rows (round 1: 4, round 3: 7, round 4: 1), retired by P184; 8 are the P186 failures, 4 are round-3 reject decisions' rows that were 'no effect'.
+recipes: 135 runs, 100 with steps; 64 runs keep a null field (steps 35, process_mode 34, carrier_gas 33, reactant_B 13, reactant_A 10, material 8): 103 'not stated' (the refill returned null), 18 quote null, 10 quote not found, 2 the user's decision.
+scores vs P186: T6 2221 -> 2223; 2 counts fall (rows in P187.6d_dropped_rows.csv): gor03 activity 6 -> 5, art19 activity 11 -> 3 (gold measurement activities with no evidence matched compile-made unnamed measurements, which the extension's named measurements replace; those carry evidence and no longer match).
+binding_regression: FAIL, 798 items, 15 moved from a derived unit to a unit the extension added (not a loss of data, the check counts any change):
+  yim22 yim22:fig7a#c1: was 10.1039_d1cp04758b:fig7a:c1 (derived), now mr_fig7_model_a
+  yim22 yim22:fig7a#c2: was 10.1039_d1cp04758b:fig7a:c2 (derived), now mr_fig7_model_b
+  yim22 yim22:fig7b#c1: was 10.1039_d1cp04758b:fig7b:c1 (derived), now mr_fig7_model_a
+  yim22 yim22:fig7b#c2: was 10.1039_d1cp04758b:fig7b:c2 (derived), now mr_fig7_model_b
+  wer21 wer21:fig11#c1: was 10.1116_6.0001094:fig11:c1 (derived), now specimen_fig11_c1
+  wer21 wer21:fig11#c2: was 10.1116_6.0001094:fig11:c2 (derived), now specimen_fig11_c2
+  wer21 wer21:fig11#c3: was 10.1116_6.0001094:fig11:c3 (derived), now specimen_fig11_c3
+  wer21 wer21:fig11#c4: was 10.1116_6.0001094:fig11:c4 (derived), now specimen_fig11_c4
+  wer21 wer21:fig11#c5: was 10.1116_6.0001094:fig11:c5 (derived), now specimen_fig11_c5
+  wer21 wer21:fig11#c6: was 10.1116_6.0001094:fig11:c6 (derived), now specimen_fig11_c6
+  wer21 wer21:fig12#c1: was 10.1116_6.0001094:fig12:c1 (derived), now specimen_fig12_c1
+  wer21 wer21:fig12#c2: was 10.1116_6.0001094:fig12:c2 (derived), now specimen_fig12_c2
+  wer21 wer21:fig12#c3: was 10.1116_6.0001094:fig12:c3 (derived), now specimen_fig12_c3
+  wer21 wer21:fig12#c4: was 10.1116_6.0001094:fig12:c4 (derived), now specimen_fig12_c4
+  wer21 wer21:fig12#c5: was 10.1116_6.0001094:fig12:c5 (derived), now specimen_fig12_c5
+audits: rounds 1-4 PASS (dormant 4 / 0 / 7 / 1), round 5 FAIL (1): FAIL A1 power: 10.1116_6.0001094:fig11.cap quantity 'power': row not found (the fig11 curves now bind to the extension's specimens, so the derived units whose legend condition it was are gone)
+export --check: 19 / 19; cards: 0 errors

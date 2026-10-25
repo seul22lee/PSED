@@ -1,6 +1,15 @@
-input: 24 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7), 4 (s8+s9), 5 (fig1), 6 (fig2), 7 (fig3), 8 (fig4), 9 (fig5), 10 (fig6)
+input: 25 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7), 4 (s8+s9), 5 (fig1), 6 (fig2), 7 (fig3), 8 (fig4), 9 (fig5), 10 (fig6)
 input: pass-0 extension = line 15: 30 units (measurement 15, run 6, specimen 9); 12 image panel methods
-input: recipe fill = line 16: run_al2o3_300c reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3; run_tio2_110c reactant_A ticl4, reactant_B h2o, carrier_gas n2, material tio2; run_al2o3_110c_50nm material al2o3; run_tio2_110c_50nm material tio2; run_al2o3_200c_50nm material al2o3; run_tio2_200c_50nm material tio2; run_al2o3_300c_50nm material al2o3; run_tio2_300c_50nm material tio2
+input: recipe field set to null: run_al2o3_110c_50nm reactant_A tma (quote not found (abs.g3))
+input: recipe field set to null: run_al2o3_110c_50nm reactant_B h2o (quote not found (abs.g3))
+input: recipe field set to null: run_tio2_110c_50nm reactant_B h2o (quote not found (abs.g3))
+input: recipe field set to null: run_al2o3_200c_50nm reactant_A tma (quote not found (abs.g3))
+input: recipe field set to null: run_al2o3_200c_50nm reactant_B h2o (quote not found (abs.g3))
+input: recipe field set to null: run_tio2_200c_50nm reactant_B h2o (quote not found (abs.g3))
+input: recipe field set to null: run_al2o3_300c_50nm reactant_A tma (quote not found (abs.g3))
+input: recipe field set to null: run_al2o3_300c_50nm reactant_B h2o (quote not found (abs.g3))
+input: recipe field set to null: run_tio2_300c_50nm reactant_B h2o (quote not found (abs.g3))
+input: recipe fill = line 25: run_al2o3_300c reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_110c reactant_A ticl4, reactant_B h2o, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_110c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_110c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_200c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_200c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_300c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_300c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
 d: quote found across elements: s6.p13 observation penetration_depth -> evidence s6.p12;s6.p13

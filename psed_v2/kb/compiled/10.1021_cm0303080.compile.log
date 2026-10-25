@@ -1,5 +1,6 @@
 input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P179 4
-input: 29 lines; pass 0 = line 2; 19 pass-1 lines for 19 groups; ignored lines 23 (s4), 24 (s5), 25 (fig12), 26 (fig13)
+input: 31 lines; pass 0 = line 2; 19 pass-1 lines for 19 groups; ignored lines 23 (s4), 24 (s5), 25 (fig12), 26 (fig13)
+input: pass-0 extension = line 30: 0 units (); 4 image panel methods
 input: recipe field set to null: run_al2o3_sem_1s process_mode thermal (quote null)
 input: recipe field set to null: run_al2o3_sem_3s process_mode thermal (quote null)
 input: recipe field set to null: run_al2o3_sem_10s process_mode thermal (quote null)
@@ -14,7 +15,7 @@ input: recipe field set to null: run_zno_d65 process_mode thermal (quote null)
 input: recipe field set to null: run_zno_ar5000 process_mode thermal (quote null)
 input: recipe field set to null: run_ftir_al2o3 process_mode thermal (quote null)
 input: recipe field set to null: run_ftir_sio2 process_mode thermal (quote null)
-input: recipe fill = line 29: run_al2o3_sem_1s reactant_A tma, reactant_B h2o, carrier_gas n2; run_al2o3_sem_3s reactant_A tma, reactant_B h2o, carrier_gas n2; run_al2o3_sem_10s reactant_A tma, reactant_B h2o, carrier_gas n2; run_al2o3_sem_30s reactant_A tma, reactant_B h2o, carrier_gas n2; run_zno_1s reactant_A dez, reactant_B h2o, carrier_gas n2; run_zno_3s reactant_A dez, reactant_B h2o, carrier_gas n2; run_zno_10s reactant_A dez, reactant_B h2o, carrier_gas n2; run_zno_30s reactant_A dez, reactant_B h2o, carrier_gas n2; run_zno_d19 reactant_A dez, reactant_B h2o, carrier_gas n2; run_zno_d46 reactant_A dez, reactant_B h2o, carrier_gas n2; run_zno_d65 reactant_A dez, reactant_B h2o, carrier_gas n2; run_zno_ar5000 reactant_A dez, reactant_B h2o, carrier_gas n2; run_ftir_al2o3 reactant_A tma, reactant_B h2o; run_ftir_sio2 reactant_A sicl4, reactant_B h2o
+input: recipe fill = line 31: run_al2o3_sem_1s reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_sem_3s reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_sem_10s reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_sem_30s reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_1s reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_3s reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_10s reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_30s reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_d19 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_d46 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_d65 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_zno_ar5000 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno; run_ftir_al2o3 reactant_A tma, reactant_B h2o, material al2o3; run_ftir_sio2 reactant_A sicl4, reactant_B h2o, material sio2
 input: 18 units derived from curves (P161): 10.1021_cm0303080:fig5b:c1_p2, 10.1021_cm0303080:fig5b:c1_p3, 10.1021_cm0303080:fig5b:c1_p4, 10.1021_cm0303080:fig10b:c2_p2, 10.1021_cm0303080:fig10b:c2_p3, 10.1021_cm0303080:fig10b:c2_p4, 10.1021_cm0303080:fig10b:c2_p5, 10.1021_cm0303080:fig10b:c2_p6, 10.1021_cm0303080:fig10b:c2_p7, 10.1021_cm0303080:fig10b:c2_p8, 10.1021_cm0303080:fig10b:c2_p9, 10.1021_cm0303080:fig10b:c2_p10, 10.1021_cm0303080:fig10b:c2_p11, 10.1021_cm0303080:fig10b:c2_p12, 10.1021_cm0303080:fig10b:c2_p13, 10.1021_cm0303080:fig10b:c2_p14, 10.1021_cm0303080:fig10b:c2_p15, 10.1021_cm0303080:fig11b:c1_p3
 a0: s2.p23: value_text 'flow-type' -> flow_type (value:reactor_type: value alias 'flow-type')
 a0: s5.p32: quantity 'density of ALD reactive sites' -> saturation_density (quantity: alias 'density of ALD reactive sites')
@@ -187,29 +188,30 @@ i: merged fig12.cap into s5.x2;fig12.cap (initial_sticking_coefficient 0.0001)
 i: merged fig12.cap into s5.x2;fig12.cap (other 0.27)
 i: merged fig13.cap into fig10.cap;fig11.cap;fig13.cap (material zno)
 i: merged tab1.cap into fig1.cap;fig4.cap;fig6.cap;tab1.cap (structure anodic_alumina_membrane)
+i: merged s4.p11 into s4.p11;fig7.cap (material zno)
 j: derived over 44 entities: 31 rows; not derived: {'no fact for S': 17, 'no fact for p': 44, 'E: no fact for p': 44, 'no fact for rho': 88, 'n: no fact for gpc': 44, 'gpc: no fact for n': 44, 'no fact for H': 71, 'no fact for dn': 44, 'no fact for mg': 88, 'no fact for t': 57, 'no fact for h2': 44, 'no fact for phi': 44, 'no fact for d': 41, 'lam: no fact for d': 41, 'gpc: n: no fact for gpc': 44, 'no fact for T': 3, 'lam: no fact for T': 3}
 j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 18 nodes for 21 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 5
-step input: {'records': 247, 'unit derived (derived: point_per_unit, None)': 3, 'condition of a derived unit (value)': 18, 'unit derived (derived: point_per_unit, model_run)': 15, 'condition of a derived unit (other)': 14}
+j: comparisons from figures.json (1c): 6
+step input: {'pass-0 extension units': 0, 'records': 247, 'unit derived (derived: point_per_unit, None)': 3, 'condition of a derived unit (value)': 18, 'unit derived (derived: point_per_unit, model_run)': 15, 'condition of a derived unit (other)': 14}
 step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity other: never.csv word': 5, 'quantity other: never.csv symbol': 7, 'quantity promoted (quantity: alias)': 19, 'quantity promoted (quantity: name)': 3, 'derived legend label parsed to nothing (other)': 14}
-step a1: {'symbol species: no species': 21, 'symbol species: species cleared (no evidence)': 2, 'qualifier out of scope: structure_class': 19, 'qualifier out of scope: species': 7, 'qualifier out of scope: step': 3, 'qualifier out of scope: element': 1, 'qualifier out of scope: surface': 1, 'qualifier out of scope: stage': 8, 'qualifier out of scope: relative_to': 8, 'qualifier out of scope: over': 8, 'qualifier out of scope: mode': 8, 'qualifier out of scope: position': 7, 'qualifier out of scope: ratio': 5, 'qualifier out of scope: specimen_class': 5}
-step a: {'numeric string coerced (C4)': 5, 'kept': 279}
-step b: {'model_with_value (kept)': 42, 'kept': 279}
-step c: {'quantity_other never (kept)': 12, 'quantity_other (kept)': 27, 'kept': 279}
-step d: {"quote found in the paper's elements concatenated (P182)": 3, 'quote_not_found': 32, 'quote_noncontiguous (kept)': 1, 'derived condition (figures.json, no quote check)': 32, 'kept': 247}
-step e: {'unit_unresolved (kept as printed)': 1, 'kept': 247}
-step f: {'species_resolved': 24, 'kept': 247}
+step a1: {'symbol species: no species': 21, 'symbol species: species cleared (no evidence)': 2, 'material from the recipe field: al2o3': 5, 'material from the recipe field: zno': 8, 'material from the recipe field: sio2': 1, 'qualifier out of scope: structure_class': 19, 'qualifier out of scope: species': 7, 'qualifier out of scope: step': 3, 'qualifier out of scope: element': 1, 'qualifier out of scope: surface': 1, 'qualifier out of scope: stage': 8, 'qualifier out of scope: relative_to': 8, 'qualifier out of scope: over': 8, 'qualifier out of scope: mode': 8, 'qualifier out of scope: position': 7, 'qualifier out of scope: ratio': 5, 'qualifier out of scope: specimen_class': 5}
+step a: {'numeric string coerced (C4)': 5, 'kept': 293}
+step b: {'model_with_value (kept)': 42, 'kept': 293}
+step c: {'quantity_other never (kept)': 12, 'quantity_other (kept)': 27, 'kept': 293}
+step d: {"quote found in the paper's elements concatenated (P182)": 3, 'quote_not_found': 32, 'quote_noncontiguous (kept)': 2, 'derived condition (figures.json, no quote check)': 32, 'kept': 261}
+step e: {'unit_unresolved (kept as printed)': 1, 'kept': 261}
+step f: {'species_resolved': 38, 'kept': 261}
 step g: {'mention_unmatched': 5}
-step h: {'simulation linked to a model entry': 1, 'derived unit of role null (role unresolved: a row under the paper)': 3, 'place: about paper -> recipe': 43, 'place: claim -> paper': 21, 'place: result about a specimen -> its measurement': 23, 'place: cited -> paper': 8, 'place: about paper, method -> paper method activity': 7, 'place: setting about a run -> deposition': 46, 'place: setting about a specimen -> deposition': 5, 'place: result about a run -> its specimen measurement': 3, 'place: caveat -> paper': 1, 'place: model about a simulation -> simulation': 13, 'place: model about a model run -> model run': 33, 'place: derived about a simulation -> simulation': 2, 'place: definition -> paper': 3, 'place: derived about a model run -> model run': 3, 'place: model about a model run -> simulation': 4, 'place: setting about a unit of unresolved role -> the unit': 3, 'place: setting about a model run sharing its simulation -> model run': 29}
-step m: {'statement filled from the quote': 204, 'label_as_printed filled with the quantity id': 4, 'links named elements without facts': 1, 'links resolved': 16}
-step 1c: {'data_id_not_in_figures_json': 4, 'figure label other (y)': 7, 'figure label other (condition)': 2, 'figure label other (condition), never': 2, 'unbound item (image): no unit named': 3, 'unbound item (image): ambiguous': 5, 'curve -> observation': 10, 'unbound item (point): origin': 6, 'point -> observation': 6, 'image -> a measurement (a photograph)': 1, 'curve -> model': 18, 'point -> model': 23}
-step i: {'merged': 16, 'kept': 289}
-step n: {'comparison replicate': 2, 'comparison series': 3}
+step h: {'simulation linked to a model entry': 1, 'derived unit of role null (role unresolved: a row under the paper)': 3, 'place: about paper -> recipe': 43, 'place: claim -> paper': 21, 'place: result about a specimen -> its measurement': 23, 'place: cited -> paper': 8, 'place: about paper, method -> paper method activity': 7, 'place: setting about a run -> deposition': 60, 'place: setting about a specimen -> deposition': 5, 'place: result about a run -> its specimen measurement': 3, 'place: caveat -> paper': 1, 'place: model about a simulation -> simulation': 13, 'place: model about a model run -> model run': 33, 'place: derived about a simulation -> simulation': 2, 'place: definition -> paper': 3, 'place: derived about a model run -> model run': 3, 'place: model about a model run -> simulation': 4, 'place: setting about a unit of unresolved role -> the unit': 3, 'place: setting about a model run sharing its simulation -> model run': 29}
+step m: {'statement filled from the quote': 218, 'label_as_printed filled with the quantity id': 4, 'links named elements without facts': 1, 'links resolved': 16}
+step 1c: {'data_id_not_in_figures_json': 4, 'figure label other (y)': 7, 'figure label other (condition)': 2, 'figure label other (condition), never': 2, 'unbound item (image): no unit named': 3, 'unbound item (image): ambiguous': 5, 'curve -> observation': 10, 'unbound item (point): origin': 6, 'point -> observation': 6, 'image -> a measurement (epma)': 1, 'curve -> model': 18, 'point -> model': 23}
+step i: {'merged': 17, 'kept': 302}
+step n: {'comparison replicate': 2, 'comparison series': 3, 'comparison grid': 1}
 step j: {'derived cycle_time': 31}
-step k: {'statement from the record': 231, 'statement_copies_text (reported by check)': 57, 'statement assembled': 89}
+step k: {'statement from the record': 244, 'statement_copies_text (reported by check)': 57, 'statement assembled': 89}
 diff against the gold:
-  setting       277  113   63  0.56  0.23
+  setting       277  126   63  0.50  0.23
   model          57   91   35  0.38  0.61
   activity       46   39   19  0.49  0.41
   observation    38   38   13  0.34  0.34
@@ -219,7 +221,7 @@ diff against the gold:
   derived        17   45    5  0.11  0.29
   caveat         15    1    1  1.00  0.07
   definition     10    3    1  0.33  0.10
-  comparison      8    5    0  0.00  0.00
+  comparison      8    6    0  0.00  0.00
   paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 0/10
 gold model rows with quantity and value: 6: {'other': 3, 'penetration_depth': 1, 'normalized_thickness': 1, 'surface_coverage': 1}

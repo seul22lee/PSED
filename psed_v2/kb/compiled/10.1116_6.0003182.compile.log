@@ -1,11 +1,12 @@
-input: 34 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8), 4 (s9+s10+s11), 5 (s12), 6 (s13+s14), 7 (s15), 8 (fig2), 9 (fig3), 10 (fig4), 11 (fig5), 12 (fig6), 13 (fig1), 14 (tabI), 15 (tabII)
+input: 35 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8), 4 (s9+s10+s11), 5 (s12), 6 (s13+s14), 7 (s15), 8 (fig2), 9 (fig3), 10 (fig4), 11 (fig5), 12 (fig6), 13 (fig1), 14 (tabI), 15 (tabII)
 input: pass-0 extension = line 20: 3 units (simulation 1, model_run 2); 8 image panel methods
 input: recipe field set to null: run_120 process_mode thermal (quote null)
 input: recipe field set to null: run_160 process_mode thermal (quote null)
 input: recipe field set to null: run_120_160 process_mode thermal (quote null)
 input: recipe field set to null: run_test process_mode thermal (quote null)
 input: recipe field set to null: run_120_160 material zno (quote not found (abs.g3))
-input: recipe fill = line 21: run_120 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno; run_160 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno; run_120_160 reactant_A dez, reactant_B h2o, carrier_gas n2; run_test reactant_A dez, reactant_B h2o, carrier_gas n2, material zno
+input: recipe field set to null: run_120_160 material zno (quote not found (abs.g3))
+input: recipe fill = line 35: run_120 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']; run_160 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']; run_120_160 reactant_A dez, reactant_B h2o, carrier_gas n2, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']; run_test reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']
 a1: symbol species s6.p2 'AR' cited aspect_ratio: record -, definition - -> no species
 a1: symbol species s6.p4 'AR' cited aspect_ratio: record -, definition - -> no species
 a1: symbol species s9.p2 'T' definition deposition_temperature: record -, definition - -> no species
@@ -139,8 +140,8 @@ diff against the gold:
   model          18    9    8  0.89  0.44
   definition     16   24    3  0.12  0.19
   identity        3    0    0     -  0.00
-  comparison      1    1    0  0.00  0.00
   paper           1    1    1  1.00  1.00
+  comparison      1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 6/16
 gold model rows with quantity and value: 2: {'other': 2}
 observations: gold 89, compiled 66, matched 24

@@ -1,5 +1,6 @@
-input: 10 lines; pass 0 = line 1; 6 pass-1 lines for 6 groups; ignored lines 
-input: recipe fill = line 10: mat23:run:peald_temp reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_temp reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_125 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:peald_225 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_125 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:tald_225 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_h2s_pulse reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:peald_ga_pulse reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_150 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_150_21nm reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:peald_150_42nm reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma; mat23:run:tald_150_quartz reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal; mat23:run:peald_150_quartz reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma
+input: 12 lines; pass 0 = line 1; 6 pass-1 lines for 6 groups; ignored lines 
+input: pass-0 extension = line 11: 0 units (); 17 image panel methods
+input: recipe fill = line 12: mat23:run:peald_temp reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']; mat23:run:tald_temp reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal, material gasx, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; mat23:run:peald_125 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']; mat23:run:peald_225 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']; mat23:run:tald_125 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal, material gasx, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; mat23:run:tald_225 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal, material gasx, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; mat23:run:peald_h2s_pulse reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']; mat23:run:peald_ga_pulse reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']; mat23:run:tald_150 reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal, material gasx, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; mat23:run:peald_150_21nm reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']; mat23:run:peald_150_42nm reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']; mat23:run:tald_150_quartz reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode thermal, material gasx, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; mat23:run:peald_150_quartz reactant_A ga2_nme2_6, reactant_B h2s, carrier_gas ar, process_mode plasma, material ga2s3, steps ['reactant_A', 'purge_A', 'plasma', 'purge_B']
 input: 2 units derived from curves (P161): 10.1116_6.0002993:fig4b:c1, 10.1116_6.0002993:fig4b:c2
 a0: fig4.cap: legend name 'Thermal ALD' -> process_mode = thermal (value alias 'thermal ALD')
 a0: fig4.cap: legend name 'PE-ALD' -> process_mode = plasma (value alias 'PE-ALD')
@@ -50,32 +51,32 @@ i: merged fig2g into fig2a;fig2e;fig2g (deposition_temperature 150)
 j: derived over 15 entities: 21 rows; not derived: {'no fact for H': 30, 'no fact for p': 15, 'E: no fact for p': 15, 'no fact for rho': 36, 'stated: mat23:fig1b#6 0.1560547504025765 nm/cycle': 1, 'no fact for dn': 15, 'no fact for mg': 30, 'no fact for t': 13, 'no fact for h2': 15, 'no fact for phi': 15, 'no fact for d': 15, 'lam: no fact for d': 15, 'stated: mat23:s9.p6#1 0.5 Å/cycle': 1, 'n: no fact for gpc': 9, 'gpc: no fact for n': 9, 'gpc: n: no fact for gpc': 9, 'no fact for N': 2, 'stated: mat23:abs.g3#2 1.71 Å/cycle': 1, 'stated: mat23:s9.p1#1 1.71 Å/cycle': 1, 'stated: mat23:s9.p1#4 0.98 Å/cycle': 1, 'stated: mat23:fig1b#7 0.0950402576489533 nm/cycle': 1}
 j: caveats (query.caveats_of): 2, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 8
 j: claim nodes (query.claim_nodes): 3 nodes for 8 claims; claims without a full triple (query.node_of empty): 4
-j: comparisons from figures.json (1c): 9
-step input: {'records': 120, 'unit derived (derived: curve_per_unit, run)': 2, 'condition of a derived unit (name)': 2, 'condition of a derived unit (value)': 2}
+j: comparisons from figures.json (1c): 8
+step input: {'pass-0 extension units': 0, 'records': 120, 'unit derived (derived: curve_per_unit, run)': 2, 'condition of a derived unit (name)': 2, 'condition of a derived unit (value)': 2}
 step a0: {'quantity other: never.csv word': 3, 'derived legend name -> categorical value': 2}
-step a1: {'process_mode_from_the_recipe_field': 1, 'process_mode from the recipe field: plasma': 8, 'process_mode from the recipe field: thermal': 5, 'qualifier out of scope: gas': 1, 'qualifier out of scope: species': 1, 'qualifier out of scope: phase': 2, 'qualifier out of scope: position': 3, 'qualifier out of scope: mode': 8}
-step a: {'kept': 136}
-step b: {'kept': 136}
-step c: {'quantity_other never (kept)': 3, 'quantity_other (kept)': 8, "quantity_other of a derived value (the panel's row written once)": 1, 'kept': 136}
-step d: {'quote_noncontiguous (kept)': 1, "quote found in the paper's elements concatenated (P182)": 1, 'derived condition (figures.json, no quote check)': 4, 'kept': 136}
-step e: {'unit_unresolved (kept as printed)': 1, 'kept': 136}
-step f: {'kept': 136}
+step a1: {'process_mode_from_the_recipe_field': 1, 'process_mode from the recipe field: plasma': 8, 'material from the recipe field: ga2s3': 8, 'process_mode from the recipe field: thermal': 5, 'material from the recipe field: gasx': 5, 'qualifier out of scope: gas': 1, 'qualifier out of scope: species': 1, 'qualifier out of scope: phase': 2, 'qualifier out of scope: position': 3, 'qualifier out of scope: mode': 8}
+step a: {'kept': 149}
+step b: {'kept': 149}
+step c: {'quantity_other never (kept)': 3, 'quantity_other (kept)': 8, "quantity_other of a derived value (the panel's row written once)": 1, 'kept': 149}
+step d: {'quote_noncontiguous (kept)': 1, "quote found in the paper's elements concatenated (P182)": 1, 'derived condition (figures.json, no quote check)': 4, 'kept': 149}
+step e: {'unit_unresolved (kept as printed)': 1, 'kept': 149}
+step f: {'species_resolved': 13, 'kept': 149}
 step g: {'mention_unmatched': 5}
-step h: {'place: claim -> paper': 8, 'place: setting about a run -> deposition': 30, 'specimen_created': 8, 'place: result about a run -> film measurement': 18, 'place: cited -> paper': 6, 'place: about paper -> recipe': 15, 'place: about paper, method -> paper method activity': 6, 'place: result about a run -> its specimen measurement': 10, 'place: result about a specimen -> its measurement': 32, 'place: setting about a specimen -> deposition': 9, 'place: caveat -> paper': 2}
-step m: {'statement filled from the quote': 120, 'label_as_printed filled with the quantity id': 2, 'links resolved': 4}
-step 1c: {'figure label other (series)': 1, 'figure label other (x)': 2, 'figure label other (y)': 2, 'curve -> observation': 10, 'image -> a measurement (a photograph)': 9, 'peak -> observation': 4, 'unbound item (panel): ambiguous': 3}
-step i: {'merged': 4, 'kept': 155}
-step n: {'comparison replicate': 2, 'comparison series': 4, 'comparison grid': 3}
+step h: {'place: claim -> paper': 8, 'place: setting about a run -> deposition': 43, 'specimen_created': 8, 'place: result about a run -> film measurement': 18, 'place: cited -> paper': 6, 'place: about paper -> recipe': 15, 'place: about paper, method -> paper method activity': 6, 'place: result about a run -> its specimen measurement': 10, 'place: result about a specimen -> its measurement': 32, 'place: setting about a specimen -> deposition': 9, 'place: caveat -> paper': 2}
+step m: {'statement filled from the quote': 133, 'label_as_printed filled with the quantity id': 2, 'links resolved': 4}
+step 1c: {'figure label other (series)': 1, 'figure label other (x)': 2, 'figure label other (y)': 2, 'curve -> observation': 10, 'image -> a measurement (giwaxs)': 3, 'peak -> observation': 4, 'image -> a measurement (sem)': 4, 'image -> a measurement (afm)': 2, 'unbound item (panel): ambiguous': 3}
+step i: {'merged': 4, 'kept': 168}
+step n: {'comparison replicate': 2, 'comparison series': 4, 'comparison grid': 2}
 step j: {'derived cycle_time': 15, 'derived deposition_rate': 6}
-step k: {'statement from the record': 132, 'statement_copies_text (reported by check)': 72, 'statement assembled': 44}
+step k: {'statement from the record': 145, 'statement_copies_text (reported by check)': 84, 'statement assembled': 44}
 diff against the gold:
-  setting        54   55   18  0.33  0.33
+  setting        54   68   19  0.28  0.35
   observation    51   78   33  0.42  0.65
-  activity       30   55   27  0.49  0.90
+  activity       30   53   27  0.51  0.90
   entity         14   15   13  0.87  0.93
   claim          13    8    5  0.62  0.38
   cited           9    6    4  0.67  0.44
-  comparison      7    9    1  0.11  0.14
+  comparison      7    8    1  0.12  0.14
   caveat          5    2    2  1.00  0.40
   derived         4   27    2  0.07  0.50
   identity        2    0    0     -  0.00
