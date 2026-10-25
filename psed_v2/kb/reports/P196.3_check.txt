@@ -1,0 +1,68 @@
+P196 step 3: kb/pilot/reports/pilot.html rebuilt (kb/pilot/report.py, 23.6 MB), then the full check.py on the gold (python3 psed_v2/kb/pilot/check.py): exit 1.
+It passes check_cards (P81) now and stops later, in check_conversions (P109): KeyError 'wer21' at T = Q.TREES[k]: the loop takes every paper with a kb/<pid>.figures.json, and wer21 (development paper 13, no gold facts.csv) has one but no query tree. Not caused by P196 (check.py unchanged here); hidden before behind the check_cards stop. Not fixed: check.py is the user's to change.
+The sections it printed before the stop (problem counts as check.py prints them):
+== vocabulary: 94 quantity ids, 32 methods, 11 materials, 11 structures, 25 qualifier keys in use; 0 pilot ids still to absorb (0 in use); materials to absorb [], structures []
+== vocabulary: OK
+== gold vocabulary (P142): 0 misses over the gold fact rows of the 13 dev papers (held-out excluded)
+== gold vocabulary: OK
+== claims (P54): 372 claims; 36 mechanisms named; 13 named by two or more papers: cvd_growth, desorption, feature_narrowing, gas_diffusion, pillar_effect, plasma_chemistry, residual_water, scan_angle,
+== triples (P131): record types per paper, pilot-v6 -> now (fact rows; only the types that changed)
+== triples (P131): 372 claims, 0 without a full triple
+== triples (P131): OK
+== claim nodes (P130): 267 nodes for 267 distinct triples of 374 claims (374 members); 28 nodes asserted in two or more papers, each paper printed once
+== claim nodes (P130): OK
+== sentence-only (P55): 214 items found in statements ({'species': 29, 'number': 185}); 213 allowed with a reason; 1 uncovered
+== sentence-only (P55): 1 problems
+== search (P64): 5 probes, tiers 1 concept / 2 claims, values, sets / 3 the rest; check_search: 17 record kinds probed, each hit rendered as one line (P84e)
+== search (P64): OK
+== records (P62): 1104 result records on the experiments, 243 of them curve references, none empty
+== records (P62): OK
+== uncertainty bases (P60): fit 11, instrument 6, literature 3, propagated 1, run_to_run 6, tolerance 4, within_run 8; no basis (the paper does not say) 29: mat22:tab1.r1c1#1 (tab1.r1c1), mat22:tab1.r
+== uncertainty bases (P60): OK
+== mechanisms (P82): 36 mechanisms, none with a unit or a value
+== mechanisms (P82): OK
+== structure (P78): 10 structure classes, 11 slot entries; 166 specimen and input entities with a structure_class; 273 slot records; 13 body_thickness values checked against feature_depth × entry_sid
+== structure (P78): OK
+== cards (P81): 112 concept cards, 1344 (entry, paper) pairs against the page data; counts by home specimen, input, aggregate, set-level, paper, cited, settings, claims, derived
+== cards (P81): OK
+== card–values (P95): 182 (quantity, paper) pairs with values on a card, each against values(result, paper)
+== card–values (P95): 1 problems
+== resolution (P105, P110–P113): 525 calls (30 qualifier phrases of which 10 species, 5 misses, 7 detail ids, papers and search probes), 97,878 tokens; a miss suggests the nearest three, only a malf
+== resolution (P105): OK
+== card edges (P101): 62 cards with edges, 103 edges
+== card edges (P101): OK
+== grids (P80): 3 grid sets; 45 values(result, paper) calls on grid papers against their ask-v3.1 sizes: atoms_per_cycle 409->587 (0 views); binding_energy 517->1047 (1 views); carrier_density 387->83
+== grids (P80): OK
+== homes (P79): 2105 value records with an entry (from the page); 0 homeless
+== homes (P79): OK
+== calls (P75, P119): token budget 40,000 spent after 32 executed calls (41,875 tokens delivered), 80,000 after 75 (80,972); ceiling 10 / 20 executed calls, total walls 20 / 40, error wall 5; 118 vali
+== calls (P75): OK
+== settings tables (P76): 38 settings entries in the data (whatever node, P78a); 197 (entry, paper) pairs with stated conditions; max 1393 tokens per table
+== settings tables (P76): OK
+== set tables (P77): 183 comparison sets, each one call within the budget; 2 with columns collapsed; max 1972 tokens per table
+== set tables (P77): OK
+== battery per paper (P97): yli18 14 calls 7,909 tokens; yim20 14 calls 15,352 tokens; mat22 15 calls 13,784 tokens; gre23 15 calls 11,717 tokens; art19 15 calls 9,178 tokens; ela03 14 calls 8,926 tok
+== kinds (P57, P68): 9 kinds with phrases, 9 bases; 240 probe calls, 4705 tool texts scanned; max 5370 tokens per output, 192,945 tokens over the battery
+== kinds (P57, P68): OK
+== map (P70, P97, P120): 225 tokens of at most 800, 8 lines, every number a count; 229 tokens at 58 simulated papers; paper index 1028 tokens at 12 papers, 4908 at 58 simulated (at most 20,000), count
+== map (P70): OK
+== caveats (P56): 222 caveats, 222 unique texts (28,880 characters stored once), 753 direct attachments, 2765 facts and entities reached
+== caveats (P56): OK
+== comparability (P53): cross-paper value pairs per output quantity, comparable / not: atoms_per_cycle 3/124; binding_energy 12/0; coated_aspect_ratio 12/238; crystallite_size 0/4; deposition_rate 35/
+== comparability (P53): OK
+== bases: 72 quantity ids with values; bases stated on 4 (mass_gain {'not_stated': 3}, phase_fraction {'not_stated': 4}, plasma_gas_ratio {'reactive_gases': 53}, porosity {'total_volume': 6})
+== bases (P52): OK
+== unit table (P122): 353 spellings in 43 dimensions generated from units.yaml; 51 record spellings, 17 derived definitions, 65 default units resolve
+== unit table (P122): 3 problems
+== dimensions (P108): 2989 value records (facts, cells, peaks, derived, curve axes) against units.yaml
+== dimensions (P108): 270 problems
+== cycle (P106): 3 experiments with a stated hold in 1 paper(s); the hold on the dose line in detail(recipe) and in the pulse_time settings table
+== cycle (P106): OK
+== multi-quantity values (P121, P121b): 36 blocks over 12 papers' top-3 lists, 4 folded to one line (18 of 36 before P121b); a list call's budget is k × 2000 tokens, at most 4×; legends and footer o
+== multi-quantity values (P121): OK
+== compare_runs (P126): report on asks.jsonl (12 records, 3 questions, arms kb, model, text): six sections; synthetic verdicts join and count; anchor columns and one kb × text verdict grid per run (P
+== compare_runs (P126): OK
+== report html (P129): fixture 18 records: 3 cards for 3 questions; section 4 = compare_runs 5b/5c (27 rows), badges = 5b; 8 cost cells recomputed from the records and prices.csv; 22,419 characters, n
+== report html (P129): OK
+== paper index (P117): 12 papers, max 866 tokens per index, at most 40 quantity lines; counts equal the concept cards' (P95 both ways)
+== paper index (P117): 1 problems
