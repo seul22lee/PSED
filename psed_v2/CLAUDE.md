@@ -269,6 +269,10 @@ psed_v2/
   TEXT is written on an item whose unit changed. An element with no text (a decided empty header cell) is not sent and not required in
   pass 1; coverage records it as no knowledge, reason empty. pass1_elements.py --form-version LABEL labels new lines (P184-r1: P184's
   rules re-run on a later state; the prompt keeps the form's text); form_versions.csv: P184-r1 candidate for yim20 and zou23.
+- P196b (user), every provider call (common.run): a response that does not parse is a failed call: not stored as an answer, not cached,
+  listed in kb/records/failed_calls.csv; it is retried once (a request listed as failed before has had its first attempt). A version is
+  adopted for a paper only when every call of its whole-paper run parsed; otherwise the paper stays on its previously accepted version
+  (no filling from older lines).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

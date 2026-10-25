@@ -34,6 +34,9 @@ HELD_OUT = set()                                                                
 CONTENT_TTL = "3600s"                                                           # P148: the cached prefix lives at most an hour (deleted at the end of the run)
 HELD_OUT |= {pid for pid, k in E.PAPERS.items() if k in HELD_OUT}
 CACHE, RECORDS, SCHEMA = V2 / "kb" / "cache", V2 / "kb" / "records", V2 / "kb" / "schema"
+FAILED = RECORDS / "failed_calls.csv"                                            # P196b (user): every failed call (a response that does not parse)
+FAILED_FIELDS = ["pid", "pass", "section", "prompt_hash", "model", "form_version", "request_ts", "input_tokens", "output_tokens", "response_chars",
+                 "attempt", "reason", "note"]
 PROVIDER_DROP = {"additionalProperties", "pattern", "uniqueItems", "propertyNames", "minProperties", "dependentRequired", "allOf", "if", "then",
                  "else", "$schema", "$id", "$comment"}   # validation the compiler does against the full form.json (P134)
 
@@ -145,10 +148,39 @@ def call(client, prompt, rschema, thinking=None, cached=None):
                                   cache_read_tokens=u.cached_content_token_count or 0), ts
 
 
+def parses(text):
+    """P196b (user): a response parses when the tolerant JSON parse (figures.loads_json, the one compile uses) reads it."""
+    try:
+        loads_json(text)
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
+def failed_rows():
+    import csv
+    return list(csv.DictReader(FAILED.open(encoding="utf-8"))) if FAILED.exists() else []
+
+
+def list_failed(row):
+    """P196b (user) rule 1: a failed call is listed (records/failed_calls.csv, append-only), never stored as an answer."""
+    import csv
+    new = not FAILED.exists()
+    RECORDS.mkdir(exist_ok=True)
+    with FAILED.open("a", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=FAILED_FIELDS)
+        if new:
+            w.writeheader()
+        w.writerow({k: row.get(k, "") for k in FAILED_FIELDS})
+
+
 def run(pid, jobs, thinking=None, form_version=None):
     """Every job: from the cache, else one call (cached, then appended to records/<pid>.jsonl). Returns (lines, calls made).
     thinking (P133, pass 1): the provider's thinking setting, recorded in the line; None = the model's default (pass 0). P196 (user):
-    form_version labels the new lines (P184-r1: P184's rules re-run on a later state); None = export.FORM_VERSION."""
+    form_version labels the new lines (P184-r1: P184's rules re-run on a later state); None = export.FORM_VERSION. P196b (user), every call:
+    rule 1, a response that does not parse is a failed call: not stored as an answer (no records line), not cached (a cached one is a miss
+    and is removed), listed in records/failed_calls.csv; rule 2, a failed call is retried once (a request listed as failed before has had
+    its first attempt: no further retry)."""
     todo = plan(pid, jobs, thinking)
     client = client_for("google", os.environ[KEY_ENV]) if todo else None
     out, made, names = [], 0, {}                                                # P148: prefix hash -> cached content name
@@ -160,13 +192,31 @@ def run(pid, jobs, thinking=None, form_version=None):
             h = request_hash(prompt, rschema, thinking)
             cp = cache_path(pid, pass_, section, h)
             if cp.exists():
-                out.append(json.loads(cp.read_text(encoding="utf-8")))
-                continue
+                hit = json.loads(cp.read_text(encoding="utf-8"))
+                if parses(hit.get("response")):
+                    out.append(hit)
+                    continue
+                cp.unlink()                                                     # P196b rule 1: a failed response is not cached
             ph = hashlib.sha256(pre.encode("utf-8")).hexdigest() if pre else ""
             if pre and ph not in names:
                 names[ph] = cached_prefix(client, pid, pre)
-            text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
-            made += 1
+            before, text = sum(1 for r in failed_rows() if r["prompt_hash"] == h), None
+            for attempt in range(before + 1, 3):                                # P196b rule 2: the first attempt and one retry per request
+                text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
+                made += 1
+                if parses(text):
+                    break
+                try:
+                    loads_json(text)
+                except (ValueError, TypeError) as e:
+                    why = f"{type(e).__name__}: {e}"[:200]
+                list_failed(dict(pid=pid, section=section, prompt_hash=h, model=MODEL, form_version=form_version or X.FORM_VERSION, request_ts=ts,
+                                 input_tokens=usage["input_tokens"], output_tokens=usage["output_tokens"], response_chars=len(text or ""), attempt=attempt,
+                                 reason=why, note="", **{"pass": pass_}))
+                print(f"{pid}: {section}: the response does not parse (attempt {attempt}): listed in records/failed_calls.csv, not stored")
+                text = None
+            if text is None:
+                continue
             line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
                         form_version=form_version or X.FORM_VERSION,            # P158: compile.py applies the frozen form's rules to this line
                         request_ts=ts, usage=usage, **({"thinking": thinking} if thinking else {}), **({"prefix_hash": ph} if pre else {}), response=text)
