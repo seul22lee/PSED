@@ -1,0 +1,6 @@
+stage,where,nul,fffd,note
+"1 PDF text layer (pdfplumber, page 8)",corpus/raw/10.1116_6.0003182.pdf,0,0,"degree U+00B0, A-ring U+00C5, mu U+03BC (font AdvTT05cc2067+03); = and + drawn as U+00BC and U+00FE (font AdvP4C4E74)"
+"2 ingest output (Marker table, merge)",ingest/final/10.1116_6.0003182/structure.json captions[Table I].table,0,0,"degree and mu as LaTeX (^\circ, \mu), A-ring U+00C5; phi and nu-bar as LaTeX"
+"3 prompt sent with line 33 (rebuilt from c7cf6bcc, P185; request hash eb935799f59a40d4 equal)",kb/extract/pass1_elements.jobs tabI,0,0,the header as the ingest output
+"4 response, records line 33 (P184, tabI, 2026-10-25T01:01:11Z)",kb/records/10.1116_6.0003182.jsonl line 33,15,0,"the model wrote the JSON escape \u0000 where degree, A-ring and mu belong (unit and label_as_printed values); the NUL arises here"
+5 compiled,"kb/compiled/10.1116_6.0003182.facts.csv, .unmapped.csv",15 / 27 bytes,0,compile keeps the decoded NUL
