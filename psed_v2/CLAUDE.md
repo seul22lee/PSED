@@ -278,6 +278,10 @@ psed_v2/
   global aliases left the alias lists: each a paper-local symbol of every paper its evidence names (an "alias '<a>'" evidence line or a
   history row: Location yli18, Pt gor03, flow wer21, Composition zou23, diameter gre23), the other 22 deleted. export --check 21: no
   entry name and no global alias equals a vocabularies.ambiguous_aliases key (case-insensitive, a trailing bracketed unit group removed).
+- P199 (user): grow.py run stops after the elements step when an element text (as sent) holds NUL or U+FFFD and no table_header decision
+  covers that element (grow.text_gate; RUN_<keys>.gate_text.csv). gre23 Table I header: a table_header decision (c0-c6, evidence PDF
+  Table I, Greenberg 2024). The NUL in gre23's compiled units came from the model's response (records line 33 wrote the escape \u0000
+  for degree, A-ring and mu); the PDF text layer, the ingest output and the prompt hold none (kb/reports/P199.2a_cause.csv).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

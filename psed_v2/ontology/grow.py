@@ -1385,6 +1385,18 @@ def table_header_decided(pid):
     return {h["id"] for h in rd(HISTORY) if h["kind"] == "table_header" and h["decided_by"] == "user" and pid in h["source_pids"].split(";")}
 
 
+def text_gate(pids):
+    """P199 (user): the elements whose text (kb/pilot/elements.py texts, as sent) holds NUL or U+FFFD and that no table_header decision
+    covers (a decided header cell tab<n>.r0c<j>): [{pid, element, nul, fffd}], read in a subprocess (as paper_index)."""
+    code = (f"import sys, json; sys.path.insert(0, {str(PILOT)!r}); import elements as E; d = E.header_decisions(); out = []\n"
+            f"for p in {list(pids)!r}:\n"
+            "    cov = {f'{t}.r0c{j}' for (q, t), cols in d.items() if q == p for j in cols}\n"
+            "    out += [dict(pid=p, element=e, nul=x.count(chr(0)), fffd=x.count(chr(0xfffd))) for e, x in E.texts(p).items()\n"
+            "            if (chr(0) in x or chr(0xfffd) in x) and e not in cov]\n"
+            "print(json.dumps(out))")
+    return json.loads(subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True).stdout)
+
+
 def cmd_run(args, yes=False, plan_only=False):
     """P172 (user): papers 14+ end to end, 3 per round: resolve the papers (paper key: kb/pilot/paper_keys.csv; elements.csv; the figure
     stage and its import when figures.json is missing) -> pass 0 -> units from curves + the consistency, model-named and measurement-named
@@ -1438,6 +1450,8 @@ def cmd_run(args, yes=False, plan_only=False):
         parts += [f"Gate {g} ({k})={REPORTS / f'RUN_{k}.gate_{g}.csv'}" for k in keys for g in ("pass0", "pass1") if (REPORTS / f"RUN_{k}.gate_{g}.csv").exists()]
         if (REPORTS / f"RUN_{tag}.gate_tables.csv").exists():                 # P195 (user) A5: the tables the header gate stopped on
             parts += [f"Table header gate (header cells vs body columns, no table_header decision)={REPORTS / f'RUN_{tag}.gate_tables.csv'}"]
+        if (REPORTS / f"RUN_{tag}.gate_text.csv").exists():                   # P199 (user): the elements the text gate stopped on
+            parts += [f"Text gate (NUL or U+FFFD in an element text, no table_header decision)={REPORTS / f'RUN_{tag}.gate_text.csv'}"]
         parts += [f"Steps={R_}.steps.csv"]
         if inspected:                                                           # P174 (user): the no-gold inspection, sections 5a-5h, of every paper
             sys.path.insert(0, str(EXTRACT))
@@ -1457,6 +1471,11 @@ def cmd_run(args, yes=False, plan_only=False):
         write(REPORTS / f"RUN_{tag}.gate_tables.csv", ["paper", "pid", "table", "header_cells", "body_columns"], bad)
         finish("table header gate: header cells differ from body columns with no table_header decision: "
                + "; ".join(f"{x['paper']} {x['table']} ({x['header_cells']} header cells, {x['body_columns']} body columns)" for x in bad))
+    bad = [dict(paper=index[x["pid"]], **x) for x in text_gate(pids)]          # P199 (user): the text gate
+    if bad:
+        write(REPORTS / f"RUN_{tag}.gate_text.csv", ["paper", "pid", "element", "nul", "fffd"], bad)
+        finish("text gate: an element text holds NUL or U+FFFD with no table_header decision: "
+               + "; ".join(f"{x['paper']} {x['element']} (NUL {x['nul']}, U+FFFD {x['fffd']})" for x in bad))
     rc, out = step("plan (0 calls)", [py, EXTRACT / "gates.py", "plan", *keys])
     plan = json.loads(out.strip().splitlines()[-1]) if rc == 0 else []
     write(Path(f"{REPORTS / f'RUN_{tag}'}.plan.csv"), ["paper", "pid", "figure_calls", "figure_usd", "pass0_calls", "pass0_usd", "pass1_calls", "pass1_usd", "note"], plan)
