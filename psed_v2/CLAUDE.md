@@ -336,6 +336,9 @@ psed_v2/
   evidence_quote (step d, like any record). The parts join the records after bind and the legend conditions (neither sees them); a
   part the unit already holds (A3's same fact) or inherits (P190: the nearest ancestor holding the quantity holds exactly that value)
   is not written. Every part and its outcome: kb/compiled/<pid>.distinguished.csv. form_candidates.csv: fit_is_not_simulation.
+- P206 (user): the pass-0 instruction: a least-squares fit to experimental data is not a simulation; its curve is fitted data of the
+  experimental series it fits (form_candidates fit_is_not_simulation, included P206). Pass-1 form version P206 (P204's rules on the
+  P206 pass-0 instruction): form_versions.csv corpus candidate.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

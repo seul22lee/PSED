@@ -44,6 +44,8 @@ UNITS: one item per run, specimen, measurement, simulation and model run.
 - data: the figures.json ids (FIGURES below: curve, cell and peak ids) whose results belong to this unit, each with its role from
   the caption: measured (read from a specimen), fitted (a line fitted or simulated to match that specimen's measurement) or
   simulated (a model run's result); null when none.
+- a least-squares fit to experimental data is not a simulation: its curve is fitted data of the experimental series it fits (data
+  role fitted on that series' unit); list no simulation or model run for a fit.
 - a unit established by a table row or a grid point: introduced_in = that row's name cell / that cell id, evidence_quote = the
   cell's text.
 - introduced_in: the element ids where the unit is named, then every table or figure element that shows it (ELEMENT INDEX).
