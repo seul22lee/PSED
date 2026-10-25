@@ -1,7 +1,7 @@
 # PSED v2 ontology v1 (P131b, tag ontology-v1: v0 + the 36 merged pending entries + the alias audit). Built to the ontology criteria (v0); one file, every entry, the hierarchy, every relation and deviation.
 # Paper keys used in evidence: Yim2020 = 10.1039_d0cp03358h, Ylilammi2018 = 10.1063_1.5028178,
 # Werbrouck2021 = 10.1116_6.0001094. Evidence empty = defined but not an extraction target.
-# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): e6bb8eeff06478d78a578fcee0dc32b41b86b8b82e7ffd78fd3aefc665fe9966
+# ontology v1 sha256 (this file without this line, then units.yaml; verify/d14/ontology_v1.txt): a19fa36bba9e0cc9b7bec0303d7bb8fd42fc1bcd43c2348b921241aaa46b53c5
 version: 1
 
 kinds:   # P157 (user text): the seven entry kinds (an entry's type:); export.py prints them, then not_entries:, at the top of CODEBOOK.md and grow.py at the top of ontology.html. Every example is an id of this file: the user's TMA, H2O, O radical and knudsen diffusion are written as tma, h2o, o_atom and gas_diffusion, the entries that carry them as aliases
@@ -700,6 +700,7 @@ entries:
     definition: "The ratio of the film thickness at the bottom of a feature (or at the side wall) to the film thickness at the top of the feature (Cremers 2019, Sec. II H, Fig. 7a)."
     dimension: dimensionless
     unit: "1"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [step coverage, SC]
@@ -716,6 +717,7 @@ entries:
     definition: "The reaction probability of a reactant molecule with a bare surface, s0 in s = s0(1 - θ) (Cremers 2019, Sec. II E, Eq. 5)."
     dimension: dimensionless
     unit: "1"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [initial sticking coefficient, lumped sticking coefficient, cTMA, sticking coefficient]
@@ -733,6 +735,7 @@ entries:
     definition: "The probability that a species recombines during a collision with the surface (Cremers 2019, Sec. II E; Table VII)."
     dimension: dimensionless
     unit: "1"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [recombination probability, recombination coefficient]
@@ -750,6 +753,7 @@ entries:
     definition: "The fraction of covered surface sites, θ (Cremers 2019, Sec. II E, Eqs. 5-9)."
     dimension: dimensionless
     unit: "1"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:UNITLESS"
     aliases: [Surface coverage (θ), Surface coverage, fraction of covered sites, 'Surface coverage, \theta']
@@ -1229,6 +1233,7 @@ entries:
     definition: "The coating's share of the coated specimen's mass: mass gain / (1 + mass gain) with the gain relative to the initial mass (a transform; not a phase fraction)."
     dimension: dimensionless
     unit: "%"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:MassFraction"
     qudt_unit: "unit:PERCENT"
     aliases: ["coating mass fraction"]
@@ -1360,6 +1365,7 @@ entries:
     definition: "The pore volume fraction of a porous body, before (stage initial) or after (stage final) the deposition, relative to the total volume."
     dimension: dimensionless
     unit: "%"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:Porosity"
     qudt_unit: "unit:PERCENT"
     aliases: [porosity, 'Final porosity, φ_f (%)']
@@ -1422,6 +1428,7 @@ entries:
     definition: "The share of a channel's height filled by the film on its two walls at the end of a run (yim20: 2 S_IIb / H)."
     dimension: dimensionless
     unit: "%"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:DimensionlessRatio"
     qudt_unit: "unit:PERCENT"
     aliases: [channel filled, coated length fraction]
@@ -1728,6 +1735,7 @@ entries:
     definition: "The atomic fraction of an element among all atoms of the film counted by the stated method, in at.% (the former composition entry, Sec. 18.3)."
     dimension: dimensionless
     unit: "at.%"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:AmountOfSubstanceFraction"
     qudt_unit: "unit:PERCENT"
     aliases: [at.%, at. %, atomic percent, H content, O content, N content, C content, C after sputtering, O after sputtering, Composition]
@@ -1763,6 +1771,7 @@ entries:
     definition: "The weight fraction of a named phase (the phase qualifier) among the phases the stated method sees, in wt%; by XRD Rietveld refinement only the crystalline part is counted (relative_to crystalline_phases), which gre23 does not state (not_stated) (Sec. 18.3)."
     dimension: dimensionless
     unit: "wt%"
+    range: [0, 1]                    # P190 (user): a probability or fraction; compared as a fraction ('1', % / 100); a value outside is kept and listed
     qudt_quantity_kind: "quantitykind:MassFraction"
     qudt_unit: "unit:PERCENT"
     aliases: [wt%, Wt. %, weight percent, ZnO (zincite) Wt. %]

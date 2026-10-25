@@ -38,6 +38,7 @@ DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
 BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "unit_fact_id", "origin", "role", "how", "reason", "facts"]   # P184: the compiled unit id
 RECIPE_CSV = ["run", "field", "value", "quote", "element"]                      # P187: kb/compiled/<pid>.recipe_fields.csv (compile stores the recipe fields)
 SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
+RANGE_FIELDS = ["paper", "element", "fact_id", "type", "quantity", "value", "unit", "as_fraction", "range", "quote", "statement"]   # P190: <pid>.out_of_range.csv
 SPECIES_FIELDS = ["element", "label", "type", "quantity", "record_species", "definition", "own_element_names", "outcome", "species", "fact_id"]   # P179   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 MARKUP = re.compile(r"</?[A-Za-z][A-Za-z0-9]*(?:\s[^<>]*)?/?>")                      # P148 C3: a markup tag (an autolink <https://...> is not one)
@@ -559,7 +560,8 @@ def same_value(a, b):
 
 def unit_vectors(pid, units, recs):
     """P177b: {pass-0 unit id: [condition keys]}: the pass-1 settings (and valued model inputs) about it, the quantity its id or, for
-    other, the record key resolved by vocab_hits; a specimen inherits its run's, a model run its simulation's."""
+    other, the record key resolved by vocab_hits; a specimen inherits its run's, a model run its simulation's. P190 (user): a parent's
+    condition only for a quantity the child holds no value of, and only when the parent holds one value of it."""
     own = collections.defaultdict(list)
     for r in recs or []:
         rec = r["rec"]
@@ -586,7 +588,10 @@ def unit_vectors(pid, units, recs):
     for u in units:
         ks = list(own.get(u["id"], []))
         if u.get("parent") in by:
-            ks += own.get(u["parent"], [])
+            mine, pq = {k[0] for k in ks}, collections.defaultdict(list)
+            for k in own.get(u["parent"], []):
+                pq[k[0]].append(k)
+            ks += [vs[0] for q, vs in pq.items() if q not in mine and all(same_value(vs[0], v) for v in vs[1:])]
         out[u["id"]] = ks
     return out
 
@@ -2084,6 +2089,7 @@ class Run:
             f["term"] = rec.get("term") or "|".join(s for s, q in vs.items() if q == f["quantity"])
         f["evidence"], f["parent"], f["author"] = ";".join(r.get("quote_elements") or [r["eid"]]), parent, self.pid   # P182: the elements a quote spans
         f["_statement"] = rec.get("statement") or rec.get("quote", "")          # P138: the extractor's own words; P139: the quote when null
+        f["_quote"] = rec.get("quote") or ""                                    # P190: for the out-of-range list
         if not rec.get("statement"):
             self.count("m", "statement filled from the quote")
         f["_parent_filled"] = bool(r.get("parent_filled"))                     # P148: about null or unknown
@@ -2313,6 +2319,10 @@ class Run:
         rows = self.derived(rows)
         self.scope_facts([f for f in rows if f.get("type") == "derived"], "derived")   # P182
         rows = self.statements(rows)
+        self.range_rows = out_of_range(self.pid, rows)                          # P190 (user): kept, listed
+        for x in self.range_rows:
+            self.count("k", "value out of range (kept, listed)")
+            self.note(f"k: value out of range: {x['fact_id']} {x['quantity']} {x['value']} {x['unit']} (as a fraction {x['as_fraction']}, range {x['range']})")
         self.coverage(rows)
         self.write_facts(rows)
         self.rows = rows
@@ -2324,6 +2334,7 @@ class Run:
             if f.get("_a1"):
                 facts_of[id(f["_a1"])].append(f["fact_id"])
         write_csv(OUT / f"{self.pid}.qualifier_scope.csv", SCOPE_FIELDS, self.scope_rows)   # P182 (user)
+        write_csv(OUT / f"{self.pid}.out_of_range.csv", RANGE_FIELDS, self.range_rows)   # P190 (user)
         write_csv(OUT / f"{self.pid}.recipe_fields.csv", RECIPE_CSV, [dict(run=i, field=f, value=json.dumps(x[f]) if isinstance(x.get(f), list) else x.get(f) or "",
                                                                           quote=x.get(f + "_quote") or "", element=x.get(f + "_element") or "")
                                                                      for i, x in self.fill.items() for f in C.X.RECIPE_FIELDS + C.X.MODEL_FIELDS if x.get(f)])   # P187: stored, nothing derives from steps; P188: nor from assumptions
@@ -2426,6 +2437,24 @@ def canon(f):
         dim = "dimensionless" if dim == "count" else dim                       # P139: a count compares as a number
         return dim, float(f"{v * fac:.6g}")
     return f["value"], f["unit"]
+
+
+def out_of_range(pid, rows):
+    """P190 (user): every value fact (value, value_min, value_max) of a quantity with a range (ontology.yaml range: [min, max], a fraction)
+    whose value, in the quantity's canonical unit (canon: '1', a % divided by 100), lies outside it; the fact is kept. A value canon gives
+    no dimensionless number for is not compared (a unit of another dimension is the dimension check's, P108)."""
+    out = []
+    for f in rows:
+        rg = (V.ENTRIES.get(f.get("quantity") or "") or {}).get("range")
+        if not rg or "#" not in f.get("fact_id", ""):
+            continue
+        for k in ("value", "value_min", "value_max"):
+            c = canon(dict(value=f.get(k) or "", unit=f.get("unit") or "", quantity=f["quantity"]))
+            if c and c[0] == "dimensionless" and isinstance(c[1], float) and not rg[0] <= c[1] <= rg[1]:
+                out.append(dict(paper=C.E.PAPERS.get(pid, pid), element=f["evidence"], fact_id=f["fact_id"], type=f["type"], quantity=f["quantity"], value=f[k],
+                                unit=f.get("unit") or "", as_fraction=c[1], range=f"[{rg[0]}, {rg[1]}]", quote=f.get("_quote") or "", statement=f.get("statement") or ""))
+                break
+    return out
 
 
 def match_key(f):

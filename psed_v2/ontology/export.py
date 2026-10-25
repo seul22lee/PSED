@@ -345,7 +345,8 @@ def build(onto, pmap):
                                name=e.get("name", ""), attribute=bool(e.get("attribute")), replaced_by=e.get("replaced_by", ""), values_from=e.get("values_from", ""),
                                dimension=e.get("dimension", ""), structure_aliases=list(e.get("structure_aliases", [])), cq=e.get("cq", ""), pending=bool(e.get("pending")),
                                ratio_of=[str(x) for x in e.get("ratio_of", [])], parameters=[str(x) for x in e.get("parameters", [])],   # P101: a model's parameters are card edges
-                               definitions=[dict(d) for d in e.get("definitions", [])], converts_to=dict(e["converts_to"]) if e.get("converts_to") else {})   # P108 (b), P109
+                               definitions=[dict(d) for d in e.get("definitions", [])], converts_to=dict(e["converts_to"]) if e.get("converts_to") else {},   # P108 (b), P109
+                               range=list(e["range"]) if e.get("range") is not None else None)   # P190 (user): [min, max] as a fraction
                  for e in entries},
         HIERARCHY=[dict(id=n["id"], parent=n.get("parent", ""), definition=n["definition"]) for n in onto["hierarchy"]],
         STRUCTURE_CLASSES={c["id"]: dict(parent=c.get("parent") or "", definition=c["definition"], slots=list(c.get("slots", []))) for c in onto.get("structure_classes", [])},   # P78
@@ -1254,6 +1255,15 @@ def run_checks(onto):
                 "qualifier kb/pilot/lists.py puts on an entry (DERIVED, labels, names, keyed settings) is within the entry's derived set",
                 not bad, f"problems: {bad}" if bad else f"{len(sc)} keys ({sum(isinstance(v, list) for v in sc.values())} entry lists, "
                 f"{sum(v == 'any' for v in sc.values())} any, {sum(v == 'unit' for v in sc.values())} unit); lists.py: {used} qualifier uses in scope", bad))
+    bad, rg = [], [e for e in entries if e.get("range") is not None]           # P190 (user): value ranges
+    for e in rg:
+        r = e["range"]
+        if not (isinstance(r, list) and len(r) == 2 and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in r)):
+            bad.append(f"{e['id']}: range {r!r} is not two numbers")
+        elif r[0] > r[1]:
+            bad.append(f"{e['id']}: range min {r[0]} > max {r[1]}")
+    out.append(("20. value ranges (P190, user): every range is two numbers, min <= max", not bad,
+                f"problems: {bad}" if bad else f"{len(rg)} entries with a range: " + ", ".join(f"{e['id']} {e['range']}" for e in rg), bad))
     return out
 
 
