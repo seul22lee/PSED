@@ -331,6 +331,11 @@ psed_v2/
 - P204 C (user, option 1): the PASS-0 UNITS block prints each unit's distinguished_by after its name ('quantity value unit', '; '
   between parts, '-' when none; missing since P184): id | role | name | distinguished by | parent | data | recipe. Every paper's
   pass-1 prefix changes in that column; its content changes where units carry distinguished_by (ela03, yim20, gre23).
+- P205 (user): compile writes each part of a pass-0 unit's distinguished_by (P184) as a fact of the unit: a setting for a run or
+  specimen, a model input for a simulation or model run; its element the unit's first introduced_in element, its quote the unit's
+  evidence_quote (step d, like any record). The parts join the records after bind and the legend conditions (neither sees them); a
+  part the unit already holds (A3's same fact) or inherits (P190: the nearest ancestor holding the quantity holds exactly that value)
+  is not written. Every part and its outcome: kb/compiled/<pid>.distinguished.csv. form_candidates.csv: fit_is_not_simulation.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

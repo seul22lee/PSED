@@ -36,6 +36,7 @@ FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
 UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never", "nearest"]   # P157b: never = the never.csv category; P158: nearest
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
+DIST_FIELDS = ["unit", "role", "quantity", "value", "unit_of_value", "element", "outcome"]   # P205 (user): kb/compiled/<pid>.distinguished.csv
 BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "unit_fact_id", "origin", "role", "how", "reason", "facts"]   # P184: the compiled unit id
 FACT_FIELDS = F.FIELDS + ["dimension_mismatch"]
 
@@ -1084,9 +1085,73 @@ class Run:
     def drop(self, step, eid, rec, reason, field=""):
         self.dropped.append(dict(element=eid, step=step, field=field, reason=reason, type=rec.get("type", ""), quantity=rec.get("quantity", "")))
         self.steps.setdefault(step, collections.Counter())[reason] += 1
+        for w in getattr(self, "dist_wrappers", []):                            # P205: a distinguished_by part's outcome (its wrapper holds the row)
+            if w["rec"] is rec:
+                w["dist_row"]["outcome"] = f"not written: dropped at {step}: {reason}" + (f" ({field})" if field else "")
         for p in self.promoted:                                                 # P157b: a promoted record's outcome
             if p["r"]["rec"] is rec and not p["outcome"]:
                 p["outcome"] = f"dropped at {step}: {reason}" + (f" ({field})" if field else "")
+
+    def distinguished(self, units):
+        """P205 (user) 1: each part of a pass-0 unit's distinguished_by (P184: quantity, value, unit) as a record of the unit: a setting for
+        a run or specimen, a model input for a simulation or model run; its element the unit's first introduced_in element, its quote the
+        unit's evidence_quote (step d's quote check, like any record: not found, not written). A part the unit already holds (A3's same
+        fact) or inherits (P190: the nearest ancestor holding the quantity holds exactly that one value) is not written (same_fact_held,
+        before dedupe). Added after bind and the legend conditions, so neither sees them. Every part is a row of
+        kb/compiled/<pid>.distinguished.csv with its outcome."""
+        self.dist_rows, self.dist_wrappers = [], []
+        out = []
+        for u in units:
+            if not isinstance(u, dict) or not u.get("distinguished_by") or u.get("role") not in ("run", "specimen", "simulation", "model_run"):
+                continue
+            ev = [e for e in u.get("introduced_in") or [] if e in self.order]
+            setting = u["role"] in ("run", "specimen")
+            for d in u["distinguished_by"]:
+                if not isinstance(d, dict) or not d.get("quantity"):
+                    continue
+                row = dict(unit=u.get("id"), role=u["role"], quantity=d["quantity"], value=d.get("value"), unit_of_value=d.get("unit") or "", element=ev[0] if ev else "", outcome="")
+                self.dist_rows.append(row)
+                if not ev:
+                    row["outcome"] = "not written: the unit names no element"
+                    continue
+                num = F.num(str(d.get("value") or ""))
+                rec = dict(type="setting" if setting else "model", quantity=d["quantity"], label_as_printed=V.ENTRIES.get(d["quantity"], {}).get("name") or d["quantity"],
+                           quote=u.get("evidence_quote") or "", about=u["id"], kind="stated" if setting else "model_input", unit=d.get("unit") or None,
+                           **({"value": num} if num is not None else {"value_text": str(d.get("value") or "")}), **({} if setting else {"method": "simulation"}))
+                out.append(dict(eid=ev[0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, dist=True, dist_row=row))
+                self.dist_wrappers.append(out[-1])
+        self.count("input", "distinguished_by parts (P205)", len(self.dist_rows))
+        return out
+
+    def same_fact_held(self, items):
+        """P205 (user) 1: a distinguished_by fact is not written when its unit holds the same quantity, value (or range), unit and value_text
+        in another fact (A3's same fact; the part carries no qualifiers), or inherits it (P190: the nearest ancestor holding any value of
+        the quantity holds exactly that one value)."""
+        parent = {r["fact_id"]: r.get("parent") for r in self.rows_tree}
+        key = lambda f: (f.get("quantity"), f.get("value"), f.get("value_min"), f.get("value_max"), f.get("unit"), f.get("value_text"))   # noqa: E731
+        held, of_q = collections.defaultdict(list), collections.defaultdict(list)
+        for f in items:
+            held[(f.get("parent"), key(f))].append(f)
+            if not f.get("_dist"):
+                of_q[(f.get("parent"), f.get("quantity"))].append(f)
+        out = []
+        for f in items:
+            if f.get("_dist"):
+                same = [g for g in held[(f["parent"], key(f))] if g is not f and not g.get("_dist")]
+                x, seen = parent.get(f["parent"]), set()
+                while not same and x and x not in seen:                          # P190: the nearest ancestor holding the quantity
+                    seen.add(x)
+                    gs = of_q.get((x, f["quantity"]))
+                    if gs:
+                        same = gs if {key(g) for g in gs} == {key(f)} else []
+                        break
+                    x = parent.get(x)
+                if same:
+                    f["_dist"]["outcome"] = f"not written: the same fact is held by {'the unit' if same[0]['parent'] == f['parent'] else same[0]['parent']} ({same[0]['evidence']})"
+                    self.count("i", "distinguished_by part: same fact held (not written)")
+                    continue
+            out.append(f)
+        return out
 
     def count(self, step, what, n=1):
         self.steps.setdefault(step, collections.Counter())[what] += n
@@ -1222,7 +1287,7 @@ class Run:
                 self.count("input", f"condition of a derived unit ({c['kind']})" if u not in coord_units else f"coordinate of a pass-0 unit ({c['kind']})")
         if self.from_curves:
             self.note(f"input: {len(self.from_curves)} units derived from curves (P161): " + ", ".join(u["id"] for u in self.from_curves))
-        return recs
+        return recs + self.distinguished(p0obj.get("units") or [] if isinstance(p0obj, dict) else [])   # P205 (user): after bind and the legend conditions
 
     # ------------------------------------------------------------------------------------------------------------ a1 (P178, P179)
     def symbol_species(self, recs):
@@ -2825,15 +2890,22 @@ class Run:
             items[-1]["_source"] = why                                          # P140 C3: the parent path, for the audit
             items[-1]["_promoted"] = mine.get(id(r), [])                         # P157b
             items[-1]["_a1"] = r.get("a1")                                       # P179: the symbol species outcome
+            items[-1]["_dist"] = r.get("dist_row")                               # P205
         fig_tree, fig_facts = self.figures()
         self.specimens_for_runs(items + fig_facts)                              # P146
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
         for f in fig_facts:
             if f["parent"].startswith("@meas:"):
                 f["parent"] = self.meas_of_panel(f["parent"][6:], f["evidence"]) or self.measurement(f["parent"][6:], "")   # P184: a pass-0 measurement of that panel
-        items = self.dedupe(items + self.scope_facts(fig_facts, "figure"))      # P182: figures.json facts held to the scopes
+        items = self.same_fact_held(items + self.scope_facts(fig_facts, "figure"))   # P205 (user): a distinguished_by part already held
+        items = self.dedupe(items)                                              # P182: figures.json facts held to the scopes
         self.count("i", "kept", len(items))
         items = self.ids(items)
+        for f in items:                                                         # P205: the distinguished_by parts written
+            if f.get("_dist") and not f["_dist"]["outcome"]:
+                f["_dist"]["outcome"] = f"written: {f['fact_id']}"
+        for row in self.dist_rows:
+            row["outcome"] = row["outcome"] or "not written: merged by dedupe into another fact"
         on = collections.defaultdict(list)
         for f in items:
             for e in f["evidence"].split(";"):
@@ -2865,6 +2937,7 @@ class Run:
         self.rows = rows
         write_csv(OUT / f"{self.pid}.coverage.csv", F.COV_FIELDS, self.cov)
         write_csv(OUT / f"{self.pid}.dropped.csv", DROPPED_FIELDS, self.dropped)
+        write_csv(OUT / f"{self.pid}.distinguished.csv", DIST_FIELDS, self.dist_rows)   # P205 (user)
         write_csv(OUT / f"{self.pid}.unmapped.csv", UNMAPPED_FIELDS, self.unmapped)
         facts_of = collections.defaultdict(list)                                # P179 (user): every symbol species outcome with its facts (none:
         for f in rows:                                                          # dropped later); check.py --dir: a cleared species is no problem
