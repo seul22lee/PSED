@@ -983,8 +983,13 @@ def _never_label(raw):
     return m.group(1) if m else raw
 
 
+def ambiguous_key(s):
+    """P198 (user): a name or label as compared with the vocabularies.ambiguous_aliases keys: lower case, a trailing bracketed unit group removed."""
+    return re.sub(r"\s*[(\[][^()\[\]]*[)\]]\s*$", "", str(s)).strip().lower()
+
+
 def run_checks(onto):
-    """[(title, passed, detail, problem rows)] of the 19 checks (P179: 16, P179b: 17, P181: 18, P182: 19)."""
+    """[(title, passed, detail, problem rows)] of the 21 checks (P179: 16, P179b: 17, P181: 18, P182: 19, P190: 20, P198: 21)."""
     from collections import Counter, defaultdict
     entries = onto["entries"]
     ids = [e["id"] for e in entries]
@@ -1267,6 +1272,11 @@ def run_checks(onto):
             bad.append(f"{e['id']}: range min {r[0]} > max {r[1]}")
     out.append(("20. value ranges (P190, user): every range is two numbers, min <= max", not bad,
                 f"problems: {bad}" if bad else f"{len(rg)} entries with a range: " + ", ".join(f"{e['id']} {e['range']}" for e in rg), bad))
+    amb = {ambiguous_key(k): k for k in voc.get("ambiguous_aliases") or {}}  # P198 (user): context-dependent words resolve only per paper
+    said = [(e["id"], f, v) for e in entries for f, vs in (("name", [e["name"]] if e.get("name") else []), ("alias", e.get("aliases") or [])) for v in vs]
+    bad = [f"{i}: {f} {v!r} is the ambiguous key {amb[ambiguous_key(v)]!r}" for i, f, v in said if ambiguous_key(v) in amb]
+    out.append(("21. no entry name and no global alias is a vocabularies.ambiguous_aliases key (P198, user: case-insensitive, a trailing bracketed "
+                "unit group removed)", not bad, f"problems: {bad}" if bad else f"{len(amb)} keys; {len(said)} names and aliases compared", bad))
     return out
 
 

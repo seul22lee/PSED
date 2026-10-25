@@ -273,6 +273,11 @@ psed_v2/
   listed in kb/records/failed_calls.csv; it is retried once (a request listed as failed before has had its first attempt). A version is
   adopted for a paper only when every call of its whole-paper run parsed; otherwise the paper stays on its previously accepted version
   (no filling from older lines).
+- P198 (user): an entry name says the concept (deposition temperature, process pressure, film thickness, pulse time, purge time, cycle
+  number, precursor purity, thickness nonuniformity, objective magnification, signal intensity; ids unchanged). 27 context-dependent
+  global aliases left the alias lists: each a paper-local symbol of every paper its evidence names (an "alias '<a>'" evidence line or a
+  history row: Location yli18, Pt gor03, flow wer21, Composition zou23, diameter gre23), the other 22 deleted. export --check 21: no
+  entry name and no global alias equals a vocabularies.ambiguous_aliases key (case-insensitive, a trailing bracketed unit group removed).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
