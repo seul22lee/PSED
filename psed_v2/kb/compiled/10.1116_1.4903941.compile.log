@@ -1,6 +1,7 @@
-input: 15 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P184 8
+input: 24 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 17 (abstract+s0+s1+s2+s3+s4+s5+s6+s7), 18 (s8+s9), 19 (fig1), 20 (fig2), 21 (fig3), 22 (fig4), 23 (fig5), 24 (fig6)
 input: pass-0 extension = line 15: 30 units (measurement 15, run 6, specimen 9); 12 image panel methods
-input: recipe fill = line 14: run_al2o3_300c reactant_A tma, reactant_B h2o, carrier_gas n2; run_tio2_110c reactant_A ticl4, reactant_B h2o, carrier_gas n2
+input: recipe fill = line 16: run_al2o3_300c reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3; run_tio2_110c reactant_A ticl4, reactant_B h2o, carrier_gas n2, material tio2; run_al2o3_110c_50nm material al2o3; run_tio2_110c_50nm material tio2; run_al2o3_200c_50nm material al2o3; run_tio2_200c_50nm material tio2; run_al2o3_300c_50nm material al2o3; run_tio2_300c_50nm material tio2
 a0: s6.p4: quantity 'distance between the oxide pillars' -> pillar_spacing (quantity: alias 'distance between the oxide pillars')
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
@@ -77,38 +78,38 @@ i: merged fig5.cap into s7.p3;fig5.cap (film_thickness 100)
 i: merged fig6.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap;fig6.cap (deposition_temperature 300)
 i: merged fig6.cap into s7.p4;fig6.cap (aspect_ratio 400)
 i: merged fig6.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap;fig6.cap (feature_width 500)
-j: derived over 11 entities: 11 rows; not derived: {'no fact for S': 2, 'no fact for p': 13, 'E: no fact for p': 11, 'no fact for rho': 22, 'n: no fact for gpc': 11, 'gpc: no fact for n': 11, 'no fact for H': 20, 'no fact for dn': 11, 'no fact for mg': 22, 'derive raised: cannot convert cycle to 1': 1, 'no fact for h2': 11, 'no fact for phi': 11, 'lam: no fact for p': 2, 'gpc: n: no fact for gpc': 11, 'no fact for t': 10, 'no fact for T': 9, 'lam: no fact for T': 9}
+j: derived over 13 entities: 13 rows; not derived: {'no fact for S': 4, 'no fact for p': 17, 'E: no fact for p': 13, 'no fact for rho': 26, 'n: no fact for gpc': 13, 'gpc: no fact for n': 13, 'no fact for H': 22, 'no fact for dn': 13, 'no fact for mg': 26, 'derive raised: cannot convert cycle to 1': 1, 'no fact for h2': 13, 'no fact for phi': 13, 'lam: no fact for p': 4, 'gpc: n: no fact for gpc': 13, 'no fact for t': 12, 'no fact for T': 9, 'lam: no fact for T': 9}
 j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 8 nodes for 11 claims; claims without a full triple (query.node_of empty): 3
-j: comparisons from figures.json (1c): 2
+j: comparisons from figures.json (1c): 4
 step input: {'pass-0 extension units': 30, 'records': 103}
 step a0: {'quantity promoted (quantity: alias)': 1}
-step a1: {'symbol species: no species': 2, 'qualifier out of scope: structure_class': 11, 'qualifier out of scope: stage': 1, 'qualifier out of scope: relative_to': 2, 'qualifier out of scope: over': 2, 'qualifier out of scope: mode': 4, 'qualifier out of scope: ratio': 2, 'qualifier out of scope: specimen_class': 2, 'qualifier out of scope: basis': 4, 'qualifier out of scope: definition': 1, 'qualifier out of scope: step': 1, 'qualifier out of scope: species': 1, 'qualifier out of scope: gas': 1, 'qualifier out of scope: element': 1, 'qualifier out of scope: reference_element': 1, 'qualifier out of scope: phase': 1, 'qualifier out of scope: reference': 1, 'qualifier out of scope: level': 1, 'qualifier out of scope: surface': 1, 'qualifier out of scope: by': 1, 'qualifier out of scope: origin': 1}
-step a: {'numeric string coerced (C4)': 2, 'kept': 103}
-step b: {'statement_only (kept: P138 form)': 4, 'kept': 103}
-step c: {'kept': 103}
-step d: {'quote_not_found': 6, "quote found in the paper's elements concatenated (P182)": 6, 'quote_noncontiguous (kept)': 2, 'kept': 97}
-step e: {'kept': 97}
-step f: {'species_resolved': 10, 'kept': 97}
-step h: {'measurement unit': 15, 'place: claim -> paper': 11, 'place: about paper -> recipe': 31, 'place: cited -> paper': 4, 'place: about paper, method -> paper method activity': 7, 'place: setting about a run -> deposition': 21, 'place: setting about a specimen -> deposition': 8, 'place: result about a specimen -> its measurement': 9, 'place: caveat -> paper': 1, 'place: result about a run -> its specimen measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 3}
-step m: {'statement filled from the quote': 77, 'label_as_printed filled with the quantity id': 15, 'links resolved': 3}
-step 1c: {'unbound item (image): no unit named': 2, 'image -> a measurement (infrared_microscopy)': 9, 'image -> a measurement (optical_microscopy)': 1, 'curve -> observation': 1, 'unbound item (curve): ambiguous': 3, 'image -> a measurement (sem)': 1}
-step i: {'merged': 24, 'kept': 85}
-step n: {'comparison replicate': 1, 'comparison series': 1}
-step j: {'derived cycle_time': 11}
-step k: {'statement from the record': 73, 'statement_copies_text (reported by check)': 22, 'statement assembled': 23}
+step a1: {'symbol species: no species': 2, 'material from the recipe field: al2o3': 4, 'material from the recipe field: tio2': 4, 'qualifier out of scope: structure_class': 11, 'qualifier out of scope: stage': 1, 'qualifier out of scope: relative_to': 2, 'qualifier out of scope: over': 2, 'qualifier out of scope: mode': 4, 'qualifier out of scope: ratio': 2, 'qualifier out of scope: specimen_class': 2, 'qualifier out of scope: basis': 4, 'qualifier out of scope: definition': 1, 'qualifier out of scope: step': 1, 'qualifier out of scope: species': 1, 'qualifier out of scope: gas': 1, 'qualifier out of scope: element': 1, 'qualifier out of scope: reference_element': 1, 'qualifier out of scope: phase': 1, 'qualifier out of scope: reference': 1, 'qualifier out of scope: level': 1, 'qualifier out of scope: surface': 1, 'qualifier out of scope: by': 1, 'qualifier out of scope: origin': 1}
+step a: {'numeric string coerced (C4)': 2, 'kept': 111}
+step b: {'statement_only (kept: P138 form)': 4, 'kept': 111}
+step c: {'kept': 111}
+step d: {'quote_not_found': 6, "quote found in the paper's elements concatenated (P182)": 6, 'quote_noncontiguous (kept)': 2, 'kept': 105}
+step e: {'kept': 105}
+step f: {'species_resolved': 18, 'kept': 105}
+step h: {'measurement unit': 15, 'place: claim -> paper': 11, 'place: about paper -> recipe': 31, 'place: cited -> paper': 4, 'place: about paper, method -> paper method activity': 7, 'place: setting about a run -> deposition': 29, 'place: setting about a specimen -> deposition': 8, 'place: result about a specimen -> its measurement': 9, 'place: caveat -> paper': 1, 'place: result about a run -> its specimen measurement': 2, 'place: setting about a specimen sharing its deposition -> specimen': 3}
+step m: {'statement filled from the quote': 85, 'label_as_printed filled with the quantity id': 15, 'links resolved': 3}
+step 1c: {'unbound item (image): no unit named': 2, 'image -> a measurement (infrared_microscopy)': 9, 'image -> a measurement (optical_microscopy)': 1, 'curve -> observation': 4, 'image -> a measurement (sem)': 1}
+step i: {'merged': 24, 'duplicate dropped': 2, 'kept': 94}
+step n: {'comparison replicate': 2, 'comparison series': 2}
+step j: {'derived cycle_time': 13}
+step k: {'statement from the record': 79, 'statement_copies_text (reported by check)': 22, 'statement assembled': 28}
 diff against the gold:
-  setting        92   42   29  0.69  0.32
-  observation    44   27   23  0.85  0.52
+  setting        92   48   35  0.73  0.38
+  observation    44   30   26  0.87  0.59
   activity       25   29   14  0.48  0.56
   entity         15   13   12  0.92  0.80
   claim          13   11    6  0.55  0.46
   cited          12    4    4  1.00  0.33
   caveat          7    1    1  1.00  0.14
-  derived         6   11    0  0.00  0.00
-  comparison      5    2    1  0.50  0.20
+  derived         6   13    0  0.00  0.00
+  comparison      5    4    1  0.25  0.20
   definition      5    0    0     -  0.00
   paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 0/5
 gold model rows with quantity and value: 0: {}
-observations: gold 44, compiled 27, matched 23
+observations: gold 44, compiled 30, matched 26
