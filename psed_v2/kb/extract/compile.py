@@ -65,6 +65,9 @@ MIGRATED_FIELDS = ["paper", "element", "type", "label_as_printed", "form_version
 TRANSFORM_FIELDS = ["paper", "unit", "transform", "outcome", "inputs", "output_fact", "value", "unit_of_value", "note"]   # P194 1a-1c: <pid>.transforms.csv
 REDUNDANT_FIELDS = ["paper", "unit", "transform", "printed_fact", "printed_value", "printed_unit", "printed_range", "computed_fact", "computed_value",
                     "computed_unit", "computed_range", "outcome"]                  # P194 1d: <pid>.transform_redundant.csv
+DOMAIN_CHECKS = (("penetration_depth", "feature_depth"), ("coated_aspect_ratio", "aspect_ratio"))   # P196 (user) 2: the first never above the second
+DOMAIN_FIELDS = ["paper", "unit", "check", "fact", "value", "value_unit", "source", "data_kind", "other_fact", "other_value", "other_unit", "other_source",
+                 "other_data_kind", "compared_in", "ranges"]
 RECIPE_CSV = ["run", "field", "value", "quote", "element"]                      # P187: kb/compiled/<pid>.recipe_fields.csv (compile stores the recipe fields)
 SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
 RANGE_FIELDS = ["paper", "element", "fact_id", "type", "quantity", "value", "unit", "as_fraction", "range", "quote", "statement"]   # P190: <pid>.out_of_range.csv
@@ -2190,24 +2193,15 @@ class Run:
                 self.count("6b", "dimension mismatch flagged")
         return rows
 
-    def transforms(self, rows):
-        """j, P194 / P195 (user) A1, A3: every transform declared in ontology.yaml (vocab.TRANSFORMS) with a function in lists.TRANSFORM_FN,
-        per computation unit: a run, specimen (the compiler's film too), simulation or model run (pass-0 roles), never a measurement unit.
-        A unit's inputs: its own value facts, the results of its measurement units (the measurement activities under it, P185) and the
-        conditions (settings, model inputs) of its ancestors, transitively under P190: an ancestor's value reaches a unit only when every unit
-        between holds no value of that quantity and the ancestor holds exactly one value of it. A flagged fact (6b) is never an input. A
-        declared input 'q{k=v}' takes the facts of q whose qualifiers contain k=v; when several match: (1) the qualifiers exactly the declared
-        ones, (2) where the value comes from (kind_rank: a text, table or caption element; figure panels only; computed_by_kb), (3) own unit,
-        then measurement unit, then ancestor, nearest first; values that agree within printed precision (+- half the last printed digit) are
-        one value, the most precise one used; more than one value left -> 'inputs ambiguous', none -> 'inputs missing'. Inputs are
-        converted to the units the function is written for (lists.convert). A3: a unit that holds a printed fact of the output (not
-        computed_by_kb, qualifiers not in conflict, not an input of the computation) keeps it; the transform is computed and compared (each
-        printed number +- half its last digit, the output's range over the corner combinations of the input ranges: agree / disagree,
-        <pid>.transform_redundant.csv) and no computed fact is added. Else the output: a derived fact on the computation unit, kind
-        computed_by_kb, inputs and evidence of its inputs, the declared qualifiers plus the carry keys of its first input, in the output's
-        lists.UNITS unit, with 6 significant digits, never fewer than its inputs (value_text)."""
+    def unit_inputs(self, rows, ranges=False):
+        """P195 (user) A1: the computation units (runs, specimens with the compiler's films, simulations, model runs) and the facts a unit
+        holds or inherits, shared by transforms() and domain_check(): local(u) its own facts (source 0) and its measurement units' results
+        (1); candidates(u, q) those of quantity q, flagged facts left out, else (it holds none) the nearest ancestor's conditions of q when
+        that ancestor holds exactly one value of it (source 2 and up, every unit between holding none, P190); to_unit, half (+- half the
+        last printed digit), rank (kind_rank) and span(f) (a fact's printed range: value +- half, or value_min - half to value_max + half).
+        ranges=True (the domain check) takes the facts given as a range (value_min / value_max) too; transform inputs take single values."""
         import decimal
-        import itertools
+        import types
         import experiments as EX
         quals = lambda f: dict(x.split("=", 1) for x in (f.get("qualifiers") or "").split(";") if "=" in x)   # noqa: E731
         tree = {r["fact_id"]: r for r in rows if "#" not in r["fact_id"]}
@@ -2218,7 +2212,8 @@ class Run:
             if "#" not in r["fact_id"] and r.get("type") == "activity" and r.get("kind") == "measurement":
                 meas_of[r.get("parent")].add(r["fact_id"])
         value = lambda f: F.num(f["value"]) if f.get("value") else None         # noqa: E731
-        facts = [f for f in rows if "#" in f["fact_id"] and f.get("type") not in ("claim", "caveat", "definition", "cited") and value(f) is not None]
+        facts = [f for f in rows if "#" in f["fact_id"] and f.get("type") not in ("claim", "caveat", "definition", "cited")
+                 and (value(f) is not None or (ranges and F.num(f.get("value_min") or "") is not None and F.num(f.get("value_max") or "") is not None))]
         direct = collections.defaultdict(list)
         for f in facts:
             direct[f.get("parent")].append(f)
@@ -2268,9 +2263,65 @@ class Run:
                 if not held:
                     continue
                 conds = [f for f in held if EX.is_condition(f)]
-                vals = {(f["value"], f.get("unit") or "") for f in conds}
+                vals = {(f["value"], f.get("value_min") or "", f.get("value_max") or "", f.get("unit") or "") for f in conds}
                 return [(f, d) for f in conds if not f.get("dimension_mismatch")] if conds and len(vals) == 1 and len(conds) == len(held) else []
             return []
+
+        def span(f, to):
+            """A fact's printed range in unit to: value +- half its last digit, or value_min - half to value_max + half."""
+            if f.get("value"):
+                lo, hi = F.num(f["value"]) - half(f["value"]), F.num(f["value"]) + half(f["value"])
+            else:
+                lo, hi = F.num(f["value_min"]) - half(f["value_min"]), F.num(f["value_max"]) + half(f["value_max"])
+            return sorted((to_unit(lo, f.get("unit") or "", to), to_unit(hi, f.get("unit") or "", to)))
+
+        return types.SimpleNamespace(quals=quals, tree=tree, units=units, local=local, candidates=candidates, to_unit=to_unit, half=half, rank=rank, span=span)
+
+    def domain_check(self, rows):
+        """P196 (user) 2, every paper, list only (no value changes): on one computation unit (its own, measurement and inherited facts as
+        unit_inputs gives them), a penetration_depth greater than a feature_depth, or a coated_aspect_ratio greater than an aspect_ratio,
+        each number taken as its printed range (+- half the last printed digit, as A3; a fact given as a range from its minimum to its maximum),
+        compared in the second quantity's lists.UNITS unit: the first's lower end above the second's upper end -> <pid>.domain_check.csv."""
+        h = self.unit_inputs(rows, ranges=True)
+        out = []
+        src = lambda s: "own" if s == 0 else "measurement unit" if s == 1 else f"ancestor (level {s - 1})"   # noqa: E731
+        for u in h.units:
+            for qa, qb in DOMAIN_CHECKS:
+                to = L.UNITS.get(qb) or ""
+                for fa, sa in h.candidates(u, qa):
+                    for fb, sb in h.candidates(u, qb):
+                        try:
+                            ra, rb = h.span(fa, to), h.span(fb, to)
+                        except (ValueError, KeyError):
+                            continue
+                        if ra[0] > rb[1]:
+                            out.append(dict(paper=self.key, unit=u, check=f"{qa} > {qb}", fact=fa["fact_id"], value=fa["value"] or f"{fa['value_min']}-{fa['value_max']}", value_unit=fa.get("unit") or "",
+                                            source=src(sa), data_kind=fa.get("data_kind") or "", other_fact=fb["fact_id"], other_value=fb["value"] or f"{fb['value_min']}-{fb['value_max']}",
+                                            other_unit=fb.get("unit") or "", other_source=src(sb), other_data_kind=fb.get("data_kind") or "",
+                                            compared_in=to or "1", ranges=f"{ra[0]:.6g}-{ra[1]:.6g} > {rb[0]:.6g}-{rb[1]:.6g}"))
+                            self.count("j", f"domain check: {qa} > {qb}")
+        self.domain_rows = out
+        return rows
+
+    def transforms(self, rows):
+        """j, P194 / P195 (user) A1, A3: every transform declared in ontology.yaml (vocab.TRANSFORMS) with a function in lists.TRANSFORM_FN,
+        per computation unit: a run, specimen (the compiler's film too), simulation or model run (pass-0 roles), never a measurement unit.
+        A unit's inputs: its own value facts, the results of its measurement units (the measurement activities under it, P185) and the
+        conditions (settings, model inputs) of its ancestors, transitively under P190: an ancestor's value reaches a unit only when every unit
+        between holds no value of that quantity and the ancestor holds exactly one value of it. A flagged fact (6b) is never an input. A
+        declared input 'q{k=v}' takes the facts of q whose qualifiers contain k=v; when several match: (1) the qualifiers exactly the declared
+        ones, (2) where the value comes from (kind_rank: a text, table or caption element; figure panels only; computed_by_kb), (3) own unit,
+        then measurement unit, then ancestor, nearest first; values that agree within printed precision (+- half the last printed digit) are
+        one value, the most precise one used; more than one value left -> 'inputs ambiguous', none -> 'inputs missing'. Inputs are
+        converted to the units the function is written for (lists.convert). A3: a unit that holds a printed fact of the output (not
+        computed_by_kb, qualifiers not in conflict, not an input of the computation) keeps it; the transform is computed and compared (each
+        printed number +- half its last digit, the output's range over the corner combinations of the input ranges: agree / disagree,
+        <pid>.transform_redundant.csv) and no computed fact is added. Else the output: a derived fact on the computation unit, kind
+        computed_by_kb, inputs and evidence of its inputs, the declared qualifiers plus the carry keys of its first input, in the output's
+        lists.UNITS unit, with 6 significant digits, never fewer than its inputs (value_text)."""
+        import itertools
+        h = self.unit_inputs(rows)
+        quals, tree, units, local, candidates, to_unit, half, rank = h.quals, h.tree, h.units, h.local, h.candidates, h.to_unit, h.half, h.rank
 
         self.transform_rows, self.redundant_rows, out = [], [], []
         self.count_transforms = collections.Counter()
@@ -2566,6 +2617,7 @@ class Run:
         rows = self.flag_dimensions(rows)
         rows = self.transforms(rows)                                            # P194 (user) 1: the declared transforms
         rows = self.flag_dimensions(rows)
+        rows = self.domain_check(rows)                                          # P196 (user) 2: listed, no value changes
         self.scope_facts([f for f in rows if f.get("type") == "derived"], "derived")   # P182
         rows = self.statements(rows)
         self.range_rows = out_of_range(self.pid, rows)                          # P190 (user): kept, listed
@@ -2587,6 +2639,7 @@ class Run:
         write_csv(OUT / f"{self.pid}.migrated.csv", MIGRATED_FIELDS, self.migrated)      # P194 (user) 2e
         write_csv(OUT / f"{self.pid}.transforms.csv", TRANSFORM_FIELDS, self.transform_rows)   # P194 (user) 1
         write_csv(OUT / f"{self.pid}.transform_redundant.csv", REDUNDANT_FIELDS, self.redundant_rows)   # P194 (user) 1d
+        write_csv(OUT / f"{self.pid}.domain_check.csv", DOMAIN_FIELDS, self.domain_rows)   # P196 (user) 2
         write_csv(OUT / f"{self.pid}.recipe_fields.csv", RECIPE_CSV, [dict(run=i, field=f, value=json.dumps(x[f]) if isinstance(x.get(f), list) else x.get(f) or "",
                                                                           quote=x.get(f + "_quote") or "", element=x.get(f + "_element") or "")
                                                                      for i, x in self.fill.items() for f in C.X.RECIPE_FIELDS + C.X.MODEL_FIELDS if x.get(f)])   # P187: stored, nothing derives from steps; P188: nor from assumptions
