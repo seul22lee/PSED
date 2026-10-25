@@ -7,7 +7,7 @@ Sections: the elements.csv section column (elements.py maps equations into their
 or s<n> (figures, tables, a table's cells) is unmapped and runs as its own group. P148 prompt: a fixed prefix, the same for every
 group of a paper and sent as Gemini cached content (common.run): the instruction line, CODEBOOK.md whole (in place of form.json; the
 provider schema still constrains the response), RULES (only what the codebook does not say), EXAMPLES (one gold record per type and
-element kind, from the other dev papers), PASS-0 UNITS (id | role | name | parent | data, from the latest pass-0 line); then the
+element kind, from the other dev papers), PASS-0 UNITS (id | role | name | distinguished by | parent | data, from the latest pass-0 line); then the
 group's elements as render.group() writes them (the blocks pass 0 uses). Response (P133 option 2): {"answers": [{"id", "nk",
 "duplicate_of", "records"}]}; variables as a list of {symbol, quantity}. Prints the tallies; local validation against the full
 form.json is a count only (the compiler validates, P134).
@@ -301,7 +301,8 @@ def step_examples(pid, form):
 
 
 def units_block(pid):
-    """P148 (A5): PASS-0 UNITS, one line per unit of the latest pass-0 line: id | role | name | parent | data (id:role ...). P161: then
+    """P148 (A5): PASS-0 UNITS, one line per unit of the latest pass-0 line: id | role | name | distinguished by | parent | data (id:role ...);
+    P204 (user): distinguished by = the unit's distinguished_by, 'quantity value unit' joined by '; ', '-' when none (missing since P184). P161: then
     the units compile.bind() derives (P177b) for the items no pass-0 unit holds, each line ending | <origin>; none, no line."""
     import compile as K                                                         # P161 (compile imports this module)
     p0 = C.lines(pid, 0)
@@ -314,7 +315,9 @@ def units_block(pid):
     words = {"reactant_A": "reactant_A", "reactant_B": "reactant_B", "carrier_gas": "carrier", "process_mode": "mode", "material": "material"}   # P185: material
     field = lambda it, f: {**it, **fill.get(it.get("id"), {})}.get(f)          # noqa: E731  P201: as compile reads a unit: its fill (nulls too) over its own fields
     recipe = lambda it: ", ".join(f"{words[f]} {field(it, f)}" for f in C.X.RECIPE_FIELDS if f in words and field(it, f))   # noqa: E731  P187: steps not shown
-    line = lambda it: (f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"
+    dist = lambda it: "; ".join(" ".join(str(x) for x in (d.get("quantity"), d.get("value"), d.get("unit")) if x not in (None, "")) for d in it.get("distinguished_by") or []
+                                if isinstance(d, dict)) or "-"                  # noqa: E731  P204 (user)
+    line = lambda it: (f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {dist(it)} | {it.get('parent') or '-'} | {data(it)}"
                        + (f" | {recipe(it)}" if recipe(it) else ""))                # noqa: E731  P175
     der = K.bind(pid, obj, None)["units"]                                       # P177b: compile.bind's derived units (no pass-1 records yet)
     return "\n".join([line(it) for it in items if isinstance(it, dict)]
@@ -329,7 +332,7 @@ def prefix(pid, form):
     refs = [r["element_id"] for r in rows if r["kind"] in ("caption", "panel", "equation")]
     return "\n\n".join([INTRO, "CODEBOOK:\n" + render.codebook(), RULES,
                          "EXAMPLES (one gold record per type and element kind, from other papers; their about ids are those papers' units):\n" + examples(pid, form),
-                         "PASS-0 UNITS (id | role | name | parent | data id:role): about takes an id; mentions take a name\n" + units_block(pid)
+                         "PASS-0 UNITS (id | role | name | distinguished by | parent | data id:role): about takes an id; mentions take a name\n" + units_block(pid)
                          + "\nElement ids that may be linked: " + ", ".join(refs)]) + "\n\n"
 
 

@@ -328,6 +328,9 @@ psed_v2/
   nearest ancestor's single value with quotes (pass1_elements._quote, else its evidence element's words). Pass 1: an element holding a
   number (common.numeric_ids: elements.csv n_numbers > 0, a table header cell excepted) never answers no_knowledge (an anyOf branch by
   id enum; common.failure too). Form version P204 (form_versions.csv corpus candidate); P202 rejected for ela03.
+- P204 C (user, option 1): the PASS-0 UNITS block prints each unit's distinguished_by after its name ('quantity value unit', '; '
+  between parts, '-' when none; missing since P184): id | role | name | distinguished by | parent | data | recipe. Every paper's
+  pass-1 prefix changes in that column; its content changes where units carry distinguished_by (ela03, yim20, gre23).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
