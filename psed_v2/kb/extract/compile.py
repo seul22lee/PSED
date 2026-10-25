@@ -437,7 +437,7 @@ def recipe_fill(pid, lines=None):
     for x, refill in [(y, lines[i - 1].get("section") == "recipe_refill") for i in fl for y in (C.loads_json(lines[i - 1]["response"]).get("recipes") or [])]:
         if isinstance(x, dict) and x.get("id"):                                    # P185: every fill line in order; a later line's field replaces an
             f_ = out.setdefault(x["id"], {})                                       # earlier one (a material-only refill); P187: a refill line
-            for f in C.X.RECIPE_FIELDS:                                            # (section recipe_refill) fills only the fields still null
+            for f in C.X.RECIPE_FIELDS + C.X.MODEL_FIELDS:                         # (section recipe_refill) fills only the fields still null; P188: assumptions
                 if f in x and not (refill and f_.get(f)):
                     legacy = f == "process_mode" and f + "_quote" not in x
                     v, q, e = x.get(f), x.get("quote") if legacy else x.get(f + "_quote"), x.get("element") if legacy else x.get(f + "_element")
@@ -451,7 +451,7 @@ def recipe_fill(pid, lines=None):
                     f_.update({f: v, f + "_quote": q, f + "_element": e})
     hist = C.V2 / "ontology" / "history.csv"
     for h in (csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []):
-        if h["kind"] != "recipe_field" or pid not in h["source_pids"].split(";") or h["id"] not in C.X.RECIPE_FIELDS:
+        if h["kind"] != "recipe_field" or pid not in h["source_pids"].split(";") or h["id"] not in C.X.RECIPE_FIELDS + C.X.MODEL_FIELDS:
             continue
         v = None if h["target"] in ("", "null") else h["target"]
         for run in [r for r in h["parameters"].split(";") if r] or list(out):
@@ -2323,7 +2323,7 @@ class Run:
         write_csv(OUT / f"{self.pid}.qualifier_scope.csv", SCOPE_FIELDS, self.scope_rows)   # P182 (user)
         write_csv(OUT / f"{self.pid}.recipe_fields.csv", RECIPE_CSV, [dict(run=i, field=f, value=json.dumps(x[f]) if isinstance(x.get(f), list) else x.get(f) or "",
                                                                           quote=x.get(f + "_quote") or "", element=x.get(f + "_element") or "")
-                                                                     for i, x in self.fill.items() for f in C.X.RECIPE_FIELDS if x.get(f)])   # P187: stored, nothing derives from steps
+                                                                     for i, x in self.fill.items() for f in C.X.RECIPE_FIELDS + C.X.MODEL_FIELDS if x.get(f)])   # P187: stored, nothing derives from steps; P188: nor from assumptions
         write_csv(OUT / f"{self.pid}.species.csv", SPECIES_FIELDS, [dict(x, fact_id=";".join(facts_of.get(id(x), []))) for x in self.a1_rows])
         made = collections.defaultdict(list)                                    # P177c (user): bind()'s outcome per item with the facts it gave
         for f in rows:                                                          # (check.py --dir reads it: a fact of a bound item may carry points_ref)
@@ -2430,9 +2430,22 @@ def match_key(f):
     return f["type"], f["quantity"], canon(f), f["value_text"].lower()
 
 
-def matches(g, c):
+def meas_method(f):
+    """P188: a measurement activity's method: its method field, else its id's last part (compiled) or its label (gold), snake case."""
+    return f.get("method") or (f["fact_id"].split(":")[-1] if ":meas:" in f["fact_id"] else re.sub(r"\W+", "_", f.get("label_as_printed", "").strip().lower()))
+
+
+def matches(g, c, pairs=None):
     """A gold row g and a compiled row c match: a shared evidence element and equal match_key; D13: a gold model row without a value
-    matches a model row on a shared element whatever its quantity."""
+    matches a model row on a shared element whatever its quantity. P188 (user): two measurement activities match by (entity, method):
+    the same method, the compiled one's entity paired with the gold one's (pairs: gold unit id -> compiled unit ids, render.pair_units;
+    not checked when pairs is None); the evidence is compared only when both carry it."""
+    if g["type"] == c["type"] == "activity" and g.get("kind") == c.get("kind") == "measurement":
+        if meas_method(g) != meas_method(c):
+            return False
+        if g["evidence"] and c["evidence"] and not set(g["evidence"].split(";")) & set(c["evidence"].split(";")):
+            return False
+        return pairs is None or c["parent"] in pairs.get(g["parent"], ())
     if not set(g["evidence"].split(";")) & set(c["evidence"].split(";")):
         return False
     if g["type"] == "model" and not (g["value"] or g["value_min"] or g["value_max"] or g["value_text"]):
@@ -2467,12 +2480,15 @@ def diff(run):
         return [], [f"no gold: kb/pilot/{run.pid}.facts.csv absent (not scored)"]
     gold = gold_rows(run.pid)
     comp = run.rows
+    import render                                                               # P188: the units paired, for measurement activities
+    pr = render.pair_units(run.pid, run.key, render.compiled_units(run.pid, comp), measurements=True)
+    pairs = {g: set(ps) for g, ps in pr["pair_of"].items()}
     free = list(range(len(gold)))
     matched = collections.Counter()
     for c in comp:
         for j in free:
             g = gold[j]
-            if matches(g, c):
+            if matches(g, c, pairs):
                 matched[c["type"]] += 1
                 free.remove(j)
                 break

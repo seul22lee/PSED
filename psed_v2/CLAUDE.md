@@ -212,6 +212,12 @@ psed_v2/
   stores the recipe fields in kb/compiled/<pid>.recipe_fields.csv, nothing derives from steps, the PASS-0 UNITS block does not show it.
   recipe_fill.py --refill-nulls: one call per paper, the runs with a null field and those fields (section recipe_refill: compile fills
   only fields still null).
+- P188 (user): compile.diff matches a gold measurement activity to a compiled one by (entity, method): the method (column, else the
+  <entity>:meas:<method> id), the parents paired by render.pair_units, evidence compared only when both sides carry it. recipe_fill.py
+  --runs a,b limits a --refill-nulls call to those runs. A simulation's assumptions (export.MODEL_FIELDS: what the model includes or
+  excludes, in the paper's words, with assumptions_quote; null when not stated; form_pass0 version 7; export --check 18):
+  recipe_fill.py --assumptions, one call per paper with a simulation (section assumptions); compile.recipe_fill imports it under the
+  recipe contract and stores it in recipe_fields.csv; nothing derives from it, the PASS-0 UNITS block does not show it.
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

@@ -9,6 +9,9 @@ without the recipe fields are byte-identical).
 
     ~/miniconda3/bin/conda run -n psed310 python psed_v2/kb/extract/recipe_fill.py yli18 [--plan] [--refill]
 
+P188 (user): --assumptions fills the simulations' assumptions (export.MODEL_FIELDS: what the model includes or excludes, in the paper's
+words, with its quote), one call per paper with a simulation (section assumptions; compile.recipe_fill imports it under the same contract).
+
 P182 (user): --refill calls only for a paper whose latest fill leaves a recipe field null on at least one run (null_fields). The
 response schema makes each quote a required string (empty for a null field); compile.recipe_fill, the importer, keeps a value only when
 its quote is found (compile.quote_found) and lists the others.
@@ -64,6 +67,32 @@ def job(pid, fields=FIELDS, only=None, section="recipe"):
     return (K.RECIPE_FILL_PASS, section, prompt, schema, els)
 
 
+def job_assumptions(pid):
+    """P188 (user): (pass, section, prompt, response schema, element ids) for the simulations' assumptions, or None when the paper has no
+    simulation. Input: the simulations of the pass-0 line compile uses (id, name, evidence quote) and every text element of the paper."""
+    _, _, units = PM.pass0_line(pid)
+    sims = [u for u in units if u.get("role") == "simulation" and u.get("id")]
+    if not sims:
+        return None
+    text = C.E.texts(pid)
+    els = [r["element_id"] for r in C.E.load(pid) if r["kind"] in PM.TEXT_KINDS and text.get(r["element_id"], "").strip()]
+    prompt = "\n\n".join([
+        "You read the text of one ALD paper and give, for each model (a simulation) listed below, its assumptions: what the model includes or "
+        "excludes (its physics, its assumptions), in the paper's words. Give the quote copied verbatim from the TEXT (one passage: the words that "
+        "state them) and the id of the element holding it. A model whose assumptions the text does not state: the value null, its quote an empty "
+        "string, its element null. Never infer an assumption from an equation, a number or a typical model.",
+        "MODELS (id | name as printed | evidence quote):\n" + "\n".join(f"{u['id']} | {u.get('name_as_printed') or '-'} | {u.get('evidence_quote') or '-'}" for u in sims),
+        "TEXT (element id: text):\n" + "\n".join(f"{e}: {text[e]}" for e in els)])
+    item = {"id": {"enum": [u["id"] for u in sims]}}
+    for f in C.X.MODEL_FIELDS:
+        item[f] = {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]}
+        item[f + "_quote"] = {"type": "string"}                                # a required string; the importer checks it
+        item[f + "_element"] = {"anyOf": [{"enum": els}, {"type": "null"}]}
+    schema = {"type": "object", "additionalProperties": False, "required": ["recipes"],
+              "properties": {"recipes": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(item), "properties": item}}}}
+    return (K.RECIPE_FILL_PASS, "assumptions", prompt, schema, els)
+
+
 def null_fields(pid):
     """P182: {run id: [fields null]} of the pass-0 runs after the latest fill line (compile.recipe_fill: its contract applied); a field
     the user decided (history.csv kind recipe_field) is not null in this sense; runs with none left out."""
@@ -76,10 +105,15 @@ def null_fields(pid):
 
 def main(arg):
     pid, key = C.resolve(arg)
+    if "--assumptions" in sys.argv:                                             # P188 (user): the simulations' assumptions
+        return assumptions(pid, key)
     fields = sys.argv[sys.argv.index("--fields") + 1].split(",") if "--fields" in sys.argv else FIELDS   # P185: e.g. --fields material
     assert set(fields) <= set(FIELDS), fields
     if "--refill-nulls" in sys.argv:                                            # P187 (user): every run with a null field, the null fields only
         nf = null_fields(pid)
+        if "--runs" in sys.argv:                                                # P188: the refill of named runs only (e.g. --runs a,b)
+            want = set(sys.argv[sys.argv.index("--runs") + 1].split(","))
+            nf = {i: fs for i, fs in nf.items() if i in want}
         if not nf:
             print(f"{key}: no null recipe field: no call")
             return 0
@@ -117,6 +151,25 @@ def main(arg):
                 found = "-" if not x.get(f) else ("found" if how else "NOT FOUND")       # P182: compile.quote_found, the importer's check
                 cells.append(f"{f} {x.get(f) or 'null'} [{x.get(f + '_element') or '-'}; quote {found}] {x.get(f + '_quote') or ''}")
             print(f"{key} | {u['id']} | " + " | ".join(cells))
+    return 0
+
+
+def assumptions(pid, key):
+    j = job_assumptions(pid)
+    if j is None:
+        print(f"{key}: no simulation in pass 0: no call")
+        return 0
+    if "--plan" in sys.argv:
+        C.plan(pid, [j], THINKING)
+        print(f"{key}: prompt {len(j[2])} chars (~{int(len(j[2]) / 3.1)} tokens), {len(j[3]['properties']['recipes']['items']['properties']['id']['enum'])} simulations")
+        return 0
+    out, _ = C.run(pid, [j], THINKING)
+    text = C.E.texts(pid)
+    for x in C.loads_json(out[0]["response"]).get("recipes") or []:
+        for f in C.X.MODEL_FIELDS:
+            how, _ = K.quote_found(pid, x.get(f + "_quote"), K.normalize(text.get(x.get(f + "_element") or "", "")), x.get(f + "_element"))
+            found = "-" if not x.get(f) else ("found" if how else "NOT FOUND")
+            print(f"{key} | {x.get('id')} | {f} [{x.get(f + '_element') or '-'}; quote {found}] {x.get(f) or 'null'} | quote: {x.get(f + '_quote') or ''}")
     return 0
 
 

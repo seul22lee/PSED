@@ -51,6 +51,8 @@ UNITS: one item per run, specimen, measurement, simulation and model run.
 - recipe fields of a run (P181, P185, P187): reactant_A, reactant_B, carrier_gas (species ids), process_mode (one of the form's values),
   material (the film material id) and steps (the cycle's step sequence in order, step values), each only when the paper states it for that run, with <field>_quote copied from the paper (the words that state it); null otherwise, never
   inferred. A simulation or model run: the same fields when the paper states them for the model, else null.
+- assumptions of a simulation (P188): what the model includes or excludes (its physics, its assumptions), in the paper's words, with
+  assumptions_quote copied from the paper; null when the paper states none.
 
 TABLE LAYOUTS (one per table of TABLES below):
 {tables}

@@ -88,12 +88,14 @@ Pass-1 groups (P133b, extract/pass1_elements.py): one per section (abstract, s<n
 | pass0.units.process_mode | one of `thermal`, `ozone`, `plasma`, `hot_wire` or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.material | enum, 16 values or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.steps | list of enum, 7 values or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.assumptions | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.reactant_A_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.reactant_B_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.carrier_gas_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.process_mode_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.material_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.steps_quote | string or {'type': 'null'} | always | extractor, pass 0 |
+| pass0.units.assumptions_quote | string or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.method | enum, 30 values or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.units.distinguished_by | list of object, keys closed (3: quantity, value, unit) or {'type': 'null'} | always | extractor, pass 0 |
 | pass0.table_layouts.table | string or {'type': 'null'} | always | extractor, pass 0 |

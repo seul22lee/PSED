@@ -325,13 +325,13 @@ def _agree(u, g):
         return False
 
 
-def compiled_units(pid):
+def compiled_units(pid, rows=None):
     """P186 (user): the experiment units of kb/compiled/<pid>.facts.csv in the pass-0 unit form, for pair_units: a run (a deposition
     activity), a specimen (an entity under a deposition or under a specimen; the compiler's films included), a simulation (a simulation
     activity), a model run (an entity under a simulation), a measurement (a measurement activity under one of those entities); name =
     the label, introduced_in = its evidence elements, parent = the nearest unit above, data = the points_ref of the facts under it (a
     run's or specimen's measurements included), method of a measurement; own = its settings (quantity, value)."""
-    rows = list(csv.DictReader((C.V2 / "kb" / "compiled" / f"{pid}.facts.csv").open(encoding="utf-8")))
+    rows = list(csv.DictReader((C.V2 / "kb" / "compiled" / f"{pid}.facts.csv").open(encoding="utf-8"))) if rows is None else rows   # P188: or the rows given
     R = {r["fact_id"]: r for r in rows}
     kids = collections.defaultdict(list)
     for r in rows:
