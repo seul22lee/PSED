@@ -1,15 +1,24 @@
 element,label,type,quantity,record_species,definition,own_element_names,outcome,species,fact_id
-s6.p3,\theta,definition,surface_coverage,,,,no species,,yim22:s6.p3#1
-eq17,f_{\text{ads}},model,other,,,,no species,,yim22:eq17#1
-s6.p4,Q,definition,other,,,,no species,,yim22:s6.p4#1
-eq18,f_{\text{ads}},model,other,,,,no species,,yim22:eq18#1
-s6.p5,P_d,definition,p_d,,,,no species,,yim22:s6.p5#1
-eq19,f_{\text{des}},model,other,,,,no species,,yim22:eq19#1
-s6.p6,g,definition,other,,,,no species,,yim22:s6.p6#1
-eq20,g,model,other,,,,no species,,yim22:eq20#1
-s6.p7,K,definition,adsorption_equilibrium_constant,,,,no species,,yim22:s6.p7#1
+s2.p11,c,cited,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
+s4.p4,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:s4.p4#1
+eq1,p_A,model,partial_pressure,model_reactant,tabu1.r27c0,,backed by the definition,model_reactant,yim22:eq1#1
+s5.p2,D_{\text{eff}},definition,effective_diffusion_coefficient,,,,no species,,yim22:s5.p2#1
+eq2,D_{\text{eff}},model,effective_diffusion_coefficient,,,,no species,,yim22:eq2#1
+eq3,h,model,feature_width,,,,no species,,yim22:eq3#1
+eq4,D_A,model,gas_phase_diffusion_coefficient,,tabu1.r4c0,,from the definition,model_reactant,yim22:eq4#1
+eq5,\bar{v}_A,model,other,,tabu2.r9c0,,from the definition,model_reactant,yim22:eq5#1
+eq6,z_A,model,other,,tabu2.r17c0,,from the definition,model_reactant,yim22:eq6#1
+s5.p9,D_{\text{Kn}},definition,knudsen_diffusion_coefficient,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:s5.p9#1
+eq7,D_{\text{Kn}},model,knudsen_diffusion_coefficient,,s5.p9,,from the definition,model_reactant,yim22:eq7#1
+eq8,"p_A(x, t)",model,partial_pressure,model_reactant,,,species cleared (no evidence),,yim22:eq8#1
+eq9,"p_A(x, t)",model,partial_pressure,model_reactant,,,species cleared (no evidence),,yim22:eq9#1
+eq10,p_{At},model,partial_pressure,model_reactant,tabu1.r30c0,,backed by the definition,model_reactant,yim22:eq10#1
+eq11,x_s,model,distance,,,,no species,,yim22:eq11#1
+eq12,D,model,effective_diffusion_coefficient,,,,no species,,yim22:eq12#1
+eq13,q,model,saturation_density,,,,no species,,yim22:eq13#1
+eq14,x_t,model,distance,,,,no species,,yim22:eq14#1
+eq15,Q,model,other,,,,no species,,yim22:eq15#1
 eq21,K,model,adsorption_equilibrium_constant,,,,no species,,yim22:eq21#1
-eq22,\theta,model,surface_coverage,,,,no species,,yim22:eq22#1
 eq23,s(x),model,film_thickness,,,,no species,,yim22:eq23#1
 eq24,"s(x, N)",model,film_thickness,,,,no species,,yim22:eq24#1
 eq25,H(N),model,feature_width,,,,no species,,yim22:eq25#1
@@ -18,215 +27,356 @@ eq27,\lambda,model,mean_free_path,,,,no species,,yim22:eq27#1
 eq28,"\sigma_{i,j}",model,other,,,,no species,,yim22:eq28#1
 eq29,h_T,model,other,,,,no species,,yim22:eq29#1
 eq30,\gamma,model,other,,,,no species,,yim22:eq30#1
-eq31,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim22:eq31#1
+eq31,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:eq31#1
 s12.p1,H,model,feature_width,,,"model_reactant,n2",no species,,yim22:s12.p1#1
+s12.p2,Kn,derived,knudsen_number,,,,no species,,yim22:s12.p2#3
 s12.p5,W,model,feature_extent,,,,no species,,yim22:s12.p5#1
-s12.p5,d_A,model,molecule_diameter,model_reactant,tabu1.r7c0,,backed by the definition,model_reactant,
-s12.p5,d_I,model,molecule_diameter,n2,,,species cleared (no evidence),,
-s12.p5,M_I,model,molar_mass,n2,,,species cleared (no evidence),,yim22:s12.p5#2
-s12.p5,b_film,model,b_film,,,,no species,,yim22:s12.p5#3
-s12.p5,M,model,molar_mass,,,,no species,,yim22:s12.p5#4
+s12.p5,d_A,model,molecule_diameter,,tabu1.r7c0,,from the definition,model_reactant,yim22:s12.p5#2
+s12.p5,d_I,model,molecule_diameter,,,,no species,,yim22:s12.p5#3
+s12.p5,M_I,model,molar_mass,,,,no species,,yim22:s12.p5#4
+s12.p5,b_{film},model,b_film,,,,no species,,yim22:s12.p5#5
+s12.p5,b_A,model,other,,,,no species,,yim22:s12.p5#6
+s12.p5,M,model,molar_mass,,,,no species,,yim22:s12.p5#7
 s14.p6,W,model,feature_extent,,,model_reactant,no species,,
-s14.p6,H,model,feature_width,,,model_reactant,no species,,
+s14.p6,H,model,feature_width,,,model_reactant,no species,,yim22:s14.p6#1
 s14.p6,N,model,cycle_number,,,model_reactant,no species,,
-s14.p6,T,model,deposition_temperature,,,model_reactant,no species,,yim22:s14.p6#1
-s14.p6,t_1,model,pulse_time,model_reactant,"tabu2.r5c0, tabu2.r5c1",model_reactant,backed by the definition,model_reactant,
-s14.p6,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,yim22:s14.p6#2
-s14.p6,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,yim22:s14.p6#3
-s14.p6,d_A,model,molecule_diameter,model_reactant,tabu1.r7c0,model_reactant,backed by the definition,model_reactant,
-s14.p6,M_i,model,molar_mass,n2,,model_reactant,species cleared (no evidence),,
-s14.p6,d_i,model,molecule_diameter,n2,,model_reactant,species cleared (no evidence),,
-s14.p6,p_i,model,partial_pressure,,,model_reactant,no species,,yim22:s14.p6#4
+s14.p6,T,model,deposition_temperature,,,model_reactant,no species,,yim22:s14.p6#2
+s14.p6,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:s14.p6#3
+s14.p6,p_{A0},model,partial_pressure,,tabu1.r28c0,model_reactant,from the definition,model_reactant,yim22:s14.p6#4
+s14.p6,M_A,model,molar_mass,,tabu1.r21c0,model_reactant,from the definition,model_reactant,yim22:s14.p6#5
+s14.p6,d_A,model,molecule_diameter,,tabu1.r7c0,model_reactant,from the definition,model_reactant,
+s14.p6,M_i,model,molar_mass,,,model_reactant,no species,,
+s14.p6,d_i,model,molecule_diameter,,,model_reactant,no species,,yim22:s14.p6#6
+s14.p6,p_i,model,partial_pressure,,,model_reactant,no species,,yim22:s14.p6#7
 s14.p6,q,model,saturation_density,,,model_reactant,no species,,
 s14.p6,M,model,molar_mass,,,model_reactant,no species,,
-s14.p6,P_d,model,p_d,,,model_reactant,no species,,yim22:s14.p6#5
-s14.p6,c,model,initial_sticking_coefficient,model_reactant,,model_reactant,kept: its own element names it,model_reactant,yim22:s14.p6#6
-s15.p4,W,model,feature_extent,,,model_reactant,no species,,
-s15.p4,H,model,feature_width,,,model_reactant,no species,,yim22:s15.p4#1
-s15.p4,T,model,deposition_temperature,,,model_reactant,no species,,yim22:s15.p4#2
-s15.p4,N,model,cycle_number,,,model_reactant,no species,,
-s15.p4,t_1,model,pulse_time,model_reactant,"tabu2.r5c0, tabu2.r5c1",model_reactant,backed by the definition,model_reactant,yim22:s15.p4#3
-s15.p4,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,yim22:s15.p4#4
-s15.p4,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,
-s15.p4,d_A,model,molecule_diameter,model_reactant,tabu1.r7c0,model_reactant,backed by the definition,model_reactant,yim22:s15.p4#5
-s15.p4,M_I,model,molar_mass,n2,,model_reactant,species cleared (no evidence),,
-s15.p4,d_I,model,molecule_diameter,n2,,model_reactant,species cleared (no evidence),,yim22:s15.p4#6
-s15.p4,p_I,model,process_pressure,,,model_reactant,no species,,yim22:s15.p4#7
+s14.p6,P_d,model,p_d,,,model_reactant,no species,,yim22:s14.p6#9
+s14.p6,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,yim22:s14.p6#10
 s15.p4,q,model,saturation_density,,,model_reactant,no species,,
 s15.p4,M,model,molar_mass,,,model_reactant,no species,,
-s15.p4,P_d,model,p_d,,,model_reactant,no species,,yim22:s15.p4#9
-s15.p4,c,model,initial_sticking_coefficient,,,model_reactant,from the symbol's evidence in this paper,model_reactant,
-fig2.cap,c,model,initial_sticking_coefficient,,,model_reactant,from the symbol's evidence in this paper,model_reactant,
+s15.p4,P_d,model,p_d,,,model_reactant,no species,,yim22:s15.p4#11
+s15.p4,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,
+fig1a,L,definition,feature_depth,,,,no species,,yim22:fig1a#1
+fig1a,H,definition,feature_width,,,,no species,,yim22:fig1a#2
+fig1a,s,definition,film_thickness,,,,no species,,yim22:fig1a#3
+fig1b,x̃,definition,dimensionless_distance,,,,no species,,
+fig1b,s/N,definition,growth_per_cycle,,,,no species,,
+fig1b,x,definition,distance,,,,no species,,yim22:fig1b#1
+fig2.cap,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,
 fig2.cap,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig2.cap#1
 fig2.cap,p_{A0},model,partial_pressure,,tabu1.r28c0,model_reactant,from the definition,model_reactant,yim22:fig2.cap#2
 fig2.cap,M_A,model,molar_mass,,tabu1.r21c0,model_reactant,from the definition,model_reactant,yim22:fig2.cap#3
 fig2.cap,d_A,model,molecule_diameter,,tabu1.r7c0,model_reactant,from the definition,model_reactant,yim22:fig2.cap#4
 fig2.cap,\rho_1,model,partial_pressure,,,model_reactant,no species,,yim22:fig2.cap#5
-fig2.cap,M_l,model,molar_mass,,,model_reactant,no species,,
-fig2.cap,d_l,model,molecule_diameter,,,model_reactant,no species,,
-fig2.cap,\rho,model,film_density,,,model_reactant,no species,,yim22:fig2.cap#6
-fig2.cap,K,model,adsorption_equilibrium_constant,,,model_reactant,no species,,yim22:fig2.cap#8
-fig2.cap,q,model,saturation_density,,,model_reactant,no species,,yim22:fig2.cap#9
-fig2.cap,H,model,feature_width,,,model_reactant,no species,,yim22:fig2.cap#10
-fig2.cap,W,model,feature_extent,,,model_reactant,no species,,yim22:fig2.cap#11
-fig2a,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,yim22:fig2a#1
-fig2a,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,yim22:fig2a#2
-fig2a,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,yim22:fig2a#3
-fig2a,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,yim22:fig2a#4
-fig2b,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,
-fig2b,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,
-fig2b,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,
-fig2b,t_1,model,time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,
-fig5a,H,model,feature_width,,,,no species,,yim22:fig5a#1
-fig5a,H,model,feature_width,,,,no species,,yim22:fig5a#2
-fig5a,H,model,feature_width,,,,no species,,yim22:fig5a#3
-fig5a,H,model,feature_width,,,,no species,,yim22:fig5a#4
-fig5a,H,model,feature_width,,,,no species,,yim22:fig5a#5
-fig5a,H,model,feature_width,,,,no species,,yim22:fig5a#6
-fig5a,H,model,feature_width,,,,no species,,yim22:fig5a#7
-fig5b,N,model,cycle_number,,,,no species,,yim22:fig5b#1
-fig5b,N,model,cycle_number,,,,no species,,yim22:fig5b#2
-fig5b,N,model,cycle_number,,,,no species,,yim22:fig5b#3
-fig5b,N,model,cycle_number,,,,no species,,yim22:fig5b#4
-fig5b,N,model,cycle_number,,,,no species,,yim22:fig5b#5
-fig5b,N,model,cycle_number,,,,no species,,yim22:fig5b#6
-fig5b,N,model,cycle_number,,,,no species,,yim22:fig5b#7
+fig2.cap,M_l,model,molar_mass,,,model_reactant,no species,,yim22:fig2.cap#6
+fig2.cap,d_l,model,molecule_diameter,,,model_reactant,no species,,yim22:fig2.cap#7
+fig2.cap,\rho,model,film_density,,,model_reactant,no species,,yim22:fig2.cap#8
+fig2.cap,K,model,adsorption_equilibrium_constant,,,model_reactant,no species,,yim22:fig2.cap#10
+fig2.cap,q,model,saturation_density,,,model_reactant,no species,,yim22:fig2.cap#11
+fig2.cap,H,model,feature_width,,,model_reactant,no species,,yim22:fig2.cap#12
+fig2.cap,W,model,feature_extent,,,model_reactant,no species,,yim22:fig2.cap#13
+fig2a,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:fig2a#1
+fig2a,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:fig2a#2
+fig2a,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:fig2a#3
+fig2a,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:fig2a#4
+fig4a,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,yim22:fig4a#1
+fig4a,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,yim22:fig4a#2
+fig4a,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,yim22:fig4a#3
+fig4a,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,yim22:fig4a#4
+fig4a,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,yim22:fig4a#5
+fig4b,t_1,model,pulse_time,model_reactant,tabu2.r5c0,model_reactant,backed by the definition,model_reactant,yim22:fig4b#1
+fig4b,t_1,model,pulse_time,model_reactant,tabu2.r5c0,model_reactant,backed by the definition,model_reactant,yim22:fig4b#2
+fig4b,t_1,model,pulse_time,model_reactant,tabu2.r5c0,model_reactant,backed by the definition,model_reactant,yim22:fig4b#3
+fig4b,t_1,model,pulse_time,model_reactant,tabu2.r5c0,model_reactant,backed by the definition,model_reactant,yim22:fig4b#4
+fig4b,t_1,model,pulse_time,model_reactant,tabu2.r5c0,model_reactant,backed by the definition,model_reactant,yim22:fig4b#5
+fig4c,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,yim22:fig4c#1
+fig4c,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,yim22:fig4c#2
+fig4c,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,yim22:fig4c#3
+fig4c,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,yim22:fig4c#4
+fig4c,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,yim22:fig4c#5
+fig4e,q,model,saturation_density,,,model_reactant,no species,,yim22:fig4e#1
+fig4e,q,model,saturation_density,,,model_reactant,no species,,yim22:fig4e#2
+fig4e,q,model,saturation_density,,,model_reactant,no species,,yim22:fig4e#3
+fig4e,q,model,saturation_density,,,model_reactant,no species,,yim22:fig4e#4
+fig4e,q,model,saturation_density,,,model_reactant,no species,,yim22:fig4e#5
+fig4f,P_d,model,p_d,,,model_reactant,no species,,yim22:fig4f#1
+fig4f,P_d,model,p_d,,,model_reactant,no species,,yim22:fig4f#2
+fig4f,P_d,model,p_d,,,model_reactant,no species,,yim22:fig4f#3
+fig4f,P_d,model,p_d,,,model_reactant,no species,,yim22:fig4f#4
+fig4f,P_d,model,p_d,,,model_reactant,no species,,yim22:fig4f#5
+fig4g,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,yim22:fig4g#1
+fig4g,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,yim22:fig4g#2
+fig4g,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,yim22:fig4g#3
+fig4g,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,yim22:fig4g#4
+fig4g,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,yim22:fig4g#5
+fig4h,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig4h#1
+fig4h,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig4h#2
+fig4h,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig4h#3
+fig4h,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig4h#4
+fig4h,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig4h#5
+fig4i,p_i,model,partial_pressure,,,model_reactant,no species,,yim22:fig4i#1
+fig4i,p_i,model,partial_pressure,,,model_reactant,no species,,yim22:fig4i#2
+fig4i,p_i,model,partial_pressure,,,model_reactant,no species,,yim22:fig4i#3
+fig4i,p_i,model,partial_pressure,,,model_reactant,no species,,yim22:fig4i#4
+fig4i,p_i,model,partial_pressure,,,model_reactant,no species,,yim22:fig4i#5
 fig6.cap,W,model,feature_extent,,,model_reactant,no species,,
-fig6.cap,H,model,feature_width,,,model_reactant,no species,,
+fig6.cap,H,model,feature_width,,,model_reactant,no species,,yim22:fig6.cap#1
 fig6.cap,N,model,cycle_number,,,model_reactant,no species,,
-fig6.cap,T,model,deposition_temperature,,,model_reactant,no species,,
-fig6.cap,t_1,model,pulse_time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,yim22:fig6.cap#1
-fig6.cap,\rho_{A0},model,partial_pressure,model_reactant,,model_reactant,kept: its own element names it,model_reactant,
-fig6.cap,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,
-fig6.cap,d_A,model,molecule_diameter,model_reactant,tabu1.r7c0,model_reactant,backed by the definition,model_reactant,
+fig6.cap,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig6.cap#2
+fig6.cap,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:fig6.cap#3
+fig6.cap,\rho_{A0},model,partial_pressure,,,model_reactant,no species,,yim22:fig6.cap#4
+fig6.cap,M_A,model,molar_mass,,tabu1.r21c0,model_reactant,from the definition,model_reactant,
+fig6.cap,d_A,model,molecule_diameter,,tabu1.r7c0,model_reactant,from the definition,model_reactant,
 fig6.cap,M_1,model,molar_mass,,,model_reactant,no species,,
-fig6.cap,d_1,model,molecule_diameter,,,model_reactant,no species,,yim22:fig6.cap#2
-fig6.cap,\rho_1,model,partial_pressure,,,model_reactant,no species,,yim22:fig6.cap#3
+fig6.cap,d_1,model,molecule_diameter,,,model_reactant,no species,,
+fig6.cap,\rho_1,model,partial_pressure,,,model_reactant,no species,,yim22:fig6.cap#5
 fig6.cap,q,model,saturation_density,,,model_reactant,no species,,
 fig6.cap,\rho,model,film_density,,,model_reactant,no species,,
 fig6.cap,M,model,molar_mass,,,model_reactant,no species,,
 fig6.cap,P_d,model,p_d,,,model_reactant,no species,,
-fig6.cap,c,model,initial_sticking_coefficient,,,model_reactant,from the symbol's evidence in this paper,model_reactant,
-fig7.cap,c,model,initial_sticking_coefficient,,,model_reactant,from the symbol's evidence in this paper,model_reactant,
-fig7.cap,t_1,model,pulse_time,,"tabu2.r5c0, tabu2.r5c1",model_reactant,from the definition,model_reactant,
-fig7.cap,T,model,deposition_temperature,,,model_reactant,no species,,
-fig7.cap,p_{A0},model,partial_pressure,model_reactant,tabu1.r28c0,model_reactant,backed by the definition,model_reactant,
-fig7.cap,N,model,cycle_number,,,model_reactant,no species,,
-fig7.cap,M_A,model,molar_mass,model_reactant,tabu1.r21c0,model_reactant,backed by the definition,model_reactant,
-fig7.cap,d_A,model,molecule_diameter,model_reactant,tabu1.r7c0,model_reactant,backed by the definition,model_reactant,
-fig7.cap,p_I,model,partial_pressure,,,model_reactant,no species,,
-fig7.cap,M_I,model,molar_mass,,,model_reactant,no species,,
-fig7.cap,d_I,model,molecule_diameter,,,model_reactant,no species,,
-fig7.cap,M,model,molar_mass,,,model_reactant,no species,,
-fig7.cap,P_d,model,p_d,,,model_reactant,no species,,
-fig7.cap,q,model,saturation_density,,,model_reactant,no species,,
-fig7.cap,H,model,feature_width,,,model_reactant,no species,,
-fig7.cap,W,model,feature_extent,,,model_reactant,no species,,
-tab1.r1c0,p_{A0} (Pa),definition,partial_pressure,,,,no species,,yim22:tab1.r1c0#1
-tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,yim22:tab1.r1c1#1
-tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,yim22:tab1.r1c1#2
-tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,yim22:tab1.r1c1#3
-tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,yim22:tab1.r1c1#4
-tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,yim22:tab1.r1c1#5
-tab1.r2c0,t_1 (s),definition,pulse_time,,,,no species,,yim22:tab1.r2c0#1
-tab1.r2c1,t_1,model,pulse_time,,"tabu2.r5c0, tabu2.r5c1",,from the definition,model_reactant,yim22:tab1.r2c1#1
-tab1.r2c1,t_1,model,pulse_time,,"tabu2.r5c0, tabu2.r5c1",,from the definition,model_reactant,yim22:tab1.r2c1#2
-tab1.r2c1,t_1,model,pulse_time,,"tabu2.r5c0, tabu2.r5c1",,from the definition,model_reactant,yim22:tab1.r2c1#3
-tab1.r2c1,t_1,model,pulse_time,,"tabu2.r5c0, tabu2.r5c1",,from the definition,model_reactant,yim22:tab1.r2c1#4
-tab1.r2c1,t_1,model,pulse_time,,"tabu2.r5c0, tabu2.r5c1",,from the definition,model_reactant,yim22:tab1.r2c1#5
-tab1.r3c0,M_A (kg mol^-1),definition,molar_mass,,,,no species,,yim22:tab1.r3c0#1
+fig6.cap,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,
+fig7.cap,c,model,initial_sticking_coefficient,,s5.p17,model_reactant,from the definition,model_reactant,yim22:fig7.cap#1
+fig7.cap,t_1,model,pulse_time,,tabu2.r5c0,model_reactant,from the definition,model_reactant,yim22:fig7.cap#2
+fig7.cap,T,model,deposition_temperature,,,model_reactant,no species,,yim22:fig7.cap#3
+fig7.cap,p_{A0},model,partial_pressure,,tabu1.r28c0,model_reactant,from the definition,model_reactant,yim22:fig7.cap#4
+fig7.cap,N,model,cycle_number,,,model_reactant,no species,,yim22:fig7.cap#5
+fig7.cap,M_A,model,molar_mass,,tabu1.r21c0,model_reactant,from the definition,model_reactant,yim22:fig7.cap#6
+fig7.cap,d_A,model,molecule_diameter,,tabu1.r7c0,model_reactant,from the definition,model_reactant,yim22:fig7.cap#7
+fig7.cap,p_I,model,process_pressure,,,model_reactant,no species,,yim22:fig7.cap#8
+fig7.cap,M_I,model,molar_mass,,,model_reactant,no species,,yim22:fig7.cap#9
+fig7.cap,d_I,model,molecule_diameter,,,model_reactant,no species,,yim22:fig7.cap#10
+fig7.cap,M,model,molar_mass,,,model_reactant,no species,,yim22:fig7.cap#12
+fig7.cap,P_d,model,p_d,,,model_reactant,no species,,yim22:fig7.cap#13
+fig7.cap,q,model,saturation_density,,,model_reactant,no species,,yim22:fig7.cap#14
+fig7.cap,H,model,feature_width,,,model_reactant,no species,,yim22:fig7.cap#15
+fig7.cap,W,model,feature_extent,,,model_reactant,no species,,yim22:fig7.cap#16
+tab1.r1c0,p_{A0},definition,partial_pressure,,,,from the symbol's evidence in this paper,model_reactant,yim22:tab1.r1c0#1
+tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,
+tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,
+tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,
+tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,
+tab1.r1c1,p_{A0},model,partial_pressure,,tabu1.r28c0,,from the definition,model_reactant,
+tab1.r2c0,t_1,definition,pulse_time,,,,from the symbol's evidence in this paper,model_reactant,yim22:tab1.r2c0#1
+tab1.r2c1,t_1,model,pulse_time,,tabu2.r5c0,,from the definition,model_reactant,yim22:tab1.r2c1#1
+tab1.r2c1,t_1,model,pulse_time,,tabu2.r5c0,,from the definition,model_reactant,yim22:tab1.r2c1#2
+tab1.r2c1,t_1,model,pulse_time,,tabu2.r5c0,,from the definition,model_reactant,yim22:tab1.r2c1#3
+tab1.r2c1,t_1,model,pulse_time,,tabu2.r5c0,,from the definition,model_reactant,yim22:tab1.r2c1#4
+tab1.r2c1,t_1,model,pulse_time,,tabu2.r5c0,,from the definition,model_reactant,yim22:tab1.r2c1#5
+tab1.r3c0,M_A,definition,molar_mass,,,,from the symbol's evidence in this paper,model_reactant,
 tab1.r3c1,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab1.r3c1#1
 tab1.r3c1,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab1.r3c1#2
 tab1.r3c1,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab1.r3c1#3
 tab1.r3c1,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab1.r3c1#4
 tab1.r3c1,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab1.r3c1#5
-tab1.r4c0,\rho (kg m^-3),definition,film_density,,,,no species,,yim22:tab1.r4c0#1
-tab1.r4c1,\rho,model,film_density,,,,no species,,yim22:tab1.r4c1#1
-tab1.r4c1,\rho,model,film_density,,,,no species,,yim22:tab1.r4c1#2
-tab1.r4c1,\rho,model,film_density,,,,no species,,yim22:tab1.r4c1#3
-tab1.r4c1,\rho,model,film_density,,,,no species,,yim22:tab1.r4c1#4
-tab1.r4c1,\rho,model,film_density,,,,no species,,yim22:tab1.r4c1#5
-tab1.r5c0,q (nm^-2),definition,saturation_density,,,,no species,,yim22:tab1.r5c0#1
-tab1.r5c1,q,model,saturation_density,,,,no species,,yim22:tab1.r5c1#1
-tab1.r5c1,q,model,saturation_density,,,,no species,,yim22:tab1.r5c1#2
-tab1.r5c1,q,model,saturation_density,,,,no species,,yim22:tab1.r5c1#3
-tab1.r5c1,q,model,saturation_density,,,,no species,,yim22:tab1.r5c1#4
-tab1.r5c1,q,model,saturation_density,,,,no species,,yim22:tab1.r5c1#5
-tab1.r6c0,P_d (s^-1),definition,p_d,,,,no species,,yim22:tab1.r6c0#1
-tab1.r6c1,P_d,model,p_d,,,,no species,,yim22:tab1.r6c1#1
-tab1.r6c1,P_d,model,p_d,,,,no species,,yim22:tab1.r6c1#2
-tab1.r6c1,P_d,model,p_d,,,,no species,,yim22:tab1.r6c1#3
-tab1.r6c1,P_d,model,p_d,,,,no species,,yim22:tab1.r6c1#4
-tab1.r6c1,P_d,model,p_d,,,,no species,,yim22:tab1.r6c1#5
-tab1.r7c0,c (—),definition,initial_sticking_coefficient,,,,no species,,yim22:tab1.r7c0#1
-tab1.r7c1,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim22:tab1.r7c1#1
-tab1.r7c1,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim22:tab1.r7c1#2
-tab1.r7c1,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim22:tab1.r7c1#3
-tab1.r7c1,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim22:tab1.r7c1#4
-tab1.r7c1,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim22:tab1.r7c1#5
-tab1.r8c0,T (°C),definition,deposition_temperature,,,,no species,,yim22:tab1.r8c0#1
+tab1.r4c0,\rho,definition,film_density,,,,no species,,yim22:tab1.r4c0#1
+tab1.r4c1,\rho,model,film_density,,,,no species,,
+tab1.r4c1,\rho,model,film_density,,,,no species,,
+tab1.r4c1,\rho,model,film_density,,,,no species,,
+tab1.r4c1,\rho,model,film_density,,,,no species,,
+tab1.r4c1,\rho,model,film_density,,,,no species,,
+tab1.r5c0,q,definition,saturation_density,,,,no species,,yim22:tab1.r5c0#1
+tab1.r5c1,q,model,saturation_density,,,,no species,,
+tab1.r5c1,q,model,saturation_density,,,,no species,,
+tab1.r5c1,q,model,saturation_density,,,,no species,,
+tab1.r5c1,q,model,saturation_density,,,,no species,,
+tab1.r5c1,q,model,saturation_density,,,,no species,,
+tab1.r6c0,P_d,definition,p_d,,,,no species,,yim22:tab1.r6c0#1
+tab1.r6c1,P_d,model,p_d,,,,no species,,
+tab1.r6c1,P_d,model,p_d,,,,no species,,
+tab1.r6c1,P_d,model,p_d,,,,no species,,
+tab1.r6c1,P_d,model,p_d,,,,no species,,
+tab1.r6c1,P_d,model,p_d,,,,no species,,
+tab1.r7c0,c,definition,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
+tab1.r7c1,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab1.r7c1,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab1.r7c1,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab1.r7c1,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab1.r7c1,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab1.r8c0,T,definition,deposition_temperature,,,,no species,,yim22:tab1.r8c0#1
 tab1.r8c1,T,model,deposition_temperature,,,,no species,,yim22:tab1.r8c1#1
 tab1.r8c1,T,model,deposition_temperature,,,,no species,,yim22:tab1.r8c1#2
 tab1.r8c1,T,model,deposition_temperature,,,,no species,,yim22:tab1.r8c1#3
 tab1.r8c1,T,model,deposition_temperature,,,,no species,,yim22:tab1.r8c1#4
 tab1.r8c1,T,model,deposition_temperature,,,,no species,,yim22:tab1.r8c1#5
-tab1.r9c0,p_i (Pa),definition,process_pressure,,,,no species,,yim22:tab1.r9c0#1
-tab1.r9c1,p_i,model,process_pressure,,,,no species,,yim22:tab1.r9c1#1
-tab1.r9c1,p_i,model,process_pressure,,,,no species,,yim22:tab1.r9c1#2
-tab1.r9c1,p_i,model,process_pressure,,,,no species,,yim22:tab1.r9c1#3
-tab1.r9c1,p_i,model,process_pressure,,,,no species,,yim22:tab1.r9c1#4
-tab1.r9c1,p_i,model,process_pressure,,,,no species,,yim22:tab1.r9c1#5
-tab1.r10c0,H (\mum),definition,feature_width,,,,no species,,yim22:tab1.r10c0#1
-tab1.r10c1,H,model,feature_width,,,,no species,,
-tab1.r10c1,H,model,feature_width,,,,no species,,
-tab1.r10c1,H,model,feature_width,,,,no species,,
-tab1.r10c1,H,model,feature_width,,,,no species,,
-tab1.r10c1,H,model,feature_width,,,,no species,,
-tab1.r10c1,H,model,feature_width,,,,no species,,
-tab1.r10c1,H,model,feature_width,,,,no species,,
-tab1.r11c0,N (—),definition,cycle_number,,,,no species,,yim22:tab1.r11c0#1
-tab1.r11c1,N,model,cycle_number,,,,no species,,
-tab1.r11c1,N,model,cycle_number,,,,no species,,
-tab1.r11c1,N,model,cycle_number,,,,no species,,
-tab1.r11c1,N,model,cycle_number,,,,no species,,
-tab1.r11c1,N,model,cycle_number,,,,no species,,
-tab1.r11c1,N,model,cycle_number,,,,no species,,
-tab1.r11c1,N,model,cycle_number,,,,no species,,
+tab1.r9c0,p_i,definition,partial_pressure,,,,no species,,yim22:tab1.r9c0#1
+tab1.r9c1,p_i,model,partial_pressure,,,,no species,,
+tab1.r9c1,p_i,model,partial_pressure,,,,no species,,
+tab1.r9c1,p_i,model,partial_pressure,,,,no species,,
+tab1.r9c1,p_i,model,partial_pressure,,,,no species,,
+tab1.r9c1,p_i,model,partial_pressure,,,,no species,,
+tab1.r10c0,H,definition,feature_width,,,,no species,,yim22:tab1.r10c0#1
+tab1.r10c1,H,model,feature_width,,,,no species,,yim22:tab1.r10c1#1
+tab1.r10c1,H,model,feature_width,,,,no species,,yim22:tab1.r10c1#2
+tab1.r10c1,H,model,feature_width,,,,no species,,yim22:tab1.r10c1#3
+tab1.r10c1,H,model,feature_width,,,,no species,,yim22:tab1.r10c1#4
+tab1.r10c1,H,model,feature_width,,,,no species,,yim22:tab1.r10c1#5
+tab1.r10c1,H,model,feature_width,,,,no species,,yim22:tab1.r10c1#6
+tab1.r10c1,H,model,feature_width,,,,no species,,yim22:tab1.r10c1#7
+tab1.r11c0,N,definition,cycle_number,,,,no species,,yim22:tab1.r11c0#1
+tab1.r11c1,N,model,cycle_number,,,,no species,,yim22:tab1.r11c1#1
+tab1.r11c1,N,model,cycle_number,,,,no species,,yim22:tab1.r11c1#2
+tab1.r11c1,N,model,cycle_number,,,,no species,,yim22:tab1.r11c1#3
+tab1.r11c1,N,model,cycle_number,,,,no species,,yim22:tab1.r11c1#4
+tab1.r11c1,N,model,cycle_number,,,,no species,,yim22:tab1.r11c1#5
+tab1.r11c1,N,model,cycle_number,,,,no species,,yim22:tab1.r11c1#6
+tab1.r11c1,N,model,cycle_number,,,,no species,,yim22:tab1.r11c1#7
 tab3.r1c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r1c1#1
-tab3.r1c2,M_A,model,molar_mass,model_reactant,tabu1.r21c0,,backed by the definition,model_reactant,
-tab3.r1c3,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
-tab3.r1c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r1c4#1
-tab3.r1c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},derived,front_slope,,,,no species,,yim22:tab3.r1c5#1
+tab3.r1c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r1c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r1c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r1c4#1
+tab3.r1c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r1c5#1
 tab3.r1c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r1c6#1
 tab3.r1c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r1c7#1
-tab3.r2c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r2c1#1
-tab3.r2c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r2c4#1
-tab3.r2c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},derived,front_slope,,,,no species,,yim22:tab3.r2c5#1
+tab3.r2c1,T,model,deposition_temperature,,,,no species,,
+tab3.r2c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab3.r2c2#1
+tab3.r2c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:tab3.r2c3#1
+tab3.r2c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r2c4#1
+tab3.r2c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r2c5#1
 tab3.r2c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r2c6#1
 tab3.r2c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r2c7#1
-tab3.r3c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r3c1#1
-tab3.r3c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r3c4#1
+tab3.r3c1,T,model,deposition_temperature,,,,no species,,
+tab3.r3c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab3.r3c2#1
+tab3.r3c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:tab3.r3c3#1
+tab3.r3c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r3c4#1
+tab3.r3c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r3c5#1
+tab3.r3c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r3c6#1
+tab3.r3c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r3c7#1
 tab3.r4c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r4c1#1
-tab3.r4c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r4c4#1
+tab3.r4c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r4c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r4c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r4c4#1
+tab3.r4c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,
+tab3.r4c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,
+tab3.r4c7,c_{\text{ext}}/c,derived,other,,,,no species,,
 tab3.r5c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r5c1#1
-tab3.r5c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r5c4#1
-tab3.r6c2,M_A,model,molar_mass,model_reactant,tabu1.r21c0,,backed by the definition,model_reactant,
-tab3.r6c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r6c4#1
-tab3.r7c2,M_A,model,molar_mass,model_reactant,tabu1.r21c0,,backed by the definition,model_reactant,
-tab3.r7c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r7c4#1
-tab3.r9c2,M_A,model,molar_mass,model_reactant,tabu1.r21c0,,backed by the definition,model_reactant,
-tab3.r9c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r9c4#1
-tab3.r10c2,M_A,model,molar_mass,model_reactant,tabu1.r21c0,,backed by the definition,model_reactant,
-tab3.r10c4,K_N,derived,knudsen_number,,,,no species,,yim22:tab3.r10c4#1
-tab3.r11c3,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
-tab3.r11c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},derived,front_slope,,,,no species,,yim22:tab3.r11c5#1
+tab3.r5c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r5c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r5c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r5c4#1
+tab3.r5c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,
+tab3.r5c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,
+tab3.r5c7,c_{\text{ext}}/c,derived,other,,,,no species,,
+tab3.r6c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r6c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:tab3.r6c3#1
+tab3.r6c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r6c4#1
+tab3.r6c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r6c5#1
+tab3.r6c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r6c6#1
+tab3.r6c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r6c7#1
+tab3.r7c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r7c1#1
+tab3.r7c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r7c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:tab3.r7c3#1
+tab3.r7c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r7c4#1
+tab3.r7c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r7c5#1
+tab3.r7c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r7c6#1
+tab3.r7c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r7c7#1
+tab3.r8c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r8c1#1
+tab3.r8c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r8c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:tab3.r8c3#1
+tab3.r8c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r8c4#1
+tab3.r8c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r8c5#1
+tab3.r8c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r8c6#1
+tab3.r8c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r8c7#1
+tab3.r9c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r9c1#1
+tab3.r9c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r9c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:tab3.r9c3#1
+tab3.r9c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r9c4#1
+tab3.r9c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r9c5#1
+tab3.r9c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r9c6#1
+tab3.r9c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r9c7#1
+tab3.r10c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r10c1#1
+tab3.r10c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,
+tab3.r10c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,yim22:tab3.r10c3#1
+tab3.r10c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r10c4#1
+tab3.r10c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r10c5#1
+tab3.r10c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r10c6#1
+tab3.r10c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r10c7#1
+tab3.r11c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r11c1#1
+tab3.r11c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab3.r11c2#1
+tab3.r11c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r11c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r11c4#1
+tab3.r11c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r11c5#1
 tab3.r11c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r11c6#1
-tab3.r12c3,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
-tab3.r12c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},derived,front_slope,,,,no species,,yim22:tab3.r12c5#1
+tab3.r11c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r11c7#1
+tab3.r12c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r12c1#1
+tab3.r12c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab3.r12c2#1
+tab3.r12c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r12c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r12c4#1
+tab3.r12c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r12c5#1
 tab3.r12c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r12c6#1
-tab3.r14c3,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
-tab3.r14c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},derived,front_slope,,,,no species,,yim22:tab3.r14c5#1
+tab3.r12c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r12c7#1
+tab3.r13c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r13c1#1
+tab3.r13c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab3.r13c2#1
+tab3.r13c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r13c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r13c4#1
+tab3.r13c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r13c5#1
+tab3.r13c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r13c6#1
+tab3.r13c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r13c7#1
+tab3.r14c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r14c1#1
+tab3.r14c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab3.r14c2#1
+tab3.r14c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r14c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r14c4#1
+tab3.r14c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r14c5#1
 tab3.r14c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r14c6#1
-tab3.r15c3,c,model,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
-tab3.r15c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},derived,front_slope,,,,no species,,yim22:tab3.r15c5#1
+tab3.r14c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r14c7#1
+tab3.r15c1,T,model,deposition_temperature,,,,no species,,yim22:tab3.r15c1#1
+tab3.r15c2,M_A,model,molar_mass,,tabu1.r21c0,,from the definition,model_reactant,yim22:tab3.r15c2#1
+tab3.r15c3,c,model,initial_sticking_coefficient,,s5.p17,,from the definition,model_reactant,
+tab3.r15c4,K_N,model,knudsen_number,,,,no species,,yim22:tab3.r15c4#1
+tab3.r15c5,\frac{d\theta}{d\tilde{x}}|_{\theta=1/2},model,front_slope,,,,no species,,yim22:tab3.r15c5#1
 tab3.r15c6,c_{\text{ext}},derived,initial_sticking_coefficient,,,,no species,,yim22:tab3.r15c6#1
+tab3.r15c7,c_{\text{ext}}/c,derived,other,,,,no species,,yim22:tab3.r15c7#1
+tabu1.r0c0,b,definition,other,,,,no species,,yim22:tabu1.r0c0#1
+tabu1.r1c0,c,definition,initial_sticking_coefficient,,,,from the symbol's evidence in this paper,model_reactant,
+tabu1.r2c0,c_ext,definition,initial_sticking_coefficient,,,,no species,,yim22:tabu1.r2c0#1
+tabu1.r3c0,D,definition,effective_diffusion_coefficient,,,,no species,,yim22:tabu1.r3c0#1
+tabu1.r4c0,D_A,definition,gas_phase_diffusion_coefficient,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:tabu1.r4c0#1
+tabu1.r5c0,D_eff,definition,effective_diffusion_coefficient,,,,no species,,yim22:tabu1.r5c0#1
+tabu1.r6c0,D_Kn,definition,knudsen_diffusion_coefficient,,,,from the symbol's evidence in this paper,model_reactant,yim22:tabu1.r6c0#1
+tabu1.r7c0,d_A,definition,molecule_diameter,,,model_reactant,from the symbol's evidence in this paper,model_reactant,
+tabu1.r8c0,d_t,definition,molecule_diameter,,,,no species,,yim22:tabu1.r8c0#1
+tabu1.r9c0,f_ads,definition,other,,,,no species,,yim22:tabu1.r9c0#1
+tabu1.r10c0,f_des,definition,other,,,,no species,,yim22:tabu1.r10c0#1
+tabu1.r11c0,g,definition,other,,,,no species,,yim22:tabu1.r11c0#1
+tabu1.r13c0,h,definition,other,,,,no species,,
+tabu1.r14c0,H,definition,feature_width,,,,no species,,
+tabu1.r15c0,h_r,definition,other,,,,no species,,yim22:tabu1.r15c0#1
+tabu1.r16c0,K,definition,adsorption_equilibrium_constant,,,,no species,,yim22:tabu1.r16c0#1
+tabu1.r17c0,Kn,definition,knudsen_number,,,,no species,,yim22:tabu1.r17c0#1
+tabu1.r18c0,k_B,definition,other,,,,no species,,yim22:tabu1.r18c0#1
+tabu1.r19c0,L,definition,feature_depth,,,,no species,,
+tabu1.r20c0,M,definition,molar_mass,,,,no species,,yim22:tabu1.r20c0#1
+tabu1.r21c0,M_A,definition,molar_mass,,,model_reactant,from the symbol's evidence in this paper,model_reactant,
+tabu1.r22c0,M_t,definition,molar_mass,,,,no species,,yim22:tabu1.r22c0#1
+tabu1.r23c0,N,definition,cycle_number,,,,no species,,yim22:tabu1.r23c0#1
+tabu1.r24c0,n_A,definition,reactant_number_density,,,model_reactant,no species,,yim22:tabu1.r24c0#1
+tabu1.r25c0,N_0,definition,other,,,,no species,,yim22:tabu1.r25c0#1
+tabu1.r26c0,p,definition,process_pressure,,,,no species,,yim22:tabu1.r26c0#1
+tabu1.r27c0,p_A,definition,partial_pressure,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:tabu1.r27c0#1
+tabu1.r28c0,p_A0,definition,partial_pressure,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:tabu1.r28c0#1
+tabu1.r29c0,p_t,definition,partial_pressure,,,,no species,,yim22:tabu1.r29c0#1
+tabu1.r30c0,p_At,definition,partial_pressure,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:tabu1.r30c0#1
+tabu1.r31c0,P_d,definition,p_d,,,,no species,,yim22:tabu1.r31c0#1
+tabu1.r32c0,q,definition,saturation_density,,,,no species,,yim22:tabu1.r32c0#1
+tabu1.r33c0,Q,definition,other,,,,no species,,
+tabu2.r0c0,r_i,definition,other,,,,no species,,yim22:tabu2.r0c0#1
+tabu2.r1c0,R,definition,other,,,,no species,,yim22:tabu2.r1c0#1
+tabu2.r2c0,s,definition,film_thickness,,,,no species,,
+tabu2.r3c0,S,definition,other,,,,no species,,
+tabu2.r4c0,t,definition,time,,,,no species,,yim22:tabu2.r4c0#1
+tabu2.r5c0,t_1,definition,pulse_time,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:tabu2.r5c0#1
+tabu2.r6c0,T,definition,deposition_temperature,,,,no species,,
+tabu2.r7c0,\nu,definition,other,,,,no species,,yim22:tabu2.r7c0#1
+tabu2.r8c0,V,definition,other,,,,no species,,yim22:tabu2.r8c0#1
+tabu2.r9c0,\bar{v}_A,definition,other,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:tabu2.r9c0#1
+tabu2.r10c0,W,definition,feature_extent,,,,no species,,yim22:tabu2.r10c0#1
+tabu2.r11c0,x,definition,distance,,,,no species,,
+tabu2.r12c0,x_{50\%},definition,penetration_depth,,,,no species,,yim22:tabu2.r12c0#1
+tabu2.r13c0,\tilde{x},definition,dimensionless_distance,,,,no species,,yim22:tabu2.r13c0#1
+tabu2.r14c0,\tilde{x}_{50\%},definition,dimensionless_distance,,,,no species,,yim22:tabu2.r14c0#1
+tabu2.r15c0,x_s,definition,other,,,,no species,,yim22:tabu2.r15c0#1
+tabu2.r16c0,x_t,definition,other,,,,no species,,yim22:tabu2.r16c0#1
+tabu2.r17c0,z_A,definition,other,,,model_reactant,from the symbol's evidence in this paper,model_reactant,yim22:tabu2.r17c0#1
+tabu2.r18c0,\theta,definition,surface_coverage,,,,no species,,yim22:tabu2.r18c0#1
+tabu2.r19c0,\rho,definition,film_density,,,,no species,,yim22:tabu2.r19c0#1
+tabu2.r20c0,\lambda,definition,mean_free_path,,,,no species,,yim22:tabu2.r20c0#1
+tabu2.r21c0,\sigma_{ij},definition,other,,,,no species,,yim22:tabu2.r21c0#1
+tabu2.r22c0,\gamma,definition,other,,,,no species,,yim22:tabu2.r22c0#1

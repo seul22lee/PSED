@@ -1,0 +1,59 @@
+state,part,unit,what,quantity,value,element,note
+before,pass-0 unit,sim_zno_d19,name '19'; parent sim_mc; distinguished_by None,,,s4.p13;fig11.cap;fig11a,data ['ela03:fig11a#c1']
+before,pass-1 record about it,sim_zno_d19,model label 'reactant exposures' (form P158),pulse_time,5.0 s,s5.p16,kind model_input; qualifiers {'step': 'reactant_A'}
+before,pass-1 record about it,sim_zno_d19,model label 'nanopore diameters' (form P158),feature_width,19.0 nm,fig11a,kind model_input; qualifiers 
+before,pass-1 record about it,sim_zno_d19,setting label 'Exposure Times (s)' (form P184),other,19.0,fig11.cap,kind model_input; qualifiers 
+before,pass-0 unit,sim_zno_d46,name '46'; parent sim_mc; distinguished_by None,,,s4.p13;fig11.cap;fig11a,"data ['ela03:fig11a#c2', 'ela03:fig11a#d2_1', 'ela03:fig11a#d2_2']"
+before,pass-1 record about it,sim_zno_d46,model label 'nanopore diameters' (form P158),feature_width,46.0 nm,fig11a,kind model_input; qualifiers 
+before,pass-1 record about it,sim_zno_d46,setting label 'Exposure Times (s)' (form P184),other,46.0,fig11.cap,kind model_input; qualifiers 
+before,pass-0 unit,sim_zno_d65,name '65'; parent sim_mc; distinguished_by None,,,s4.p13;fig11.cap;fig11a,"data ['ela03:fig11a#c3', 'ela03:fig11a#d3_1', 'ela03:fig11a#d3_2']"
+before,pass-1 record about it,sim_zno_d65,model label 'nanopore diameters' (form P158),feature_width,65.0 nm,fig11a,kind model_input; qualifiers 
+before,pass-1 record about it,sim_zno_d65,setting label 'Exposure Times (s)' (form P184),other,65.0,fig11.cap,kind model_input; qualifiers 
+before,pass-1 record about the parent sim_mc,sim_mc,model label 'surface area roughness factor' (form P158),other,1.5 1,s5.p9,kind model_input
+before,pass-1 record about the parent sim_mc,sim_mc,model label 'number of molecules represented by one trajectory' (form P158),other,700000.0 1,s5.p9,kind computed_by_authors
+before,pass-1 record about the parent sim_mc,sim_mc,model label 'TMA partial pressure' (form P158),partial_pressure,0.15 Torr,s5.p10,kind model_input
+before,pass-1 record about the parent sim_mc,sim_mc,model label 'temperature' (form P158),deposition_temperature,177.0 °C,s5.p10,kind model_input
+before,pass-1 record about the parent sim_mc,sim_mc,model label 'DEZ exposure times' (form P158),pulse_time,5.0 s,fig11.cap,kind model_input
+before,bind's conditions (compile.unit_vectors: own + the parent's),sim_zno_d19,pulse_time=5.0; feature_width=19.0; partial_pressure=19.9983; deposition_temperature=177.0; material=al2o3; reactant_A=tma; material=zno; reactant_A=dez; material=zno; pulse_time=5.0; material=zno; structure=anodic_alumina_membrane,,,,
+before,bind's conditions (compile.unit_vectors: own + the parent's),sim_zno_d46,feature_width=46.0; partial_pressure=19.9983; deposition_temperature=177.0; material=al2o3; reactant_A=tma; material=zno; reactant_A=dez; material=zno; pulse_time=5.0; material=zno; structure=anodic_alumina_membrane,,,,
+before,bind's conditions (compile.unit_vectors: own + the parent's),sim_zno_d65,feature_width=65.0; partial_pressure=19.9983; deposition_temperature=177.0; material=al2o3; reactant_A=tma; material=zno; reactant_A=dez; material=zno; pulse_time=5.0; material=zno; structure=anodic_alumina_membrane,,,,
+before,fig11b item,(unbound),point ela03:fig11b#c1:p1 legend '',feature_width (coord),0.0,,how None; reason origin
+before,fig11b item,sim_zno_d19,point ela03:fig11b#c1:p2 legend '',feature_width (coord),19.0,pass-0,how conditions match; reason 
+before,fig11b item,10.1021_cm0303080:fig11b:c1_p3,point ela03:fig11b#c1:p3 legend '',feature_width (coord),45.0,derived,how derived; reason 
+before,fig11b item,sim_zno_d65,point ela03:fig11b#c1:p4 legend '',feature_width (coord),65.0,pass-0,how conditions match; reason 
+before,compiled fact under it,sim_zno_d19,ela03:s5.p16#1 model label 'reactant exposures',pulse_time,5 s,s5.p16,step=reactant_A
+before,compiled fact under it,sim_zno_d19,ela03:fig11a#1 model label 'nanopore diameters',feature_width,19 nm,fig11a,
+before,compiled fact under it,sim_zno_d46,ela03:fig11a#2 model label 'nanopore diameters',feature_width,46 nm,fig11a,
+before,compiled fact under it,sim_zno_d65,ela03:fig11a#3 model label 'nanopore diameters',feature_width,65 nm,fig11a,
+after,pass-0 unit,sim_zno_d19,name '19'; parent sim_mc; distinguished_by None,,,s4.p13;fig11.cap;fig11a,data ['ela03:fig11a#c1']
+after,pass-1 record about it,sim_zno_d19,model label 'reactant exposures' (form P184),pulse_time,5.0 s,s5.p16,kind model_input; qualifiers {'species': 'dez'}
+after,pass-1 record about it,sim_zno_d19,model label 'nanopore diameters' (form P184),feature_width,19.0 nm,fig11a,kind model_input; qualifiers 
+after,pass-1 record about it,sim_zno_d19,setting label 'Exposure Times (s)' (form P184),other,19.0,fig11.cap,kind model_input; qualifiers 
+after,pass-0 unit,sim_zno_d46,name '46'; parent sim_mc; distinguished_by None,,,s4.p13;fig11.cap;fig11a,"data ['ela03:fig11a#c2', 'ela03:fig11a#d2_1', 'ela03:fig11a#d2_2']"
+after,pass-1 record about it,sim_zno_d46,model label 'nanopore diameters' (form P184),feature_width,46.0 nm,fig11a,kind model_input; qualifiers 
+after,pass-1 record about it,sim_zno_d46,setting label 'Exposure Times (s)' (form P184),other,46.0,fig11.cap,kind model_input; qualifiers 
+after,pass-0 unit,sim_zno_d65,name '65'; parent sim_mc; distinguished_by None,,,s4.p13;fig11.cap;fig11a,"data ['ela03:fig11a#c3', 'ela03:fig11a#d3_1', 'ela03:fig11a#d3_2']"
+after,pass-1 record about it,sim_zno_d65,model label 'nanopore diameters' (form P184),feature_width,65.0 nm,fig11a,kind model_input; qualifiers 
+after,pass-1 record about it,sim_zno_d65,setting label 'Exposure Times (s)' (form P184),other,65.0,fig11.cap,kind model_input; qualifiers 
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'roughness factor' (form P184),other,1.5 1,s5.p9,kind model_input
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'd' (form P184),feature_width,65.0 nm,s5.p9,kind model_input
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'L' (form P184),body_thickness,50.0 µm,s5.p9,kind model_input
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'number of molecules represented by one trajectory' (form P184),other,700000.0 1,s5.p9,kind computed_by_authors
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'partial pressure' (form P184),partial_pressure,0.15 Torr,s5.p10,kind model_input
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'temperature' (form P184),deposition_temperature,177.0 °C,s5.p10,kind model_input
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'time represented by one trajectory' (form P184),other,0.00072 s,s5.p10,kind computed_by_authors
+after,pass-1 record about the parent sim_mc,sim_mc,model label 'DEZ exposure times' (form P184),pulse_time,5.0 s,fig11.cap,kind model_input
+after,bind's conditions (compile.unit_vectors: own + the parent's),sim_zno_d19,pulse_time=5.0; feature_width=19.0; feature_width=65.0; body_thickness=50000.0; partial_pressure=19.9983; deposition_temperature=177.0; material=al2o3; reactant_A=tma; material=zno; pulse_time=5.0; material=zno; structure=anodic_alumina_membrane,,,,
+after,bind's conditions (compile.unit_vectors: own + the parent's),sim_zno_d46,feature_width=46.0; feature_width=65.0; body_thickness=50000.0; partial_pressure=19.9983; deposition_temperature=177.0; material=al2o3; reactant_A=tma; material=zno; pulse_time=5.0; material=zno; structure=anodic_alumina_membrane,,,,
+after,bind's conditions (compile.unit_vectors: own + the parent's),sim_zno_d65,feature_width=65.0; feature_width=65.0; body_thickness=50000.0; partial_pressure=19.9983; deposition_temperature=177.0; material=al2o3; reactant_A=tma; material=zno; pulse_time=5.0; material=zno; structure=anodic_alumina_membrane,,,,
+after,fig11b item,(unbound),point ela03:fig11b#c1:p1 legend '',feature_width (coord),0.0,,how None; reason origin
+after,fig11b item,sim_zno_d19,point ela03:fig11b#c1:p2 legend '',feature_width (coord),19.0,pass-0,how conditions match; reason 
+after,fig11b item,10.1021_cm0303080:fig11b:c1_p3,point ela03:fig11b#c1:p3 legend '',feature_width (coord),45.0,derived,how derived; reason 
+after,fig11b item,(unbound),point ela03:fig11b#c1:p4 legend '',feature_width (coord),65.0,,"how None; reason ambiguous: sim_zno_d19, sim_zno_d46, sim_zno_d65"
+after,compiled fact under it,sim_zno_d19,ela03:s5.p16#1 model label 'reactant exposures',pulse_time,5 s,s5.p16,species=dez
+after,compiled fact under it,sim_zno_d19,ela03:fig11a#1 model label 'nanopore diameters',feature_width,19 nm,fig11a,
+after,compiled fact under it,sim_zno_d19,ela03:fig11.cap#3 setting label 'Exposure Times (s)',other,19,fig11.cap,
+after,compiled fact under it,sim_zno_d46,ela03:fig11a#2 model label 'nanopore diameters',feature_width,46 nm,fig11a,
+after,compiled fact under it,sim_zno_d46,ela03:fig11.cap#4 setting label 'Exposure Times (s)',other,46,fig11.cap,
+after,compiled fact under it,sim_zno_d65,ela03:fig11a#3 model label 'nanopore diameters',feature_width,65 nm,fig11a,
+after,compiled fact under it,sim_zno_d65,ela03:fig11.cap#5 setting label 'Exposure Times (s)',other,65,fig11.cap,

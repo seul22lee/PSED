@@ -13,6 +13,17 @@ input: recipe field by the user's decision: sim_ylilammi carrier_gas None -> (th
 input: recipe field by the user's decision: sim_gordon carrier_gas None -> (the user's recipe decision (history.csv, 2026-10-24): n2)
 input: recipe fill = line 159: run_al2o3 reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2 reactant_A ticl4, reactant_B h2o, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; sim_ylilammi carrier_gas n2; sim_gordon carrier_gas n2
 a0: tabu1.r4c0: quantity 'Apparent longitudinal diffusion coefficient' -> effective_diffusion_coefficient (quantity: alias 'Apparent longitudinal diffusion coefficient')
+a0: fig2.cap: legend label 'Pulse time= 0.1 s appr' parsed to nothing
+a0: fig2.cap: legend label 'Pulse time= 0.05 s appr' parsed to nothing
+a0: fig2.cap: legend label 'Pulse time= 0.02 s appr' parsed to nothing
+a0: fig2.cap: legend label 'Pulse time= 0.01 s appr' parsed to nothing
+a0: fig2.cap: legend label 'x_t' parsed to nothing
+a0: fig2.cap: legend label 'x_s' parsed to nothing
+a0: fig3.cap: legend label 'appr' parsed to nothing
+a0: fig3.cap: legend label 'appr' parsed to nothing
+a0: fig3.cap: legend label 'appr' parsed to nothing
+a0: fig3.cap: legend label 'appr' parsed to nothing
+a0: fig5.cap: legend label 'Approximation' parsed to nothing
 a1: symbol species s5.p7 'x_p' definition penetration_depth: record -, definition - -> no species
 a1: symbol species s5.p7 'W' definition feature_extent: record -, definition - -> no species
 a1: symbol species s5.p7 'L' definition feature_depth: record -, definition - -> no species
@@ -256,25 +267,25 @@ j: derived over 12 entities: 14 rows; not derived: {'no fact for p': 12, 'E: no 
 j: caveats (query.caveats_of): 8, linked to facts 3, to nodes 0; facts reached through query.caveats_for: 3
 j: claim nodes (query.claim_nodes): 10 nodes for 15 claims; claims without a full triple (query.node_of empty): 5
 j: comparisons from figures.json (1c): 1
-step input: {'pass-0 extension units': 2, 'records': 285}
-step a0: {'quantity other: never.csv symbol': 8, 'quantity other: never.csv word': 22, 'quantity promoted (quantity: alias)': 1}
+step input: {'pass-0 extension units': 2, 'records': 285, 'legend conditions of a pass-0 unit (model_run)': 11, 'coordinate of a pass-0 unit (other)': 9, 'coordinate of a pass-0 unit (never)': 2}
+step a0: {'quantity other: never.csv symbol': 8, 'quantity other: never.csv word': 24, 'quantity promoted (quantity: alias)': 1, 'derived legend label parsed to nothing (other)': 11}
 step a1: {'symbol species: no species': 77, 'symbol species: from the definition': 11, 'symbol species: backed by the definition': 12, 'symbol species: species cleared (no evidence)': 10, "symbol species: from the symbol's evidence in this paper": 2, "symbol species: from the user's symbol decision": 12, 'material from the recipe field: al2o3': 1, 'material from the recipe field: tio2': 1, 'qualifier out of scope: species': 6, 'qualifier out of scope: phase': 2, 'qualifier out of scope: stage': 7, 'qualifier out of scope: structure_class': 7, 'qualifier out of scope: position': 2, 'qualifier out of scope: basis': 1, 'qualifier out of scope: origin': 1, 'qualifier out of scope: relative_to': 1, 'qualifier out of scope: over': 1, 'qualifier out of scope: mode': 1, 'qualifier out of scope: specimen_class': 1}
-step a: {'variables_unmapped (set to null)': 18, 'variable filled from a definition (C5)': 9, 'kept': 287}
-step b: {'model_with_value (kept)': 76, 'kept': 287}
-step c: {'quantity_other never (kept)': 30, 'kept': 287}
-step d: {'quote_not_found': 2, 'kept': 285}
-step e: {'unit_unresolved (kept as printed)': 12, 'kept': 285}
-step f: {'species_resolved': 18, 'kept': 285}
-step h: {'simulation linked to a model entry': 2, 'measurement unit': 2, 'place: claim -> paper': 15, 'place: about paper -> recipe': 8, 'place: definition -> paper': 60, 'place: model about a simulation -> simulation': 88, 'place: setting about a simulation -> simulation': 6, 'place: caveat -> paper': 8, 'place: setting about a run -> deposition': 45, 'place: result about a run -> its specimen measurement': 2, 'place: about paper, method -> paper method activity': 2, 'place: model about a model run -> model run': 32, 'place: result about a specimen -> its measurement': 15, 'place: setting about a specimen -> deposition': 4}
-step m: {'statement filled from the quote': 232, 'label_as_printed filled with the quantity id': 5, 'links resolved': 20}
+step a: {'variables_unmapped (set to null)': 18, 'variable filled from a definition (C5)': 9, 'kept': 298}
+step b: {'model_with_value (kept)': 76, 'kept': 298}
+step c: {'quantity_other never (kept)': 32, 'quantity_other (kept)': 9, 'kept': 298}
+step d: {'quote_not_found': 2, 'derived condition (figures.json, no quote check)': 11, 'kept': 296}
+step e: {'unit_unresolved (kept as printed)': 12, 'kept': 296}
+step f: {'species_resolved': 18, 'kept': 296}
+step h: {'simulation linked to a model entry': 2, 'measurement unit': 2, 'place: claim -> paper': 15, 'place: about paper -> recipe': 8, 'place: definition -> paper': 60, 'place: model about a simulation -> simulation': 88, 'place: setting about a simulation -> simulation': 6, 'place: caveat -> paper': 8, 'place: setting about a run -> deposition': 45, 'place: result about a run -> its specimen measurement': 2, 'place: about paper, method -> paper method activity': 2, 'place: model about a model run -> model run': 32, 'place: result about a specimen -> its measurement': 15, 'place: setting about a specimen -> deposition': 4, 'place: setting about a model run sharing its simulation -> model run': 11}
+step m: {'statement filled from the quote': 243, 'label_as_printed filled with the quantity id': 5, 'links resolved': 20}
 step 1c: {'figure label other (x)': 3, 'figure label other (condition)': 6, 'figure label other (condition), never': 15, 'curve -> model': 27, 'curve -> observation': 2}
-step i: {'merged': 46, 'definition merged': 9, 'kept': 259}
+step i: {'merged': 46, 'definition merged': 9, 'kept': 270}
 step n: {'comparison replicate': 1}
 step j: {'derived feature_width{stage=final}': 3, 'derived cycle_time': 11}
-step k: {'statement from the record': 230, 'statement_copies_text (reported by check)': 53, 'statement assembled': 43}
+step k: {'statement from the record': 241, 'statement_copies_text (reported by check)': 53, 'statement assembled': 43}
 diff against the gold:
   model          67  121   61  0.50  0.91
-  setting        63   46   31  0.67  0.49
+  setting        63   57   31  0.54  0.49
   definition     38   51   23  0.45  0.61
   derived        15   26    7  0.27  0.47
   claim          13   15    8  0.53  0.62
@@ -284,8 +295,8 @@ diff against the gold:
   observation     7    6    2  0.33  0.29
   cited           5    0    0     -  0.00
   comparison      3    1    0  0.00  0.00
-  paper           1    1    0  0.00  0.00
   identity        1    0    0     -  0.00
+  paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 5/38
 gold model rows with quantity and value: 15: {'effective_diffusion_coefficient': 1, 'feature_width': 1, 'feature_extent': 1, 'partial_pressure': 2, 'molar_mass': 2, 'molecule_diameter': 2, 'saturation_density': 1, 'deposition_temperature': 1, 'adsorption_equilibrium_constant': 1, 'initial_sticking_coefficient': 1, 'saturation_growth_per_cycle': 1, 'pulse_time': 1}
 observations: gold 7, compiled 6, matched 2

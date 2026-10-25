@@ -10,6 +10,9 @@ input: recipe field set to null: run_al2o3_300c_50nm reactant_A tma (quote not f
 input: recipe field set to null: run_al2o3_300c_50nm reactant_B h2o (quote not found (abs.g3))
 input: recipe field set to null: run_tio2_300c_50nm reactant_B h2o (quote not found (abs.g3))
 input: recipe fill = line 25: run_al2o3_300c reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_110c reactant_A ticl4, reactant_B h2o, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_110c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_110c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_200c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_200c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_300c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_300c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']
+a0: fig5.cap: quantity 'LHAR gap size' -> feature_width (quantity: alias 'LHAR gap size')
+a0: fig5.cap: quantity 'LHAR gap size' -> feature_width (quantity: alias 'LHAR gap size')
+a0: fig5.cap: quantity 'LHAR gap size' -> feature_width (quantity: alias 'LHAR gap size')
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
 d: quote found across elements: s6.p13 observation penetration_depth -> evidence s6.p12;s6.p13
@@ -41,23 +44,24 @@ j: derived over 13 entities: 14 rows; not derived: {'no fact for p': 26, 'E: no 
 j: caveats (query.caveats_of): 0, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
 j: claim nodes (query.claim_nodes): 7 nodes for 11 claims; claims without a full triple (query.node_of empty): 4
 j: comparisons from figures.json (1c): 6
-step input: {'pass-0 extension units': 30, 'records': 107}
+step input: {'pass-0 extension units': 30, 'records': 107, 'legend conditions of a pass-0 unit (measurement)': 3, 'coordinate of a pass-0 unit (value)': 3}
+step a0: {'quantity promoted (quantity: alias)': 3}
 step a1: {'symbol species: no species': 2, 'material from the recipe field: al2o3': 4, 'material from the recipe field: tio2': 4}
-step a: {'kept': 115}
-step b: {'statement_only (kept: P138 form)': 1, 'kept': 115}
-step c: {'quantity_other (kept)': 2, 'kept': 115}
-step d: {"quote found in the paper's elements concatenated (P182)": 6, 'quote_not_found': 12, 'kept': 103}
-step e: {'kept': 103}
-step f: {'species_resolved': 9, 'kept': 103}
-step h: {'measurement unit': 15, 'place: claim -> paper': 11, 'place: about paper -> recipe': 25, 'place: cited -> paper': 5, 'place: about paper, method -> paper method activity': 5, 'place: observation about a measurement -> the measurement': 11, 'place: setting about a specimen -> deposition': 16, 'place: setting about a run -> deposition': 20, 'place: definition -> paper': 1, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'place: result about a specimen -> its measurement': 2}
-step m: {'statement filled from the quote': 87, 'label_as_printed filled with the quantity id': 5, 'links resolved': 7}
+step a: {'kept': 118}
+step b: {'statement_only (kept: P138 form)': 1, 'kept': 118}
+step c: {'quantity_other (kept)': 2, 'kept': 118}
+step d: {"quote found in the paper's elements concatenated (P182)": 6, 'quote_not_found': 12, 'derived condition (figures.json, no quote check)': 3, 'kept': 106}
+step e: {'kept': 106}
+step f: {'species_resolved': 9, 'kept': 106}
+step h: {'measurement unit': 15, 'place: claim -> paper': 11, 'place: about paper -> recipe': 25, 'place: cited -> paper': 5, 'place: about paper, method -> paper method activity': 5, 'place: observation about a measurement -> the measurement': 11, 'place: setting about a specimen -> deposition': 16, 'place: setting about a run -> deposition': 20, 'place: definition -> paper': 1, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'place: result about a specimen -> its measurement': 2, 'place: setting about a measurement -> the measurement': 3}
+step m: {'statement filled from the quote': 90, 'label_as_printed filled with the quantity id': 5, 'links resolved': 7}
 step 1c: {'unbound item (image): no unit named': 2, 'image -> a measurement (infrared_microscopy)': 9, 'image -> a measurement (optical_microscopy)': 1, 'curve -> observation': 4, 'image -> a measurement (sem)': 1}
-step i: {'merged': 18, 'kept': 100}
+step i: {'merged': 18, 'kept': 103}
 step n: {'comparison replicate': 2, 'comparison series': 3, 'comparison grid': 1}
 step j: {'derived feature_width{stage=final}': 1, 'derived cycle_time': 13}
-step k: {'statement from the record': 85, 'statement_copies_text (reported by check)': 33, 'statement assembled': 29}
+step k: {'statement from the record': 88, 'statement_copies_text (reported by check)': 33, 'statement assembled': 29}
 diff against the gold:
-  setting        92   56   46  0.82  0.50
+  setting        92   59   47  0.80  0.51
   observation    44   28   22  0.79  0.50
   activity       25   26   21  0.81  0.84
   entity         15   13   12  0.92  0.80

@@ -1,65 +1,75 @@
 metric,value
 ontology_hash,04296b18c82211bb757002f9a72b22f7449c697abf75550a30554a5f95c0aa9e
-lines_used,1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22
-lines_ignored,24
-facts,227
+lines_used,1;32;33;34;35;36;37;38;39;40;41;42;43;44;45;46;47;48;49;50;51;52
+lines_ignored,2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;24
+facts,325
 tree_rows,76
-derived_by_kb,21
-dropped,4
-unmapped,15
-unmapped_never,12
-promoted,3
+derived_by_kb,42
+dropped,11
+unmapped,37
+unmapped_never,19
+promoted,18
 step_input:pass-0 extension units,37
-step_input:records,173
+step_input:records,237
 "step_input:unit derived (derived: curve_per_unit, None)",2
-step_a0:value_text promoted (value:reactor_type: value),1
-step_a0:quantity other naming a method entry (kept),1
-step_a0:quantity promoted (quantity: symbol),1
-step_a0:quantity other: never.csv word,1
+step_input:legend conditions of a pass-0 unit (specimen),11
+step_input:coordinate of a pass-0 unit (value),17
+step_a0:quantity other: never.csv word,8
+step_a0:quantity promoted (quantity: symbol),6
+step_a0:quantity promoted (quantity: id),6
+step_a0:quantity promoted (quantity: name),5
 step_a1:symbol species: no species,1
 step_a1:process_mode from the recipe field: plasma,15
 step_a1:material from the recipe field: al2o3,15
-step_a1:qualifier out of scope: species,6
+step_a1:qualifier out of scope: step,2
 step_a1:qualifier out of scope: gas,1
-step_a1:qualifier out of scope: stage,6
-step_a1:qualifier out of scope: relative_to,6
-step_a1:qualifier out of scope: over,6
-step_a1:qualifier out of scope: mode,6
-step_a1:qualifier out of scope: ratio,6
-step_a1:qualifier out of scope: specimen_class,6
-step_a1:qualifier out of scope: structure_class,7
-step_a1:qualifier out of scope: basis,3
-step_a1:qualifier out of scope: reference,1
-step_a:numeric string coerced (C4),6
-step_a:schema:enum,2
-step_a:kept,201
-step_a_fields:effect,2
+step_a1:qualifier out of scope: species,3
+step_a1:qualifier out of scope: phase,4
+step_a1:qualifier out of scope: reference,4
+step_a1:qualifier out of scope: relative_to,4
+step_a1:qualifier out of scope: ratio,4
+step_a1:qualifier out of scope: specimen_class,4
+step_a1:qualifier out of scope: structure_class,4
+step_a:variables_unmapped (set to null),6
+step_a:schema:type,1
+step_a:schema:enum,4
+step_a:kept,279
+step_a_fields:label_as_printed,1
+step_a_fields:effect,4
 step_b:model_with_value (kept),5
-step_b:kept,201
-step_c:quantity_other (kept),1
-step_c:quantity_other never (kept),1
-step_c:kept,201
+step_b:statement_only (kept: P138 form),12
+step_b:kept,279
+step_c:quantity_other (kept),14
+step_c:quantity_other never (kept),8
+step_c:kept,279
+step_d:quote_not_found,6
 step_d:quote found in the paper's elements concatenated (P182),1
-step_d:quote_not_found,2
-step_d:kept,199
-step_e:kept,199
-step_f:species_resolved,25
-step_f:kept,199
+"step_d:derived condition (figures.json, no quote check)",17
+step_d:kept,273
+step_e:unit_unresolved (kept as printed),2
+step_e:kept,273
+step_f:species_resolved,23
+step_f:kept,273
 step_h:simulation linked to a model entry,1
 step_h:derived unit of role null (role unresolved: a row under the paper),2
 step_h:measurement unit,15
-step_h:place: about paper -> recipe,94
-step_h:place: claim -> paper,23
-step_h:place: caveat -> paper,15
-"step_h:place: about paper, method -> paper method activity",14
-step_h:place: model about a simulation -> simulation,7
-step_h:place: setting about a run -> deposition,44
-step_h:place: cited -> paper,2
+step_h:place: about paper -> recipe,100
+step_h:place: claim -> paper,31
+"step_h:place: about paper, method -> paper method activity",29
+step_h:place: model about a simulation -> simulation,6
+step_h:place: cited -> paper,8
+step_h:place: definition -> paper,3
+step_h:place: caveat -> paper,12
+step_h:place: setting about a run -> deposition,61
+step_h:place: setting about a unit of unresolved role -> the unit,1
+step_h:place: result about a specimen -> its measurement,4
+step_h:place: derived about a unit of unresolved role -> its measurement,1
+step_h:place: setting about a specimen -> deposition,17
 step_h:specimen_created,6
-step_m:statement filled from the quote,148
-step_m:label_as_printed filled with the quantity id,10
-step_m:links resolved,9
-step_m:links named elements without facts,5
+step_m:statement filled from the quote,200
+step_m:label_as_printed filled with the quantity id,3
+step_m:links resolved,17
+step_m:links named elements without facts,4
 "step_1c:figure label other (condition), never",2
 step_1c:figure label other (x),2
 "step_1c:figure label other (y), never",4
@@ -69,12 +79,12 @@ step_1c:curve -> observation,43
 step_1c:unbound item (peak): no unit named,16
 step_1c:unbound item (panel): no unit named,5
 step_1c:image -> a measurement (sem),4
-step_i:merged,39
-step_i:duplicate dropped,1
-step_i:kept,206
-step_n:comparison replicate,1
-step_n:comparison series,2
+step_i:merged,36
+step_i:caveat merged,1
+step_i:kept,283
+step_n:comparison series,3
 step_j:derived cycle_time,21
-step_k:statement from the record,159
-step_k:statement_copies_text (reported by check),26
-step_k:statement assembled,68
+step_j:derived deposition_rate,21
+step_k:statement from the record,236
+step_k:statement_copies_text (reported by check),41
+step_k:statement assembled,89

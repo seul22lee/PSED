@@ -1,134 +1,172 @@
 fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
-ela03:abs.g1#1,observation,aspect_ratio,1000,,,abs.g1,ela03:abs.g1#2,type 'setting' vs 'observation'
+ela03:abs.g1#1,claim,aspect_ratio,1000,,,abs.g1,ela03:abs.g1#2,type 'setting' vs 'claim'
+ela03:abs.g2#1,setting,structure,,,anodic_alumina_membrane,abs.g2,ela03:abs.g2#1,type 'claim' vs 'setting'; quantity '' vs 'structure'; value_text '' vs 'anodic_alumina_membrane'
 ela03:abs.g5#1,observation,initial_sticking_coefficient,0.001,,,abs.g5,ela03:abs.g5#2,type 'cited' vs 'observation'
 ela03:abs.g6#1,observation,initial_sticking_coefficient,1e-08,,,abs.g6,ela03:abs.g6#1,type 'cited' vs 'observation'
 ela03:s2.p2#3,cited,feature_depth,,µm,,s2.p2,ela03:s2.p2#1,quantity 'pore_density' vs 'feature_depth'
 ela03:s2.p23#2,setting,feature_depth,,µm,,s2.p23,ela03:s2.p23#1,quantity 'feature_width' vs 'feature_depth'
-ela03:s3.p1#2,setting,feature_width,40,nm,,s3.p1,ela03:s3.p1#1,"quantity 'other' vs 'feature_width'; value '99.99' '%' vs '40' 'nm' (canonical ('dimensionless', 0.9999) vs ('length', 40.0))"
-ela03:s3.p1#3,setting,body_thickness,120,µm,,s3.p1,ela03:s3.p1#1,"quantity 'other' vs 'body_thickness'; value '99.99' '%' vs '120' 'µm' (canonical ('dimensionless', 0.9999) vs ('length', 120000.0))"
+ela03:s2.p25#1,setting,material,,,al2o3,s2.p25;s3.p33;fig8.cap,ela03:s2.p25#4,value_text 'sio2' vs 'al2o3'
+ela03:s3.p22#1,caveat,,,,,s3.p22,ela03:s3.p2#7,type 'setting' vs 'caveat'
+ela03:s3.p25#2,definition,purge_time,,,,s3.p25,ela03:s3.p25#1,quantity 'pulse_time' vs 'purge_time'
+ela03:s3.p25#4,definition,purge_time,,,,s3.p25,ela03:s3.p25#1,quantity 'pulse_time' vs 'purge_time'
+ela03:s3.p28#1,setting,particle_diameter,40,nm,,s3.p28,ela03:s3.p28#1,"quantity '' vs 'particle_diameter'; value '' '' vs '40' 'nm' (canonical None vs ('length', 40.0))"
+ela03:s3.p29#1,setting,other,,,JEOL JSM-5800,s3.p29,ela03:s3.p29#1,quantity '' vs 'other'; value_text '' vs 'JEOL JSM-5800'
+ela03:s4.p1#5,claim,feature_width,39,nm,,s4.p1,ela03:s4.p1#24,"quantity '' vs 'feature_width'; value '' '' vs '39' 'nm' (canonical None vs ('length', 39.0))"
 ela03:s4.p2#1,claim,pulse_time,1,s,,s4.p2,ela03:s4.p1#24,"quantity '' vs 'pulse_time'; value '' '' vs '1' 's' (canonical None vs ('time', 1.0))"
 ela03:s4.p3#1,claim,pulse_time,3,s,,s4.p3,ela03:abs.g3#1,"quantity '' vs 'pulse_time'; value '' '' vs '3' 's' (canonical None vs ('time', 3.0))"
-ela03:s4.p4#1,setting,material,,,zno,s4.p4,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
+ela03:s4.p4#2,claim,feature_width,39,nm,,s4.p4,ela03:s4.p4#1,"type 'setting' vs 'claim'; value '65' 'nm' vs '39' 'nm' (canonical ('length', 65.0) vs ('length', 39.0))"
 ela03:s4.x1#1,claim,pulse_time,30,s,,s4.x1,ela03:abs.g3#2,"quantity '' vs 'pulse_time'; value '' '' vs '30' 's' (canonical None vs ('time', 30.0))"
-ela03:s4.p9#1,model,,,,,s4.p9,ela03:s4.p9#3,type 'claim' vs 'model'
-ela03:s4.p10#2,claim,,,,,s4.p10,ela03:s4.p10#9,"quantity 'other' vs ''; value '40' '%' vs '' '' (canonical ('dimensionless', 0.4) vs None)"
-ela03:s4.p15#1,model,,,,,s4.p15,ela03:s4.p15#3,type 'observation' vs 'model'
-ela03:s5.p2#1,claim,mean_free_path,4e-05,m,,s5.p2,ela03:s5.p2#3,"quantity '' vs 'mean_free_path'; value '' '' vs '4e-05' 'm' (canonical None vs ('length', 40000.0))"
+ela03:s4.p9#1,derived,other,,,y = kt^{1/2},s4.p9,ela03:s4.p9#2,"value_text '' vs 'y = kt^{1/2}'; value '0.23' 's^-1/2' vs '' '' (canonical ('inverse_sqrt_time', 0.23) vs None)"
+ela03:s4.p10#1,claim,,,,,s4.p10,ela03:s4.p10#9,"quantity 'other' vs ''; value '40' '%' vs '' '' (canonical ('dimensionless', 0.4) vs None)"
+ela03:s4.p11#3,setting,aspect_ratio,5000,,,s4.p11,ela03:s4.p11#1,"quantity 'feature_width' vs 'aspect_ratio'; value '19' 'nm' vs '5000' '' (canonical ('length', 19.0) vs ('dimensionless', 5000.0))"
+ela03:s4.p15#3,derived,other,,,y = kt^{1/2},s4.p15,ela03:s4.p15#2,"type 'setting' vs 'derived'; value_text '' vs 'y = kt^{1/2}'; value '77' '°C' vs '' '' (canonical ('temperature', 350.15) vs None)"
+ela03:s5.p2#1,setting,deposition_temperature,450,K,,s5.p2,ela03:s3.p25#6,"quantity 'partial_pressure' vs 'deposition_temperature'; value '' 'Torr' vs '450' 'K' (canonical None vs ('temperature', 176.85))"
+ela03:s5.p3#1,caveat,,,,,s5.p3,ela03:s5.p3#1,type 'model' vs 'caveat'
+ela03:s5.p5#1,caveat,,,,,s5.p5,ela03:s5.p5#1,type 'model' vs 'caveat'
+ela03:s5.p7#1,definition,initial_sticking_coefficient,,,,s5.p7,ela03:s5.p7#1,type 'model' vs 'definition'; quantity '' vs 'initial_sticking_coefficient'
+ela03:s5.p7#2,definition,growth_per_cycle,,Å/cycle,,s5.p7,ela03:s5.p7#1,type 'model' vs 'definition'; quantity '' vs 'growth_per_cycle'
+ela03:s5.p11#1,claim,,,,,s5.p11,ela03:fig9a#1,type 'model' vs 'claim'; quantity 'normalized_thickness' vs ''
 ela03:s5.p20#1,definition,other,,,,s5.p20,ela03:s5.p20#1,quantity '' vs 'other'
-ela03:s5.p32#1,definition,saturation_density,,10^15 cm^-2,,s5.p32,ela03:eq9#1,type 'model' vs 'definition'; quantity '' vs 'saturation_density'
-ela03:fig1.cap#1,setting,structure,,,anodic_alumina_membrane,fig1.cap;fig4.cap;fig6.cap;tab1.cap,ela03:s3.p1#2,quantity '' vs 'structure'; value_text '' vs 'anodic_alumina_membrane'
-ela03:fig3.cap#2,setting,material,,,al2o3,fig3.cap,ela03:s4.p1#3,"quantity 'cycle_number' vs 'material'; value_text '' vs 'al2o3'; value '100' '' vs '' '' (canonical ('dimensionless', 100.0) vs None)"
-ela03:fig4.cap#2,setting,material,,,zno,fig4.cap;fig5.cap;fig6.cap,ela03:s4.p4#3,"quantity 'cycle_number' vs 'material'; value_text '' vs 'zno'; value '64' '' vs '' '' (canonical ('dimensionless', 64.0) vs None)"
-ela03:fig4#1,observation,signal_intensity,,,,fig4,ela03:s4.x1#1,quantity '' vs 'signal_intensity'
+ela03:s5.p29#1,caveat,,,,,s5.p29,ela03:s5.p29#1,type 'model' vs 'caveat'
+ela03:s5.p30#1,definition,surface_coverage,,,,s5.p30,ela03:eq8#1,type 'model' vs 'definition'; quantity '' vs 'surface_coverage'
+ela03:s5.p32#1,definition,saturation_density,,nm-2,,s5.p32,ela03:eq9#1,type 'model' vs 'definition'; quantity '' vs 'saturation_density'
+ela03:s5.x3#1,claim,,,,,s5.x3,ela03:s5.x3#3,quantity 'pulse_time' vs ''
+ela03:fig1.cap#1,setting,structure,,,anodic_alumina_membrane,fig1.cap,ela03:fig1.cap#1,"type 'observation' vs 'setting'; quantity 'feature_width' vs 'structure'; value_text '' vs 'anodic_alumina_membrane'; value '40' 'nm' vs '' '' (canonical ('length', 40.0) vs None)"
+ela03:fig1.cap#2,setting,feature_width,40,nm,,fig1.cap,ela03:fig1.cap#1,type 'observation' vs 'setting'
+ela03:fig5.cap#1,setting,material,,,zno,fig5.cap,ela03:s4.p4#3,"quantity 'cycle_number' vs 'material'; value_text '' vs 'zno'; value '64' '' vs '' '' (canonical ('dimensionless', 64.0) vs None)"
 ela03:fig5a#1,observation,normalized_thickness,0.745,,,fig5a,ela03:fig5a#1,"value '' '' vs '0.745' '' (canonical None vs ('dimensionless', 0.745))"
 ela03:fig5a#2,observation,penetration_depth,10.68,µm,,fig5a,ela03:s4.p8#1,"quantity '' vs 'penetration_depth'; value '' '' vs '10.68' 'µm' (canonical None vs ('length', 10680.0))"
 ela03:fig5a#3,observation,normalized_thickness,0.875,,,fig5a,ela03:fig5a#1,"value '' '' vs '0.875' '' (canonical None vs ('dimensionless', 0.875))"
 ela03:fig5a#4,observation,penetration_depth,20.06,µm,,fig5a,ela03:s4.p8#1,"quantity '' vs 'penetration_depth'; value '' '' vs '20.06' 'µm' (canonical None vs ('length', 20060.0))"
 ela03:fig5a#5,observation,normalized_thickness,0.834,,,fig5a,ela03:fig5a#1,"value '' '' vs '0.834' '' (canonical None vs ('dimensionless', 0.834))"
+ela03:fig5b#1,claim,,,,,fig5b,ela03:s4.x2#1,type 'observation' vs 'claim'; quantity 'surface_coverage' vs ''
 ela03:fig6a#1,derived,normalized_thickness,0.8266666666666667,,,fig6a,ela03:fig6a#1,"type 'observation' vs 'derived'; value '' '' vs '0.8266666666666667' '' (canonical None vs ('dimensionless', 0.826667))"
 ela03:fig6a#2,derived,penetration_depth,10.393939393939394,µm,,fig6a,ela03:s4.p10#14,"type 'observation' vs 'derived'; quantity '' vs 'penetration_depth'; value '' '' vs '10.393939393939394' 'µm' (canonical None vs ('length', 10393.9))"
 ela03:fig6a#3,derived,normalized_thickness,0.8716666666666666,,,fig6a,ela03:fig6a#1,"type 'observation' vs 'derived'; value '' '' vs '0.8716666666666666' '' (canonical None vs ('dimensionless', 0.871667))"
 ela03:fig6a#4,derived,penetration_depth,18.083333333333336,µm,,fig6a,ela03:s4.p10#14,"type 'observation' vs 'derived'; quantity '' vs 'penetration_depth'; value '' '' vs '18.083333333333336' 'µm' (canonical None vs ('length', 18083.3))"
 ela03:fig7.cap#1,setting,aspect_ratio,5000,,,fig7.cap,ela03:s4.p11#1,"quantity 'feature_width' vs 'aspect_ratio'; value '19' 'nm' vs '5000' '' (canonical ('length', 19.0) vs ('dimensionless', 5000.0))"
-ela03:s4.p11#2,setting,material,,,zno,s4.p11;fig7.cap,ela03:s4.p11#1,"quantity 'feature_width' vs 'material'; value_text '' vs 'zno'; value '19' 'nm' vs '' '' (canonical ('length', 19.0) vs None)"
-ela03:fig7.cap#2,setting,structure,,,anodic_alumina_membrane,fig7.cap,ela03:s4.p11#1,"quantity 'feature_width' vs 'structure'; value_text '' vs 'anodic_alumina_membrane'; value '19' 'nm' vs '' '' (canonical ('length', 19.0) vs None)"
 ela03:fig7a#1,observation,signal_intensity,,,,fig7a,ela03:s4.p12#2,quantity '' vs 'signal_intensity'
-ela03:fig7b#1,derived,normalized_thickness,0.7104,,,fig7b,ela03:fig7b#1,"type 'observation' vs 'derived'; value '' '' vs '0.7104' '' (canonical None vs ('dimensionless', 0.7104))"
-ela03:fig7b#2,derived,penetration_depth,97.6,µm,,fig7b,ela03:fig7b#1,"type 'observation' vs 'derived'; quantity 'normalized_thickness' vs 'penetration_depth'; value '' '' vs '97.6' 'µm' (canonical None vs ('length', 97600.0))"
+ela03:fig7b#1,observation,normalized_thickness,0.7104,,,fig7b,ela03:fig7b#1,"value '' '' vs '0.7104' '' (canonical None vs ('dimensionless', 0.7104))"
+ela03:fig7b#2,observation,penetration_depth,97.6,µm,,fig7b,ela03:fig7b#1,"quantity 'normalized_thickness' vs 'penetration_depth'; value '' '' vs '97.6' 'µm' (canonical None vs ('length', 97600.0))"
+ela03:fig8.cap#1,setting,reactant_A,,,tma,fig8.cap,ela03:fig8.cap#1,type 'definition' vs 'setting'; quantity 'signal_intensity' vs 'reactant_A'; value_text '' vs 'tma'
+ela03:fig8.cap#2,setting,reactant_A,,,sicl4,fig8.cap,ela03:fig8.cap#1,type 'definition' vs 'setting'; quantity 'signal_intensity' vs 'reactant_A'; value_text '' vs 'sicl4'
 ela03:fig9.cap#1,setting,material,,,al2o3,fig9.cap,ela03:s5.p12#1,"quantity 'feature_width' vs 'material'; value_text '' vs 'al2o3'; value '65' 'nm' vs '' '' (canonical ('length', 65.0) vs None)"
 ela03:fig9.cap#2,setting,reactant_A,,,tma,fig9.cap,ela03:s5.p12#1,"quantity 'feature_width' vs 'reactant_A'; value_text '' vs 'tma'; value '65' 'nm' vs '' '' (canonical ('length', 65.0) vs None)"
-ela03:fig10.cap#1,setting,material,,,zno,fig10.cap;fig11.cap;fig13.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'material'; value_text '' vs 'zno'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#2,setting,reactant_A,,,dez,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'reactant_A'; value_text '' vs 'dez'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10b#1,claim,,,,,fig10b,ela03:fig10b#1,type 'model' vs 'claim'; quantity 'surface_coverage' vs ''
-ela03:fig12a#1,derived,surface_coverage,0.27964285714285714,,,fig12a,ela03:fig12a#1,"type 'model' vs 'derived'; value '' '' vs '0.27964285714285714' '' (canonical None vs ('dimensionless', 0.279643))"
-ela03:fig12a#2,derived,surface_coverage,0.3730833333333334,,,fig12a,ela03:fig12a#1,"type 'model' vs 'derived'; value '' '' vs '0.3730833333333334' '' (canonical None vs ('dimensionless', 0.373083))"
-ela03:fig12b#1,derived,surface_coverage,0.2955,,,fig12b,ela03:fig12b#1,"type 'model' vs 'derived'; value '' '' vs '0.2955' '' (canonical None vs ('dimensionless', 0.2955))"
+ela03:fig10.cap#1,setting,material,,,zno,fig10.cap;fig13.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'material'; value_text '' vs 'zno'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
 ela03:fig13.cap#1,setting,structure,,,anodic_alumina_membrane,fig13.cap,ela03:s5.x3#1,quantity 'partial_pressure' vs 'structure'; value_text '' vs 'anodic_alumina_membrane'
+ela03:tab1.cap#1,setting,structure,,,anodic_alumina_membrane,tab1.cap,ela03:s3.p1#2,quantity '' vs 'structure'; value_text '' vs 'anodic_alumina_membrane'
+ela03:tab1.r1c0#1,setting,other,1.2,m,,tab1.r1c0,ela03:tab1.r1c0#1,"value_text '1.2 M H2SO4' vs ''; value '' '' vs '1.2' 'm' (canonical None vs ('length', 1200000000.0))"
 ela03:tab1.r1c2#1,setting,deposition_temperature,2,°C,,tab1.r1c2,ela03:tab1.r1c2#1,"quantity 'other' vs 'deposition_temperature'; value '2' '°C' vs '2' '°C' (canonical ('temperature', 275.15) vs ('temperature', 2.0))"
 ela03:tab1.r1c3#1,setting,other,100,C/cm2,,tab1.r1c3,ela03:tab1.r1c3#1,"value '' 'C/cm2' vs '100' 'C/cm2' (canonical None vs ('charge_per_area', 100.0))"
-ela03:tab1.r1c3#2,setting,other,200,C/cm2,,tab1.r1c3,ela03:tab1.r1c3#1,"value '' 'C/cm2' vs '200' 'C/cm2' (canonical None vs ('charge_per_area', 200.0))"
 ela03:tab1.r1c4#1,observation,feature_width,19,nm,,tab1.r1c4,ela03:tab1.r1c4#1,type 'setting' vs 'observation'
 ela03:tab1.r1c5#1,observation,body_thickness,50,µm,,tab1.r1c5,ela03:tab1.r1c5#1,"type 'setting' vs 'observation'; value '' 'µm' vs '50' 'µm' (canonical None vs ('length', 50000.0))"
-ela03:tab1.r1c5#2,observation,body_thickness,100,µm,,tab1.r1c5,ela03:tab1.r1c5#1,"type 'setting' vs 'observation'; value '' 'µm' vs '100' 'µm' (canonical None vs ('length', 100000.0))"
+ela03:tab1.r2c0#1,setting,other,3,%,,tab1.r2c0,ela03:tab1.r2c0#1,"value_text '3% H2C2O4' vs ''; value '' '' vs '3' '%' (canonical None vs ('dimensionless', 0.03))"
 ela03:tab1.r2c2#1,setting,deposition_temperature,12,°C,,tab1.r2c2,ela03:tab1.r2c2#1,"quantity 'other' vs 'deposition_temperature'; value '12' '°C' vs '12' '°C' (canonical ('temperature', 285.15) vs ('temperature', 12.0))"
 ela03:tab1.r2c4#1,observation,feature_width,46,nm,,tab1.r2c4,ela03:tab1.r2c4#1,type 'setting' vs 'observation'
 ela03:tab1.r2c5#1,observation,body_thickness,50,µm,,tab1.r2c5,ela03:tab1.r2c5#1,type 'setting' vs 'observation'
+ela03:tab1.r3c0#1,setting,other,3,%,,tab1.r3c0,ela03:tab1.r3c0#1,"value_text '3% H2C2O4' vs ''; value '' '' vs '3' '%' (canonical None vs ('dimensionless', 0.03))"
 ela03:tab1.r3c2#1,setting,deposition_temperature,12,°C,,tab1.r3c2,ela03:tab1.r3c2#1,"quantity 'other' vs 'deposition_temperature'; value '12' '°C' vs '12' '°C' (canonical ('temperature', 285.15) vs ('temperature', 12.0))"
 ela03:tab1.r3c4#1,observation,feature_width,65,nm,,tab1.r3c4,ela03:tab1.r3c4#1,type 'setting' vs 'observation'
 ela03:tab1.r3c5#1,observation,body_thickness,50,µm,,tab1.r3c5,ela03:tab1.r3c5#1,type 'setting' vs 'observation'
-ela03:fig10.cap#3,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#4,setting,pulse_time,0.2,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '0.2' 's' (canonical ('time', 1.0) vs ('time', 0.2))"
-ela03:fig10.cap#5,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#6,setting,pulse_time,0.5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '0.5' 's' (canonical ('time', 1.0) vs ('time', 0.5))"
-ela03:fig10.cap#7,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#9,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#10,setting,pulse_time,1.5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '1.5' 's' (canonical ('time', 1.0) vs ('time', 1.5))"
-ela03:fig10.cap#11,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#12,setting,pulse_time,2,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '2' 's' (canonical ('time', 1.0) vs ('time', 2.0))"
-ela03:fig10.cap#13,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#14,setting,pulse_time,2.5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '2.5' 's' (canonical ('time', 1.0) vs ('time', 2.5))"
-ela03:fig10.cap#15,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#17,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#18,setting,pulse_time,4,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '4' 's' (canonical ('time', 1.0) vs ('time', 4.0))"
-ela03:fig10.cap#19,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#20,setting,pulse_time,5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '5' 's' (canonical ('time', 1.0) vs ('time', 5.0))"
-ela03:fig10.cap#21,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#22,setting,pulse_time,6,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '6' 's' (canonical ('time', 1.0) vs ('time', 6.0))"
-ela03:fig10.cap#23,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#24,setting,pulse_time,7,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '7' 's' (canonical ('time', 1.0) vs ('time', 7.0))"
-ela03:fig10.cap#25,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#26,setting,pulse_time,8,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '8' 's' (canonical ('time', 1.0) vs ('time', 8.0))"
-ela03:fig10.cap#27,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
-ela03:fig10.cap#28,setting,pulse_time,9,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '9' 's' (canonical ('time', 1.0) vs ('time', 9.0))"
-ela03:fig10.cap#29,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#6,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#7,setting,pulse_time,0.2,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '0.2' 's' (canonical ('time', 1.0) vs ('time', 0.2))"
+ela03:fig10.cap#8,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#9,setting,pulse_time,0.5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '0.5' 's' (canonical ('time', 1.0) vs ('time', 0.5))"
+ela03:fig10.cap#10,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#12,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#13,setting,pulse_time,1.5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '1.5' 's' (canonical ('time', 1.0) vs ('time', 1.5))"
+ela03:fig10.cap#14,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#15,setting,pulse_time,2,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '2' 's' (canonical ('time', 1.0) vs ('time', 2.0))"
+ela03:fig10.cap#16,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#17,setting,pulse_time,2.5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '2.5' 's' (canonical ('time', 1.0) vs ('time', 2.5))"
+ela03:fig10.cap#18,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#20,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#21,setting,pulse_time,4,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '4' 's' (canonical ('time', 1.0) vs ('time', 4.0))"
+ela03:fig10.cap#22,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#23,setting,pulse_time,5,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '5' 's' (canonical ('time', 1.0) vs ('time', 5.0))"
+ela03:fig10.cap#24,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#25,setting,pulse_time,6,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '6' 's' (canonical ('time', 1.0) vs ('time', 6.0))"
+ela03:fig10.cap#26,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#27,setting,pulse_time,7,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '7' 's' (canonical ('time', 1.0) vs ('time', 7.0))"
+ela03:fig10.cap#28,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#29,setting,pulse_time,8,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '8' 's' (canonical ('time', 1.0) vs ('time', 8.0))"
+ela03:fig10.cap#30,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
+ela03:fig10.cap#31,setting,pulse_time,9,s,,fig10.cap,ela03:s5.p15#5,"value '1' 's' vs '9' 's' (canonical ('time', 1.0) vs ('time', 9.0))"
+ela03:fig10.cap#32,setting,other,,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '' '' (canonical ('dimensionless', 0.007) vs None)"
 ela03:fig11.cap#2,setting,feature_width,45,nm,,fig11.cap,ela03:s5.p16#3,"value '19' 'nm' vs '45' 'nm' (canonical ('length', 19.0) vs ('length', 45.0))"
-ela03:s4.p1#2,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
-ela03:s4.p1#3,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
-ela03:s4.p1#4,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
-ela03:s4.p1#5,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
+ela03:fig5.cap#2,setting,other,1,,,fig5.cap,ela03:s4.p4#3,"quantity 'cycle_number' vs 'other'; value '64' '' vs '1' '' (canonical ('dimensionless', 64.0) vs ('dimensionless', 1.0))"
+ela03:fig5.cap#3,setting,other,3,,,fig5.cap,ela03:s4.p4#3,"quantity 'cycle_number' vs 'other'; value '64' '' vs '3' '' (canonical ('dimensionless', 64.0) vs ('dimensionless', 3.0))"
+ela03:fig5.cap#4,setting,other,10,,,fig5.cap,ela03:s4.p4#3,"quantity 'cycle_number' vs 'other'; value '64' '' vs '10' '' (canonical ('dimensionless', 64.0) vs ('dimensionless', 10.0))"
+ela03:fig5.cap#5,setting,other,30,,,fig5.cap,ela03:s4.p4#3,"quantity 'cycle_number' vs 'other'; value '64' '' vs '30' '' (canonical ('dimensionless', 64.0) vs ('dimensionless', 30.0))"
+ela03:fig5b#2,setting,pulse_time,1,s,,fig5b,ela03:s4.x2#1,"type 'observation' vs 'setting'; quantity 'surface_coverage' vs 'pulse_time'; value '' '' vs '1' 's' (canonical None vs ('time', 1.0))"
+ela03:fig5b#3,setting,pulse_time,3,s,,fig5b,ela03:s4.x2#1,"type 'observation' vs 'setting'; quantity 'surface_coverage' vs 'pulse_time'; value '' '' vs '3' 's' (canonical None vs ('time', 3.0))"
+ela03:fig5b#4,setting,pulse_time,10,s,,fig5b,ela03:s4.x2#1,"type 'observation' vs 'setting'; quantity 'surface_coverage' vs 'pulse_time'; value '' '' vs '10' 's' (canonical None vs ('time', 10.0))"
+ela03:fig9.cap#3,setting,other,1,,,fig9.cap,ela03:s5.p12#1,"quantity 'feature_width' vs 'other'; value '65' 'nm' vs '1' '' (canonical ('length', 65.0) vs ('dimensionless', 1.0))"
+ela03:fig9.cap#4,setting,other,3,,,fig9.cap,ela03:s5.p12#1,"quantity 'feature_width' vs 'other'; value '65' 'nm' vs '3' '' (canonical ('length', 65.0) vs ('dimensionless', 3.0))"
+ela03:fig9.cap#5,setting,other,10,,,fig9.cap,ela03:s5.p12#1,"quantity 'feature_width' vs 'other'; value '65' 'nm' vs '10' '' (canonical ('length', 65.0) vs ('dimensionless', 10.0))"
+ela03:fig10.cap#34,setting,other,1,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '1' '' (canonical ('dimensionless', 0.007) vs ('dimensionless', 1.0))"
+ela03:fig10.cap#35,setting,other,3,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '3' '' (canonical ('dimensionless', 0.007) vs ('dimensionless', 3.0))"
+ela03:fig10.cap#36,setting,other,10,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '10' '' (canonical ('dimensionless', 0.007) vs ('dimensionless', 10.0))"
+ela03:fig10.cap#37,setting,other,30,,,fig10.cap,ela03:s5.p15#1,"quantity 'initial_sticking_coefficient' vs 'other'; value '7e-3' '' vs '30' '' (canonical ('dimensionless', 0.007) vs ('dimensionless', 30.0))"
+ela03:fig11.cap#3,setting,other,19,,,fig11.cap,ela03:s5.p16#1,"quantity 'pulse_time' vs 'other'; value '5' 's' vs '19' '' (canonical ('time', 5.0) vs ('dimensionless', 19.0))"
+ela03:fig11.cap#4,setting,other,46,,,fig11.cap,ela03:s5.p16#1,"quantity 'pulse_time' vs 'other'; value '5' 's' vs '46' '' (canonical ('time', 5.0) vs ('dimensionless', 46.0))"
+ela03:fig11.cap#5,setting,other,65,,,fig11.cap,ela03:s5.p16#1,"quantity 'pulse_time' vs 'other'; value '5' 's' vs '65' '' (canonical ('time', 5.0) vs ('dimensionless', 65.0))"
+ela03:s4.p1#6,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
+ela03:s4.p1#7,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
+ela03:s4.p1#8,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
+ela03:s4.p1#9,setting,material,,,al2o3,s4.p1,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'al2o3'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
 ela03:s4.p4#3,setting,material,,,zno,s4.p4,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
 ela03:s4.p4#4,setting,material,,,zno,s4.p4,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
 ela03:s4.p4#5,setting,material,,,zno,s4.p4,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
 ela03:s4.p4#6,setting,material,,,zno,s4.p4,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
+ela03:s4.p10#2,setting,material,,,zno,s4.p10,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
 ela03:s4.p10#3,setting,material,,,zno,s4.p10,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
 ela03:s4.p10#4,setting,material,,,zno,s4.p10,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
-ela03:s4.p10#5,setting,material,,,zno,s4.p10,ela03:s3.p2#3,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'zno'; value '177' '°C' vs '' '' (canonical ('temperature', 177.0) vs None)"
-ela03:s3.p33#3,setting,material,,,al2o3,s3.p33,ela03:s3.p33#1,quantity '' vs 'material'; value_text '' vs 'al2o3'
-ela03:s3.p33#4,setting,material,,,sio2,s3.p33,ela03:s3.p33#1,quantity '' vs 'material'; value_text '' vs 'sio2'
-ela03:fig5b#2,observation,other,0.22,,,fig5b;fig5.cap,ela03:s4.p9#4,"value '10' 's' vs '0.22' '' (canonical ('time', 10.0) vs ('dimensionless', 0.22))"
-ela03:fig5b#3,observation,other,0.39,,,fig5b;fig5.cap,ela03:s4.p9#4,"value '10' 's' vs '0.39' '' (canonical ('time', 10.0) vs ('dimensionless', 0.39))"
-ela03:fig5b#4,observation,other,0.725,,,fig5b;fig5.cap,ela03:s4.p9#4,"value '10' 's' vs '0.725' '' (canonical ('time', 10.0) vs ('dimensionless', 0.725))"
+ela03:s4.p11#4,setting,material,,,zno,s4.p11,ela03:s4.p11#1,"quantity 'feature_width' vs 'material'; value_text '' vs 'zno'; value '19' 'nm' vs '' '' (canonical ('length', 19.0) vs None)"
+ela03:fig5b#5,observation,other,0.22,,,fig5b;fig5.cap,ela03:s4.p9#4,"value '10' 's' vs '0.22' '' (canonical ('time', 10.0) vs ('dimensionless', 0.22))"
+ela03:fig5b#6,observation,other,0.39,,,fig5b;fig5.cap,ela03:s4.p9#4,"value '10' 's' vs '0.39' '' (canonical ('time', 10.0) vs ('dimensionless', 0.39))"
+ela03:fig5b#7,observation,other,0.725,,,fig5b;fig5.cap,ela03:s4.p9#4,"value '10' 's' vs '0.725' '' (canonical ('time', 10.0) vs ('dimensionless', 0.725))"
 ela03:fig6b#1,observation,other,0.18,,,fig6b;fig6.cap,ela03:fig6a#1,"quantity 'normalized_thickness' vs 'other'; value '' '' vs '0.18' '' (canonical None vs ('dimensionless', 0.18))"
 ela03:fig6b#2,observation,other,0.44,,,fig6b;fig6.cap,ela03:fig6a#1,"quantity 'normalized_thickness' vs 'other'; value '' '' vs '0.44' '' (canonical None vs ('dimensionless', 0.44))"
 ela03:fig6b#3,observation,other,0.68,,,fig6b;fig6.cap,ela03:fig6a#1,"quantity 'normalized_thickness' vs 'other'; value '' '' vs '0.68' '' (canonical None vs ('dimensionless', 0.68))"
-ela03:fig6.cap#8,derived,cycle_time,5,s,,fig6.cap,ela03:s4.p10#1,"type 'definition' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '' '' vs '5' 's' (canonical None vs ('time', 5.0))"
-ela03:fig6.cap#9,derived,cycle_time,5,s,,fig6.cap,ela03:s4.p10#1,"type 'definition' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '' '' vs '5' 's' (canonical None vs ('time', 5.0))"
-ela03:fig6.cap#10,derived,cycle_time,5,s,,fig6.cap,ela03:s4.p10#1,"type 'definition' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '' '' vs '5' 's' (canonical None vs ('time', 5.0))"
-ela03:fig6.cap#11,derived,cycle_time,5,s,,fig6.cap,ela03:s4.p10#1,"type 'definition' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '' '' vs '5' 's' (canonical None vs ('time', 5.0))"
-ela03:s4.p10#6,derived,cycle_time,5,s,,s4.p10,ela03:s5.p17#1,"quantity 'other' vs 'cycle_time'; value '0.25' 'nm-1' vs '5' 's' (canonical ('inverse_length', 250000000.0) vs ('time', 5.0))"
-ela03:fig6.cap#12,derived,cycle_time,5,s,,fig6.cap,ela03:s4.p10#1,"type 'definition' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '' '' vs '5' 's' (canonical None vs ('time', 5.0))"
-ela03:fig6.cap#13,derived,cycle_time,5,s,,fig6.cap,ela03:s4.p10#1,"type 'definition' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '' '' vs '5' 's' (canonical None vs ('time', 5.0))"
+ela03:fig4.cap#5,derived,cycle_time,2,s,,fig4.cap;fig5b,ela03:s4.p9#2,"quantity 'other' vs 'cycle_time'; value '0.23' 's^-1/2' vs '2' 's' (canonical ('inverse_sqrt_time', 0.23) vs ('time', 2.0))"
+ela03:fig4.cap#6,derived,cycle_time,6,s,,fig4.cap;fig5b,ela03:s4.p9#2,"quantity 'other' vs 'cycle_time'; value '0.23' 's^-1/2' vs '6' 's' (canonical ('inverse_sqrt_time', 0.23) vs ('time', 6.0))"
+ela03:fig4.cap#7,derived,cycle_time,20,s,,fig4.cap;fig5b,ela03:s4.p9#2,"quantity 'other' vs 'cycle_time'; value '0.23' 's^-1/2' vs '20' 's' (canonical ('inverse_sqrt_time', 0.23) vs ('time', 20.0))"
+ela03:s4.p14#4,derived,cycle_time,1685,s,,s4.p14;s4.p16;fig4.cap;fig6.cap,ela03:s3.p33#2,"type 'setting' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '47' 'nm' vs '1685' 's' (canonical ('length', 47.0) vs ('time', 1685.0))"
+ela03:s4.p14#5,derived,cycle_time,1655,s,,s4.p14;s4.p16;fig6.cap,ela03:s3.p33#2,"type 'setting' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '47' 'nm' vs '1655' 's' (canonical ('length', 47.0) vs ('time', 1655.0))"
+ela03:s4.p14#6,derived,cycle_time,1655,s,,s4.p14;s4.p16;fig6.cap,ela03:s3.p33#2,"type 'setting' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '47' 'nm' vs '1655' 's' (canonical ('length', 47.0) vs ('time', 1655.0))"
+ela03:s4.p14#7,derived,cycle_time,1655,s,,s4.p14;s4.p16;fig6.cap,ela03:s3.p33#2,"type 'setting' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '47' 'nm' vs '1655' 's' (canonical ('length', 47.0) vs ('time', 1655.0))"
 ela03:s3.p26#5,derived,cycle_time,600,s,,s3.p26;s3.p27;s4.p12,ela03:s3.p2#3,"type 'setting' vs 'derived'; quantity 'deposition_temperature' vs 'cycle_time'; value '177' '°C' vs '600' 's' (canonical ('temperature', 177.0) vs ('time', 600.0))"
-ela03:fig6.cap#14,derived,cycle_time,5,s,,fig6.cap,ela03:s4.p10#1,"type 'definition' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '' '' vs '5' 's' (canonical None vs ('time', 5.0))"
-ela03:s4.p16#4,derived,cycle_time,300,s,,s4.p16,ela03:s4.p16#1,"type 'setting' vs 'derived'; quantity 'cycle_number' vs 'cycle_time'; value '2' '' vs '300' 's' (canonical ('dimensionless', 2.0) vs ('time', 300.0))"
-ela03:fig9a#7,derived,cycle_time,1,s,,fig9a,ela03:s5.p12#5,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
-ela03:fig9a#8,derived,cycle_time,3,s,,fig9a,ela03:s5.p12#5,"type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'; value '1' 's' vs '3' 's' (canonical ('time', 1.0) vs ('time', 3.0))"
-ela03:fig9a#9,derived,cycle_time,10,s,,fig9a,ela03:s5.p12#5,"type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'; value '1' 's' vs '10' 's' (canonical ('time', 1.0) vs ('time', 10.0))"
-ela03:s5.p16#3,derived,cycle_time,5,s,,s5.p16,ela03:s5.p16#6,"quantity 'other' vs 'cycle_time'; value '0.25' 'nm-1' vs '5' 's' (canonical ('inverse_length', 250000000.0) vs ('time', 5.0))"
-ela03:fig10.cap#31,derived,cycle_time,0.2,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '0.2' 's' (canonical ('dimensionless', 0.007) vs ('time', 0.2))"
-ela03:fig10.cap#32,derived,cycle_time,0.5,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '0.5' 's' (canonical ('dimensionless', 0.007) vs ('time', 0.5))"
-ela03:fig10.cap#33,derived,cycle_time,1,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '1' 's' (canonical ('dimensionless', 0.007) vs ('time', 1.0))"
-ela03:fig10.cap#34,derived,cycle_time,1.5,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '1.5' 's' (canonical ('dimensionless', 0.007) vs ('time', 1.5))"
-ela03:fig10.cap#35,derived,cycle_time,2,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '2' 's' (canonical ('dimensionless', 0.007) vs ('time', 2.0))"
-ela03:fig10.cap#36,derived,cycle_time,2.5,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '2.5' 's' (canonical ('dimensionless', 0.007) vs ('time', 2.5))"
-ela03:fig10.cap#37,derived,cycle_time,3,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '3' 's' (canonical ('dimensionless', 0.007) vs ('time', 3.0))"
-ela03:fig10.cap#38,derived,cycle_time,4,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '4' 's' (canonical ('dimensionless', 0.007) vs ('time', 4.0))"
-ela03:fig10.cap#39,derived,cycle_time,5,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '5' 's' (canonical ('dimensionless', 0.007) vs ('time', 5.0))"
-ela03:fig10.cap#40,derived,cycle_time,6,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '6' 's' (canonical ('dimensionless', 0.007) vs ('time', 6.0))"
-ela03:fig10.cap#41,derived,cycle_time,7,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '7' 's' (canonical ('dimensionless', 0.007) vs ('time', 7.0))"
-ela03:fig10.cap#42,derived,cycle_time,8,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '8' 's' (canonical ('dimensionless', 0.007) vs ('time', 8.0))"
-ela03:fig10.cap#43,derived,cycle_time,9,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '9' 's' (canonical ('dimensionless', 0.007) vs ('time', 9.0))"
-ela03:fig10.cap#44,derived,cycle_time,10,s,,fig10.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '10' 's' (canonical ('dimensionless', 0.007) vs ('time', 10.0))"
-ela03:fig5.cap#4,derived,cycle_time,1,s,,fig5.cap,ela03:s4.p4#3,"type 'setting' vs 'derived'; quantity 'cycle_number' vs 'cycle_time'; value '64' '' vs '1' 's' (canonical ('dimensionless', 64.0) vs ('time', 1.0))"
-ela03:fig5.cap#5,derived,cycle_time,3,s,,fig5.cap,ela03:s4.p4#3,"type 'setting' vs 'derived'; quantity 'cycle_number' vs 'cycle_time'; value '64' '' vs '3' 's' (canonical ('dimensionless', 64.0) vs ('time', 3.0))"
-ela03:fig5.cap#6,derived,cycle_time,10,s,,fig5.cap,ela03:s4.p4#3,"type 'setting' vs 'derived'; quantity 'cycle_number' vs 'cycle_time'; value '64' '' vs '10' 's' (canonical ('dimensionless', 64.0) vs ('time', 10.0))"
+ela03:s4.p14#8,derived,cycle_time,1655,s,,s4.p14;s4.p16;fig6.cap,ela03:s3.p33#2,"type 'setting' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '47' 'nm' vs '1655' 's' (canonical ('length', 47.0) vs ('time', 1655.0))"
+ela03:s4.p14#9,derived,cycle_time,1655,s,,s4.p14;s4.p16;fig6.cap,ela03:s3.p33#2,"type 'setting' vs 'derived'; quantity 'feature_width' vs 'cycle_time'; value '47' 'nm' vs '1655' 's' (canonical ('length', 47.0) vs ('time', 1655.0))"
+ela03:fig9a#7,derived,cycle_time,6,s,,fig9a;fig11.cap,ela03:s5.p12#5,"type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'; value '1' 's' vs '6' 's' (canonical ('time', 1.0) vs ('time', 6.0))"
+ela03:fig9a#8,derived,cycle_time,8,s,,fig9a;fig11.cap,ela03:s5.p12#5,"type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'; value '1' 's' vs '8' 's' (canonical ('time', 1.0) vs ('time', 8.0))"
+ela03:fig9a#9,derived,cycle_time,15,s,,fig9a;fig11.cap,ela03:s5.p12#5,"type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'; value '1' 's' vs '15' 's' (canonical ('time', 1.0) vs ('time', 15.0))"
+ela03:fig10.cap#38,derived,cycle_time,6,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '6' 's' (canonical ('dimensionless', 0.007) vs ('time', 6.0))"
+ela03:fig10.cap#39,derived,cycle_time,8,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '8' 's' (canonical ('dimensionless', 0.007) vs ('time', 8.0))"
+ela03:fig10.cap#40,derived,cycle_time,15,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '15' 's' (canonical ('dimensionless', 0.007) vs ('time', 15.0))"
+ela03:fig10.cap#41,derived,cycle_time,35,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '35' 's' (canonical ('dimensionless', 0.007) vs ('time', 35.0))"
+ela03:s5.p16#3,derived,cycle_time,10,s,,s5.p16;fig11.cap,ela03:s5.p16#6,"quantity 'other' vs 'cycle_time'; value '0.25' 'nm-1' vs '10' 's' (canonical ('inverse_length', 250000000.0) vs ('time', 10.0))"
+ela03:fig11.cap#6,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig11.cap#7,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig11.cap#8,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig11.cap#9,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig11.cap#10,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig11.cap#11,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig11.cap#12,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig11.cap#13,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
+ela03:fig10.cap#42,derived,cycle_time,5.2,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '5.2' 's' (canonical ('dimensionless', 0.007) vs ('time', 5.2))"
+ela03:fig10.cap#43,derived,cycle_time,5.5,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '5.5' 's' (canonical ('dimensionless', 0.007) vs ('time', 5.5))"
+ela03:fig10.cap#44,derived,cycle_time,6,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '6' 's' (canonical ('dimensionless', 0.007) vs ('time', 6.0))"
+ela03:fig10.cap#45,derived,cycle_time,6.5,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '6.5' 's' (canonical ('dimensionless', 0.007) vs ('time', 6.5))"
+ela03:fig10.cap#46,derived,cycle_time,7,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '7' 's' (canonical ('dimensionless', 0.007) vs ('time', 7.0))"
+ela03:fig10.cap#47,derived,cycle_time,7.5,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '7.5' 's' (canonical ('dimensionless', 0.007) vs ('time', 7.5))"
+ela03:fig10.cap#48,derived,cycle_time,8,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '8' 's' (canonical ('dimensionless', 0.007) vs ('time', 8.0))"
+ela03:fig10.cap#49,derived,cycle_time,9,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '9' 's' (canonical ('dimensionless', 0.007) vs ('time', 9.0))"
+ela03:fig10.cap#50,derived,cycle_time,10,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '10' 's' (canonical ('dimensionless', 0.007) vs ('time', 10.0))"
+ela03:fig10.cap#51,derived,cycle_time,11,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '11' 's' (canonical ('dimensionless', 0.007) vs ('time', 11.0))"
+ela03:fig10.cap#52,derived,cycle_time,12,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '12' 's' (canonical ('dimensionless', 0.007) vs ('time', 12.0))"
+ela03:fig10.cap#53,derived,cycle_time,13,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '13' 's' (canonical ('dimensionless', 0.007) vs ('time', 13.0))"
+ela03:fig10.cap#54,derived,cycle_time,14,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '14' 's' (canonical ('dimensionless', 0.007) vs ('time', 14.0))"
+ela03:fig10.cap#55,derived,cycle_time,15,s,,fig10.cap;fig11.cap,ela03:s5.p15#1,"type 'setting' vs 'derived'; quantity 'initial_sticking_coefficient' vs 'cycle_time'; value '7e-3' '' vs '15' 's' (canonical ('dimensionless', 0.007) vs ('time', 15.0))"
+ela03:fig11.cap#14,derived,cycle_time,5,s,,fig11.cap,ela03:s5.p16#1,type 'setting' vs 'derived'; quantity 'pulse_time' vs 'cycle_time'
