@@ -514,6 +514,8 @@ def example(pid, form):
     from jsonschema import Draft202012Validator
     PRE = {"run": "r", "simulation": "sim", "specimen": "s", "model_run": "m"}
     for p in [p for p in reversed(list(E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
+        if not (C.V2 / "kb" / "pilot" / f"{p}.facts.csv").exists():             # P201: a paper with no gold (wer21, P171) gives no example
+            continue
         U = gold_units(p)
         if not {"run", "specimen", "simulation", "model_run"} <= {u["role"] for u in U}:
             continue
