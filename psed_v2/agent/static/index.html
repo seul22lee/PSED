@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ALD KB Agent</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-0: #f4f3f0; --surface-1: #fcfcfb; --surface-2: #efeee9; --border: #dddcd5; --grid: #e6e5e0;
+  --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #7a7974;
+  --accent: #2a78d6; --accent-soft: #e3eefb; --kb: #1a7f5a; --kb-soft: #e2f3ec; --llm: #6250d6; --llm-soft: #ecebfb;
+  --warn: #9a5b00; --warn-soft: #fff2d6; --bad: #b42323; --bad-soft: #fbe6e6;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #6250d6; --s8: #e34948;
+  --other: #a3a29c;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --surface-0: #121211; --surface-1: #1a1a19; --surface-2: #242422; --border: #3a3a37; --grid: #2e2e2b;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+    --accent: #3987e5; --accent-soft: #1d2f47; --kb: #3fbf8c; --kb-soft: #16302a; --llm: #9085e9; --llm-soft: #26233f;
+    --warn: #e0a640; --warn-soft: #3a2e14; --bad: #e66767; --bad-soft: #3b1d1d;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+    --other: #6b6a64;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0: #121211; --surface-1: #1a1a19; --surface-2: #242422; --border: #3a3a37; --grid: #2e2e2b;
+  --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+  --accent: #3987e5; --accent-soft: #1d2f47; --kb: #3fbf8c; --kb-soft: #16302a; --llm: #9085e9; --llm-soft: #26233f;
+  --warn: #e0a640; --warn-soft: #3a2e14; --bad: #e66767; --bad-soft: #3b1d1d;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
+  --other: #6b6a64;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--surface-0); color: var(--text-primary); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; display: flex; flex-direction: column; }
+header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px; border-bottom: 1px solid var(--border); background: var(--surface-1); }
+header h1 { font-size: 16px; margin: 0 12px 0 0; }
+header .status { color: var(--text-secondary); font-size: 12px; margin-right: auto; }
+button, select { font: inherit; font-size: 13px; color: var(--text-primary); background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+button:hover, select:hover { border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+main { flex: 1; display: grid; grid-template-columns: minmax(260px, 27%) minmax(260px, 27%) minmax(0, 1fr); min-height: 0; }
+main > section { display: flex; flex-direction: column; min-height: 0; min-width: 0; border-right: 1px solid var(--border); }
+main > section:last-child { border-right: 0; }
+section > h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-secondary); margin: 0; padding: 8px 16px; border-bottom: 1px solid var(--border); background: var(--surface-1); }
+.scroll { flex: 1; overflow: auto; padding: 12px 16px; }
+@media (max-width: 1000px) { main { grid-template-columns: 1fr; } main > section { min-height: 60vh; border-right: 0; border-bottom: 1px solid var(--border); } }
+.msg { margin: 0 0 12px; padding: 8px 12px; border-radius: 8px; background: var(--surface-1); border: 1px solid var(--border); }
+.msg.user { background: var(--accent-soft); border-color: transparent; }
+.msg .who { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
+.msg.live { color: var(--text-secondary); font-style: italic; }
+.msg table, #ev table { border-collapse: collapse; font-size: 12.5px; margin: 6px 0; }
+.msg th, .msg td, #ev th, #ev td { border-bottom: 1px solid var(--grid); padding: 3px 8px 3px 0; text-align: left; vertical-align: top; }
+#ev td .note { display: inline-block; max-width: 360px; }
+#ev th { color: var(--text-secondary); font-weight: 600; position: sticky; top: -12px; background: var(--surface-0); }
+.msg p { margin: 4px 0; } .msg ul, .msg ol { margin: 4px 0; padding-left: 20px; }
+code, pre { font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+pre { background: var(--surface-2); padding: 8px; border-radius: 6px; overflow: auto; max-height: 420px; white-space: pre-wrap; word-break: break-word; }
+form#ask { display: flex; gap: 8px; padding: 8px 16px; border-top: 1px solid var(--border); background: var(--surface-1); }
+form#ask textarea { flex: 1; resize: vertical; min-height: 40px; font: inherit; color: var(--text-primary); background: var(--surface-0); border: 1px solid var(--border); border-radius: 6px; padding: 6px; }
+a.fact, a.num, a.unit { color: var(--accent); text-decoration: none; cursor: pointer; }
+a.num { border-bottom: 1px dotted var(--accent); }
+a.fact { font: 11px ui-monospace, monospace; background: var(--accent-soft); border-radius: 4px; padding: 0 3px; }
+a.fact.missing { color: var(--bad); background: var(--bad-soft); }
+.card { border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 6px; background: var(--surface-1); padding: 6px 10px; margin: 0 0 8px; cursor: pointer; }
+.card.kb { border-left-color: var(--kb); } .card.llm { border-left-color: var(--llm); }
+.card.sel { outline: 2px solid var(--accent); }
+.card .tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .05em; border-radius: 4px; padding: 0 5px; margin-right: 6px; }
+.card.kb .tag { background: var(--kb-soft); color: var(--kb); } .card.llm .tag { background: var(--llm-soft); color: var(--llm); }
+.card .name { font-weight: 600; } .card .meta { display: block; color: var(--text-muted); font-size: 11px; }
+.card .args { color: var(--text-secondary); font: 11.5px ui-monospace, monospace; margin-top: 2px; word-break: break-word; }
+.card .res { margin-top: 2px; font-size: 12.5px; }
+.card .err { color: var(--bad); }
+.card details { margin-top: 4px; } .card summary { font-size: 11px; color: var(--text-muted); }
+.turnhead { font-size: 11px; color: var(--text-muted); margin: 12px 0 6px; border-top: 1px solid var(--border); padding-top: 6px; }
+#ev h3 { font-size: 13px; margin: 14px 0 6px; } #ev h3:first-child { margin-top: 0; }
+.note { color: var(--text-secondary); font-size: 12.5px; }
+.pill { display: inline-block; font-size: 11px; border-radius: 10px; padding: 0 7px; background: var(--surface-2); color: var(--text-secondary); margin: 0 4px 2px 0; }
+.pill.warn { background: var(--warn-soft); color: var(--warn); } .pill.bad { background: var(--bad-soft); color: var(--bad); }
+.imgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.img { border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface-1); font-size: 12px; }
+.img img { width: 100%; border-radius: 4px; background: #fff; }
+.chart { border: 1px solid var(--border); border-radius: 6px; padding: 8px; background: var(--surface-1); margin: 0 0 12px; position: relative; }
+.chart .title { font-size: 12.5px; font-weight: 600; } .chart .sub { font-size: 11px; color: var(--text-muted); }
+.chart svg { width: 100%; max-width: 640px; height: auto; display: block; }
+.chart svg text { fill: var(--text-secondary); font-size: 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11.5px; color: var(--text-primary); margin-top: 4px; }
+.legend i { display: inline-block; width: 14px; height: 2px; vertical-align: middle; margin-right: 4px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface-1); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 11.5px; box-shadow: 0 2px 8px rgba(0,0,0,.15); white-space: nowrap; display: none; z-index: 2; }
+.tree .level { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; margin: 0 0 8px; background: var(--surface-1); }
+.tree .level .lh { font-weight: 600; font-size: 12.5px; } .tree .level .lh small { color: var(--text-muted); font-weight: 400; }
+tr.chosen td:first-child { font-weight: 600; } tr.shadowed { color: var(--text-muted); text-decoration: line-through; } tr.conflict td { background: var(--warn-soft); }
+.toggle { font-size: 12px; margin: 0 0 8px; } .toggle button { padding: 2px 8px; } .toggle button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.empty { color: var(--text-muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>ALD KB Agent</h1>
+  <span class="status" id="status">loading…</span>
+  <span id="presets"></span>
+  <button id="newbtn" title="Start a new conversation">New</button>
+  <select id="runs" title="Open a saved log (read-only)"><option value="">Open saved log…</option></select>
+  <button id="explog" title="Download the conversation log (JSON)">Export log</button>
+  <button id="expcsv" title="Download the evidence shown on the right (CSV)">Export evidence</button>
+  <button id="theme" title="Toggle light / dark">◐</button>
+</header>
+<main>
+  <section><h2>Conversation</h2><div class="scroll" id="msgs"><p class="empty">Ask a question, or run a preset query.</p></div>
+    <form id="ask"><textarea id="q" placeholder="Ask about the KB… (Enter to send, Shift+Enter for a new line)"></textarea><button class="primary" id="askbtn">Ask</button></form></section>
+  <section><h2>Steps <small id="stepcount"></small></h2><div class="scroll" id="cards"><p class="empty">The agent's steps appear here: LLM turns and KB tool calls.</p></div></section>
+  <section><h2>Evidence</h2><div class="scroll" id="ev"><p class="empty">Select a step or a number to see what it rests on.</p></div></section>
+</main>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const S = { cid: null, readOnly: false, logName: null, turns: [], cur: null, busy: false, evRows: [], evName: "evidence", status: null };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const FACT = /\[([^\]\n]*?[a-z]+\d\d:[^\]\n]*)\]/g;            // a bracket holding a fact id
+const UNITID = /^[a-z]+\d\d:(?:ent|run|mrun|sim|unit|recipe)\b/;
+
+// ---------------------------------------------------------------- server
+async function api(path, opt) {
+  const r = await fetch(path, opt);
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || r.statusText);
+  return r.json();
+}
+async function init() {
+  try {
+    S.status = await api("/api/status");
+    $("#status").innerHTML = `model ${esc(S.status.model)} · effort ${esc(S.status.effort)} · ≤${S.status.max_tool_calls} tool calls · recipe ${esc(S.status.recipe_source)} · ` +
+      (S.status.api_key ? "API key set" : `<span style="color:var(--bad)">ANTHROPIC_API_KEY not set</span> (saved logs still open)`);
+    $("#presets").innerHTML = Object.entries(S.status.presets).map(([k, q]) => `<button data-case="${k}" title="${esc(q)}">${k.replace("case", "Case ")}</button>`).join(" ");
+    $("#presets").querySelectorAll("button").forEach(b => b.onclick = () => preset(b.dataset.case));
+  } catch (e) { $("#status").textContent = "server error: " + e.message; }
+  refreshRuns();
+}
+async function refreshRuns() {
+  const runs = await api("/api/runs").catch(() => []);
+  $("#runs").innerHTML = `<option value="">Open saved log…</option>` + runs.map(r => `<option value="${esc(r.name)}">${esc(r.name)} — ${esc(r.question.slice(0, 60))}</option>`).join("");
+}
+async function newConv(kase) {
+  const c = await api("/api/new", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ case: kase || null }) });
+  S.cid = c.id; S.readOnly = false; S.logName = c.log_path; S.turns = []; S.cur = null;
+  render(); return c;
+}
+async function preset(kase) {
+  if (S.busy) return;
+  try { await newConv(kase); await askQ(S.status.presets[kase]); } catch (e) { flash(e.message); }
+}
+async function askQ(text) {
+  if (!text.trim() || S.busy) return;
+  if (S.readOnly || !S.cid) await newConv(null);
+  S.busy = true; $("#askbtn").disabled = true;
+  S.cur = { user: text, steps: [], final_answer: "", live: "", liveThinking: "", pending: null, error: null };
+  S.turns.push(S.cur); render();
+  try {
+    const r = await fetch("/api/ask", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: S.cid, text }) });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || r.statusText);
+    const rd = r.body.getReader(), dec = new TextDecoder(); let buf = "";
+    for (;;) {
+      const { value, done } = await rd.read(); if (done) break;
+      buf += dec.decode(value, { stream: true });
+      let i; while ((i = buf.indexOf("\n\n")) >= 0) { const chunk = buf.slice(0, i); buf = buf.slice(i + 2); onEvent(chunk); }
+    }
+  } catch (e) { S.cur.error = e.message; }
+  S.busy = false; $("#askbtn").disabled = false; render(); refreshRuns();
+}
+function onEvent(chunk) {
+  const kind = (chunk.match(/^event: (.*)$/m) || [])[1], data = JSON.parse((chunk.match(/^data: (.*)$/m) || [, "{}"])[1]);
+  const t = S.cur;
+  if (kind === "text") { t.live += data.text; renderLive(); return; }
+  if (kind === "thinking") { t.liveThinking += data.text; return; }
+  if (kind === "tool_start") { t.pending = data.name; renderCards(); return; }
+  if (kind === "assistant") { t.steps.push(data); t.live = ""; t.liveThinking = ""; }
+  else if (kind === "tool_result") { t.steps.push(data); t.pending = null; }
+  else if (kind === "final") { t.final_answer = data.text; t.stop = data.stop_reason; }
+  else if (kind === "error") { t.error = data.message; }
+  render();
+}
+function flash(msg) { const d = document.createElement("p"); d.className = "msg"; d.style.color = "var(--bad)"; d.textContent = msg; $("#msgs").appendChild(d); }
+
+// ---------------------------------------------------------------- text: markdown-lite with fact links
+function inline(s) {
+  return s.replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+}
+function linkFacts(html, known) {
+  // html already escaped; [ids] -> chips; the number right before a chip -> link to its first id
+  return html.replace(/((?:\d[\d,]*(?:\.\d+)?(?:\s*(?:×|x)\s*10(?:\^-?\d+|[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+))?(?:e-?\d+)?)?)([^\[\d<]{0,24}?)\[([^\]\n]*?[a-z]+\d\d:[^\]\n]*)\]/g, (m, num, mid, ids) => {
+    const list = ids.split(/[;,]\s*/).map(x => x.trim()).filter(Boolean);
+    const chips = list.map(id => `<a class="fact${known && !known.has(id) ? " missing" : ""}" data-fact="${esc(id)}" title="${known && !known.has(id) ? "not in any tool result" : "show the record"}">${esc(id)}</a>`).join(" ");
+    const n = num ? `<a class="num" data-fact="${esc(list[0])}">${num}</a>` : "";
+    return `${n}${mid}${chips}`;
+  });
+}
+function md(src, known) {
+  const lines = esc(src || "").split("\n"); const out = []; let i = 0;
+  while (i < lines.length) {
+    const l = lines[i];
+    if (/^\s*\|.*\|\s*$/.test(l) && i + 1 < lines.length && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1])) {
+      const row = r => r.trim().replace(/^\||\|$/g, "").split("|").map(c => inline(c.trim()));
+      let h = `<table><tr>${row(l).map(c => `<th>${c}</th>`).join("")}</tr>`; i += 2;
+      while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) { h += `<tr>${row(lines[i]).map(c => `<td>${c}</td>`).join("")}</tr>`; i++; }
+      out.push(h + "</table>"); continue;
+    }
+    if (/^\s*([-*]|\d+\.)\s+/.test(l)) {
+      const ol = /^\s*\d+\./.test(l); let h = ol ? "<ol>" : "<ul>";
+      while (i < lines.length && /^\s*([-*]|\d+\.)\s+/.test(lines[i])) { h += `<li>${inline(lines[i].replace(/^\s*([-*]|\d+\.)\s+/, ""))}</li>`; i++; }
+      out.push(h + (ol ? "</ol>" : "</ul>")); continue;
+    }
+    if (/^#{1,4}\s/.test(l)) { out.push(`<p><strong>${inline(l.replace(/^#+\s/, ""))}</strong></p>`); i++; continue; }
+    if (!l.trim()) { i++; continue; }
+    let p = l; i++;
+    while (i < lines.length && lines[i].trim() && !/^\s*([-*]|\d+\.)\s+|^\s*\||^#{1,4}\s/.test(lines[i])) p += "<br>" + lines[i++];
+    out.push(`<p>${inline(p)}</p>`);
+  }
+  return linkFacts(out.join(""), known);
+}
+function linkText(s) { return esc(s).replace(FACT, (m, ids) => "[" + ids.split(/;\s*/).map(id => `<a class="fact" data-fact="${esc(id.trim())}">${esc(id.trim())}</a>`).join("; ") + "]"); }
+function unitLink(id, label) { return id ? `<a class="unit" data-unit="${esc(id)}" title="${esc(id)}">${esc(label || id)}</a>` : ""; }
+
+// ---------------------------------------------------------------- facts known to the tool results
+function walk(x, f) { if (Array.isArray(x)) x.forEach(v => walk(v, f)); else if (x && typeof x === "object") { f(x); Object.values(x).forEach(v => walk(v, f)); } }
+function knownFacts() {
+  const k = new Set();
+  for (const t of S.turns) for (const s of t.steps) if (s.type === "tool_result") {
+    walk(s.result, o => { if (o.fact_id) k.add(o.fact_id); if (o.image_id) k.add(o.image_id); if (o.curve_id) k.add(o.curve_id); });
+    (s.sent || "").replace(/\[([a-z]+\d\d:[^\]\s]+)\]/g, (m, id) => k.add(id));
+    (s.sent || "").replace(/"([a-z]+\d\d:[^"\s]+)"/g, (m, id) => k.add(id));
+  }
+  return k;
+}
+
+// ---------------------------------------------------------------- render: chat and cards
+function render() { renderChat(); renderCards(); }
+function renderChat() {
+  const known = knownFacts();
+  let h = S.readOnly ? `<p class="note">Saved log <code>${esc(S.logName)}</code> (read-only). Ask to start a new conversation.</p>` : "";
+  for (const t of S.turns) {
+    h += `<div class="msg user"><div class="who">you</div>${esc(t.user)}</div>`;
+    if (t.final_answer) h += `<div class="msg"><div class="who">agent · ${t.steps.filter(s => s.type === "tool_result").length} tool calls${t.stop && t.stop !== "end_turn" ? " · stop " + esc(t.stop) : ""}</div>${md(t.final_answer, known)}</div>`;
+    else if (t === S.cur && S.busy) h += `<div class="msg live" id="live"><div class="who">agent · working…</div>${esc(t.live)}</div>`;
+    if (t.error) h += `<div class="msg" style="color:var(--bad)">${esc(t.error)}</div>`;
+    if (t.cap_reached) h += `<div class="msg note">The tool-call cap was reached.</div>`;
+  }
+  $("#msgs").innerHTML = h || `<p class="empty">Ask a question, or run a preset query.</p>`;
+  $("#msgs").scrollTop = $("#msgs").scrollHeight;
+}
+function renderLive() { const el = $("#live"); if (el) el.innerHTML = `<div class="who">agent · working…</div>${esc(S.cur.live)}`; }
+function shortResult(s) {
+  const r = s.result || {};
+  if (r.error) return `<span class="err">error: ${esc(r.error)}</span>`;
+  const k = r.counts || {};
+  switch (s.name) {
+    case "resolve": return esc((r.matches || []).slice(0, 6).map(m => m.id).join(", ") || "no match");
+    case "find_samples": return `${k.matched} samples in ${k.papers_matched} papers <span class="note">(${k.scanned} scanned, ${k.undecided} undecided)</span>`;
+    case "get_records": return `${k.values} values, ${k.curves ?? 0} curves, ${k.images ?? 0} images` + (k.excluded ? `, ${k.excluded} excluded` : "") + (k.rejected ? `, ${k.rejected} rejected` : "");
+    case "compare": return `${k.same} same, ${k.different} different, ${k.partly_recorded} partly recorded, ${k.comparison_sets} comparison sets`;
+    case "claims": return `${r.n_claims} claims`;
+    case "trace_citation": return esc(r.outcome || "");
+  }
+  return "";
+}
+function renderCards() {
+  let h = "", n = 0;
+  S.turns.forEach((t, ti) => {
+    h += `<div class="turnhead">Question ${ti + 1}: ${esc(t.user.slice(0, 90))}</div>`;
+    t.steps.forEach((s, si) => {
+      const id = `${ti}.${si}`, sel = S.sel === id ? " sel" : "";
+      if (s.type === "assistant") {
+        const calls = (s.tool_calls || []).map(c => c.name).join(", ");
+        const label = calls ? "plan / next step" : "answer";
+        const u = s.usage || {};
+        h += `<div class="card llm${sel}" data-step="${id}"><span class="tag">LLM</span><span class="name">${label}</span><span class="meta">${u.input_tokens ?? 0}+${u.cache_read_input_tokens ?? 0} cached in · ${u.output_tokens ?? 0} out${s.fallback_ran ? " · fallback " + esc(s.model) : ""}</span>` +
+          (s.text && calls ? `<div class="res">${esc(s.text)}</div>` : "") + (calls ? `<div class="args">→ ${esc(calls)}</div>` : `<div class="res note">final answer (see conversation)</div>`) +
+          ((s.thinking || []).filter(Boolean).length ? `<details><summary>thinking summary</summary><div class="note">${esc(s.thinking.join("\n"))}</div></details>` : "") + `</div>`;
+      } else if (s.type === "tool_result") {
+        n++;
+        h += `<div class="card kb${sel}" data-step="${id}"><span class="tag">KB</span><span class="name">${esc(s.name)}</span><span class="meta">#${s.call} · ${s.ms} ms · ${s.sent_chars} chars sent</span>` +
+          `<div class="args">${esc(JSON.stringify(s.input))}</div><div class="res">${shortResult(s)}</div>` +
+          `<details><summary>full result (JSON)</summary><pre>${esc(JSON.stringify(s.result, null, 1))}</pre></details></div>`;
+      }
+    });
+    if (t === S.cur && S.busy) h += `<div class="card ${t.pending ? "kb" : "llm"}"><span class="tag">${t.pending ? "KB" : "LLM"}</span><span class="name">${t.pending ? esc(t.pending) + "…" : "thinking…"}</span></div>`;
+  });
+  $("#cards").innerHTML = h || `<p class="empty">The agent's steps appear here: LLM turns and KB tool calls.</p>`;
+  $("#stepcount").textContent = n ? `· ${n} tool calls` : "";
+  $("#cards").querySelectorAll(".card[data-step]").forEach(c => c.onclick = e => { if (e.target.closest("details")) return; selectStep(c.dataset.step); });
+}
+function stepAt(id) { const [ti, si] = id.split(".").map(Number); return S.turns[ti].steps[si]; }
+function selectStep(id) { S.sel = id; renderCards(); const s = stepAt(id); showEvidence(s); }
+
+// ---------------------------------------------------------------- evidence
+function table(rows, cols, name) {
+  if (!rows.length) return `<p class="empty">none</p>`;
+  if (name) { S.evRows = rows.map(r => Object.fromEntries(cols.map(([k, , fmt]) => [k, plain(r, k)]))); S.evName = name; }
+  return `<table><tr>${cols.map(c => `<th>${esc(c[1])}</th>`).join("")}</tr>` +
+    rows.map(r => `<tr class="${esc(r._cls || "")}">${cols.map(([k, , fmt]) => `<td>${fmt ? fmt(r[k], r) : esc(r[k] ?? "")}</td>`).join("")}</tr>`).join("") + `</table>`;
+}
+function plain(r, k) { const v = r[k]; return v == null ? "" : typeof v === "object" ? JSON.stringify(v) : String(v); }
+const fv = r => r.value != null ? String(r.value) : (r.value_min != null || r.value_max != null) ? `${r.value_min ?? ""}–${r.value_max ?? ""}` : (r.value_text ?? "");
+const DK = { measured: "measured", stated: "stated", read_from_figure: "read from a figure", computed_by_authors: "computed by the authors", computed_by_kb: "computed by the KB", cited: "cited", model_input: "model input", simulated: "simulated" };
+function valuesTable(values, name) {
+  return table(values.map(v => ({ ...v, value_: (v.censor || "") + fv(v), sample: v.sample_id || v.unit_id, how: DK[v.data_kind] || v.data_kind, _cls: "" })),
+    [["value_", "value"], ["unit", "unit"], ["qualifiers", "qualifiers"], ["how", "how obtained"], ["paper", "paper"],
+     ["sample", "sample", (x, r) => unitLink(x, r.sample_label || r.unit_label)], ["species_filled", "species filled"],
+     ["statement", "statement as printed", x => `<span class="note">${esc(x)}</span>`], ["fact_id", "fact_id", x => `<a class="fact" data-fact="${esc(x)}">${esc(x)}</a>`]], name);
+}
+function showEvidence(s) {
+  const ev = $("#ev"); S.evRows = []; S.evName = "evidence";
+  if (!s) { ev.innerHTML = `<p class="empty">nothing selected</p>`; return; }
+  if (s.type === "assistant") {
+    ev.innerHTML = `<h3>LLM turn ${s.request}</h3><p class="note">model ${esc(s.model)} · stop ${esc(s.stop_reason)} · ${esc(JSON.stringify(s.usage))}</p>` +
+      (s.text ? `<h3>Text</h3><div class="msg">${md(s.text, knownFacts())}</div>` : "") +
+      ((s.thinking || []).filter(Boolean).length ? `<h3>Thinking summary</h3><pre>${esc(s.thinking.join("\n"))}</pre>` : "") +
+      ((s.tool_calls || []).length ? `<h3>Tool calls</h3><pre>${esc(JSON.stringify(s.tool_calls, null, 1))}</pre>` : "");
+    return;
+  }
+  const r = s.result || {}; let h = `<h3>${esc(s.name)} <span class="pill">KB tool</span></h3><p class="args note">${esc(JSON.stringify(s.input))}</p>`;
+  if (r.error) { ev.innerHTML = h + `<p class="err">${esc(r.error)}</p>`; return; }
+  if (s.name === "resolve") {
+    h += table(r.matches || [], [["id", "id"], ["type", "type"], ["match", "match"], ["matched", "matched", x => esc((x || []).join("; "))],
+      ["same_class", "same class / subclasses", (x, m) => esc((x || m.subclasses || []).join(", "))],
+      ["printed_as", "printed as", x => esc((x || []).map(p => p.label).join(" · "))], ["unit", "unit"],
+      ["same_category_other_concepts", "other concepts, same category", x => esc((x || []).join(", "))]], "resolve");
+  } else if (s.name === "find_samples") {
+    const k = r.counts;
+    h += `<p>${k.matched} samples matched in ${k.papers_matched} papers; ${k.scanned} scanned; ${k.undecided} undecided.</p>` +
+      `<p class="note">filters: ${esc(r.filters.join(" · "))}${r.vary.length ? " · free: " + esc(r.vary.join(", ")) : ""}</p>`;
+    h += table(Object.entries(k.per_paper).map(([p, c]) => ({ p, ...c })), [["p", "paper"], ["scanned", "scanned"], ["matched", "matched"]]);
+    h += `<h3>Samples</h3>` + table(r.samples.map(x => ({ ...x, _cls: x.conflicts ? "conflict" : "" })), [["paper", "paper"], ["id", "sample", (x, m) => unitLink(x, m.label)], ["kind", "kind"],
+      ["matched", "matched conditions (where from)", x => Object.entries(x).map(([f, v]) => `<div><span class="note">${esc(f)}:</span> ${linkText(Array.isArray(v) ? v.join(" | ") : v)}</div>`).join("")],
+      ["vary", "free", x => x ? Object.entries(x).map(([q, v]) => `<div>${esc(q)}: ${linkText(typeof v === "string" ? v : JSON.stringify(v))}</div>`).join("") : ""],
+      ["conflicts", "conflicts", x => (x || []).map(c => `<div class="pill warn">${linkText(c)}</div>`).join("")]], "samples");
+    if (r.undecided.length) h += `<h3>Undecided <span class="note">${esc(r.note_undecided)}</span></h3>` + table(r.undecided, [["paper", "paper"], ["id", "sample", (x, m) => unitLink(x, m.label)],
+      ["open", "open filters", x => Object.entries(x).map(([f, v]) => `<div><span class="note">${esc(f)}:</span> ${linkText(v)}</div>`).join("")]]);
+    h += `<h3>Not matched, by filter</h3>` + table(Object.entries(r.not_matched_by_filter).map(([f, c]) => ({ f, c })), [["f", "filter"], ["c", "samples", x => esc(Object.entries(x).map(([a, b]) => `${a} ${b}`).join(", "))]]);
+  } else if (s.name === "get_records") {
+    const k = r.counts;
+    h += `<p>${k.values} values from ${esc((k.papers || []).join(", "))}${k.curves != null ? `, ${k.curves} curves` : ""}${k.images != null ? `, ${k.images} images` : ""}.</p>`;
+    h += `<h3>Values</h3>` + valuesTable(r.values || [], "values");
+    if ((r.curves || []).length) h += `<h3>Curves</h3>` + curvesHTML(r.curves);
+    if ((r.images || []).length) h += `<h3>Images</h3>` + imagesHTML(r.images);
+    if ((r.excluded || []).length) h += `<h3>Excluded</h3>` + table(r.excluded.map(x => ({ ...x, v: fv(x) })), [["fact_id", "fact_id", x => `<a class="fact" data-fact="${esc(x)}">${esc(x)}</a>`], ["paper", "paper"], ["v", "value"], ["unit", "unit"], ["data_kind", "how obtained", x => esc(DK[x] || x)], ["reason", "reason"]]);
+    if ((r.rejected || []).length) h += `<h3>Rejected</h3>` + table(r.rejected.map(x => ({ ...x, v: fv(x) })), [["fact_id", "fact_id", x => `<a class="fact" data-fact="${esc(x)}">${esc(x)}</a>`], ["paper", "paper"], ["v", "value"], ["unit", "unit"], ["reason", "reason"]]);
+  } else if (s.name === "compare") {
+    const ids = r.samples.map(x => x.id), lab = Object.fromEntries(r.samples.map(x => [x.id, `${x.paper} · ${x.label}`]));
+    h += `<p>${r.samples.length} samples from ${r.counts.papers} papers.</p>`;
+    h += `<h3>Different</h3>` + table(r.different.map(d => ({ condition: d.condition, ...d.values })), [["condition", "condition"], ...ids.map(i => [i, lab[i], x => linkText(x || "")])], "compare");
+    h += `<h3>Same</h3>` + table(r.same, [["condition", "condition"], ["value", "value"], ["fact_ids", "fact_ids", x => x.map(i => `<a class="fact" data-fact="${esc(i)}">${esc(i)}</a>`).join(" ")], ["levels", "from", x => esc(x.join(", "))]]);
+    h += `<h3>Recorded for some samples only</h3>` + table(r.partly_recorded, [["condition", "condition"], ["recorded", "recorded", x => Object.entries(x).map(([i, v]) => `<div>${esc(lab[i])}: ${linkText(v)}</div>`).join("")], ["not_recorded", "not recorded", x => esc(Array.isArray(x) ? x.map(i => lab[i]).join(", ") : x)]]);
+    const conf = Object.entries(r.conflicts || {});
+    if (conf.length) h += `<h3>Conflicts</h3>` + conf.map(([i, cs]) => `<div><strong>${esc(lab[i])}</strong>${cs.map(c => `<div class="pill warn">${linkText(c)}</div>`).join("")}</div>`).join("");
+    h += `<h3>Comparison sets in the KB</h3>` + table(r.comparison_sets, [["fact_id", "set", x => `<a class="fact" data-fact="${esc(x)}">${esc(x)}</a>`], ["source", "source"], ["kind", "kind"], ["varied", "varied"], ["statement", "statement"], ["contains", "contains", x => esc(x.map(i => lab[i] || i).join(", "))]]);
+  } else if (s.name === "claims") {
+    h += `<p>${r.n_claims} claims${r.papers.length ? " from " + esc(r.papers.join(", ")) : ""}.</p>`;
+    S.evRows = r.claims.map(c => ({ fact_id: c.fact_id, paper: c.paper, cause: c.cause, relation: c.relation, effect: c.effect, stance: c.stance, statement: c.statement })); S.evName = "claims";
+    for (const c of r.claims) {
+      h += `<div class="level" style="border:1px solid var(--border);border-radius:6px;padding:6px 8px;margin:0 0 8px"><div><strong>${esc(c.cause || "—")}</strong> → <em>${esc(c.relation || "—")}</em> → <strong>${esc(c.effect || "—")}</strong> <span class="pill">${esc(c.stance)}</span> <span class="note">${esc(c.paper)}</span> <a class="fact" data-fact="${esc(c.fact_id)}">${esc(c.fact_id)}</a></div>` +
+        `<div class="note">${esc(c.statement)}</div>` +
+        (c.links.length ? `<div style="margin-top:4px">${c.links.map(l => `<span class="pill"><a class="fact" data-fact="${esc(l.fact_id)}">${esc(l.fact_id)}</a> ${esc(l.quantity || l.type || "")}${l.sample_id ? " · " + unitLink(l.sample_id, (c.linked_samples[l.sample_id] || {}).label) : ""}</span>`).join("")}</div>` : "") +
+        (Object.keys(c.linked_samples).length ? table(Object.values(c.linked_samples), [["id", "linked sample", (x, m) => unitLink(x, `${m.paper} · ${m.label}`)], ["differing_conditions", "conditions that differ", x => esc(Object.entries(x).map(([a, b]) => `${a} = ${b}`).join("; "))]]) : "") + `</div>`;
+    }
+  } else if (s.name === "trace_citation") {
+    h += `<h3>Cited value</h3>` + valuesTable([r.cited]) + `<p>${esc(r.outcome)}</p>`;
+    if (r.cited_paper) h += `<p>Cited paper in the KB: ${esc(r.cited_paper.map(p => p.paper + " — " + p.title).join("; "))}</p>`;
+    if (r.own_values.length) h += `<h3>Own values in the cited paper</h3>` + valuesTable(r.own_values, "trace") + r.own_values.map(o => `<p><strong>${esc(o.fact_id)}</strong>: ${esc(o.value_comparison)}</p>` +
+      table(o.conditions, [["condition", "condition"], ["cited", "cited value"], ["own", "own value"], ["status", "status"], ["own_fact_id", "fact_id", x => x ? `<a class="fact" data-fact="${esc(x)}">${esc(x)}</a>` : ""]])).join("");
+  }
+  ev.innerHTML = h; bindCharts(ev);
+}
+
+// ---------------------------------------------------------------- curves: one chart per figure panel, raw / normalized
+const SERIES = ["--s1", "--s2", "--s3", "--s4", "--s5", "--s6", "--s7", "--s8"];
+let CHARTS = [];
+function curvesHTML(curves) {
+  const groups = {};
+  for (const c of curves) (groups[`${c.paper} · Fig. ${c.figure}${c.panel}`] ||= []).push(c);
+  CHARTS = Object.entries(groups).map(([title, cs]) => ({ title, cs, norm: false }));
+  return CHARTS.map((g, i) => `<div class="chart" data-chart="${i}"></div>`).join("");
+}
+function bindCharts(root) { root.querySelectorAll(".chart[data-chart]").forEach(el => drawChart(el, CHARTS[+el.dataset.chart])); }
+function drawChart(el, g) {
+  const canNorm = g.cs.some(c => c.normalized_points);
+  const pts = c => (g.norm && c.normalized_points ? c.normalized_points : c.points).filter(p => p[0] != null && p[1] != null);
+  const c0 = g.cs[0];
+  const nb = (c0.normalized_by || []);
+  const xl = g.norm && nb.some(n => n.transform === "x_over_width" && n.fact_id) ? `${c0.x.quantity} / feature width` : `${c0.x.label_raw || c0.x.quantity}`;
+  const yl = g.norm && nb.some(n => n.transform === "normalize_thickness" && n.fact_id) ? `${c0.y.quantity} / plateau` : `${c0.y.label_raw || c0.y.quantity}`;
+  const all = g.cs.flatMap(pts); if (!all.length) { el.innerHTML = `<div class="title">${esc(g.title)}</div><p class="empty">no points</p>`; return; }
+  let [x0, x1] = [Math.min(...all.map(p => p[0])), Math.max(...all.map(p => p[0]))], [y0, y1] = [Math.min(0, ...all.map(p => p[1])), Math.max(...all.map(p => p[1]))];
+  if (x0 === x1) x1 = x0 + 1; if (y0 === y1) y1 = y0 + 1;
+  const W = 560, H = 240, L = 48, R = 12, T = 10, B = 34, sx = x => L + (x - x0) / (x1 - x0) * (W - L - R), sy = y => H - B - (y - y0) / (y1 - y0) * (H - T - B);
+  const ticks = (a, b) => { const st = Math.pow(10, Math.floor(Math.log10((b - a) / 4))); const m = [1, 2, 5, 10].find(k => (b - a) / (st * k) <= 6) * st; const out = []; for (let v = Math.ceil(a / m) * m; v <= b + 1e-9; v += m) out.push(+v.toPrecision(6)); return out; };
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(g.title)}">`;
+  for (const t of ticks(y0, y1)) svg += `<line x1="${L}" x2="${W - R}" y1="${sy(t)}" y2="${sy(t)}" stroke="var(--grid)" stroke-width="1"/><text x="${L - 6}" y="${sy(t) + 3}" text-anchor="end">${t}</text>`;
+  for (const t of ticks(x0, x1)) svg += `<text x="${sx(t)}" y="${H - B + 14}" text-anchor="middle">${t}</text>`;
+  svg += `<line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--border)" stroke-width="1"/>`;
+  svg += `<text x="${(L + W - R) / 2}" y="${H - 4}" text-anchor="middle">${esc(xl)}</text><text x="12" y="${(T + H - B) / 2}" text-anchor="middle" transform="rotate(-90 12 ${(T + H - B) / 2})">${esc(yl)}</text>`;
+  g.cs.forEach((c, i) => {
+    const col = i < 8 ? `var(${SERIES[i]})` : "var(--other)", p = pts(c);
+    svg += `<polyline fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="${p.map(q => `${sx(q[0]).toFixed(1)},${sy(q[1]).toFixed(1)}`).join(" ")}"/>`;
+    for (const d of c.derived || []) if (d.quantity === "penetration_depth" && !g.norm) svg += `<line x1="${sx(d.value)}" x2="${sx(d.value)}" y1="${T}" y2="${H - B}" stroke="${col}" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>`;
+  });
+  svg += `<line class="xh" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="var(--text-muted)" stroke-width="1" style="display:none"/><rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" class="hit"/></svg>`;
+  const legend = g.cs.map((c, i) => `<span><i style="background:${i < 8 ? `var(${SERIES[i]})` : "var(--other)"}"></i>${esc(c.series || c.curve_id)} · ${unitLink(c.sample_id, c.unit_label)} <a class="fact" data-fact="${esc(c.curve_id)}">${esc(c.curve_id)}</a></span>`).join("");
+  const refs = g.norm ? [...new Set(g.cs.flatMap(c => (c.normalized_by || []).map(n => `${n.transform}: ${n.reference || n.note}${n.fact_id ? ` [${n.fact_id}] = ${n.value} ${n.unit}` : ""}`)))] : [];
+  el.innerHTML = `<div class="title">${esc(g.title)}</div><div class="sub">${esc(c0.data_kind)}${c0.flags.length ? " · figure flags " + esc(c0.flags.join(", ")) : ""}${!g.norm ? " · dashed: 50% crossing read by the KB" : ""}</div>` +
+    (canNorm ? `<div class="toggle"><button class="${g.norm ? "" : "on"}" data-n="0">raw</button> <button class="${g.norm ? "on" : ""}" data-n="1">normalized</button></div>` : "") +
+    svg + `<div class="legend">${legend}</div>` + (refs.length ? `<div class="note">${refs.map(linkText).join("<br>")}</div>` : "") + `<div class="tip"></div>`;
+  el.querySelectorAll(".toggle button").forEach(b => b.onclick = () => { g.norm = b.dataset.n === "1"; drawChart(el, g); });
+  const svgEl = el.querySelector("svg"), tip = el.querySelector(".tip"), xh = el.querySelector(".xh");
+  el.querySelector(".hit").addEventListener("mousemove", e => {
+    const bb = svgEl.getBoundingClientRect(), x = x0 + ((e.clientX - bb.left) * W / bb.width - L) / (W - L - R) * (x1 - x0);
+    xh.setAttribute("x1", sx(x)); xh.setAttribute("x2", sx(x)); xh.style.display = "";
+    tip.innerHTML = `<div class="note">x ≈ ${+x.toPrecision(4)}</div>` + g.cs.map((c, i) => { const p = pts(c); if (!p.length) return ""; const q = p.reduce((a, b) => Math.abs(b[0] - x) < Math.abs(a[0] - x) ? b : a); return `<div><i style="display:inline-block;width:10px;height:2px;background:${i < 8 ? `var(${SERIES[i]})` : "var(--other)"};vertical-align:middle"></i> ${esc(c.series)}: ${q[1]} at ${q[0]}</div>`; }).join("");
+    tip.style.display = "block"; const er = el.getBoundingClientRect(); tip.style.left = Math.min(e.clientX - er.left + 12, er.width - tip.offsetWidth - 4) + "px"; tip.style.top = (e.clientY - er.top + 12) + "px";
+  });
+  el.querySelector(".hit").addEventListener("mouseleave", () => { tip.style.display = "none"; xh.style.display = "none"; });
+}
+function imagesHTML(imgs) {
+  return `<div class="imgs">` + imgs.map(i => `<div class="img">` + (i.crop_present ? `<img src="/api/crop?path=${encodeURIComponent(i.crop_path)}" alt="${esc(i.description)}" loading="lazy">` : `<div class="empty">crop not on this machine${i.crop_path ? ": " + esc(i.crop_path) : ""}</div>`) +
+    `<div><a class="fact" data-fact="${esc(i.image_id)}">${esc(i.image_id)}</a> <span class="pill">${esc(i.method.join(", ") || "method not recorded")}</span>${i.binding === "ambiguous" ? `<span class="pill warn">sample ambiguous</span>` : ""}</div>` +
+    `<div>${esc(i.paper)} · Fig. ${esc(i.figure)}${esc(i.panel_letter)} · ${i.sample_id ? unitLink(i.sample_id, i.unit_label) : (i.candidates || []).map(c => unitLink(c.sample_id || c.unit_id, c.label)).join(", ")}</div>` +
+    `<div class="note">${esc(i.description)}</div>${i.note ? `<div class="note">${esc(i.note)}</div>` : ""}</div>`).join("") + `</div>`;
+}
+
+// ---------------------------------------------------------------- a record (from a number or a fact id) and a unit tree
+function showFact(id) {
+  const hits = [];
+  S.turns.forEach((t, ti) => t.steps.forEach((s, si) => { if (s.type !== "tool_result") return;
+    walk(s.result, o => { if (o.fact_id === id || o.image_id === id || o.curve_id === id) hits.push({ o, s, step: `${ti}.${si}` }); });
+    if (!hits.some(h => h.step === `${ti}.${si}`) && JSON.stringify(s.result).includes(`[${id}]`)) hits.push({ o: null, s, step: `${ti}.${si}`, str: true });
+  }));
+  let h = `<h3>Record <code>${esc(id)}</code></h3>`;
+  if (!hits.length) h += `<p class="err">This id is in no tool result of the conversation.</p>`;
+  const vals = hits.filter(x => x.o && (x.o.value != null || x.o.value_min != null || x.o.value_text != null) && x.o.fact_id === id);
+  if (vals.length) h += valuesTable([vals[0].o], "record");
+  for (const x of hits) {
+    h += `<div class="note" style="margin-top:6px">in <a class="unit" data-step="${x.step}">step: ${esc(x.s.name)} #${x.s.call}</a>${x.str ? " (as a condition: value [id] (where from))" : ""}</div>`;
+    if (x.o && !vals.includes(x)) h += `<pre>${esc(JSON.stringify(x.o, null, 1)).slice(0, 4000)}</pre>`;
+  }
+  const o = (vals[0] || hits.find(x => x.o) || {}).o || {};
+  const unit = o.sample_id || o.unit_id;
+  if (unit) h += `<p><a class="unit" data-unit="${esc(unit)}">Show the unit tree of ${esc(unit)}</a></p>`;
+  if (o.curve_id) { h += curvesHTML([o]); }
+  if (o.image_id) { h += imagesHTML([o]); }
+  $("#ev").innerHTML = h; bindCharts($("#ev"));
+}
+async function showTree(unit) {
+  $("#ev").innerHTML = `<p class="empty">loading the unit tree of ${esc(unit)}…</p>`;
+  let r; try { r = await api(`/api/tree?unit=${encodeURIComponent(unit)}${S.cid && !S.readOnly ? "&cid=" + S.cid : ""}`); } catch (e) { $("#ev").innerHTML = `<p class="err">${esc(e.message)}</p>`; return; }
+  if (r.error) { $("#ev").innerHTML = `<p class="err">${esc(r.error)}</p>`; return; }
+  let h = `<h3>${esc(r.unit.paper)} · ${esc(r.unit.kind)} ${esc(r.unit.label)} <span class="pill">unit tree (KB tool)</span></h3><p class="note">${esc(r.unit.id)}</p>`;
+  if (r.conflicts.length) h += r.conflicts.map(c => `<div class="pill warn">${linkText(c)}</div>`).join("");
+  h += `<div class="tree">`;
+  if (r.measurements.length) h += `<div class="level"><div class="lh">measurements <small>(below this unit)</small></div>` + table(r.measurements, [["method", "method"], ["label", "label"], ["settings", "settings", x => x.map(s => `${esc(s.condition)} = ${esc(s.value)} <a class="fact" data-fact="${esc(s.fact_id)}">${esc(s.fact_id)}</a>`).join("<br>")], ["n_results", "results"]]) + `</div>`;
+  const rows = [];
+  for (const lv of r.levels) {
+    h += `<div class="level"><div class="lh">${esc(lv.level)} <small>${esc(lv.kind)} '${esc(lv.label)}' · ${esc(lv.id)}</small></div>` +
+      table(lv.conditions.map(c => { rows.push({ level: lv.level, ...c }); return { ...c, _cls: c.mark.startsWith("preferred") || c.mark.startsWith("overridden") ? "conflict" : c.mark === "chosen" ? "chosen" : c.mark.startsWith("shadowed") ? "shadowed" : "" }; }),
+        [["condition", "condition"], ["value", "value"], ["mark", "used for this sample", x => x === "chosen" ? "✓ used" : esc(x)], ["source", "source"], ["printed", "printed", x => `<span class="note">${esc(x)}</span>`], ["fact_id", "fact_id", x => `<a class="fact" data-fact="${esc(x)}">${esc(x)}</a>`]]) + `</div>`;
+  }
+  h += `</div>`;
+  $("#ev").innerHTML = h; S.evRows = rows; S.evName = "unit_tree";
+}
+
+// ---------------------------------------------------------------- export, replay, events
+function download(name, text, type) { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; a.click(); URL.revokeObjectURL(a.href); }
+$("#explog").onclick = async () => {
+  if (S.readOnly && S.loaded) return download(S.logName, JSON.stringify(S.loaded, null, 1), "application/json");
+  if (!S.cid) return flash("no conversation yet");
+  const log = await api(`/api/log/${S.cid}`); download(S.logName.split("/").pop(), JSON.stringify(log, null, 1), "application/json");
+};
+$("#expcsv").onclick = () => {
+  if (!S.evRows.length) return flash("no evidence table shown");
+  const cols = [...new Set(S.evRows.flatMap(Object.keys))].filter(c => !c.startsWith("_"));
+  const q = v => /[",\n]/.test(v = String(v ?? "")) ? `"${v.replace(/"/g, '""')}"` : v;
+  download(`${S.evName}.csv`, [cols.join(","), ...S.evRows.map(r => cols.map(c => q(typeof r[c] === "object" ? JSON.stringify(r[c]) : r[c])).join(","))].join("\n"), "text/csv");
+};
+$("#newbtn").onclick = () => { if (!S.busy) { S.cid = null; S.readOnly = false; S.turns = []; S.cur = null; render(); $("#ev").innerHTML = `<p class="empty">Select a step or a number to see what it rests on.</p>`; } };
+$("#runs").onchange = async e => {
+  const name = e.target.value; if (!name || S.busy) return;
+  const log = await api(`/api/runs/${encodeURIComponent(name)}`);
+  S.cid = null; S.readOnly = true; S.logName = name; S.loaded = log; S.cur = null; S.turns = log.turns.map(t => ({ ...t })); render();
+  e.target.value = "";
+};
+$("#theme").onclick = () => { const d = document.documentElement; const dark = d.dataset.theme ? d.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; d.dataset.theme = dark ? "light" : "dark"; };
+$("#ask").onsubmit = e => { e.preventDefault(); const t = $("#q").value; $("#q").value = ""; askQ(t); };
+$("#q").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#ask").requestSubmit(); } };
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[data-fact], a[data-unit], a[data-step]"); if (!a) return;
+  e.preventDefault();
+  if (a.dataset.fact) showFact(a.dataset.fact);
+  else if (a.dataset.unit) showTree(a.dataset.unit);
+  else if (a.dataset.step) selectStep(a.dataset.step);
+});
+init();
+</script>
+</body>
+</html>
