@@ -99,9 +99,14 @@ def cache_path(pid, pass_, section, h):
     return CACHE / pid / f"{pass_}_{section}_{h[:16]}_{MODEL}.json"
 
 
+def cached(cp):
+    """P196b rule 1: a cache file is a hit only when its response parses (else the request is to call)."""
+    return cp.exists() and parses(json.loads(cp.read_text(encoding="utf-8")).get("response"))
+
+
 def plan(pid, jobs, thinking=None):
     """jobs: [(pass, section, prompt, rschema, element_ids[, prefix])] -> prints the planned calls; stops when the key is missing."""
-    todo = [j for j in jobs if not cache_path(pid, j[0], j[1], request_hash(j[2], j[3], thinking)).exists()]
+    todo = [j for j in jobs if not cached(cache_path(pid, j[0], j[1], request_hash(j[2], j[3], thinking)))]
     load_env()
     print(f"{pid}: {len(jobs)} planned calls ({len(jobs) - len(todo)} cached, {len(todo)} to call), model {MODEL}")
     if todo and not os.environ.get(KEY_ENV):
@@ -216,6 +221,8 @@ def run(pid, jobs, thinking=None, form_version=None):
                 print(f"{pid}: {section}: the response does not parse (attempt {attempt}): listed in records/failed_calls.csv, not stored")
                 text = None
             if text is None:
+                if before >= 2:
+                    print(f"{pid}: {section}: failed twice before (records/failed_calls.csv): no attempt left, not called")
                 continue
             line = dict(pid=pid, **{"pass": pass_}, section=section, element_ids=ids, model=MODEL, prompt_hash=h, ontology_hash=X.ontology_hash(),
                         form_version=form_version or X.FORM_VERSION,            # P158: compile.py applies the frozen form's rules to this line
