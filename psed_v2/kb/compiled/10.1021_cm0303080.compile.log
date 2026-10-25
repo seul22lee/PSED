@@ -49,9 +49,6 @@ a0: fig10.cap: quantity 'Exposure Time' -> pulse_time (quantity: alias 'exposure
 a0: fig10.cap: legend label 'y ∝ t^1/2' parsed to nothing
 a0: fig10.cap: quantity 'Exposure Time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig11.cap: quantity 'Pore Diameter' -> feature_width (quantity: alias 'Pore Diameter')
-a0: fig5b: quantity 'Exposure Time' -> pulse_time (quantity: alias 'exposure time')
-a0: fig5b: quantity 'Exposure Time' -> pulse_time (quantity: alias 'exposure time')
-a0: fig5b: quantity 'Exposure Time' -> pulse_time (quantity: alias 'exposure time')
 a1: symbol species s3.p25 't_i' definition pulse_time: record -, definition - -> no species
 a1: symbol species s3.p25 't_2' definition purge_time: record -, definition - -> no species
 a1: symbol species s3.p25 't_3' definition pulse_time: record -, definition - -> no species
@@ -148,26 +145,26 @@ j: derived over 41 entities: 41 rows; not derived: {'no fact for S': 41, 'no fac
 j: caveats (query.caveats_of): 7, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 3
 j: claim nodes (query.claim_nodes): 16 nodes for 21 claims; claims without a full triple (query.node_of empty): 2
 j: comparisons from figures.json (1c): 4
-step input: {'pass-0 extension units': 0, 'records': 264, 'unit derived (derived: point_per_unit, model_run)': 15, 'condition of a derived unit (other)': 14, 'condition of a derived unit (value)': 15, 'legend conditions of a pass-0 unit (specimen)': 4, 'coordinate of a pass-0 unit (value)': 17, 'coordinates of a pass-0 unit (specimen)': 3, 'legend conditions of a pass-0 unit (model_run)': 10}
-step a0: {'quantity other: never.csv word': 5, 'quantity other: never.csv symbol': 5, 'quantity promoted (quantity: name)': 3, 'derived legend label parsed to nothing (other)': 14, 'quantity promoted (quantity: alias)': 18}
+step input: {'pass-0 extension units': 0, 'records': 264, 'unit derived (derived: point_per_unit, model_run)': 15, 'condition of a derived unit (other)': 14, 'condition of a derived unit (value)': 15, 'legend conditions of a pass-0 unit (specimen)': 3, 'coordinate of a pass-0 unit (value)': 3}
+step a0: {'quantity other: never.csv word': 5, 'quantity other: never.csv symbol': 5, 'quantity promoted (quantity: name)': 3, 'derived legend label parsed to nothing (other)': 14, 'quantity promoted (quantity: alias)': 15}
 step a1: {'symbol species: no species': 24, 'symbol species: kept: its own element names it': 5, 'symbol species: species cleared (no evidence)': 1, 'symbol species: symbol species conflict': 9, 'material from the recipe field: al2o3': 5, 'material from the recipe field: zno': 8, 'material from the recipe field: sio2': 1, 'qualifier out of scope: step': 2, 'qualifier out of scope: species': 2, 'qualifier out of scope: position': 5}
-step a: {'variables_unmapped (set to null)': 7, 'schema:enum': 2, 'kept': 322}
+step a: {'variables_unmapped (set to null)': 7, 'schema:enum': 2, 'kept': 308}
 step a_fields: {'effect': 2}
-step b: {'model_with_value (kept)': 47, 'kept': 322}
-step c: {'quantity_other (kept)': 39, 'quantity_other never (kept)': 10, "quantity_other of a derived value (the panel's row written once)": 10, 'kept': 322}
-step d: {"quote found in the paper's elements concatenated (P182)": 2, 'quote_noncontiguous (kept)': 9, 'quote_not_found': 9, 'derived condition (figures.json, no quote check)': 46, 'kept': 313}
-step e: {'kept': 313}
-step f: {'species_resolved': 33, 'kept': 313}
+step b: {'model_with_value (kept)': 47, 'kept': 308}
+step c: {'quantity_other (kept)': 36, 'quantity_other never (kept)': 10, "quantity_other of a derived value (the panel's row written once)": 2, 'kept': 308}
+step d: {"quote found in the paper's elements concatenated (P182)": 2, 'quote_noncontiguous (kept)': 9, 'quote_not_found': 9, 'derived condition (figures.json, no quote check)': 32, 'kept': 299}
+step e: {'kept': 299}
+step f: {'species_resolved': 33, 'kept': 299}
 step g: {'mention_unmatched': 4}
-step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 21, 'place: about paper -> recipe': 58, 'place: result about a specimen -> its measurement': 24, 'place: cited -> paper': 10, 'place: setting about a run -> deposition': 66, 'place: about paper, method -> paper method activity': 7, 'place: caveat -> paper': 7, 'place: definition -> paper': 10, 'place: model about a simulation -> simulation': 17, 'place: model about a model run -> model run': 39, 'place: derived about a simulation -> simulation': 2, 'place: setting about a specimen -> deposition': 13, 'place: setting about a model run sharing its simulation -> model run': 39}
-step m: {'statement filled from the quote': 267, 'label_as_printed filled with the quantity id': 4, 'links named elements without facts': 2, 'links resolved': 19}
+step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 21, 'place: about paper -> recipe': 58, 'place: result about a specimen -> its measurement': 24, 'place: cited -> paper': 10, 'place: setting about a run -> deposition': 66, 'place: about paper, method -> paper method activity': 7, 'place: caveat -> paper': 7, 'place: definition -> paper': 10, 'place: model about a simulation -> simulation': 17, 'place: model about a model run -> model run': 39, 'place: derived about a simulation -> simulation': 2, 'place: setting about a specimen -> deposition': 9, 'place: setting about a model run sharing its simulation -> model run': 29}
+step m: {'statement filled from the quote': 253, 'label_as_printed filled with the quantity id': 4, 'links named elements without facts': 2, 'links resolved': 19}
 step 1c: {'data_id_not_in_figures_json': 4, 'figure label other (y)': 7, 'figure label other (condition)': 2, 'figure label other (condition), never': 2, 'unbound item (image): no unit named': 3, 'unbound item (image): ambiguous': 5, 'curve -> observation': 10, 'unbound item (point): origin': 6, 'point -> observation': 6, 'image -> a measurement (epma)': 1, 'curve -> model': 18, 'point -> model': 23}
-step i: {'merged': 29, 'kept': 342}
-step n: {'comparison series': 2, 'comparison grid': 1, 'comparison replicate': 1}
+step i: {'merged': 29, 'kept': 328}
+step n: {'comparison series': 3, 'comparison replicate': 1}
 step j: {'derived cycle_time': 41}
-step k: {'statement from the record': 284, 'statement_copies_text (reported by check)': 91, 'statement assembled': 99}
+step k: {'statement from the record': 270, 'statement_copies_text (reported by check)': 91, 'statement assembled': 99}
 diff against the gold:
-  setting       277  152   65  0.43  0.23
+  setting       277  138   65  0.47  0.23
   model          57   96   38  0.40  0.67
   activity       46   36    8  0.22  0.17
   observation    38   36   14  0.39  0.37
