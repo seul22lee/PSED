@@ -981,8 +981,29 @@ class Run:
         self.from_curves = self.binding["units"]
         self.pass0 = list(self.pass0) + self.from_curves
         recipe = self.recipe(recs)
-        for u in self.from_curves:
-            self.count("input", f"unit derived ({u['origin']}, {u['role']})")
+        by0 = {u["id"]: u for u in self.pass0 if isinstance(u, dict) and u.get("id") and not u.get("origin")}
+        have = collections.defaultdict(set)                                     # the values pass 1 already gives a unit
+        for r in recs:
+            if isinstance(r["rec"].get("about"), str) and isinstance(r["rec"].get("quantity"), str):
+                have[r["rec"]["about"]].add((r["rec"]["quantity"], str(r["rec"].get("value") if r["rec"].get("value") is not None else r["rec"].get("value_text"))))
+        coord_units, seen = [], set()                                            # P186 (user): a point or cell item's coordinates are conditions of
+        for it in self.binding["items"]:                                         # the pass-0 unit it names, as of a derived unit (one path)
+            u = by0.get(it.get("unit") or "")
+            if not u or it.get("origin") != "pass-0":
+                continue
+            conds = []
+            for c in it.get("vector") or []:
+                k_ = (u["id"], c.get("quantity"), str(c.get("value")))
+                if c.get("coord") and c["kind"] in CONDITION_KINDS and k_ not in seen and (c.get("quantity"), str(c.get("value"))) not in have[u["id"]]:
+                    seen.add(k_); conds.append(c)
+            ev = [e for e in (it["panel"].split("~")[0], re.sub(r"[a-z]+$", "", it["panel"].split("~")[0]) + ".cap") if e in self.order]
+            if conds and ev:
+                coord_units.append(dict(id=u["id"], role=u.get("role"), origin="panel coordinates", conditions=conds, introduced_in=ev, panel=it["panel"], series_axis=""))
+        for u in self.from_curves + coord_units:
+            if u in coord_units:
+                self.count("input", f"coordinates of a pass-0 unit ({u['role']})")
+            else:
+                self.count("input", f"unit derived ({u['origin']}, {u['role']})")
             dkind = "model_input" if u["role"] == "model_run" else "stated"
             for c in u["conditions"] if u["introduced_in"] else []:              # P163: the legend label's values (and P177b a point's
                 rec = dict(type="setting", quantity="other", label_as_printed=c["key"], quote=c["key"], about=u["id"])   # coordinates), resolved by step a0
@@ -1006,7 +1027,7 @@ class Run:
                 recs.append(dict(eid=u["introduced_in"][0], rec=rec, seq=-1, form_version=C.X.FORM_VERSION, origin=u["origin"],
                                  derived="name" if c["kind"] in ("name", "other", "never") else c["kind"],
                                  dkind=dkind, once=(u["panel"], c["key"]) if c["kind"] == "value" else None))
-                self.count("input", f"condition of a derived unit ({c['kind']})")
+                self.count("input", f"condition of a derived unit ({c['kind']})" if u not in coord_units else f"coordinate of a pass-0 unit ({c['kind']})")
         if self.from_curves:
             self.note(f"input: {len(self.from_curves)} units derived from curves (P161): " + ", ".join(u["id"] for u in self.from_curves))
         return recs

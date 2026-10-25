@@ -1,4 +1,4 @@
-# RULE (P179c, user): a form version's pass-1 lines are adopted for a paper only as a whole paper (every group of the paper re-extracted under that version), when the whole-paper scores against the gold drop on no type and every 4c check passes (audits 1-5, binding_regression, export --check, cards). compile reads a pass-1 line only of a version accepted here (a row with a paper overrides the row for every paper). Lines starting with # are this header.
+# RULE (P186, user; replaces the P179c per-type rule): a form version's pass-1 lines are adopted for a paper when the whole-paper matched total against the gold is not lower and every 4c check passes (audits 1-5, binding_regression, export --check, cards); every gold row lost is listed (paper, element, type, quantity, value) in the round report for the user's review. compile reads a pass-1 line only of a version accepted here (a row with a paper overrides the row for every paper). Lines starting with # are this header.
 version,paper,date,status,decided_by,reason
 none,,2026-10-20,accepted,user (P179b directive),"lines written before the form freeze (no form_version field), in use through P178"
 P158,,2026-10-23,accepted,user (P179b directive),"the frozen form (P158), in use through P178"
@@ -14,6 +14,6 @@ P179,zou23,2026-10-24,rejected,user (P179c),P179c (user): partial re-extraction 
 P179,yim22,2026-10-24,rejected,user (P179c),P179c (user): partial re-extraction is not a form test
 P179,wer21,2026-10-24,rejected,user (P179c),P179c (user): partial re-extraction is not a form test
 P184,,2026-10-24,candidate,user (P184),"P184 (user): qualifiers only when the text states them, step as the text names it (holds included); no line written under it yet"
-P184,gao15,2026-10-25,rejected,user (P179c rule),"P185: whole-paper P184 lines; the rule (no type drops): activity 14 -> 11, caveat 1 -> 0, observation 26 -> 22 (kb/reports/P185.6_adoption.csv)"
-P184,gre23,2026-10-25,rejected,user (P179c rule),"P185: whole-paper P184 lines; the rule (no type drops): caveat 7 -> 6, derived 21 -> 14, observation 26 -> 24 (kb/reports/P185.6_adoption.csv)"
-P184,mat22,2026-10-25,rejected,user (P179c rule),"P185: whole-paper P184 lines; the rule (no type drops): claim 27 -> 23, comparison 2 -> 0, setting 68 -> 62 (kb/reports/P185.6_adoption.csv)"
+P184,gao15,2026-10-25,accepted,user (P186),"P186 (user): adopted by the P186 rule (whole-paper matched total not lower); the lost gold rows: kb/reports/P186.html"
+P184,gre23,2026-10-25,accepted,user (P186),"P186 (user): adopted by the P186 rule (whole-paper matched total not lower); the lost gold rows: kb/reports/P186.html"
+P184,mat22,2026-10-25,accepted,user (P186),"P186 (user): adopted by the P186 rule (whole-paper matched total not lower); the lost gold rows: kb/reports/P186.html"

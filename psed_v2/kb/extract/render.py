@@ -325,7 +325,69 @@ def _agree(u, g):
         return False
 
 
-def pair_units(pid, key, units):
+def compiled_units(pid):
+    """P186 (user): the experiment units of kb/compiled/<pid>.facts.csv in the pass-0 unit form, for pair_units: a run (a deposition
+    activity), a specimen (an entity under a deposition or under a specimen; the compiler's films included), a simulation (a simulation
+    activity), a model run (an entity under a simulation), a measurement (a measurement activity under one of those entities); name =
+    the label, introduced_in = its evidence elements, parent = the nearest unit above, data = the points_ref of the facts under it (a
+    run's or specimen's measurements included), method of a measurement; own = its settings (quantity, value)."""
+    rows = list(csv.DictReader((C.V2 / "kb" / "compiled" / f"{pid}.facts.csv").open(encoding="utf-8")))
+    R = {r["fact_id"]: r for r in rows}
+    kids = collections.defaultdict(list)
+    for r in rows:
+        kids[r["parent"]].append(r)
+    role = {}
+    for r in rows:
+        if r["type"] == "activity" and r["kind"] == "deposition":
+            role[r["fact_id"]] = "run"
+        elif r["type"] == "activity" and r["kind"] == "simulation":
+            role[r["fact_id"]] = "simulation"
+    for r in rows:                                                              # entities: by the nearest activity above
+        if r["type"] == "entity" and ":unit:" not in r["fact_id"]:
+            x = r["parent"]
+            while x in R and R[x]["type"] == "entity":
+                x = R[x]["parent"]
+            if role.get(x) == "run":
+                role[r["fact_id"]] = "specimen"
+            elif role.get(x) == "simulation":
+                role[r["fact_id"]] = "model_run"
+    for r in rows:
+        if r["type"] == "activity" and r["kind"] == "measurement" and role.get(r["parent"]) in ("specimen", "model_run", "run"):
+            role[r["fact_id"]] = "measurement"
+
+    def up(i):
+        x = R[i]["parent"]
+        while x in R and x not in role:
+            x = R[x]["parent"]
+        return x if x in role else None
+
+    def data(i):
+        out = [c["points_ref"] for c in kids.get(i, []) if c["points_ref"]]
+        for c in kids.get(i, []):
+            if role.get(c["fact_id"]) == "measurement" and role[i] != "measurement":
+                out += [x["points_ref"] for x in kids.get(c["fact_id"], []) if x["points_ref"]]
+        return [dict(id=x, role=None) for x in dict.fromkeys(out)]
+    return [dict(id=i, role=ro, name_as_printed=R[i]["label_as_printed"], parent=up(i), introduced_in=[e for e in R[i]["evidence"].split(";") if e],
+                 data=data(i), method=R[i]["method"] or (i.split(":meas:")[-1] if ro == "measurement" else ""),
+                 own=sorted({(c["quantity"], c["value"] or c["value_text"]) for c in kids.get(i, []) if c["type"] == "setting" and c["quantity"]}))
+            for i, ro in role.items()]
+
+
+def gold_measurements(pid, units):
+    """P186: the gold measurement activities under a gold unit (gold_units) as units of role measurement: gid, name (the label), evidence
+    (its own and that of the facts under it), parent (the unit), method."""
+    rows = _gold(pid)
+    ids = {u["gid"] for u in units}
+    kids = collections.defaultdict(list)
+    for r in rows:
+        kids[r["parent"]].append(r)
+    return [dict(gid=r["fact_id"], role="measurement", name=r["label_as_printed"], parent=r["parent"], esi_only=False, gold_shape="",
+                 evidence=list(dict.fromkeys([e for e in r["evidence"].split(";") if e] + [e for c in kids.get(r["fact_id"], []) for e in c["evidence"].split(";") if e])),
+                 method=r["method"] or r["label_as_printed"].replace(" ", "_"))
+            for r in rows if r["type"] == "activity" and r["kind"] == "measurement" and "#" not in r["fact_id"] and r["parent"] in ids]
+
+
+def pair_units(pid, key, units, measurements=False):
     """P145-P147: gold units vs pass-0 units, per role, in stages; a unit linked at one stage is not linked again:
       data      a pass-0 unit whose data names a curve the gold binds to an entity (gold_curve_units) pairs with that entity;
       cell      P147: a pass-0 unit with figures.json cells pairs with the gold run whose every condition setting agrees with the
@@ -343,10 +405,12 @@ def pair_units(pid, key, units):
     G = gold_units(pid)
     esi = [g for g in G if g["esi_only"]]
     G = [g for g in G if not g["esi_only"]]
+    if measurements:                                                            # P186: the gold's measurements too (compiled units)
+        G += gold_measurements(pid, G)
     Fj = _figures_json(pid)
     values = {v["id"]: v for v in Fj.get("values", [])}
     gcond = gold_run_conditions(pid)
-    P = [y for y in units if y.get("role") in ("run", "specimen", "simulation", "model_run")]
+    P = [y for y in units if y.get("role") in ("run", "specimen", "simulation", "model_run") + (("measurement",) if measurements else ())]
     edges, linked_g, linked_p = [], set(), set()
 
     def link(g, y, stage):
@@ -389,6 +453,27 @@ def pair_units(pid, key, units):
         a, b = gpar.get(gi), ppar.get(yi)
         if a in Gb and b in Pb and Gb[a]["role"] == Pb[b]["role"] and a not in linked_g and b not in linked_p:
             link(Gb[a], Pb[b], "tree"); linked_g.add(a); linked_p.add(b)
+    # P186 (user): parent + distinguishing condition: an unpaired gold unit pairs with the one unpaired unit of its role under a unit its
+    # parent is paired with; among several, the one whose method (a measurement) or own settings (quantity, value) agree with the gold's
+    gown = collections.defaultdict(set)
+    for r in _gold(pid):
+        if r["type"] == "setting" and r["quantity"]:
+            gown[r["parent"]].add((r["quantity"], r["value"] or r["value_text"]))
+    grew = True
+    while grew:
+        grew = False
+        partners = collections.defaultdict(set)
+        for gi, yi, _ in edges:
+            partners[gi].add(yi)
+        for g in G:
+            if g["gid"] in linked_g or gpar.get(g["gid"]) not in partners:
+                continue
+            cands = [y for y in P if y["role"] == g["role"] and y["id"] not in linked_p and ppar.get(y["id"]) in partners[gpar[g["gid"]]]]
+            if len(cands) > 1:
+                cands = ([y for y in cands if y.get("method") and y["method"] == g.get("method")] if g["role"] == "measurement" else
+                         [y for y in cands if set(map(tuple, y.get("own") or [])) & gown[g["gid"]]])
+            if len(cands) == 1:
+                link(g, cands[0], "parent"); linked_g.add(g["gid"]); linked_p.add(cands[0]["id"]); grew = True
     # components per role
     parent = {}
 

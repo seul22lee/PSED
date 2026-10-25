@@ -200,6 +200,12 @@ psed_v2/
   pass-1 material record stays). compile.bind: a measurement unit whose data names an item takes it from its parent (data belongs to
   the measurement that produced it). Measurement activity rows carry their method in the method column. pass-0 helpers
   (process_mode_fill.pass0_line, pass1_elements.units_block) read the pass-0 line with the extension's units (compile.pass0_object).
+- P186 (user): adoption rule (form_versions.csv header, replacing P179c's per-type rule): a version's lines are adopted for a paper
+  when the whole-paper matched total is not lower and every 4c check passes; every gold row lost is listed for the user. compile: a
+  point or cell item's coordinates are conditions of the pass-0 unit it names (the derived units' path; a value the unit already
+  holds is skipped). render.pair_units pairs gold units against compiled units too (render.compiled_units: runs, specimens incl.
+  films, simulations, model runs, measurements; gold measurements by gold_measurements) and has a parent stage (the one unpaired
+  unit of the role under a paired parent; among several, the method or the own settings decide).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
