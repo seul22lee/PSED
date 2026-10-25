@@ -303,7 +303,8 @@ def units_block(pid):
     data = lambda it: " ".join(f"{d.get('id')}:{d.get('role') or 'null'}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
     _, fill, _ = K.recipe_fill(pid)                                       # P181 (user): the recipe fields, in words, null ones omitted
     words = {"reactant_A": "reactant_A", "reactant_B": "reactant_B", "carrier_gas": "carrier", "process_mode": "mode", "material": "material"}   # P185: material
-    recipe = lambda it: ", ".join(f"{words[f]} {fill[it['id']][f]}" for f in C.X.RECIPE_FIELDS if f in words and fill.get(it.get("id"), {}).get(f))   # noqa: E731  P187: steps not shown
+    field = lambda it, f: {**it, **fill.get(it.get("id"), {})}.get(f)          # noqa: E731  P201: as compile reads a unit: its fill (nulls too) over its own fields
+    recipe = lambda it: ", ".join(f"{words[f]} {field(it, f)}" for f in C.X.RECIPE_FIELDS if f in words and field(it, f))   # noqa: E731  P187: steps not shown
     line = lambda it: (f"{it.get('id', '')} | {it.get('role') or 'null (role unresolved)'} | {it.get('name_as_printed') or '-'} | {it.get('parent') or '-'} | {data(it)}"
                        + (f" | {recipe(it)}" if recipe(it) else ""))                # noqa: E731  P175
     der = K.bind(pid, obj, None)["units"]                                       # P177b: compile.bind's derived units (no pass-1 records yet)
