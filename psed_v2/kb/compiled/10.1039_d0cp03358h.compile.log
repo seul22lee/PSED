@@ -133,34 +133,6 @@ a1: symbol species tabu2.r9c0 'M_A': species tma from the symbol's evidence in t
 a1: symbol species tabu1.r6c0 'd_A': species tma from the symbol's evidence in this paper (fig10.cap)
 a1: symbol species tabu1.r7c0 'd_B': species n2 from the symbol's evidence in this paper (fig10.cap)
 a1: symbol species tabu2.r16c0 'q': species model_reactant from the symbol's evidence in this paper (fig10.cap)
-a1: step fill s6.p1 pulse_time 0.1 species tma about paper: reactant_A (the run's recipe field)
-a1: step fill s6.p1 purge_time 4.0 species - about paper: (empty) (no species)
-a1: step fill fig11a pulse_time 0.1 species tma about run_12: reactant_A (the run's recipe field)
-a1: step fill fig11a pulse_time 0.2 species tma about run_13: reactant_A (the run's recipe field)
-a1: step fill fig11a pulse_time 0.4 species tma about run_14: reactant_A (the run's recipe field)
-a1: step fill fig11b purge_time 1.0 species - about run_15: (empty) (no species)
-a1: step fill fig11b purge_time 4.0 species - about run_12: (empty) (no species)
-a1: step fill fig11b purge_time 10.0 species - about run_16: (empty) (no species)
-a1: step fill tab1.r1c2 pulse_time 0.1 species tma about sample_1: reactant_A (the run's recipe field)
-a1: step fill tab1.r1c2 purge_time 4.0 species tma about sample_1: purge_A (the run's recipe field)
-a1: step fill tab1.r1c2 pulse_time 0.1 species h2o about sample_1: reactant_B (the run's recipe field)
-a1: step fill tab1.r1c2 purge_time 4.0 species h2o about sample_1: purge_B (the run's recipe field)
-a1: step fill tab1.r14c2 pulse_time 0.2 species tma about sample_13: reactant_A (the run's recipe field)
-a1: step fill tab1.r14c2 purge_time 4.0 species tma about sample_13: purge_A (the run's recipe field)
-a1: step fill tab1.r14c2 pulse_time 0.1 species h2o about sample_13: reactant_B (the run's recipe field)
-a1: step fill tab1.r14c2 purge_time 4.0 species h2o about sample_13: purge_B (the run's recipe field)
-a1: step fill tab1.r15c2 pulse_time 0.4 species tma about sample_14: reactant_A (the run's recipe field)
-a1: step fill tab1.r15c2 purge_time 4.0 species tma about sample_14: purge_A (the run's recipe field)
-a1: step fill tab1.r15c2 pulse_time 0.1 species h2o about sample_14: reactant_B (the run's recipe field)
-a1: step fill tab1.r15c2 purge_time 4.0 species h2o about sample_14: purge_B (the run's recipe field)
-a1: step fill tab1.r16c2 pulse_time 0.1 species tma about sample_15: reactant_A (the run's recipe field)
-a1: step fill tab1.r16c2 purge_time 1.0 species tma about sample_15: purge_A (the run's recipe field)
-a1: step fill tab1.r16c2 pulse_time 0.1 species h2o about sample_15: reactant_B (the run's recipe field)
-a1: step fill tab1.r16c2 purge_time 1.0 species h2o about sample_15: purge_B (the run's recipe field)
-a1: step fill tab1.r18c2 pulse_time 0.1 species tma about sample_16: reactant_A (the run's recipe field)
-a1: step fill tab1.r18c2 purge_time 10.0 species tma about sample_16: purge_A (the run's recipe field)
-a1: step fill tab1.r18c2 pulse_time 0.1 species h2o about sample_16: reactant_B (the run's recipe field)
-a1: step fill tab1.r18c2 purge_time 10.0 species h2o about sample_16: purge_B (the run's recipe field)
 a1: qualifier out of scope: s6.p1 setting pulse_time over=run (record)
 a1: qualifier out of scope: s6.p1 setting pulse_time ratio=0.0 (record)
 a1: qualifier out of scope: s6.p1 setting pulse_time specimen_class=film (record)
@@ -291,12 +263,8 @@ a: s3.p6: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: s3.p7: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: s3.p7: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: s3.p8: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
-a: s6.p1: P158 rule 1 would reject it (qualifiers); a pre-freeze record, kept
 a: fig3a: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
 a: fig3b: P158 rule 4 would reject it (quantity); a pre-freeze record, kept
-a: fig11b: P158 rule 1 would reject it (qualifiers); a pre-freeze record, kept
-a: fig11b: P158 rule 1 would reject it (qualifiers); a pre-freeze record, kept
-a: fig11b: P158 rule 1 would reject it (qualifiers); a pre-freeze record, kept
 a: tabu1.r1c0: P158 rule 5 would reject it (label_as_printed); a pre-freeze record, kept
 a: tabu1.r1c1: P158 rule 5 would reject it (label_as_printed); a pre-freeze record, kept
 a: tabu1.r5c0: P158 rule 5 would reject it (label_as_printed); a pre-freeze record, kept
@@ -375,15 +343,15 @@ i: definition ('yim20', 'd', 'd'): merged tabu1.r8c0 into tabu1.r5c0;tabu1.r8c0
 i: definition ('yim20', 'h', 'h'): merged tabu2.r3c0 into tabu2.r2c0;tabu2.r3c0
 i: definition ('yim20', 'l', 'l'): merged tabu2.r7c0 into tabu2.r6c0;tabu2.r7c0
 i: definition ('yim20', 'q', 'q'): merged tabu2.r16c0 into tabu2.r15c0;tabu2.r16c0
-j: derived over 25 entities: 57 rows; not derived: {'derive raised: cannot convert cycle to 1': 41, 'no fact for rho': 25, 'stated: yim20:tab1.r1c9#1 0.1 nm/cycle': 1, 'no fact for H': 25, 'no fact for rb': 25, 'no fact for dn': 25, 'no fact for mg': 50, 'no fact for h2': 25, 'no fact for phi': 25, 'no fact for d': 25, 'lam: no fact for d': 25, 'stated: yim20:tab1.r2c9#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r3c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r4c9#1 0.0949 nm/cycle': 1, 'stated: yim20:tab1.r5c9#1 0.0983 nm/cycle': 1, 'stated: yim20:tab1.r6c9#1 0.103 nm/cycle': 1, 'stated: yim20:tab1.r7c10#1 0.0955 nm/cycle': 1, 'stated: yim20:tab1.r8c10#1 0.102 nm/cycle': 1, 'stated: yim20:tab1.r9c9#1 0.0906 nm/cycle': 1, 'stated: yim20:tab1.r10c10#1 0.104 nm/cycle': 1, 'stated: yim20:tab1.r12c10#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r13c9#1 0.0951 nm/cycle': 1, 'stated: yim20:tab1.r14c9#1 0.0962 nm/cycle': 1, 'stated: yim20:tab1.r15c9#1 0.0972 nm/cycle': 1, 'stated: yim20:tab1.r16c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r18c9#1 0.0897 nm/cycle': 1, 'no fact for S': 9, 'n: no fact for gpc': 9, 'gpc: no fact for n': 9, 'no fact for t': 9, 'gpc: n: no fact for gpc': 9}
+j: derived over 25 entities: 57 rows; not derived: {'no fact for t': 25, 'E: no fact for t': 16, 'no fact for rho': 25, 'stated: yim20:tab1.r1c9#1 0.1 nm/cycle': 1, 'no fact for H': 25, 'no fact for rb': 25, 'no fact for dn': 25, 'no fact for mg': 50, 'derive raised: cannot convert cycle to 1': 25, 'no fact for h2': 25, 'no fact for phi': 25, 'no fact for d': 25, 'lam: no fact for d': 25, 'stated: yim20:tab1.r2c9#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r3c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r4c9#1 0.0949 nm/cycle': 1, 'stated: yim20:tab1.r5c9#1 0.0983 nm/cycle': 1, 'stated: yim20:tab1.r6c9#1 0.103 nm/cycle': 1, 'stated: yim20:tab1.r7c10#1 0.0955 nm/cycle': 1, 'stated: yim20:tab1.r8c10#1 0.102 nm/cycle': 1, 'stated: yim20:tab1.r9c9#1 0.0906 nm/cycle': 1, 'stated: yim20:tab1.r10c10#1 0.104 nm/cycle': 1, 'stated: yim20:tab1.r12c10#1 0.0993 nm/cycle': 1, 'stated: yim20:tab1.r13c9#1 0.0951 nm/cycle': 1, 'stated: yim20:tab1.r14c9#1 0.0962 nm/cycle': 1, 'stated: yim20:tab1.r15c9#1 0.0972 nm/cycle': 1, 'stated: yim20:tab1.r16c9#1 0.101 nm/cycle': 1, 'stated: yim20:tab1.r18c9#1 0.0897 nm/cycle': 1, 'no fact for S': 9, 'n: no fact for gpc': 9, 'gpc: no fact for n': 9, 'gpc: n: no fact for gpc': 9}
 j: caveats (query.caveats_of): 5, linked to facts 2, to nodes 0; facts reached through query.caveats_for: 16
 j: claim nodes (query.claim_nodes): 20 nodes for 22 claims; claims without a full triple (query.node_of empty): 2
-j: comparisons from figures.json (1c): 10
+j: comparisons from figures.json (1c): 6
 step input: {'records': 582}
 step a0: {'quantity other: never.csv word': 39, 'quantity promoted (quantity: name)': 2, 'quantity other: never.csv symbol': 3}
-step a1: {'symbol species: kept: its own element names it': 10, 'symbol species: backed by the definition': 18, 'symbol species: from the definition': 2, 'symbol species: no species': 77, 'symbol species: species cleared (no evidence)': 3, "symbol species: from the symbol's evidence in this paper": 8, "step fill: reactant_A (the run's recipe field)": 9, 'step fill: empty (no species)': 4, "step fill: purge_A (the run's recipe field)": 5, "step fill: reactant_B (the run's recipe field)": 5, "step fill: purge_B (the run's recipe field)": 5, 'qualifier out of scope: over': 22, 'qualifier out of scope: ratio': 2, 'qualifier out of scope: specimen_class': 2, 'qualifier out of scope: structure_class': 22, 'qualifier out of scope: species': 3, 'qualifier out of scope: phase': 1, 'qualifier out of scope: level': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: stage': 23, 'qualifier out of scope: mode': 20}
+step a1: {'symbol species: kept: its own element names it': 10, 'symbol species: backed by the definition': 18, 'symbol species: from the definition': 2, 'symbol species: no species': 77, 'symbol species: species cleared (no evidence)': 3, "symbol species: from the symbol's evidence in this paper": 8, 'qualifier out of scope: over': 22, 'qualifier out of scope: ratio': 2, 'qualifier out of scope: specimen_class': 2, 'qualifier out of scope: structure_class': 22, 'qualifier out of scope: species': 3, 'qualifier out of scope: phase': 1, 'qualifier out of scope: level': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: stage': 23, 'qualifier out of scope: mode': 20}
 step a: {'numeric string coerced (C4)': 20, 'schema:enum': 1, 'kept': 581}
-step a_p158: {'P158 rule 4 (predates the freeze, kept)': 13, 'P158 rule 1 (predates the freeze, kept)': 4, 'P158 rule 5 (predates the freeze, kept)': 8}
+step a_p158: {'P158 rule 4 (predates the freeze, kept)': 13, 'P158 rule 5 (predates the freeze, kept)': 8}
 step a_fields: {'value_text': 1}
 step b: {'model_with_value (kept)': 23, 'statement_only (kept: P138 form)': 2, 'kept': 581}
 step c: {'quantity_other never (kept)': 42, 'quantity_other (kept)': 8, 'kept': 581}
@@ -395,8 +363,8 @@ step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 22, '
 step m: {'statement filled from the quote': 492, 'label_as_printed filled with the quantity id': 13, 'links resolved': 23, 'links named elements without facts': 2}
 step 1c: {'figure label other (series), never': 2, 'image -> a measurement (a photograph)': 4, 'curve -> observation (legend qualifier)': 3, 'unbound item (image): no unit named': 1, 'curve -> observation': 25, 'unbound item (curve): no layout': 10, 'curve -> model': 30}
 step i: {'merged': 44, 'definition merged': 5, 'kept': 586}
-step n: {'comparison replicate': 2, 'comparison labelled from a series-name setting': 5, 'comparison series': 4, 'comparison grid': 4}
-step j: {'derived feature_width{stage=final}': 16, 'derived_needs_outside_fact': 41, 'derived cycle_time': 25, 'derived deposition_rate': 16}
+step n: {'comparison replicate': 2, 'comparison series': 3, 'comparison labelled from a series-name setting': 3, 'comparison grid': 1}
+step j: {'derived feature_width{stage=final}': 16, 'derived_needs_outside_fact': 25, 'derived cycle_time': 25, 'derived deposition_rate': 16}
 step k: {'statement from the record': 524, 'statement_copies_text (reported by check)': 94, 'statement assembled': 119}
 diff against the gold:
   setting       206  164  107  0.65  0.52
@@ -409,7 +377,7 @@ diff against the gold:
   caveat         45    5    3  0.60  0.07
   claim          40   22   16  0.73  0.40
   entity         31   25   25  1.00  0.81
-  comparison      8   10    1  0.10  0.12
+  comparison      8    6    1  0.17  0.12
   paper           1    1    1  1.00  1.00
   identity        1    0    0     -  0.00
 gold definitions with an eq* element in evidence: 0/66

@@ -1,0 +1,496 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P184</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P184</h1>
+<h2>5a. Units per paper (P182 to P184): runs, specimens, measurements; gold units matched / missing / pass-0 extra</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5a_units.csv</p>
+<table><tr><th>paper</th><th>runs</th><th>specimens</th><th>measurements</th><th>new_pass0_units</th><th>gold_units</th><th>gold_matched</th><th>gold_missing</th><th>pass0_extra</th><th>expected</th></tr>
+<tr><td>gao15</td><td>2 -&gt; 8</td><td>4 -&gt; 13</td><td>10 -&gt; 20</td><td>{&#x27;measurement&#x27;: 15, &#x27;run&#x27;: 6, &#x27;specimen&#x27;: 9}</td><td>{&#x27;run&#x27;: 9, &#x27;specimen&#x27;: 14}</td><td>6 -&gt; 20</td><td>17 -&gt; 3</td><td>0 -&gt; 0</td><td>runs 9, specimens 14</td></tr>
+<tr><td>gre23</td><td>4 -&gt; 4</td><td>4 -&gt; 4</td><td>31 -&gt; 28</td><td>{&#x27;simulation&#x27;: 1, &#x27;model_run&#x27;: 2}</td><td>{&#x27;run&#x27;: 4, &#x27;specimen&#x27;: 15, &#x27;simulation&#x27;: 1, &#x27;model_run&#x27;: 1}</td><td>1 -&gt; 1</td><td>20 -&gt; 20</td><td>6 -&gt; 9</td><td></td></tr>
+<tr><td>zou23</td><td>64 -&gt; 64</td><td>68 -&gt; 70</td><td>79 -&gt; 86</td><td>{&#x27;specimen&#x27;: 1}</td><td>{&#x27;run&#x27;: 2, &#x27;specimen&#x27;: 8}</td><td>5 -&gt; 5</td><td>5 -&gt; 5</td><td>5 -&gt; 5</td><td>runs ~80, specimens ~30</td></tr>
+<tr><td>mat22</td><td>42 -&gt; 45</td><td>42 -&gt; 42</td><td>104 -&gt; 101</td><td>{&#x27;run&#x27;: 3}</td><td>{&#x27;run&#x27;: 54, &#x27;specimen&#x27;: 54}</td><td>34 -&gt; 39</td><td>74 -&gt; 69</td><td>8 -&gt; 9</td><td></td></tr>
+</table>
+<h2>5a. Every gold unit still missing, with its evidence</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5a_gold_missing.csv</p>
+<table><tr><th>paper</th><th>gold_unit</th><th>role</th><th>name</th><th>evidence</th></tr>
+<tr><td>gao15</td><td>gao15:dep:al_300_100</td><td>run</td><td>Al2O3 300 °C, 100 nm</td><td>[&#x27;fig4.cap&#x27;, &#x27;fig6.cap&#x27;, &#x27;s6.p18&#x27;]</td></tr>
+<tr><td>gao15</td><td>gao15:ent:al_300_100_fig4</td><td>specimen</td><td>Al2O3 300 °C, 100 nm, Fig. 4 chip, 500 nm gap</td><td>[&#x27;fig4.cap&#x27;]</td></tr>
+<tr><td>gao15</td><td>gao15:ent:al_300_100_fig6</td><td>specimen</td><td>Al2O3 300 °C, 100 nm, Fig. 6 chip, 500 nm gap</td><td>[&#x27;fig6.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:run120</td><td>run</td><td>120 °C</td><td>[&#x27;s9.p6&#x27;, &#x27;fig1b&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:run160</td><td>run</td><td>160 °C</td><td>[&#x27;s9.p6&#x27;, &#x27;fig1b&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:run120_160</td><td>run</td><td>120/160 °C</td><td>[&#x27;s9.p6&#x27;, &#x27;fig1b&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120:pair</td><td>specimen</td><td>120 °C NPC pair</td><td>[&#x27;s12.p1&#x27;, &#x27;s9.p3&#x27;, &#x27;tabI.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120:section</td><td>specimen</td><td>120 °C SEM-EDS section</td><td>[&#x27;fig6.cap&#x27;, &#x27;s10.p3&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120:xrd</td><td>specimen</td><td>120 °C XRD</td><td>[&#x27;fig5.cap&#x27;, &#x27;s10.p1&#x27;, &#x27;tabII.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120:photo</td><td>specimen</td><td>120 °C photograph</td><td>[&#x27;fig4.cap&#x27;, &#x27;s13.p1&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120:prism</td><td>specimen</td><td>120 °C ρ prism</td><td>[&#x27;s10.p2&#x27;, &#x27;s13.p4&#x27;, &#x27;tabII.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:160:pair</td><td>specimen</td><td>160 °C NPC pair</td><td>[&#x27;s12.p1&#x27;, &#x27;s9.p3&#x27;, &#x27;tabI.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:160:section</td><td>specimen</td><td>160 °C SEM-EDS section</td><td>[&#x27;fig6.cap&#x27;, &#x27;s10.p3&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:160:xrd</td><td>specimen</td><td>160 °C XRD</td><td>[&#x27;fig5.cap&#x27;, &#x27;s10.p1&#x27;, &#x27;tabII.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:160:photo</td><td>specimen</td><td>160 °C photograph</td><td>[&#x27;fig4.cap&#x27;, &#x27;s13.p1&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:160:prism</td><td>specimen</td><td>160 °C ρ prism</td><td>[&#x27;s10.p2&#x27;, &#x27;s13.p4&#x27;, &#x27;tabII.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120_160:pair</td><td>specimen</td><td>120/160 °C NPC pair</td><td>[&#x27;s12.p1&#x27;, &#x27;s9.p3&#x27;, &#x27;tabI.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120_160:section</td><td>specimen</td><td>120/160 °C SEM-EDS section</td><td>[&#x27;fig6.cap&#x27;, &#x27;s10.p3&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120_160:xrd</td><td>specimen</td><td>120/160 °C XRD</td><td>[&#x27;fig5.cap&#x27;, &#x27;s10.p1&#x27;, &#x27;tabII.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120_160:photo</td><td>specimen</td><td>120/160 °C photograph</td><td>[&#x27;fig4.cap&#x27;, &#x27;s13.p1&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:ent:120_160:prism</td><td>specimen</td><td>120/160 °C ρ prism</td><td>[&#x27;s10.p2&#x27;, &#x27;s13.p4&#x27;, &#x27;tabII.cap&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:simact:eq1_2</td><td>simulation</td><td>sim · Eq. (2)</td><td>[&#x27;eq1&#x27;, &#x27;eq2&#x27;, &#x27;s9.p9&#x27;]</td></tr>
+<tr><td>gre23</td><td>gre23:simact:eq1_2:run</td><td>model_run</td><td>sim · Eq. (2)</td><td>[&#x27;eq1&#x27;, &#x27;eq2&#x27;, &#x27;s9.p9&#x27;]</td></tr>
+<tr><td>zou23</td><td>zou23:dep:cvd</td><td>run</td><td>Mo pulsed CVD</td><td>[&#x27;s5.p3&#x27;]</td></tr>
+<tr><td>zou23</td><td>zou23:ent:ald350</td><td>specimen</td><td>ALD Mo film, 350 °C</td><td>[&#x27;s7.p1&#x27;, &#x27;fig1.cap&#x27;, &#x27;s9.p1&#x27;]</td></tr>
+<tr><td>zou23</td><td>zou23:ent:ald250</td><td>specimen</td><td>ALD Mo film, 250 °C</td><td>[&#x27;s9.p2&#x27;, &#x27;fig5.cap&#x27;]</td></tr>
+<tr><td>zou23</td><td>zou23:ent:ald450</td><td>specimen</td><td>ALD Mo film, 450 °C</td><td>[&#x27;s7.p8&#x27;, &#x27;fig2.cap&#x27;]</td></tr>
+<tr><td>zou23</td><td>zou23:ent:cvd350</td><td>specimen</td><td>CVD Mo film, 350 °C</td><td>[&#x27;s7.p8&#x27;, &#x27;fig2.cap&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:tem_T350_R0.20</td><td>run</td><td>350 °C, 0.20 H2, TEM film</td><td>[&#x27;s3.p10&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:gc_T150_R0.20</td><td>run</td><td>150 °C, 0.20 H2, glassy-carbon film</td><td>[&#x27;tab1.r1c1&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:gc_T150_R0.65</td><td>run</td><td>150 °C, 0.65 H2, glassy-carbon film</td><td>[&#x27;tab1.r2c1&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:tem_T150_R0.65</td><td>run</td><td>150 °C, 0.65 H2, TEM film</td><td>[&#x27;s3.p26&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:gc_T150_R0.80</td><td>run</td><td>150 °C, 0.80 H2, glassy-carbon film</td><td>[&#x27;tab1.r3c1&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:wafer_T150_R0.80</td><td>run</td><td>150 °C, 0.80 H2, wafer film</td><td>[&#x27;s3.p6&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:tem_T100_R0.80</td><td>run</td><td>100 °C, 0.80 H2, TEM film</td><td>[&#x27;s3.p8&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:pet_T100_R0.80</td><td>run</td><td>100 °C, 0.80 H2, PET film</td><td>[&#x27;s3.p6&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:T150_lowH2S</td><td>run</td><td>Figure S22b</td><td>[&#x27;s3.p53&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:T250_R0_lowH2S</td><td>run</td><td>Figure S22a</td><td>[&#x27;s3.p53&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:TiS2_T100_R0.50</td><td>run</td><td>TiS2 @ 100 °C, 0.50</td><td>[&#x27;s3.p48&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:TiS2_T100_R0.80</td><td>run</td><td>0.80</td><td>[&#x27;s3.p48&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:WS2_T150_R0</td><td>run</td><td>WS2 @ 150 °C, 0</td><td>[&#x27;s3.p46&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:WS2_T150_R0.80</td><td>run</td><td>WS2 @ 150 °C, 0.80</td><td>[&#x27;s3.p46&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:dep:control</td><td>run</td><td>control exposures</td><td>[&#x27;s5.p7&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T450_R0.20</td><td>specimen</td><td>450 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T450_R0.80</td><td>specimen</td><td>450 °C, 0.80 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T350_R0.20</td><td>specimen</td><td>350 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:tem_T350_R0.20</td><td>specimen</td><td>350 °C, 0.20 H2, TEM/FET film</td><td>[&#x27;s3.p10&#x27;, &#x27;fig3b&#x27;, &#x27;fig3.cap&#x27;, &#x27;s3.p43&#x27;, &#x27;s3.p44&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T350_R0.50</td><td>specimen</td><td>350 °C, 0.50 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T350_R0.80</td><td>specimen</td><td>350 °C, 0.80 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T300_R0.20</td><td>specimen</td><td>300 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0</td><td>specimen</td><td>250 °C, 0 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0.20</td><td>specimen</td><td>250 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0.35</td><td>specimen</td><td>250 °C, 0.35 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0.50</td><td>specimen</td><td>250 °C, 0.50 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0.65</td><td>specimen</td><td>250 °C, 0.65 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0.80</td><td>specimen</td><td>250 °C, 0.80 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0.94</td><td>specimen</td><td>250 °C, 0.94 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T200_R0</td><td>specimen</td><td>200 °C, 0 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T200_R0.20</td><td>specimen</td><td>200 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T200_R0.50</td><td>specimen</td><td>200 °C, 0.50 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T200_R0.65</td><td>specimen</td><td>200 °C, 0.65 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T200_R0.80</td><td>specimen</td><td>200 °C, 0.80 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T200_R0.94</td><td>specimen</td><td>200 °C, 0.94 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0</td><td>specimen</td><td>150 °C, 0 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.20</td><td>specimen</td><td>150 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:gc_T150_R0.20</td><td>specimen</td><td>150 °C, 0.20 H2, glassy-carbon film</td><td>[&#x27;tab1.r1c1&#x27;, &#x27;tab1.r1c0&#x27;, &#x27;tab1.r0c1&#x27;, &#x27;tab1.r0c0&#x27;, &#x27;tab1.cap&#x27;, &#x27;s3.x4&#x27;, &#x27;s3.p21&#x27;, &#x27;tab1.r1c2&#x27;, &#x27;tab1.r0c2&#x27;, &#x27;tab1.r1c3&#x27;, &#x27;tab1.r0c3&#x27;, &#x27;tab1.r1c4&#x27;, &#x27;tab1.r0c4&#x27;, &#x27;tab1.r1c5&#x27;, &#x27;tab1.r0c5&#x27;, &#x27;s3.p19&#x27;, &#x27;tab1.r1c6&#x27;, &#x27;tab1.r0c6&#x27;, &#x27;tab1.r1c7&#x27;, &#x27;tab1.r0c7&#x27;, &#x27;s3.p30&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.50</td><td>specimen</td><td>150 °C, 0.50 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.65</td><td>specimen</td><td>150 °C, 0.65 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:gc_T150_R0.65</td><td>specimen</td><td>150 °C, 0.65 H2, glassy-carbon film</td><td>[&#x27;tab1.r2c1&#x27;, &#x27;tab1.r2c0&#x27;, &#x27;tab1.r0c1&#x27;, &#x27;tab1.r0c0&#x27;, &#x27;tab1.cap&#x27;, &#x27;s3.x4&#x27;, &#x27;s3.p21&#x27;, &#x27;tab1.r2c2&#x27;, &#x27;tab1.r0c2&#x27;, &#x27;tab1.r2c3&#x27;, &#x27;tab1.r0c3&#x27;, &#x27;tab1.r2c4&#x27;, &#x27;tab1.r0c4&#x27;, &#x27;tab1.r2c5&#x27;, &#x27;tab1.r0c5&#x27;, &#x27;s3.p19&#x27;, &#x27;tab1.r2c6&#x27;, &#x27;tab1.r0c6&#x27;, &#x27;tab1.r2c7&#x27;, &#x27;tab1.r0c7&#x27;, &#x27;s3.p30&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:tem_T150_R0.65</td><td>specimen</td><td>150 °C, 0.65 H2, TEM film</td><td>[&#x27;s3.p26&#x27;, &#x27;fig6b&#x27;, &#x27;fig6.cap&#x27;, &#x27;s3.x5&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.80</td><td>specimen</td><td>150 °C, 0.80 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:gc_T150_R0.80</td><td>specimen</td><td>150 °C, 0.80 H2, glassy-carbon film</td><td>[&#x27;tab1.r3c1&#x27;, &#x27;tab1.r3c0&#x27;, &#x27;tab1.r0c1&#x27;, &#x27;tab1.r0c0&#x27;, &#x27;tab1.cap&#x27;, &#x27;s3.x4&#x27;, &#x27;s3.p21&#x27;, &#x27;tab1.r3c2&#x27;, &#x27;tab1.r0c2&#x27;, &#x27;tab1.r3c3&#x27;, &#x27;tab1.r0c3&#x27;, &#x27;tab1.r3c4&#x27;, &#x27;tab1.r0c4&#x27;, &#x27;tab1.r3c5&#x27;, &#x27;tab1.r0c5&#x27;, &#x27;s3.p19&#x27;, &#x27;tab1.r3c6&#x27;, &#x27;tab1.r0c6&#x27;, &#x27;tab1.r3c7&#x27;, &#x27;tab1.r0c7&#x27;, &#x27;s3.p32&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:wafer_T150_R0.80</td><td>specimen</td><td>150 °C, 0.80 H2, wafer film</td><td>[&#x27;s3.p6&#x27;, &#x27;fig1c&#x27;, &#x27;fig1.cap&#x27;, &#x27;s5.p11&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.94</td><td>specimen</td><td>150 °C, 0.94 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T100_R0.20</td><td>specimen</td><td>100 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T100_R0.50</td><td>specimen</td><td>100 °C, 0.50 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T100_R0.65</td><td>specimen</td><td>100 °C, 0.65 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T100_R0.80</td><td>specimen</td><td>100 °C, 0.80 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:tem_T100_R0.80</td><td>specimen</td><td>100 °C, 0.80 H2, TEM/FET film</td><td>[&#x27;s3.p8&#x27;, &#x27;fig3a&#x27;, &#x27;fig3.cap&#x27;, &#x27;s5.p18&#x27;, &#x27;s3.p9&#x27;, &#x27;s3.p10&#x27;, &#x27;s3.p40&#x27;, &#x27;s3.p43&#x27;, &#x27;s3.p44&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:pet_T100_R0.80</td><td>specimen</td><td>100 °C, 0.80 H2, PET film</td><td>[&#x27;s3.p6&#x27;, &#x27;fig1d&#x27;, &#x27;fig1.cap&#x27;, &#x27;s5.p2&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T100_R0.94</td><td>specimen</td><td>100 °C, 0.94 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T50_R0.20</td><td>specimen</td><td>50 °C, 0.20 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T50_R0.80</td><td>specimen</td><td>50 °C, 0.80 H2 film</td><td>[&#x27;fig2&#x27;, &#x27;fig4&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.20_H2step</td><td>specimen</td><td>150 °C, 0.20 H2 film with an extra H2 step</td><td>[&#x27;s3.p52&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.80_N10</td><td>specimen</td><td>150 °C, 0.80 H2 film, 10 cycles</td><td>[&#x27;fig1b&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.80_N20</td><td>specimen</td><td>150 °C, 0.80 H2 film, 20 cycles</td><td>[&#x27;fig1b&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.80_N30</td><td>specimen</td><td>150 °C, 0.80 H2 film, 30 cycles</td><td>[&#x27;fig1b&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_R0.80_N50</td><td>specimen</td><td>150 °C, 0.80 H2 film, 50 cycles</td><td>[&#x27;fig1b&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T150_lowH2S</td><td>specimen</td><td>150 °C film with lowered H2S flow</td><td>[&#x27;s3.p53&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:T250_R0_lowH2S</td><td>specimen</td><td>250 °C, 0 H2 film with lowered H2S flow</td><td>[&#x27;s3.p53&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:TiS2_T100_R0</td><td>specimen</td><td>TiS2 film, 100 °C, 0 H2</td><td>[&#x27;fig9b&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:TiS2_T100_R0.50</td><td>specimen</td><td>TiS2 film, 100 °C, 0.50 H2</td><td>[&#x27;s3.p48&#x27;, &#x27;s5.p8&#x27;, &#x27;fig9b&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:TiS2_T100_R0.80</td><td>specimen</td><td>TiS2 film, 0.80 H2</td><td>[&#x27;s3.p48&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:TiS2_thermal</td><td>specimen</td><td>TiS2 film, thermal ALD</td><td>[&#x27;fig9b&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:WS2_T150_R0</td><td>specimen</td><td>WS2 film, 150 °C, 0 H2</td><td>[&#x27;s3.p46&#x27;, &#x27;fig9a&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:WS2_T150_R0.80</td><td>specimen</td><td>WS2 film, 150 °C, 0.80 H2</td><td>[&#x27;s3.p46&#x27;, &#x27;s5.p8&#x27;, &#x27;fig9a&#x27;]</td></tr>
+<tr><td>mat22</td><td>mat22:ent:control</td><td>specimen</td><td>control exposures (plasma alone, precursor alone)</td><td>[&#x27;s5.p7&#x27;]</td></tr>
+</table>
+<h2>5b. Per unit: own and inherited settings (a parent&#x27;s single value only), not inherited; mat22 specimens, gre23 runs; max / mean</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5b_conditions.csv</p>
+<table><tr><th>paper</th><th>unit</th><th>kind</th><th>label</th><th>own</th><th>inherited</th><th>count</th><th>not_inherited</th></tr>
+<tr><td>gao15</td><td>(runs: max / mean)</td><td>run</td><td></td><td></td><td></td><td>18 / 13.1</td><td></td></tr>
+<tr><td>gao15</td><td>(specimens: max / mean)</td><td>specimen</td><td></td><td></td><td></td><td>18 / 13.4</td><td></td></tr>
+<tr><td>gre23</td><td>gre23:run:run_120</td><td>run</td><td>T held constant at 120 °C</td><td>1</td><td>26</td><td>27</td><td>cycle_number; exposure[species=dez;step=reactant_A]; other; purge_time[step=purge_B]</td></tr>
+<tr><td>gre23</td><td>gre23:run:run_160</td><td>run</td><td>T held constant at 160 °C</td><td>1</td><td>26</td><td>27</td><td>cycle_number; exposure[species=dez;step=reactant_A]; other; purge_time[step=purge_B]</td></tr>
+<tr><td>gre23</td><td>gre23:run:run_120_160</td><td>run</td><td>T cycled between 120 and 160 °C</td><td>1</td><td>26</td><td>27</td><td>cycle_number; exposure[species=dez;step=reactant_A]; other; purge_time[step=purge_B]</td></tr>
+<tr><td>gre23</td><td>gre23:run:run_test</td><td>run</td><td>ZnO ALD test run performed under the same conditions as (c)</td><td>1</td><td>25</td><td>26</td><td>cycle_number; exposure[species=dez;step=reactant_A]; other; purge_time[step=purge_B]</td></tr>
+<tr><td>gre23</td><td>(runs: max / mean)</td><td>run</td><td></td><td></td><td></td><td>27 / 26.8</td><td></td></tr>
+<tr><td>gre23</td><td>(specimens: max / mean)</td><td>specimen</td><td></td><td></td><td></td><td>27 / 26.8</td><td></td></tr>
+<tr><td>zou23</td><td>(runs: max / mean)</td><td>run</td><td></td><td></td><td></td><td>16 / 11.2</td><td></td></tr>
+<tr><td>zou23</td><td>(specimens: max / mean)</td><td>specimen</td><td></td><td></td><td></td><td>18 / 11.6</td><td></td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.0; deposition_temperature=150.</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.65; deposition_temperature=150</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1c:film</td><td>specimen</td><td>film of film grown at 150 °C, H2 flow ratio of 0.80, 50 ALD </td><td>0</td><td>49</td><td>49</td><td>film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1d:film</td><td>specimen</td><td>film of MoS2 film deposited on a transparent PET substrate (</td><td>0</td><td>50</td><td>50</td><td>film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3a:film</td><td>specimen</td><td>film of films grown at (a) 100 °C using a H2 flow ratio of 0</td><td>0</td><td>49</td><td>49</td><td>film_thickness; gas_flow_rate[gas=ar]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.8; deposition_temperature=150.</td><td>0</td><td>49</td><td>49</td><td>film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.94; deposition_temperature=150</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.5; deposition_temperature=150.</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r1:film</td><td>specimen</td><td>film of 0.20</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r2:film</td><td>specimen</td><td>film of 0.65</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r3:film</td><td>specimen</td><td>film of 0.80</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.65; deposition_temperature=200</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3b:film</td><td>specimen</td><td>film of 350 °C using a H2 flow ratio of 0.20 and 60 ALD cycl</td><td>0</td><td>49</td><td>49</td><td>film_thickness; gas_flow_rate[gas=ar]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_ws2_150c:film</td><td>specimen</td><td>film of WS2 was deposited at 150 °C using a H2 flow ratio of</td><td>0</td><td>49</td><td>49</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.0; deposition_temperature=250.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.0; deposition_temperature=200.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=450.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=350.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=300.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=250.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=200.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=150.</td><td>0</td><td>48</td><td>48</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=100.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.2; deposition_temperature=50.0</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.35; deposition_temperature=250</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.5; deposition_temperature=350.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.5; deposition_temperature=250.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.5; deposition_temperature=200.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.5; deposition_temperature=100.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.65; deposition_temperature=250</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.65; deposition_temperature=100</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.8; deposition_temperature=450.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.8; deposition_temperature=350.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.8; deposition_temperature=250.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.8; deposition_temperature=200.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.8; deposition_temperature=100.</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.8; deposition_temperature=50.0</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.94; deposition_temperature=250</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.94; deposition_temperature=200</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29:film</td><td>specimen</td><td>film of at plasma_gas_ratio=0.94; deposition_temperature=100</td><td>0</td><td>47</td><td>47</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig6b:film</td><td>specimen</td><td>film of ~50 nm thick MoS2 film grown at 150 °C using a H2 fl</td><td>0</td><td>49</td><td>49</td><td>film_thickness; gas_flow_rate[gas=ar]; plasma_gas_ratio[relative_to=reactive_gases]</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tis2_100c:film</td><td>specimen</td><td>film of TiS2 at 100 °C using a H2 flow ratio of 0.50</td><td>0</td><td>50</td><td>50</td><td>cycle_number; film_thickness; gas_flow_rate[gas=ar]</td></tr>
+<tr><td>mat22</td><td>(runs: max / mean)</td><td>run</td><td></td><td></td><td></td><td>50 / 47.6</td><td></td></tr>
+<tr><td>mat22</td><td>(specimens: max / mean)</td><td>specimen</td><td></td><td></td><td></td><td>50 / 47.6</td><td></td></tr>
+</table>
+<h2>5c. Measurements without a method (pass-0 measurement units: 0; compile-derived ones with their panels)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5c_measurements.csv</p>
+<table><tr><th>paper</th><th>measurement</th><th>made_by</th><th>panels</th><th>child_facts</th></tr>
+<tr><td>gao15</td><td>gao15:method:sem</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>gao15</td><td>gao15:method:reflectometry</td><td>compile (derived)</td><td></td><td>2</td></tr>
+<tr><td>gao15</td><td>gao15:method:infrared_microscopy</td><td>compile (derived)</td><td></td><td>4</td></tr>
+<tr><td>gre23</td><td>gre23:ent:specimen_120_160:meas:measurement</td><td>compile (derived)</td><td>fig2c;fig2.cap; fig3a;fig3.cap; fig3b;fig3.cap; fig3c;fig3.cap; fig6f;fig6.cap</td><td>17</td></tr>
+<tr><td>gre23</td><td>gre23:method:xrd</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>gre23</td><td>gre23:method:sem_eds</td><td>compile (derived)</td><td></td><td>2</td></tr>
+<tr><td>gre23</td><td>gre23:method:xps</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>gre23</td><td>gre23:method:gravimetry</td><td>compile (derived)</td><td></td><td>2</td></tr>
+<tr><td>gre23</td><td>gre23:ent:specimen_120:meas:measurement</td><td>compile (derived)</td><td>fig2a;fig2.cap; fig3a;fig3.cap; fig3b;fig3.cap; fig3c;fig3.cap; fig6d;fig6.cap</td><td>16</td></tr>
+<tr><td>gre23</td><td>gre23:ent:specimen_160:meas:measurement</td><td>compile (derived)</td><td>fig2b;fig2.cap; fig3a;fig3.cap; fig3b;fig3.cap; fig3c;fig3.cap; fig6e;fig6.cap</td><td>16</td></tr>
+<tr><td>gre23</td><td>gre23:method:process_monitor</td><td>compile (derived)</td><td></td><td>2</td></tr>
+<tr><td>gre23</td><td>gre23:run:run_test:film:meas:measurement</td><td>compile (derived)</td><td>fig2d;fig2.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:method:spectroscopic_ellipsometry</td><td>compile (derived)</td><td></td><td>4</td></tr>
+<tr><td>zou23</td><td>zou23:run:zou23_run_ms_run:film:meas:measurement</td><td>compile (derived)</td><td>fig4;fig4.cap</td><td>4</td></tr>
+<tr><td>zou23</td><td>zou23:method:tof_erda</td><td>compile (derived)</td><td></td><td>3</td></tr>
+<tr><td>zou23</td><td>zou23:method:four_point_probe</td><td>compile (derived)</td><td></td><td>2</td></tr>
+<tr><td>zou23</td><td>zou23:method:xrd</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:zou23_run_std_ald_350:film:meas:measurement</td><td>compile (derived)</td><td>fig3;fig3.cap</td><td>2</td></tr>
+<tr><td>zou23</td><td>zou23:method:giwaxs</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig1a;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig1a;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p4:film:meas:measurement</td><td>compile (derived)</td><td>fig1a;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1a_c1_p6:film:meas:measurement</td><td>compile (derived)</td><td>fig1a;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p10:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p11:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p12:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p4:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p5:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p6:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p7:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p8:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1b_c1_p9:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p1:film:meas:measurement</td><td>compile (derived)</td><td>fig1c;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig1c;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig1c;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p4:film:meas:measurement</td><td>compile (derived)</td><td>fig1c;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p5:film:meas:measurement</td><td>compile (derived)</td><td>fig1c;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p6:film:meas:measurement</td><td>compile (derived)</td><td>fig1c;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1c_c1_p7:film:meas:measurement</td><td>compile (derived)</td><td>fig1c;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p1:film:meas:measurement</td><td>compile (derived)</td><td>fig1d;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig1d;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig1d;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p4:film:meas:measurement</td><td>compile (derived)</td><td>fig1d;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p5:film:meas:measurement</td><td>compile (derived)</td><td>fig1d;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p6:film:meas:measurement</td><td>compile (derived)</td><td>fig1d;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1d_c1_p7:film:meas:measurement</td><td>compile (derived)</td><td>fig1d;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p1:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p10:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p11:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p12:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p13:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p14:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p15:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p16:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p17:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p4:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p5:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p6:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p7:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p8:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig1e_c1_p9:film:meas:measurement</td><td>compile (derived)</td><td>fig1e;fig1.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig5b_c1_p1:film:meas:measurement</td><td>compile (derived)</td><td>fig5b;fig5.cap</td><td>5</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig5b_c1_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig5b;fig5.cap</td><td>4</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig5b_c1_p4:film:meas:measurement</td><td>compile (derived)</td><td>fig5b;fig5.cap</td><td>5</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig6b_c1_p1:film:meas:measurement</td><td>compile (derived)</td><td>fig6b;fig6.cap</td><td>5</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig6b_c1_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig6b;fig6.cap</td><td>5</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p1:film:meas:measurement</td><td>compile (derived)</td><td>fig7b;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig7b;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig7b;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c1_p4:film:meas:measurement</td><td>compile (derived)</td><td>fig7b;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c2_p1:film:meas:measurement</td><td>compile (derived)</td><td>fig7b;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c2_p2:film:meas:measurement</td><td>compile (derived)</td><td>fig7b;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:run:10_1116_6_0002804_fig7b_c2_p3:film:meas:measurement</td><td>compile (derived)</td><td>fig7b;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_20nm:meas:measurement</td><td>compile (derived)</td><td>fig5a;fig5.cap</td><td>3</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_sims:meas:measurement</td><td>compile (derived)</td><td>fig6a;fig6.cap; fig6b;fig6.cap</td><td>10</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_24nm:meas:measurement</td><td>compile (derived)</td><td>fig7a;fig7.cap</td><td>1</td></tr>
+<tr><td>zou23</td><td>zou23:ent:zou23_specimen_ald_350_gixrd:meas:measurement</td><td>compile (derived)</td><td>fig8;fig8.cap</td><td>4</td></tr>
+<tr><td>mat22</td><td>mat22:method:spectroscopic_ellipsometry</td><td>compile (derived)</td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:method:four_point_probe</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:method:hall</td><td>compile (derived)</td><td></td><td>3</td></tr>
+<tr><td>mat22</td><td>mat22:method:xps</td><td>compile (derived)</td><td></td><td>3</td></tr>
+<tr><td>mat22</td><td>mat22:method:sem</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:method:raman</td><td>compile (derived)</td><td></td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:method:rbs</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:method:tem</td><td>compile (derived)</td><td></td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap; fig7a;fig7.cap</td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap; fig7a;fig7.cap</td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap; fig7a;fig7.cap</td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film:meas:measurement</td><td>compile (derived)</td><td>fig1b;fig1.cap; fig2;fig2.cap; fig5a;fig5.cap; fig5b;fig5.cap; fig7a;fig7.cap</td><td>17</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap; fig7a;fig7.cap</td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap; fig7a;fig7.cap</td><td>2</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9:film:meas:measurement</td><td>compile (derived)</td><td>fig2;fig2.cap</td><td>1</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tis2_100c:film:meas:measurement</td><td>compile (derived)</td><td>fig9b;fig9.cap</td><td>4</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_ws2_150c:film:meas:measurement</td><td>compile (derived)</td><td>fig9a;fig9.cap</td><td>6</td></tr>
+</table>
+<h2>5d. Runs and specimens without material; mat22&#x27;s material records</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5d_material.csv</p>
+<table><tr><th>paper</th><th>unit</th><th>kind</th><th>note</th></tr>
+<tr><td>gao15</td><td>gao15:run:run_al2o3_110c_50nm</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:run:run_tio2_110c_50nm</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:run:run_al2o3_200c_50nm</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:run:run_tio2_200c_50nm</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:run:run_al2o3_300c_50nm</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:run:run_tio2_300c_50nm</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3a</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3b</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3c</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3d</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3e</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3f</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3g</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3h</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>gao15</td><td>gao15:ent:specimen_fig3i</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r1</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r2</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r3</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1c</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3a</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3b</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig6b</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_ws2_150c_h2_0</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tis2_100c_thermal</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_mos2_150c_10cyc</td><td>run</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_1:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_19:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig1c:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3a:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_24:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_30:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_14:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r1:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r2:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_tab1_r3:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_20:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig3b:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_3:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_2:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_11:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_10:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_9:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_8:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_7:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_6:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_5:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_4:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_12:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_17:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_16:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_15:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_13:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_21:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_18:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_28:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_27:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_26:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_25:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_23:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_22:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_32:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_31:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:run_grid_29:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>mat22:run:unit_fig6b:film</td><td>specimen</td><td>no material setting on it or above it</td></tr>
+<tr><td>mat22</td><td>record s5.p8</td><td>material record</td><td>value_text &#x27;ws2&#x27;, about &#x27;unit_ws2_150c&#x27; -&gt; facts: mat22:s5.p8#1 under mat22:run:unit_ws2_150c; mat22:s5.p8#3 under mat22:run:unit_tis2_100c</td></tr>
+<tr><td>mat22</td><td>record s5.p8</td><td>material record</td><td>value_text &#x27;tis2&#x27;, about &#x27;unit_tis2_100c&#x27; -&gt; facts: mat22:s5.p8#1 under mat22:run:unit_ws2_150c; mat22:s5.p8#3 under mat22:run:unit_tis2_100c</td></tr>
+<tr><td>mat22</td><td>record fig1d</td><td>material record</td><td>value_text &#x27;mos2&#x27;, about &#x27;unit_fig1d&#x27; -&gt; facts: mat22:fig1d#1 under mat22:run:unit_fig1d</td></tr>
+<tr><td>mat22</td><td>(why)</td><td>material record</td><td>no material record is about a grid run, a grid specimen or the paper: the three records are about unit_ws2_150c, unit_tis2_100c and unit_fig1d, so nothing reaches the 42 grid runs (and P184 inheritance passes on only a single-valued parent setting)</td></tr>
+</table>
+<h2>5e. stat / between / n without an uncertainty, x on text records (as is)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5e_qualifiers.csv</p>
+<table><tr><th>paper</th><th>stat without an uncertainty</th><th>between without an uncertainty</th><th>n without an uncertainty</th><th>x on text records</th></tr>
+<tr><td>gao15</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>gre23</td><td>3</td><td>3</td><td>3</td><td>1</td></tr>
+<tr><td>zou23</td><td>3</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>mat22</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+</table>
+<h2>5f. Checks, one line each</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5f_checks.txt</p>
+<pre>calls: 4 pass-0 extension calls (gao15, gre23, zou23, mat22; the user: the other nine wait for 5a), gemini-3.8-flash, $0.61
+scores vs P182 per type: 2 counts fell, rows in P184.5f_dropped_rows.csv (mat22 activity 137 -&gt; 136: three gold xps measurement rows lose their first-come match among unnamed measurement activities; gre23 activity 31 -&gt; 29: fig6a / fig6b images take the extension&#x27;s panel method sem_eds, their measurement merges with sem_eds, two fewer measurement activities); every changed column in P184.5f_score.csv
+T6: 2125 -&gt; 2170 (45 gold rows into T6: hei24 21, gao15 15, ela03 6, gor03 3; none out), rows in P184.5f_t6_rows.csv
+binding_regression: FAIL, 798 items, 5 lost their unit:
+  gao15 gao15:fig4#img: was specimen_al2o3_500nm (introduced_in names the panel), now meas_al2o3_500nm_optical_microscopy
+  gao15 gao15:fig5b#c1: was specimen_tio2_200nm (pass-0 data), now unbound: ambiguous: meas_tio2_200nm_reflectometry, specimen_tio2_200nm
+  gao15 gao15:fig5b#c2: was specimen_tio2_500nm (pass-0 data), now unbound: ambiguous: meas_tio2_500nm_reflectometry, specimen_tio2_500nm
+  gao15 gao15:fig5b#c3: was specimen_tio2_1000nm (pass-0 data), now unbound: ambiguous: meas_tio2_1000nm_reflectometry, specimen_tio2_1000nm
+  gao15 gao15:fig6#img: was specimen_al2o3_500nm (introduced_in names the panel), now meas_al2o3_500nm_sem
+audits 1-5: r1 PASS r2 PASS r3 PASS r4 PASS r5 PASS 
+export --check: 19 / 19 pass
+cards: 0 errors (P184.5f_cards.csv)
+</pre>
+<h2>5f. Score columns that changed (P182 to P184)</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5f_score.csv</p>
+<table><tr><th>paper</th><th>column</th><th>P182</th><th>P184</th><th>dropped</th></tr>
+<tr><td>mat22</td><td>diff_activity</td><td>137/249</td><td>136/249</td><td>yes</td></tr>
+<tr><td>ela03</td><td>matched_T6</td><td>172</td><td>178</td><td>no</td></tr>
+<tr><td>ela03</td><td>diff_setting</td><td>57/277</td><td>63/277</td><td>no</td></tr>
+<tr><td>ela03</td><td>diff_activity</td><td>16/46</td><td>19/46</td><td>no</td></tr>
+<tr><td>hei24</td><td>matched_T6</td><td>276</td><td>297</td><td>no</td></tr>
+<tr><td>hei24</td><td>diff_setting</td><td>73/172</td><td>94/172</td><td>no</td></tr>
+<tr><td>hei24</td><td>diff_comparison</td><td>6/24</td><td>16/24</td><td>no</td></tr>
+<tr><td>gor03</td><td>matched_T6</td><td>55</td><td>58</td><td>no</td></tr>
+<tr><td>gor03</td><td>diff_setting</td><td>21/52</td><td>24/52</td><td>no</td></tr>
+<tr><td>gre23</td><td>diff_activity</td><td>31/41</td><td>29/41</td><td>yes</td></tr>
+<tr><td>gao15</td><td>matched_T6</td><td>82</td><td>97</td><td>no</td></tr>
+<tr><td>gao15</td><td>diff_entity</td><td>4/15</td><td>12/15</td><td>no</td></tr>
+<tr><td>gao15</td><td>diff_activity</td><td>13/25</td><td>14/25</td><td>no</td></tr>
+<tr><td>gao15</td><td>diff_observation</td><td>17/44</td><td>23/44</td><td>no</td></tr>
+</table>
+<h2>5f. The rows behind each fallen count</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5f_dropped_rows.csv</p>
+<table><tr><th>paper</th><th>gold_fact_id</th><th>type</th><th>kind</th><th>gold_label</th><th>gold_evidence</th><th>matched_P182</th><th>P182_kind</th><th>P182_method</th><th>P182_evidence</th><th>now</th></tr>
+<tr><td>mat22</td><td>mat22:meas:ent:T250_R0.94:xps</td><td>activity</td><td>measurement</td><td>xps</td><td></td><td>mat22:run:run_grid_9:film:meas:measurement</td><td>measurement</td><td></td><td></td><td>present: kind measurement, evidence </td></tr>
+<tr><td>mat22</td><td>mat22:meas:ent:T200_R0:xps</td><td>activity</td><td>measurement</td><td>xps</td><td></td><td>mat22:run:unit_tis2_100c:film:meas:measurement</td><td>measurement</td><td></td><td></td><td>present: kind measurement, evidence </td></tr>
+<tr><td>mat22</td><td>mat22:meas:ent:T200_R0.20:xps</td><td>activity</td><td>measurement</td><td>xps</td><td></td><td>mat22:run:unit_ws2_150c:film:meas:measurement</td><td>measurement</td><td></td><td></td><td>present: kind measurement, evidence </td></tr>
+<tr><td>gre23</td><td>gre23:meas:ent:120:section:sem_eds</td><td>activity</td><td>measurement</td><td>sem eds</td><td></td><td>gre23:ent:specimen_160:meas:sem</td><td>measurement</td><td></td><td></td><td>absent now</td></tr>
+<tr><td>gre23</td><td>gre23:meas:ent:120_160:section:sem_eds</td><td>activity</td><td>measurement</td><td>sem eds</td><td></td><td>gre23:ent:specimen_120_160:meas:sem</td><td>measurement</td><td></td><td></td><td>absent now</td></tr>
+</table>
+<h2>5f. T6 rows that changed</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.5f_t6_rows.csv</p>
+<table><tr><th>paper</th><th>gold_fact_id</th><th>type</th><th>quantity</th><th>value</th><th>evidence</th><th>stage_P181</th><th>stage_now</th><th>change</th><th>matched_P181</th><th>matched_P181_qualifiers</th><th>matched_now</th><th>detail_now</th><th>before_fact_now</th><th>log</th></tr>
+<tr><td>ela03</td><td>ela03:s4.p4#12</td><td>setting</td><td>pulse_time</td><td>10</td><td>s4.p4;fig4.cap;fig5.cap</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>ela03:fig5.cap#3</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>ela03:s4.p4#4</td><td>setting</td><td>pulse_time</td><td>1</td><td>s4.p4;fig4.cap;fig5.cap</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>ela03:fig5.cap#1</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>ela03:s4.p4#8</td><td>setting</td><td>pulse_time</td><td>3</td><td>s4.p4;fig4.cap;fig5.cap</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>ela03:fig5.cap#2</td><td></td><td></td><td></td></tr>
+<tr><td>ela03</td><td>ela03:s5.p15#5</td><td>setting</td><td>pulse_time</td><td>1</td><td>s5.p15;fig10.cap;fig10a</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>ela03:fig10.cap#8</td><td></td><td></td><td>a1: qualifier out of scope: fig10a model pulse_time stage=initial (record) | a1: qualifier out of scope: fig10a model pulse_time relative_to=all_gases (record) | a1: qualifier out of scope: fig10a model pulse_time over=run (record) | a1: qualifier out of scope: fig10a model pulse_time mode=in_situ (record) | a1: qualifier out of scope: fig10a model pulse_time ratio=1.0 (record) | a1: qualifier out of scope: fig10a model pulse_time specimen_class=film (record) | a1: qualifier out of scope: fig10a</td></tr>
+<tr><td>ela03</td><td>ela03:s5.p15#6</td><td>setting</td><td>pulse_time</td><td>3</td><td>s5.p15;fig10.cap;fig10a</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>ela03:fig10.cap#16</td><td></td><td></td><td>a1: qualifier out of scope: fig10a model pulse_time stage=initial (record) | a1: qualifier out of scope: fig10a model pulse_time relative_to=all_gases (record) | a1: qualifier out of scope: fig10a model pulse_time over=run (record) | a1: qualifier out of scope: fig10a model pulse_time mode=in_situ (record) | a1: qualifier out of scope: fig10a model pulse_time ratio=1.0 (record) | a1: qualifier out of scope: fig10a model pulse_time specimen_class=film (record) | a1: qualifier out of scope: fig10a</td></tr>
+<tr><td>ela03</td><td>ela03:s5.p15#7</td><td>setting</td><td>pulse_time</td><td>10</td><td>s5.p15;fig10.cap;fig10a</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>ela03:fig10.cap#30</td><td></td><td></td><td>a1: qualifier out of scope: fig10a model pulse_time stage=initial (record) | a1: qualifier out of scope: fig10a model pulse_time relative_to=all_gases (record) | a1: qualifier out of scope: fig10a model pulse_time over=run (record) | a1: qualifier out of scope: fig10a model pulse_time mode=in_situ (record) | a1: qualifier out of scope: fig10a model pulse_time ratio=1.0 (record) | a1: qualifier out of scope: fig10a model pulse_time specimen_class=film (record) | a1: qualifier out of scope: fig10a</td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#10</td><td>setting</td><td>exposure</td><td>1e4</td><td>fig3.cap;fig3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#12</td><td>setting</td><td>exposure</td><td>1e5</td><td>fig3.cap;fig3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#13</td><td>setting</td><td>exposure</td><td>5e4</td><td>fig3.cap;fig3;tab2.r6c1</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#5</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#15</td><td>setting</td><td>exposure</td><td>1e4</td><td>fig3.cap;fig3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#2</td><td>setting</td><td>exposure</td><td>1e5</td><td>fig3.cap;fig3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#3</td><td>setting</td><td>exposure</td><td>5e4</td><td>fig3.cap;fig3;tab2.r6c1</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#5</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#5</td><td>setting</td><td>exposure</td><td>1e4</td><td>fig3.cap;fig3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#8</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#7</td><td>setting</td><td>exposure</td><td>1e5</td><td>fig3.cap;fig3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig3.cap#8</td><td>setting</td><td>exposure</td><td>5e4</td><td>fig3.cap;fig3;tab2.r6c1</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig3.cap#5</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig4.cap#1</td><td>setting</td><td>exposure</td><td>1e5</td><td>fig4.cap;fig4</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig4.cap#2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig4.cap#2</td><td>setting</td><td>exposure</td><td>5e4</td><td>fig4.cap;fig4</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig4.cap#3</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig4.cap#3</td><td>setting</td><td>exposure</td><td>1e4</td><td>fig4.cap;fig4</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig4.cap#4</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#12</td><td>setting</td><td>exposure</td><td>1e5</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7a#2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#15</td><td>setting</td><td>exposure</td><td>1e4</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7.cap#11</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#18</td><td>setting</td><td>exposure</td><td>1e3</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7.cap#17</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#21</td><td>setting</td><td>exposure</td><td>1e5</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7a#2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#24</td><td>setting</td><td>exposure</td><td>1e4</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7.cap#11</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#27</td><td>setting</td><td>exposure</td><td>1e3</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7.cap#17</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#3</td><td>setting</td><td>exposure</td><td>1e5</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7a#2</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#6</td><td>setting</td><td>exposure</td><td>1e4</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7.cap#11</td><td></td><td></td><td></td></tr>
+<tr><td>hei24</td><td>hei24:fig7.cap#9</td><td>setting</td><td>exposure</td><td>1e3</td><td>fig7.cap;fig7a;fig7b;s10.p3</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>hei24:fig7.cap#17</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>gor03:s8.p3#1</td><td>setting</td><td>exposure</td><td>30000</td><td>s8.p3;fig2.cap</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gor03:s8.p3#1</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>gor03:s8.p5#1</td><td>setting</td><td>exposure</td><td>4000</td><td>s8.p5;fig2.cap</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gor03:s8.p5#3</td><td></td><td></td><td></td></tr>
+<tr><td>gor03</td><td>gor03:s8.p5#4</td><td>setting</td><td>exposure</td><td>2000</td><td>s8.p5;fig2.cap</td><td>T4 compiler</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gor03:s8.p5#1</td><td></td><td></td><td></td></tr>
+<tr><td>gao15</td><td>gao15:fig3a#1</td><td>observation</td><td></td><td></td><td>fig3a;fig3.cap</td><td>T3 prompt</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:fig3c#1</td><td>observation</td><td></td><td></td><td>fig3c;fig3.cap</td><td>T3 prompt</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:fig3d#1</td><td>observation</td><td></td><td></td><td>fig3d;fig3.cap</td><td>T3 prompt</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:fig3e#1</td><td>observation</td><td></td><td></td><td>fig3e;fig3.cap</td><td>T3 prompt</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:fig3f#1</td><td>observation</td><td></td><td></td><td>fig3f;fig3.cap</td><td>T3 prompt</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:fig3h#1</td><td>observation</td><td></td><td></td><td>fig3h;fig3.cap</td><td>T3 prompt</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:fig3i#1</td><td>observation</td><td></td><td></td><td>fig3i;fig3.cap</td><td>T3 prompt</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#10</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#11</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#12</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#13</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#2</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#7</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#8</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+<tr><td>gao15</td><td>gao15:s6.p12#9</td><td>observation</td><td></td><td></td><td>s6.p12;fig3.cap</td><td>T5 mismatch</td><td>T6 matched</td><td>+1</td><td></td><td></td><td>gao15:fig3a#1</td><td></td><td></td><td>a1: qualifier out of scope: fig3.cap setting film_thickness definition=thickness_per_cycle (record) | a1: qualifier out of scope: fig3.cap setting film_thickness step=none (record) | a1: qualifier out of scope: fig3.cap setting film_thickness species=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness gas=al2o3 (record) | a1: qualifier out of scope: fig3.cap setting film_thickness element=Al (record) | a1: qualifier out of scope: fig3.cap setting film_thickness reference</td></tr>
+</table>
+<h2>6. Re-extraction data: records about a run / the paper whose own value equals a new child unit&#x27;s distinguished_by</h2><p>/home/ftk3187/github/PSED/psed_v2/kb/reports/P184.6_reextraction.csv</p>
+<table><tr><th>paper</th><th>records_about_run_or_paper</th><th>new_units_with_distinguished_by</th><th>records_matching_a_new_child_unit</th></tr>
+<tr><td>gao15</td><td>80</td><td>0</td><td>0</td></tr>
+<tr><td>gre23</td><td>138</td><td>2</td><td>0</td></tr>
+<tr><td>zou23</td><td>76</td><td>0</td><td>0</td></tr>
+<tr><td>mat22</td><td>330</td><td>0</td><td>0</td></tr>
+</table>
+</body></html>

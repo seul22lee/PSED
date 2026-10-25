@@ -1,0 +1,12 @@
+calls: 4 pass-0 extension calls (gao15, gre23, zou23, mat22; the user: the other nine wait for 5a), gemini-3.8-flash, $0.61
+scores vs P182 per type: 2 counts fell, rows in P184.5f_dropped_rows.csv (mat22 activity 137 -> 136: three gold xps measurement rows lose their first-come match among unnamed measurement activities; gre23 activity 31 -> 29: fig6a / fig6b images take the extension's panel method sem_eds, their measurement merges with sem_eds, two fewer measurement activities); every changed column in P184.5f_score.csv
+T6: 2125 -> 2170 (45 gold rows into T6: hei24 21, gao15 15, ela03 6, gor03 3; none out), rows in P184.5f_t6_rows.csv
+binding_regression: FAIL, 798 items, 5 lost their unit:
+  gao15 gao15:fig4#img: was specimen_al2o3_500nm (introduced_in names the panel), now meas_al2o3_500nm_optical_microscopy
+  gao15 gao15:fig5b#c1: was specimen_tio2_200nm (pass-0 data), now unbound: ambiguous: meas_tio2_200nm_reflectometry, specimen_tio2_200nm
+  gao15 gao15:fig5b#c2: was specimen_tio2_500nm (pass-0 data), now unbound: ambiguous: meas_tio2_500nm_reflectometry, specimen_tio2_500nm
+  gao15 gao15:fig5b#c3: was specimen_tio2_1000nm (pass-0 data), now unbound: ambiguous: meas_tio2_1000nm_reflectometry, specimen_tio2_1000nm
+  gao15 gao15:fig6#img: was specimen_al2o3_500nm (introduced_in names the panel), now meas_al2o3_500nm_sem
+audits 1-5: r1 PASS r2 PASS r3 PASS r4 PASS r5 PASS 
+export --check: 19 / 19 pass
+cards: 0 errors (P184.5f_cards.csv)

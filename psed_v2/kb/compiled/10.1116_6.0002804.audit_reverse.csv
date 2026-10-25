@@ -3,7 +3,7 @@ zou23:abs.g1#1,claim,,,,,abs.g1,zou23:abs.g1#1,type 'setting' vs 'claim'
 zou23:abs.g3#1,claim,growth_per_cycle,0.022,nm/cycle,,abs.g3,zou23:abs.g3#1,"quantity '' vs 'growth_per_cycle'; value '' '' vs '0.022' 'nm/cycle' (canonical None vs ('length_per_cycle', 0.022))"
 zou23:abs.g4#1,claim,resistivity,18.6,µΩ·cm,,abs.g4,zou23:abs.g4#1,"quantity '' vs 'resistivity'; value '' '' vs '18.6' 'µΩ·cm' (canonical None vs ('resistivity', 1.86e-07))"
 zou23:s4.p7#1,claim,,,,,s4.p7,zou23:abs.g1#1,type 'setting' vs 'claim'
-zou23:s5.p1#1,setting,material,,,mo,s5.p1;fig8.cap,zou23:s5.p1#1,quantity 'reactor' vs 'material'; value_text 'home-built hot-wall HWALD reactor' vs 'mo'
+zou23:s5.p1#1,setting,material,,,mo,s5.p1,zou23:s5.p1#1,quantity 'reactor' vs 'material'; value_text 'home-built hot-wall HWALD reactor' vs 'mo'
 zou23:s5.p1#6,setting,source_temperature,75,°C,,s5.p1,zou23:s5.p1#1,"quantity 'reactor' vs 'source_temperature'; value_text 'home-built hot-wall HWALD reactor' vs ''; value '' '' vs '75' '°C' (canonical None vs ('temperature', 75.0))"
 zou23:s5.p2#2,setting,substrate,,,sio2,s5.p2,zou23:s5.p2#1,value_text 'si' vs 'sio2'
 zou23:s5.p2#3,setting,substrate,,,hfo2,s5.p2,zou23:s5.p2#1,value_text 'si' vs 'hfo2'
@@ -40,10 +40,11 @@ zou23:fig4.cap#1,setting,reactant_A,,,mocl2o2,fig4.cap,zou23:s8.p3#1,type 'claim
 zou23:fig4.cap#2,setting,reactant_B,,,h_atom,fig4.cap,zou23:s8.p3#1,type 'claim' vs 'setting'; quantity '' vs 'reactant_B'; value_text '' vs 'h_atom'
 zou23:fig4#1,observation,signal_intensity,,,,fig4,zou23:fig4#1,quantity '' vs 'signal_intensity'
 zou23:fig6.cap#1,setting,deposition_temperature,350,°C,,fig6.cap,zou23:s9.p5#2,"value '250' '°C' vs '350' '°C' (canonical ('temperature', 250.0) vs ('temperature', 350.0))"
-zou23:fig8.cap#1,observation,diffraction_angle,40.5,°,,fig8.cap;fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '40.5' '°' (canonical None vs ('angle', 40.5))"
-zou23:fig8.cap#2,observation,diffraction_angle,53,°,,fig8.cap;fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '53' '°' (canonical None vs ('angle', 53.0))"
-zou23:fig8.cap#3,observation,diffraction_angle,58.6,°,,fig8.cap;fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '58.6' '°' (canonical None vs ('angle', 58.6))"
-zou23:fig8.cap#4,observation,diffraction_angle,73.8,°,,fig8.cap;fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '73.8' '°' (canonical None vs ('angle', 73.8))"
+zou23:fig8.cap#1,setting,material,,,mo,fig8.cap,zou23:s9.p2#1,"quantity 'deposition_temperature' vs 'material'; value_text '' vs 'mo'; value '150' '°C' vs '' '' (canonical ('temperature', 150.0) vs None)"
+zou23:fig8#1,observation,diffraction_angle,40.5,°,,fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '40.5' '°' (canonical None vs ('angle', 40.5))"
+zou23:fig8#2,observation,diffraction_angle,53,°,,fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '53' '°' (canonical None vs ('angle', 53.0))"
+zou23:fig8#3,observation,diffraction_angle,58.6,°,,fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '58.6' '°' (canonical None vs ('angle', 58.6))"
+zou23:fig8#4,observation,diffraction_angle,73.8,°,,fig8,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '73.8' '°' (canonical None vs ('angle', 73.8))"
 zou23:fig1.cap#1,setting,pulse_time,0.1,s,,fig1.cap,zou23:s7.p1#2,"quantity 'deposition_temperature' vs 'pulse_time'; value '350' '°C' vs '0.1' 's' (canonical ('temperature', 350.0) vs ('time', 0.1))"
 zou23:fig1.cap#2,setting,pulse_time,0.21,s,,fig1.cap,zou23:s7.p1#2,"quantity 'deposition_temperature' vs 'pulse_time'; value '350' '°C' vs '0.21' 's' (canonical ('temperature', 350.0) vs ('time', 0.21))"
 zou23:fig1.cap#3,setting,pulse_time,0.51,s,,fig1.cap,zou23:s7.p1#2,"quantity 'deposition_temperature' vs 'pulse_time'; value '350' '°C' vs '0.51' 's' (canonical ('temperature', 350.0) vs ('time', 0.51))"
@@ -199,6 +200,10 @@ zou23:fig7b#5,observation,other,23.4,,,fig7b;fig7.cap,zou23:fig7a#1,"quantity 'r
 zou23:fig7b#6,observation,other,285,,,fig7b;fig7.cap,zou23:fig7a#1,"quantity 'resistivity' vs 'other'; value '' '' vs '285' '' (canonical None vs ('dimensionless', 285.0))"
 zou23:fig7b#7,observation,other,20,,,fig7b;fig7.cap,zou23:fig7a#1,"quantity 'resistivity' vs 'other'; value '' '' vs '20' '' (canonical None vs ('dimensionless', 20.0))"
 zou23:fig7b#8,observation,other,14.8,,,fig7b;fig7.cap,zou23:fig7a#1,"quantity 'resistivity' vs 'other'; value '' '' vs '14.8' '' (canonical None vs ('dimensionless', 14.8))"
+zou23:fig8#5,observation,diffraction_angle,40.5,°,,fig8;fig8.cap,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '40.5' '°' (canonical None vs ('angle', 40.5))"
+zou23:fig8#6,observation,diffraction_angle,53,°,,fig8;fig8.cap,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '53' '°' (canonical None vs ('angle', 53.0))"
+zou23:fig8#7,observation,diffraction_angle,58.6,°,,fig8;fig8.cap,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '58.6' '°' (canonical None vs ('angle', 58.6))"
+zou23:fig8#8,observation,diffraction_angle,73.8,°,,fig8;fig8.cap,zou23:fig8#1,"quantity 'crystallinity' vs 'diffraction_angle'; value_text 'crystalline' vs ''; value '' '' vs '73.8' '°' (canonical None vs ('angle', 73.8))"
 zou23:s5.p3#5,derived,cycle_time,30,s,,s5.p3,zou23:s5.p3#7,type 'setting' vs 'derived'
 zou23:s5.p3#6,derived,cycle_time,30,s,,s5.p3,zou23:s5.p3#7,type 'setting' vs 'derived'
 zou23:s5.p3#7,derived,cycle_time,30,s,,s5.p3,zou23:s5.p3#7,type 'setting' vs 'derived'

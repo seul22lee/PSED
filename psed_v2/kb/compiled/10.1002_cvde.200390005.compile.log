@@ -18,12 +18,6 @@ a1: symbol species eq15 '(Pt)_{\\text{total}}' model exposure: record -, definit
 a1: symbol species fig1 'L' model feature_depth: record -, definition - -> no species
 a1: symbol species fig1 'a' model feature_width: record -, definition - -> no species
 a1: symbol species eq7 'Pt': species hf_nme2_4 from the symbol's evidence in this paper (s6.p7)
-a1: step fill s8.p3 exposure 30000.0 species - about run_30k_L: (empty) (no species)
-a1: step fill s8.p5 exposure 2000.0 species - about run_2k_L: (empty) (no species)
-a1: step fill s8.p5 exposure 4000.0 species - about run_4k_L: (empty) (no species)
-a1: step fill fig2 exposure 2000.0 species hf_nme2_4 about run_2k_L: reactant_A (the run's recipe field)
-a1: step fill fig2 exposure 4000.0 species hf_nme2_4 about run_4k_L: reactant_A (the run's recipe field)
-a1: step fill fig2 exposure 30000.0 species hf_nme2_4 about run_30k_L: reactant_A (the run's recipe field)
 a1: qualifier out of scope: s4.p3 observation atoms_per_cycle species=hfo2 (record)
 a1: qualifier out of scope: s6.p9 derived exposure position=planar (record)
 a1: qualifier out of scope: eq13 model exposure position=sidewall (record)
@@ -48,37 +42,36 @@ i: merged fig4 into abs.g2;s3.p5;s10.p3;fig4 (reactant_B h2o)
 j: derived over 2 entities: 1 rows; not derived: {'no fact for S': 1, 'stated: gor03:s8.p1#7 9000 L': 1, 'derive raised: cannot convert cycle to 1': 1, 'no fact for rho': 4, 'n: no fact for gpc': 2, 'gpc: no fact for n': 2, 'no fact for H': 3, 'no fact for dn': 2, 'no fact for mg': 4, 'no fact for t': 3, 'no fact for h2': 2, 'no fact for phi': 2, 'no fact for d': 1, 'lam: no fact for d': 1, 'gpc: n: no fact for gpc': 2, 'no fact for p': 2, 'E: no fact for p': 1, 'lam: no fact for p': 1}
 j: caveats (query.caveats_of): 5, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
 j: claim nodes (query.claim_nodes): 8 nodes for 10 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 2
+j: comparisons from figures.json (1c): 0
 step input: {'records': 99}
 step a0: {'quantity other: never.csv word': 1}
-step a1: {'symbol species: no species': 14, 'symbol species: kept: its own element names it': 2, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: thermal': 3, 'step fill: empty (no species)': 3, "step fill: reactant_A (the run's recipe field)": 3, 'qualifier out of scope: species': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: structure_class': 1, 'qualifier out of scope: by': 3}
-step a: {'schema:not': 2, 'schema:type': 3, 'schema:enum': 1, 'kept': 96}
-step a_fields: {'quantity': 2, 'qualifiers': 3, 'value_text': 1}
-step b: {'kept': 96}
-step c: {'quantity_other (kept)': 1, 'quantity_other never (kept)': 1, 'kept': 96}
-step d: {'quote_not_found': 2, "quote found in the paper's elements concatenated (P182)": 3, 'kept': 94}
-step e: {'kept': 94}
-step f: {'species_resolved': 11, 'kept': 94}
-step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 10, 'place: about paper -> recipe': 39, 'place: about paper, method -> paper method activity': 3, 'place: model about a simulation -> simulation': 14, 'place: setting about a simulation -> simulation': 1, 'place: derived about a simulation -> simulation': 4, 'place: caveat -> paper': 5, 'place: result about a specimen -> its measurement': 5, 'place: setting about a run -> deposition': 9, 'place: model about a model run -> model run': 1, 'place: model about a model run -> simulation': 1, 'place: definition -> paper': 2}
-step m: {'label_as_printed filled with the quantity id': 4, 'statement filled from the quote': 63, 'links resolved': 5}
+step a1: {'symbol species: no species': 14, 'symbol species: kept: its own element names it': 2, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: thermal': 3, 'qualifier out of scope: species': 1, 'qualifier out of scope: position': 3, 'qualifier out of scope: structure_class': 1, 'qualifier out of scope: by': 3}
+step a: {'schema:not': 2, 'schema:enum': 1, 'kept': 99}
+step a_fields: {'quantity': 2, 'value_text': 1}
+step b: {'kept': 99}
+step c: {'quantity_other (kept)': 1, 'quantity_other never (kept)': 1, 'kept': 99}
+step d: {'quote_not_found': 2, "quote found in the paper's elements concatenated (P182)": 3, 'kept': 97}
+step e: {'kept': 97}
+step f: {'species_resolved': 11, 'kept': 97}
+step h: {'simulation linked to a model entry': 1, 'place: claim -> paper': 10, 'place: about paper -> recipe': 39, 'place: about paper, method -> paper method activity': 3, 'place: model about a simulation -> simulation': 14, 'place: setting about a simulation -> simulation': 1, 'place: derived about a simulation -> simulation': 4, 'place: caveat -> paper': 5, 'place: result about a specimen -> its measurement': 5, 'place: setting about a run -> deposition': 12, 'place: model about a model run -> model run': 1, 'place: model about a model run -> simulation': 1, 'place: definition -> paper': 2}
+step m: {'label_as_printed filled with the quantity id': 4, 'statement filled from the quote': 66, 'links resolved': 5}
 step 1c: {'curve -> model': 1, 'unbound item (image): ambiguous': 1}
-step i: {'merged': 8, 'kept': 87}
-step n: {'comparison series': 1, 'comparison grid': 1}
+step i: {'merged': 8, 'kept': 90}
 step j: {'derived cycle_time': 1}
-step k: {'statement from the record': 86, 'statement_copies_text (reported by check)': 29, 'statement assembled': 2}
+step k: {'statement from the record': 89, 'statement_copies_text (reported by check)': 32, 'statement assembled': 2}
 diff against the gold:
-  setting        52   31   21  0.68  0.40
+  setting        52   34   24  0.71  0.46
   model          21   19   13  0.68  0.62
   claim          18   10    7  0.70  0.39
   cited          11    0    0     -  0.00
-  observation    11   11    5  0.45  0.45
   activity       11    8    6  0.75  0.55
+  observation    11   11    5  0.45  0.45
   derived        10   10    7  0.70  0.70
   definition      8    2    0  0.00  0.00
   caveat          7    5    2  0.40  0.29
   entity          6    4    4  1.00  0.67
   paper           1    1    0  0.00  0.00
-  comparison      1    2    0  0.00  0.00
+  comparison      1    0    0     -  0.00
 gold definitions with an eq* element in evidence: 2/8
 gold model rows with quantity and value: 0: {}
 observations: gold 11, compiled 11, matched 5

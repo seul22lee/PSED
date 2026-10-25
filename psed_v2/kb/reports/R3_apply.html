@@ -3,10 +3,11 @@
 <pre>round 3 acceptance (grow.py audit_round)
 A1: 14 decisions, 17 rows: effect {&#x27;yes&#x27;: 12, &#x27;n/a&#x27;: 4, &#x27;no effect&#x27;: 1}
 A2: 45 promotions: {&#x27;alias (user decision)&#x27;: 30, &#x27;symbol (user decision)&#x27;: 3, &#x27;agree&#x27;: 12}
-A3: 43 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 32, &#x27;new&#x27;: 3}; pending candidates accounted 41/41
-A3 new since apply → next round (P162, carried, not a failure): 3 rows
+A3: 44 open rows: {&#x27;other&#x27;: 8, &#x27;pending&#x27;: 32, &#x27;new&#x27;: 4}; pending candidates accounted 41/41
+A3 new since apply → next round (P162, carried, not a failure): 4 rows
   10.1116_6.0002804:fig3 unit &#x27;Time&#x27;
   10.1116_6.0002804:fig5a unit &#x27;Depth (\times 10^{15} at/cm^{2})&#x27;
+  10.1116_6.0003182:s2.p5 model &#x27;1D reaction-diffusion model&#x27;
   10.1116_6.0003182:fig6f unit &#x27;temperature&#x27;
 result: PASS
 </pre>
@@ -121,6 +122,7 @@ result: PASS
 <tr><td>10.1116_6.0003182</td><td>fig4c</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig4d</td><td>quantity</td><td>top surfaces</td><td></td><td>top surfaces</td><td>other</td><td>top_surfaces</td><td>candidate top_surfaces decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig1.cap</td><td>quantity</td><td>dose</td><td></td><td>dose</td><td>other</td><td>dose</td><td>candidate dose decided in round 3 (reject): a rejected label is written nowhere (by design)</td></tr>
+<tr><td>10.1116_6.0003182</td><td>s2.p5</td><td>model</td><td>1D reaction-diffusion model</td><td></td><td>1d reaction-diffusion model</td><td>new since apply → next round</td><td></td><td>candidate 1d_reaction_diffusion_model: not in R3_apply.decision_rows.csv; carried into the next propose</td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig3a</td><td>axis</td><td>cycle</td><td></td><td>cycle</td><td>other</td><td></td><td>a value without a quantity: no record key, or the label is only a units.yaml spelling</td></tr>
 <tr><td>10.1116_6.0003182</td><td>fig6f</td><td>unit</td><td>temperature</td><td>/160 °C</td><td>temperature</td><td>new since apply → next round</td><td></td><td>candidate temperature decided in round 5 (alias -&gt; deposition_temperature): the row was born after apply; carried into the next propose</td></tr>
 </table>

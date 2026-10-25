@@ -1,4 +1,5 @@
-input: 19 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 
+input: 20 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 
+input: pass-0 extension = line 20: 3 units (simulation 1, model_run 2); 8 image panel methods
 input: recipe field set to null: run_120 process_mode thermal (quote null)
 input: recipe field set to null: run_160 process_mode thermal (quote null)
 input: recipe field set to null: run_120_160 process_mode thermal (quote null)
@@ -40,9 +41,6 @@ a1: symbol species tabI.r2c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' deriv
 a1: symbol species tabI.r3c4 '\\Delta n_s (\\mu\\text{mol}/\\text{cyc})' derived deposited_moles_per_cycle: record -, definition - -> no species
 a1: symbol species tabI.r3c5 '\\Delta n_g (\\mu\\text{mol}/\\text{cyc})' derived gas_moles_per_cycle: record dez, definition - -> species cleared (no evidence)
 a1: symbol species tabI.r3c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' derived reaction_stoichiometry: record -, definition - -> no species
-a1: step fill s9.p4 pulse_time None species dez about paper: reactant_A (the run's recipe field)
-a1: step fill s9.p4 pulse_time None species h2o about paper: reactant_B (the run's recipe field)
-a1: step fill s14.p6 purge_time 48.0 species dez about paper: purge_A (the run's recipe field)
 a1: qualifier out of scope: s9.p4 setting pulse_time stage=initial (record)
 a1: qualifier out of scope: s9.p4 setting pulse_time relative_to=not_stated (record)
 a1: qualifier out of scope: s9.p4 setting pulse_time over=run (record)
@@ -141,7 +139,7 @@ g: s12.x1: mention_unmatched ['Figure 3(a)']
 g: s12.x1: mention_unmatched ['Figure 3(a)']
 g: s12.x1: mention_unmatched ['Figure 3(a)']
 g: s15.p6: mention_unmatched ['160 °C', 'T held at 160 °C']
-h: tree from pass 0: run 4, simulation 0, specimen 3, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
+h: tree from pass 0: run 4, simulation 1, specimen 3, model_run 2, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 h: specimen_created gre23:run:run_test:film
 h: 4 result rows moved to gre23:ent:specimen_120
 h: 4 result rows moved to gre23:ent:specimen_120_160
@@ -193,9 +191,9 @@ j: derived over 4 entities: 6 rows; not derived: {'no fact for H': 8, 'stated: g
 j: caveats (query.caveats_of): 7, linked to facts 3, to nodes 0; facts reached through query.caveats_for: 22
 j: claim nodes (query.claim_nodes): 16 nodes for 17 claims; claims without a full triple (query.node_of empty): 0
 j: comparisons from figures.json (1c): 1
-step input: {'records': 200}
+step input: {'pass-0 extension units': 3, 'records': 200}
 step a0: {'quantity promoted (quantity: symbol)': 2, 'quantity other: never.csv word': 2}
-step a1: {'symbol species: no species': 28, 'symbol species: kept: its own element names it': 3, 'symbol species: species cleared (no evidence)': 3, "step fill: reactant_A (the run's recipe field)": 1, "step fill: reactant_B (the run's recipe field)": 1, "step fill: purge_A (the run's recipe field)": 1, 'qualifier out of scope: stage': 3, 'qualifier out of scope: relative_to': 5, 'qualifier out of scope: over': 3, 'qualifier out of scope: mode': 3, 'qualifier out of scope: ratio': 3, 'qualifier out of scope: specimen_class': 16, 'qualifier out of scope: structure_class': 24, 'qualifier out of scope: phase': 9, 'qualifier out of scope: position': 3, 'qualifier out of scope: step': 1, 'qualifier out of scope: species': 9}
+step a1: {'symbol species: no species': 28, 'symbol species: kept: its own element names it': 3, 'symbol species: species cleared (no evidence)': 3, 'qualifier out of scope: stage': 3, 'qualifier out of scope: relative_to': 5, 'qualifier out of scope: over': 3, 'qualifier out of scope: mode': 3, 'qualifier out of scope: ratio': 3, 'qualifier out of scope: specimen_class': 16, 'qualifier out of scope: structure_class': 24, 'qualifier out of scope: phase': 9, 'qualifier out of scope: position': 3, 'qualifier out of scope: step': 1, 'qualifier out of scope: species': 9}
 step a: {'variables_unmapped (set to null)': 5, 'variable filled from a definition (C5)': 1, 'kept': 200}
 step b: {'kept': 200}
 step c: {'quantity_other (kept)': 5, 'quantity_other never (kept)': 2, 'kept': 200}
@@ -203,22 +201,22 @@ step d: {'quote_not_found': 8, 'quote_noncontiguous (kept)': 1, "quote found in 
 step e: {'kept': 192}
 step f: {'species_resolved': 8, 'kept': 192}
 step g: {'mention_unmatched': 9}
-step h: {'place: claim -> paper': 17, 'place: about paper -> recipe': 51, 'place: result about a specimen -> its measurement': 54, 'place: definition -> paper': 11, 'place: caveat -> paper': 9, 'place: setting about a run -> deposition': 14, 'place: about paper, method -> paper method activity': 8, 'place: cited -> paper': 3, 'place: result about a run -> its specimen measurement': 21, 'specimen_created': 1, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 3}
+step h: {'simulation name unresolved (unmapped, field model)': 1, 'place: claim -> paper': 17, 'place: about paper -> recipe': 51, 'place: result about a specimen -> its measurement': 54, 'place: definition -> paper': 11, 'place: caveat -> paper': 9, 'place: setting about a run -> deposition': 14, 'place: about paper, method -> paper method activity': 8, 'place: cited -> paper': 3, 'place: result about a run -> its specimen measurement': 21, 'specimen_created': 1, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 3}
 step m: {'statement filled from the quote': 155, 'links resolved': 14, 'links named elements without facts': 2}
-step 1c: {'figure label other (condition)': 1, 'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 13, 'unbound item (image): no unit named': 1, 'image -> a measurement (photograph)': 3, 'unbound item (panel): ambiguous': 1, 'image -> a measurement (sem)': 3, 'curve -> observation (legend qualifier)': 12}
+step 1c: {'figure label other (condition)': 1, 'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 13, 'unbound item (image): no unit named': 1, 'image -> a measurement (photograph)': 3, 'unbound item (panel): ambiguous': 1, 'image -> a measurement (sem_eds)': 3, 'curve -> observation (legend qualifier)': 12}
 step n: {'qualifier out of scope: element': 12, 'comparison series': 1}
 step i: {'merged': 26, 'caveat merged': 2, 'definition merged': 2, 'kept': 193}
 step j: {'derived_needs_outside_fact': 9, 'derived coating_mass_fraction': 3, 'derived deposition_rate': 3}
 step k: {'statement from the record': 162, 'statement_copies_text (reported by check)': 75, 'statement assembled': 37}
 diff against the gold:
-  setting        89   43   23  0.53  0.26
   observation    89   73   26  0.36  0.29
-  cited          57    3    3  1.00  0.05
+  setting        89   43   23  0.53  0.26
   claim          57   17   11  0.65  0.19
+  cited          57    3    3  1.00  0.05
   caveat         53    7    7  1.00  0.13
-  activity       41   36   31  0.86  0.76
+  activity       41   34   29  0.85  0.71
   derived        31   39   21  0.54  0.68
-  entity         18    4    0  0.00  0.00
+  entity         18    6    0  0.00  0.00
   model          18    8    8  1.00  0.44
   definition     16    9    2  0.22  0.12
   identity        3    0    0     -  0.00

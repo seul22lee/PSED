@@ -47,12 +47,8 @@ i: merged fig2c into fig2b;fig2c (deposition_temperature 150)
 i: merged fig2e into fig2a;fig2e (deposition_temperature 150)
 i: merged fig2f into fig2b;fig2c;fig2f (deposition_temperature 150)
 i: merged fig2g into fig2a;fig2e;fig2g (deposition_temperature 150)
-i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 29.1)
-i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 29.7)
-i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 49.7)
-i: merged fig2d;fig2.cap into fig2.cap;fig2d (diffraction_angle 58.8)
 j: derived over 15 entities: 21 rows; not derived: {'no fact for H': 30, 'no fact for p': 15, 'E: no fact for p': 15, 'no fact for rho': 36, 'stated: mat23:fig1b#6 0.1560547504025765 nm/cycle': 1, 'no fact for dn': 15, 'no fact for mg': 30, 'no fact for t': 13, 'no fact for h2': 15, 'no fact for phi': 15, 'no fact for d': 15, 'lam: no fact for d': 15, 'stated: mat23:s9.p6#1 0.5 Å/cycle': 1, 'n: no fact for gpc': 9, 'gpc: no fact for n': 9, 'gpc: n: no fact for gpc': 9, 'no fact for N': 2, 'stated: mat23:abs.g3#2 1.71 Å/cycle': 1, 'stated: mat23:s9.p1#1 1.71 Å/cycle': 1, 'stated: mat23:s9.p1#4 0.98 Å/cycle': 1, 'stated: mat23:fig1b#7 0.0950402576489533 nm/cycle': 1}
-j: caveats (query.caveats_of): 2, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 4
+j: caveats (query.caveats_of): 2, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 8
 j: claim nodes (query.claim_nodes): 3 nodes for 8 claims; claims without a full triple (query.node_of empty): 4
 j: comparisons from figures.json (1c): 9
 step input: {'records': 120, 'unit derived (derived: curve_per_unit, run)': 2, 'condition of a derived unit (name)': 2, 'condition of a derived unit (value)': 2}
@@ -65,17 +61,17 @@ step d: {'quote_noncontiguous (kept)': 1, "quote found in the paper's elements c
 step e: {'unit_unresolved (kept as printed)': 1, 'kept': 136}
 step f: {'kept': 136}
 step g: {'mention_unmatched': 5}
-step h: {'place: claim -> paper': 8, 'place: setting about a run -> deposition': 30, 'specimen_created': 8, 'place: result about a run -> film measurement': 18, 'place: cited -> paper': 6, 'place: about paper -> recipe': 18, 'place: result about a run -> its specimen measurement': 10, 'place: result about a specimen -> its measurement': 31, 'place: setting about a specimen -> deposition': 10, 'place: about paper, method -> paper method activity': 3, 'place: caveat -> paper': 2}
+step h: {'place: claim -> paper': 8, 'place: setting about a run -> deposition': 30, 'specimen_created': 8, 'place: result about a run -> film measurement': 18, 'place: cited -> paper': 6, 'place: about paper -> recipe': 15, 'place: about paper, method -> paper method activity': 6, 'place: result about a run -> its specimen measurement': 10, 'place: result about a specimen -> its measurement': 32, 'place: setting about a specimen -> deposition': 9, 'place: caveat -> paper': 2}
 step m: {'statement filled from the quote': 120, 'label_as_printed filled with the quantity id': 2, 'links resolved': 4}
 step 1c: {'figure label other (series)': 1, 'figure label other (x)': 2, 'figure label other (y)': 2, 'curve -> observation': 10, 'image -> a measurement (a photograph)': 9, 'peak -> observation': 4, 'unbound item (panel): ambiguous': 3}
-step i: {'merged': 8, 'kept': 151}
+step i: {'merged': 4, 'kept': 155}
 step n: {'comparison replicate': 2, 'comparison series': 4, 'comparison grid': 3}
 step j: {'derived cycle_time': 15, 'derived deposition_rate': 6}
-step k: {'statement from the record': 132, 'statement_copies_text (reported by check)': 72, 'statement assembled': 40}
+step k: {'statement from the record': 132, 'statement_copies_text (reported by check)': 72, 'statement assembled': 44}
 diff against the gold:
   setting        54   55   18  0.33  0.33
-  observation    51   74   33  0.45  0.65
-  activity       30   49   27  0.55  0.90
+  observation    51   78   33  0.42  0.65
+  activity       30   55   27  0.49  0.90
   entity         14   15   13  0.87  0.93
   claim          13    8    5  0.62  0.38
   cited           9    6    4  0.67  0.44
@@ -87,4 +83,4 @@ diff against the gold:
   model           1    0    0     -  0.00
 gold definitions with an eq* element in evidence: 0/0
 gold model rows with quantity and value: 0: {}
-observations: gold 51, compiled 74, matched 33
+observations: gold 51, compiled 78, matched 33

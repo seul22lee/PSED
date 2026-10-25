@@ -22,8 +22,6 @@ a0: fig12.cap: quantity 'pressure' -> process_pressure (quantity: name 'pressure
 a0: fig12.cap: quantity 'pressure' -> process_pressure (quantity: name 'pressure')
 a0: fig12.cap: quantity 'pressure' -> process_pressure (quantity: name 'pressure')
 a1: symbol species s25.p18 's_0' model initial_sticking_coefficient: record -, definition - -> no species
-a1: step fill s18.p1 pulse_time 5.0 species tma about paper: reactant_A (the run's recipe field)
-a1: step fill s18.p2 pulse_time 9.0 species tma about paper: reactant_A (the run's recipe field)
 a1: qualifier out of scope: abs.g3 setting plasma_power species=o2 (record)
 a1: qualifier out of scope: abs.g3 setting process_pressure gas=o2 (record)
 a1: qualifier out of scope: s18.p1 setting pulse_time stage=initial (record)
@@ -119,7 +117,6 @@ i: merged s25.p17 into s18.p2;s25.p17 (deposition_temperature 100)
 i: merged s25.p17 into s18.p1;s18.p4;s25.p17 (deposition_temperature 120)
 i: merged fig3.cap into s13.p6;s18.p2;fig3.cap (structure macroscopic_lateral_trench)
 i: merged fig3.cap into s18.p3;fig3.cap (substrate si)
-i: merged fig4.cap into s22.p3;fig4.cap (process_pressure 0.002)
 i: merged fig9.cap into s18.p1;s18.p2;s24.p2;fig9.cap (cycle_number 200)
 i: merged fig9.cap into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap (plasma_power 150)
 i: merged fig9a into s24.p2;fig9a (partial_pressure 0.00035)
@@ -139,26 +136,26 @@ i: merged tabI.r5c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.c
 i: merged tabI.r6c3 into s25.p13;s25.p15;fig11.cap;fig13.cap;tabI.r6c3 (process_pressure 0.005)
 i: merged tabI.r7c3 into tabI.r2c3;tabI.r3c3;tabI.r7c3 (process_pressure )
 i: merged tabI.r7c4 into s18.p1;s18.p4;s24.p2;s25.p14;fig9.cap;fig12.cap;fig14.cap;tabI.r5c4;tabI.r7c4 (plasma_power 150)
-j: derived over 23 entities: 10 rows; not derived: {'no fact for S': 10, 'no fact for p': 34, 'E: no fact for p': 23, 'no fact for rho': 46, 'n: no fact for gpc': 23, 'gpc: no fact for n': 23, 'no fact for H': 36, 'no fact for dn': 23, 'no fact for mg': 46, 'no fact for t': 36, 'no fact for h2': 23, 'no fact for phi': 23, 'no fact for T': 12, 'lam: no fact for T': 12, 'gpc: n: no fact for gpc': 23, 'lam: no fact for p': 11}
+j: derived over 23 entities: 16 rows; not derived: {'no fact for S': 10, 'no fact for p': 34, 'E: no fact for p': 23, 'no fact for rho': 46, 'n: no fact for gpc': 23, 'gpc: no fact for n': 23, 'no fact for H': 36, 'no fact for dn': 23, 'no fact for mg': 46, 'no fact for t': 30, 'no fact for h2': 23, 'no fact for phi': 23, 'no fact for T': 12, 'lam: no fact for T': 12, 'gpc: n: no fact for gpc': 23, 'lam: no fact for p': 11}
 j: caveats (query.caveats_of): 15, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
 j: claim nodes (query.claim_nodes): 17 nodes for 23 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 5
+j: comparisons from figures.json (1c): 7
 step input: {'records': 173, 'unit derived (derived: curve_per_unit, model_run)': 11, 'condition of a derived unit (value)': 17, 'unit derived (derived: curve_per_unit, None)': 2}
 step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity other naming a method entry (kept)': 1, 'quantity promoted (quantity: symbol)': 7, 'quantity other: never.csv word': 1, 'quantity promoted (quantity: id)': 6, 'quantity promoted (quantity: name)': 5}
-step a1: {'symbol species: no species': 1, 'process_mode from the recipe field: plasma': 4, "step fill: reactant_A (the run's recipe field)": 2, 'qualifier out of scope: species': 6, 'qualifier out of scope: gas': 1, 'qualifier out of scope: stage': 6, 'qualifier out of scope: relative_to': 6, 'qualifier out of scope: over': 6, 'qualifier out of scope: mode': 6, 'qualifier out of scope: ratio': 6, 'qualifier out of scope: specimen_class': 6, 'qualifier out of scope: structure_class': 7, 'qualifier out of scope: basis': 3, 'qualifier out of scope: reference': 1}
-step a: {'numeric string coerced (C4)': 6, 'schema:enum': 2, 'schema:type': 6, 'kept': 186}
-step a_fields: {'effect': 2, 'qualifiers': 6}
-step b: {'model_with_value (kept)': 5, 'kept': 186}
-step c: {'quantity_other (kept)': 1, 'quantity_other never (kept)': 1, 'kept': 186}
-step d: {"quote found in the paper's elements concatenated (P182)": 1, 'quote_not_found': 2, 'derived condition (figures.json, no quote check)': 11, 'kept': 184}
-step e: {'kept': 184}
-step f: {'species_resolved': 10, 'kept': 184}
-step h: {'simulation linked to a model entry': 1, 'derived unit of role null (role unresolved: a row under the paper)': 2, 'place: about paper -> recipe': 107, 'place: claim -> paper': 23, 'place: caveat -> paper': 15, 'place: about paper, method -> paper method activity': 1, 'place: model about a simulation -> simulation': 7, 'place: setting about a run -> deposition': 18, 'place: cited -> paper': 2, 'place: setting about a model run sharing its simulation -> model run': 11, 'specimen_created': 6}
-step m: {'statement filled from the quote': 133, 'label_as_printed filled with the quantity id': 10, 'links resolved': 9, 'links named elements without facts': 5}
+step a1: {'symbol species: no species': 1, 'process_mode from the recipe field: plasma': 4, 'qualifier out of scope: species': 6, 'qualifier out of scope: gas': 1, 'qualifier out of scope: stage': 6, 'qualifier out of scope: relative_to': 6, 'qualifier out of scope: over': 6, 'qualifier out of scope: mode': 6, 'qualifier out of scope: ratio': 6, 'qualifier out of scope: specimen_class': 6, 'qualifier out of scope: structure_class': 7, 'qualifier out of scope: basis': 3, 'qualifier out of scope: reference': 1}
+step a: {'numeric string coerced (C4)': 6, 'schema:enum': 2, 'kept': 192}
+step a_fields: {'effect': 2}
+step b: {'model_with_value (kept)': 5, 'kept': 192}
+step c: {'quantity_other (kept)': 1, 'quantity_other never (kept)': 1, 'kept': 192}
+step d: {"quote found in the paper's elements concatenated (P182)": 1, 'quote_not_found': 2, 'derived condition (figures.json, no quote check)': 17, 'kept': 190}
+step e: {'kept': 190}
+step f: {'species_resolved': 10, 'kept': 190}
+step h: {'simulation linked to a model entry': 1, 'derived unit of role null (role unresolved: a row under the paper)': 2, 'place: about paper -> recipe': 94, 'place: claim -> paper': 23, 'place: caveat -> paper': 15, 'place: about paper, method -> paper method activity': 14, 'place: model about a simulation -> simulation': 7, 'place: setting about a run -> deposition': 18, 'place: cited -> paper': 2, 'place: setting about a model run sharing its simulation -> model run': 17, 'specimen_created': 6}
+step m: {'statement filled from the quote': 139, 'label_as_printed filled with the quantity id': 10, 'links resolved': 9, 'links named elements without facts': 5}
 step 1c: {'figure label other (condition), never': 2, 'figure label other (x)': 2, 'figure label other (y), never': 4, 'figure label other (x), never': 5, 'data of a flagged panel (rule verdict)': 31, 'curve -> observation': 32, 'unbound item (peak): no unit named': 16, 'unbound item (panel): no unit named': 5, 'image -> a measurement (a photograph)': 4, 'curve -> model': 11}
-step i: {'merged': 40, 'duplicate dropped': 1, 'kept': 190}
-step n: {'comparison series': 4, 'comparison replicate': 1}
-step j: {'derived cycle_time': 10}
-step k: {'statement from the record': 143, 'statement_copies_text (reported by check)': 25, 'statement assembled': 57}
+step i: {'merged': 39, 'duplicate dropped': 1, 'kept': 197}
+step n: {'comparison series': 6, 'comparison grid': 1}
+step j: {'derived cycle_time': 16}
+step k: {'statement from the record': 150, 'statement_copies_text (reported by check)': 26, 'statement assembled': 63}
 diff against the gold (type, gold, compiled, matched, precision, recall):
 no gold: kb/pilot/10.1116_6.0001094.facts.csv absent (not scored)
