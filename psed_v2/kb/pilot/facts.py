@@ -113,10 +113,8 @@ def facts():
     return _facts
 
 
-# measurement methods: a setting or an observation with one of these sits under a measurement activity, never in a condition vector
-MEAS_METHODS = {"reflectometry", "spectroscopic_ellipsometry", "sem", "sem_eds", "tem", "xps", "raman", "xrd", "afm", "four_point_probe", "two_point_through_thickness",
-                "hall", "transistor_iv", "rbs", "gravimetry",
-                "photograph", "optical_microscopy", "process_monitor"}
+# measurement methods: a setting or an observation with one of these sits under a measurement activity, never in a condition vector;
+# P184 (user): the ontology's measurement methods (lists.MEASUREMENT_METHODS, from vocab.METHOD_MEASUREMENT)
 
 
 def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups=(), extra=()):
@@ -193,14 +191,14 @@ def retree(key, process, deps, ents, sims=None, group_facts_to=None, drop_groups
         par = f["parent"]
         if par == process:
             m = f["method"]
-            if m in MEAS_METHODS and f["type"] in ("setting", "observation", "derived", "model"):
+            if m in L.MEASUREMENT_METHODS and f["type"] in ("setting", "observation", "derived", "model"):
                 f["parent"] = node(f"{key}:method:{m}", "activity", f"{m.replace('_', ' ')}: the shared measurement settings", key, kind="measurement",
                                    how="stated", label_as_printed=m.replace("_", " ") + " (method)")
             else:
                 f["parent"] = recipe
         elif par in ents:
             spec = ents[par]
-            m = f["method"] if f["method"] in MEAS_METHODS else ""
+            m = f["method"] if f["method"] in L.MEASUREMENT_METHODS else ""
             if f["type"] == "setting" and not m:                     # a setting of the run: its deposition, or the entity itself when several entities share the deposition
                 f["parent"] = spec["ent"] if spec.get("ent") and shared.get(spec["dep"], 0) > 1 else spec["dep"]
             else:

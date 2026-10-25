@@ -35,7 +35,7 @@ FORM_TO_FACT = {"kind": "data_kind", "note": "definition_note"}
 UNMAPPED_FIELDS = ["element", "field", "id", "label_as_printed", "unit", "candidate", "action", "never", "nearest"]   # P157b: never = the never.csv category; P158: nearest
 PROMOTED_FIELDS = ["element", "field", "printed", "meaning", "lookup", "id", "outcome"]    # P157b: step a0; P157d: meaning (the record's definition)
 DROPPED_FIELDS = ["element", "step", "field", "reason", "type", "quantity"]
-BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "origin", "role", "how", "reason", "facts"]
+BINDING_FIELDS = ["paper", "panel", "item", "kind", "unit", "unit_fact_id", "origin", "role", "how", "reason", "facts"]   # P184: the compiled unit id
 SCOPE_FIELDS = ["paper", "element", "type", "quantity", "key", "value", "where", "recovered"]   # P182: kb/compiled/<pid>.qualifier_scope.csv
 SPECIES_FIELDS = ["element", "label", "type", "quantity", "record_species", "definition", "own_element_names", "outcome", "species", "fact_id"]   # P179   # P177c: binding_rows and the item's facts
 NUMBER = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
@@ -404,6 +404,7 @@ CELL_ID = re.compile(r"^(tab\w*?)\.r(\d+)c(\d+)$")                              
 PROCESS_MODE_PASS = "0pm"                                                        # P179: the records line of the process_mode fill (process_mode_fill.py)
 RECIPE_FILL_PASS = "0rf"                                                         # P181: the records line of the recipe fill (the four recipe fields)
 FILL_PASSES = (PROCESS_MODE_PASS, RECIPE_FILL_PASS)
+EXTEND_PASS = "0x"                                                               # P184: the records line of the pass-0 extension (pass0_extend.py)
 
 
 VALUE_ENTRIES = {i for i, e in V.ENTRIES.items() if e["type"] in ("quantity", "categorical")}
@@ -841,10 +842,12 @@ def binding_check(B):
            [f"{it['ref']}: bound and unbound" for it in B["items"] if it["unit"] and it["reason"]]
 
 
-def binding_rows(pid, B):
-    """P177b: one row per item (kb/reports/binding_regression.csv): paper, panel, item, kind, unit, origin, role, how, reason."""
+def binding_rows(pid, B, node=None):
+    """P177b: one row per item (kb/reports/binding_regression.csv): paper, panel, item, kind, unit, origin, role, how, reason; P184: the
+    compiled unit id (node: pass-0 id -> (row id, role))."""
     key = C.E.PAPERS.get(pid, pid)
-    return [dict(paper=key, panel=it["panel"], item=it["ref"], kind=it["kind"], unit=it["unit"], origin=it.get("origin", "") if it["unit"] else "",
+    return [dict(paper=key, panel=it["panel"], item=it["ref"], kind=it["kind"], unit=it["unit"], unit_fact_id=(node or {}).get(it["unit"], ("",))[0] if it["unit"] else "",
+                 origin=it.get("origin", "") if it["unit"] else "",
                  role=(it.get("role") or "null") if it["unit"] else "", how=it.get("how", ""), reason=it["reason"]) for it in B["items"]]
 
 
@@ -904,6 +907,19 @@ class Run:
             if g not in latest:
                 self.note(f"input: group {g} has no pass-1 line")
         p0obj = C.loads_json(lines[p0 - 1]["response"])
+        self.panel_method = {}
+        nx = max((i for i, x in enumerate(lines, 1) if x["pass"] == EXTEND_PASS), default=None)   # P184 (user): the pass-0 extension's units, added
+        if nx and isinstance(p0obj, dict):
+            ext = C.loads_json(lines[nx - 1]["response"])
+            have = {u.get("id") for u in p0obj.get("units") or [] if isinstance(u, dict)}
+            new = [u for u in ext.get("units") or [] if isinstance(u, dict) and u.get("id") and u["id"] not in have]
+            self.count("input", "pass-0 extension units", len(new))
+            if len(new) < len(ext.get("units") or []):
+                self.count("input", "pass-0 extension units with a current id (left out)", len(ext.get("units") or []) - len(new))
+            p0obj = {**p0obj, "units": list(p0obj.get("units") or []) + new}
+            self.panel_method = {x["panel"]: x["method"] for x in ext.get("panel_methods") or [] if isinstance(x, dict) and x.get("panel") and x.get("method") in L.MEASUREMENT_METHODS}
+            self.note(f"input: pass-0 extension = line {nx}: {len(new)} units (" + ", ".join(f"{r} {n}" for r, n in collections.Counter(u.get('role') for u in new).items())
+                      + f"); {len(self.panel_method)} image panel methods")
         self.pass0 = (p0obj.get("units") or []) if isinstance(p0obj, dict) else p0obj    # P144: {units, table_layouts, panel_layouts}
         self.layouts = {k: (p0obj.get(k) or []) for k in ("table_layouts", "panel_layouts")} if isinstance(p0obj, dict) else {}
         self.answers, self.form_version = {}, {}                                # element id -> [record] | "NK:..."; P158: its line's form version
@@ -1126,37 +1142,6 @@ class Run:
                 if m and C.X.symbol_key(m.group(1)) == C.X.symbol_key(h["id"]) and not r["a1"]["species"]:
                     put(r, h["species"], "from the user's symbol decision", f"species {h['species']}: the user's decision on subscript {h['id']} (history.csv, {h['date']})")
 
-
-    def step_fill(self, recs):
-        """P181 (user), every form version: the definitional step of a setting or observation of pulse_time, purge_time or exposure whose
-        step is empty, from its run's recipe fields (the recipe fill): its species = the run's reactant_A -> reactant_A (pulse_time,
-        exposure) / purge_A (purge_time); = reactant_B -> reactant_B / purge_B, and for a run of process_mode plasma a pulse_time of its
-        reactant_B -> plasma. The record's run: its about unit (a run or a simulation), a specimen's parent run, a model run's simulation;
-        about 'paper': the paper's runs, when every one naming the species gives it the same role. No species, no run, the run's fields
-        null, a species matching neither, runs disagreeing: the step stays empty (a log line 'a1: step fill ...'). A step set is untouched."""
-        units = {u["id"]: u for u in self.pass0 if isinstance(u, dict) and not u.get("origin")}
-        runs = [u for u in units.values() if u.get("role") in ("run", "simulation")]
-        for r in recs:
-            rec = r["rec"]
-            q = rec.get("qualifiers") if isinstance(rec.get("qualifiers"), dict) else {}
-            if r.get("origin") or rec.get("type") not in ("setting", "observation") or rec.get("quantity") not in C.X.STEP_QUANTITIES or q.get("step"):
-                continue
-            sp, ab = q.get("species") or "", rec.get("about") if isinstance(rec.get("about"), str) else ""
-            u = units.get(ab)
-            cand = runs if ab == "paper" else [] if not u else [u] if u.get("role") in ("run", "simulation") else [units[u["parent"]]] if u.get("parent") in units else []
-            roles = {("A", "") if sp == x.get("reactant_A") else ("B", x.get("process_mode") or "") for x in cand if sp and sp in (x.get("reactant_A"), x.get("reactant_B"))}
-            step, why = "", ("no species" if not sp else f"no run (about {ab or '-'})" if not cand else
-                             "run fields null" if not any(x.get("reactant_A") or x.get("reactant_B") for x in cand) else
-                             "species matches neither field" if not roles else "runs disagree on the species' role" if len(roles) > 1 else "")
-            if not why:
-                half, mode = next(iter(roles))
-                step = (f"purge_{half}" if rec["quantity"] == "purge_time" else
-                        "plasma" if half == "B" and mode == "plasma" and rec["quantity"] == "pulse_time" else f"reactant_{half}")
-                rec["qualifiers"] = {**q, "step": step}
-                why = "the run's recipe field"
-            self.count("a1", f"step fill: {step or 'empty'} ({why})")
-            self.note(f"a1: step fill {r['eid']} {rec['quantity']} {rec.get('value')} species {sp or '-'} about {ab or '-'}: {step or '(empty)'} ({why})")
-        return recs
 
     def scope_row(self, eid, typ, quantity, key, v, where):
         self.scope_rows.append(dict(paper=self.key, element=eid, type=typ or "", quantity=quantity, key=key,
@@ -1610,7 +1595,33 @@ class Run:
         for nid, role_ in self.node.values():
             if role_ in ("specimen", "model_run"):
                 self.under[self.up[nid]].append(nid)
+        for it in role("measurement"):                                          # P184 (user): a measurement unit -> a measurement activity
+            par = self.node.get(it.get("parent", ""), ("", ""))                 # under its specimen or model run (a run's: the run's entity)
+            ent = par[0] if par[1] in ("specimen", "model_run", "unresolved") else self.run_entity(par[0])[0] if par[1] == "run" else ""
+            if not ent:
+                self.count("h", "measurement unit without a unit parent (left out)")
+                continue
+            m = it.get("method") if it.get("method") in L.MEASUREMENT_METHODS else ""
+            i = f"{ent}:meas:{m or 'measurement'}"
+            if i in self.meas:
+                i = f"{ent}:meas:{slug(it['id'])}"
+            lab = it.get("name_as_printed") or "; ".join(f"{d.get('quantity')} {d.get('value')} {d.get('unit') or ''}".strip() for d in it.get("distinguished_by") or []) or it["id"]
+            r = {f: "" for f in F.FIELDS}
+            r.update(fact_id=i, type="activity", kind="measurement", how="stated", parent=ent, author=self.pid, method=m, evidence=ok_ev(it.get("introduced_in") or []),
+                     qualifiers=f"mode={L.METHOD_MODE.get(m, 'not_stated')}", label_as_printed=lab, statement=f"measurement {it['id']} ({m or 'no method'}) of {ent}")
+            self.meas[i] = r
+            self.node[it["id"]] = (i, "measurement")
+            self.up[i] = ent
+            self.count("h", "measurement unit" + ("" if m else " without a method"))
         return rows
+
+    def meas_of_panel(self, ent, evidence):
+        """P184: the pass-0 measurement unit of this entity whose introduced_in names one of the fact's elements (a panel), else ''."""
+        ev = set(evidence.split(";"))
+        for pid0, (nid, role) in self.node.items():
+            if role == "measurement" and self.up.get(nid) == ent and ev & set(self.p0.get(pid0, {}).get("introduced_in") or []):
+                return nid
+        return ""
 
     def model_of(self, it):
         """P168 (user): a simulation unit's printed name through step a0's lookup against the model entries (vocab_hits kind model: the
@@ -1637,8 +1648,8 @@ class Run:
         self.count("h", "simulation name unresolved (unmapped, field model)" if not hits else "simulation name ambiguous (unmapped)")
 
     def measurement(self, ent, method):
-        """<ent>:meas:<method>; P148 (C1): "measurement" when the method is not in facts.MEAS_METHODS."""
-        method = method if method in F.MEAS_METHODS else ""
+        """<ent>:meas:<method>; P148 (C1): "measurement" when the method is not one of the ontology's measurement methods (P184: lists.MEASUREMENT_METHODS)."""
+        method = method if method in L.MEASUREMENT_METHODS else ""
         i = f"{ent}:meas:{method or 'measurement'}"
         if i not in self.meas:
             ent_row = next(r for r in self.rows_tree if r["fact_id"] == ent)
@@ -1719,6 +1730,8 @@ class Run:
                 self.count("1c", "data of a flagged panel (rule verdict)")
 
         def place(nid, role, dr):
+            if role == "measurement":                                           # P184: an item bound to a measurement unit goes under it
+                return ("observation", nid) if dr == "measured" else ("model", self.up.get(nid, nid))
             return ("observation", "@meas:" + nid) if dr == "measured" else ("model", nid)
 
         def curve_row(cu, nid, role, it, parts=None):
@@ -1780,7 +1793,7 @@ class Run:
                 self.count("1c", f"item bound to a unit with no row ({it['kind']})"); continue
             nid, role = self.node[it["unit"]]
             cur["item"] = it["ref"]                                             # P177c: row() marks each fact with its bound item
-            if role not in ("model_run", "specimen", "run", "unresolved"):
+            if role not in ("model_run", "specimen", "run", "unresolved", "measurement"):
                 self.count("1c", f"item bound to a {role} (left out)"); continue
             if it["kind"] == "curve":
                 curve_row(curves[it["ref"]], nid, role, it, it.get("parts"))
@@ -1810,11 +1823,13 @@ class Run:
             elif it["kind"] == "image":
                 fig = re.sub(r"^fig(\d+).*", r"\1", it["panel"])
                 ms = self.cap_methods.get(f"fig{fig}.cap", collections.Counter())
-                mm = next((m for m, _ in ms.most_common() if m in F.MEAS_METHODS), "")
-                ent = self.run_entity(nid)[0] if role == "run" else nid
+                mm = self.panel_method.get(it["panel"]) or next((m for m, _ in ms.most_common() if m in L.MEASUREMENT_METHODS), "")   # P184: the panel's method first
+                ent = self.run_entity(nid)[0] if role == "run" else self.up.get(nid, nid) if role == "measurement" else nid
+                ev_ = ";".join(els(fig, it["panel"][len(f'fig{fig}'):]))
+                par_ = nid if role == "measurement" else self.meas_of_panel(ent, ev_) or self.measurement(ent, mm)   # P184: a pass-0 measurement of the panel
                 facts.append(row(type="observation", label_as_printed=f"image {it['panel']}", how="stated", evidence=";".join(els(fig, it["panel"][len(f'fig{fig}'):])),
                                  statement=f"the image of Fig. {it['panel'][3:]} (" + (mm.replace("_", " ") if mm else "a photograph") + ")" + (f": {it['file']}" if it.get("file") else ""),
-                                 parent=self.measurement(ent, mm), points_ref=it["ref"], data_kind="read_from_figure"))
+                                 parent=par_, points_ref=it["ref"], data_kind="read_from_figure"))
                 self.count("1c", "image -> a measurement" + (f" ({mm})" if mm else " (a photograph)"))
         return tree, facts
 
@@ -1858,13 +1873,23 @@ class Run:
             return c[-2]["fact_id"] if len(c) >= 3 else self.key
 
         def vector(e):
-            v = {}
-            for a in chain(e):
+            """P184 (user): the unit's own settings, then a parent's only where the parent holds one value of that setting (several:
+            not inherited, nor anything above it for that setting)."""
+            v, blocked = {}, set()
+            for n, a in enumerate(chain(e)):
                 if a["type"] == "paper" or (a["type"] == "activity" and a["kind"] == "measurement"):
                     continue
+                level = collections.defaultdict(list)
                 for f in kids[a["fact_id"]]:
                     if f["type"] == "setting" and f["quantity"] and f["quantity"] != "other" and "#" in f["fact_id"]:
-                        v.setdefault((f["quantity"], f["qualifiers"]), canon(f) if f["value"] else f["value_text"].lower())
+                        level[(f["quantity"], f["qualifiers"])].append(canon(f) if f["value"] else f["value_text"].lower())
+                for k_, vals in level.items():
+                    if k_ in v or k_ in blocked:
+                        continue
+                    if n and len(set(vals)) > 1:
+                        blocked.add(k_)
+                        continue
+                    v[k_] = vals[0]
             return v
 
         def purpose(e):
@@ -1931,10 +1956,10 @@ class Run:
     def place(self, r):
         """P148 (C1): the row's parent by the pilot rule (kb/pilot/facts.py retree()), from the record's type and method and the unit
         its about names. A claim, definition, caveat or cited record -> the paper row. about = "paper": a setting, observation, derived
-        or model with a MEAS_METHODS method -> <paper>:method:<method>; the rest -> the recipe (never the paper row). about = a run or a
-        specimen: a setting without a MEAS_METHODS method -> the run's deposition (the specimen itself when the record is about a
+        or model with a measurement method -> <paper>:method:<method>; the rest -> the recipe (never the paper row). about = a run or a
+        specimen: a setting without a measurement method -> the run's deposition (the specimen itself when the record is about a
         specimen and several specimens share that deposition); a setting with one, an observation, a derived or a model ->
-        <specimen>:meas:<method> ("measurement" when the method is not in MEAS_METHODS): a run's to run_entity() (P148 D: no
+        <specimen>:meas:<method> ("measurement" when the method is not a measurement method): a run's to run_entity() (P148 D: no
         measurement node under a run). about = a simulation or a
         model run: a setting -> the simulation (the model run itself when the record is about a model run and several model runs share
         that simulation); a model without a value -> the simulation; an observation, a derived or a model with a value -> the model run
@@ -1942,7 +1967,7 @@ class Run:
         parent. Returns (row id, the rule that placed it)."""
         rec, k = r["rec"], self.key
         t, recipe = rec["type"], f"{k}:recipe"
-        mm = rec.get("method") if rec.get("method") in F.MEAS_METHODS else ""
+        mm = rec.get("method") if rec.get("method") in L.MEASUREMENT_METHODS else ""
         valued = any(rec.get(x) not in (None, "") for x in VALUE_KEYS)
         if t in ("claim", "definition", "caveat", "cited"):
             return k, f"{t} -> paper"
@@ -1955,6 +1980,8 @@ class Run:
             r["parent_filled"] = True
             return recipe, f"about {'null' if not a else 'unknown'} -> recipe (flagged)"
         rid, role = self.node[a]
+        if role == "measurement":                                               # P184: a record about a measurement unit sits under it
+            return rid, f"{t} about a measurement -> the measurement"
         if role == "unresolved":                                                # P176: a derived unit of role null: its settings on its row,
             if t in ("observation", "derived") or (t == "setting" and mm):     # its results under its measurement
                 return self.measurement(rid, mm), f"{t} about a unit of unresolved role -> its measurement"
@@ -2188,7 +2215,6 @@ class Run:
         recs = self.resolve_other(recs)                                         # P157b
         recs = self.symbol_species(recs)                                        # P178, P179 (user)
         recs = self.recipe_process_mode(recs)                                   # P179 (user)
-        recs = self.step_fill(recs)                                             # P181 (user)
         recs = self.qualifier_scope(recs)                                       # P182 (user)
         recs = self.validate(recs)
         self.count("a", "kept", len(recs))
@@ -2220,7 +2246,7 @@ class Run:
         self.rows_tree += fig_tree                                              # the series entities, before their measurement activities
         for f in fig_facts:
             if f["parent"].startswith("@meas:"):
-                f["parent"] = self.measurement(f["parent"][6:], "")
+                f["parent"] = self.meas_of_panel(f["parent"][6:], f["evidence"]) or self.measurement(f["parent"][6:], "")   # P184: a pass-0 measurement of that panel
         items = self.dedupe(items + self.scope_facts(fig_facts, "figure"))      # P182: figures.json facts held to the scopes
         self.count("i", "kept", len(items))
         items = self.ids(items)
@@ -2256,7 +2282,7 @@ class Run:
         for f in rows:                                                          # (check.py --dir reads it: a fact of a bound item may carry points_ref)
             if f.get("_item"):
                 made[f["_item"]].append(f["fact_id"])
-        write_csv(OUT / f"{self.pid}.binding.csv", BINDING_FIELDS, [dict(b, facts=";".join(made.get(b["item"], []))) for b in binding_rows(self.pid, self.binding)])
+        write_csv(OUT / f"{self.pid}.binding.csv", BINDING_FIELDS, [dict(b, facts=";".join(made.get(b["item"], []))) for b in binding_rows(self.pid, self.binding, self.node)])
         for x in self.promoted:                                                 # P157b: the fact a promoted record became
             if not x["outcome"]:
                 f = next((f for f in rows if any(y is x for y in f.get("_promoted", []))), None)

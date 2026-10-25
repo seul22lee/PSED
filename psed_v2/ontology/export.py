@@ -373,8 +373,10 @@ FROM_FACTS = {"data_kind": "kind", "definition_note": "note"}                  #
 NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
 FORM_CATEGORICALS = ["crystallinity"]                                          # P149 F3 (user): a categorical output whose value_text is its vocabularies list
-FORM_VERSION = "P179"                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; P179: the species rule; common.run writes it on every new line
-PASS0_FORM_VERSION = 3                                                          # P179 (user): version 2: process_mode on runs (1: P144-P178); P181: 3, the recipe fields
+FORM_VERSION = "P184"                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; P179: the species rule; P184: qualifiers only when stated, step as named; common.run writes it on every new line
+PASS0_FORM_VERSION = 4                                                          # P179 (user): version 2: process_mode on runs (1: P144-P178); P181: 3, the recipe fields; P184: 4, measurements, method, distinguished_by, panel method
+QUALIFIER_RULE = ("A qualifier is written only when the element's text states that property (the step named, the statistic named, the position "
+                  "named). A key the text does not state is left out; qualifiers may be empty.")   # P184 (user): CODEBOOK and pass1_elements RULES
 RECIPE_FIELDS = ["reactant_A", "reactant_B", "carrier_gas", "process_mode"]       # P181 (user): a run's (a model's) recipe fields, each with <field>_quote
 SPECIES_RULE = ("On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or "
                 "header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's "
@@ -427,6 +429,9 @@ def scope_rules(onto):
     return out
 
 
+RETIRED_RULES = {1: "Retired in form version P184 (user): a step is written only when the text names it; compile and form.json no longer require one."}
+
+
 def p158_rules(onto):
     """P158: the four form rules decided after P148, as (text, allOf rule). form.json carries them under allOf with "$comment" "P158 rule n"
     (compile.py applies them to records of form version P158 or later); CODEBOOK.md prints the texts (the provider gets no allOf)."""
@@ -446,7 +451,7 @@ def p158_rules(onto):
         ("other: label_as_printed is required (the label as printed, else the record's own meaning); nearest = the closest ontology id, or null",
          {"if": _is("quantity", "other"), "then": {"properties": {"label_as_printed": {"type": "string", "minLength": 1}}}}),
     ]
-PASS0_ROLES = ["specimen", "run", "simulation", "model_run"]   # P142: model_run; P143b (user): experiment units only, no series, no cited_work   # P138: series = a figure series of runs or specimens differing in one quantity
+PASS0_ROLES = ["specimen", "run", "simulation", "model_run", "measurement"]   # P184 (user): measurement   # P142: model_run; P143b (user): experiment units only, no series, no cited_work   # P138: series = a figure series of runs or specimens differing in one quantity
 
 
 def form_field(column):
@@ -559,7 +564,7 @@ def form_schema(onto, L, F):
             {"if": _is("quantity", "structure"), "then": {"properties": {"value_text": nullable({"$ref": "#/$defs/structure"})}}},
             *[{"if": _is("quantity", q), "then": {"properties": {"value_text": nullable({"enum": [str(x) for x in onto["vocabularies"][q]]})}}}
               for q in FORM_CATEGORICALS],                                      # P149 F3
-            *[{"$comment": f"P158 rule {n}: {t}", **rule} for n, (t, rule) in enumerate(p158_rules(onto), 1)],   # P158: frozen form rules
+            *[{"$comment": f"P158 rule {n}: {t}", **rule} for n, (t, rule) in enumerate(p158_rules(onto), 1) if n not in RETIRED_RULES],   # P158: frozen form rules; P184: rule 1 retired
             *scope_rules(onto),                                                 # P182 (user): the qualifier scopes
         ],
         "$defs": defs,
@@ -584,14 +589,19 @@ def pass0_schema(onto, L):
           "evidence_quote": {"type": "string", "minLength": 1},                                           # P142: a run's words on which samples it made
           **{f: {"enum": [e["id"] for e in onto["entries"] if e["type"] == "species"]} for f in RECIPE_FIELDS[:3]},   # P181 (user): species entries
           "process_mode": {"enum": [str(v) for v in onto["vocabularies"]["process_mode"]]},                # P179 (user): a run's process mode as the paper states it
-          **{f"{f}_quote": {"type": "string", "minLength": 1} for f in RECIPE_FIELDS}}                    # P179, P181: the words that state it (required with a value)
+          **{f"{f}_quote": {"type": "string", "minLength": 1} for f in RECIPE_FIELDS},                    # P179, P181: the words that state it (required with a value)
+          "method": {"enum": sorted(m for m, x in L.METHOD_MEASUREMENT.items() if x)},                   # P184 (user): a measurement's method, an ontology method id
+          "distinguished_by": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": False, "required": ["quantity", "value", "unit"],   # P184 (user): a unit
+                               "properties": {"quantity": {"$ref": "#/$defs/quantity_id"}, "value": {"type": "string", "minLength": 1},             # without a printed name:
+                                              "unit": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]}}}}}                          # its distinguishing conditions
     ids = {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
     qid = {"$ref": "#/$defs/quantity_id"}
     desc = {"type": "string", "minLength": 1}                                    # P177b: the description of a layout 'other'
     tl = {"table": {"type": "string", "minLength": 1}, "layout": {"enum": [k for k, _, _ in layouts("table", onto)] + [LAYOUT_OTHER]},   # P144, P177b: ontology.yaml layouts
           "description": desc, "unit_name_cells": ids, "units": ids}
     pl = {"panel": {"type": "string", "minLength": 1}, "layout": {"enum": [k for k, _, _ in layouts("panel", onto)] + [LAYOUT_OTHER]},
-          "description": desc, "unit": {"type": "string", "minLength": 1}, "axis_quantities": {"type": "array", "minItems": 1, "items": qid}, "value_quantity": qid}
+          "description": desc, "unit": {"type": "string", "minLength": 1}, "axis_quantities": {"type": "array", "minItems": 1, "items": qid}, "value_quantity": qid,
+          "method": {"enum": sorted(m for m, x in L.METHOD_MEASUREMENT.items() if x)}}                    # P184 (user): an image panel's method
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "urn:psed_v2:schema:form_pass0",
@@ -607,7 +617,9 @@ def pass0_schema(onto, L):
                                                                    **({"allOf": [{"if": {"properties": {"role": {"enum": ["specimen", "model_run"]}}, "required": ["role"]},
                                                                                   "then": {"properties": {"parent": {"type": "string", "minLength": 1}}}},   # P146
                                                                                  *[{"if": {"properties": {f: {"type": "string"}}, "required": [f]},   # P179, P181: a value needs its quote
-                                                                                    "then": {"properties": {f"{f}_quote": {"type": "string", "minLength": 1}}}} for f in RECIPE_FIELDS]]}
+                                                                                    "then": {"properties": {f"{f}_quote": {"type": "string", "minLength": 1}}}} for f in RECIPE_FIELDS],
+                                                                                 {"if": {"properties": {"role": {"const": "measurement"}}, "required": ["role"]},   # P184: a measurement has its method
+                                                                                  "then": {"properties": {"method": {"type": "string"}, "parent": {"type": "string", "minLength": 1}}}}]}
                                                                       if name == "units" else {})}})
                        for name, fields in (("units", p0), ("table_layouts", tl), ("panel_layouts", pl))},
     }
@@ -802,7 +814,7 @@ def codebook(onto, L):
             "EQUATION_VARIABLES, STANCES and its comment; P143 equation rule in ontology/export.py)", "", "Record types:", "",
             *[f"- {t}: {d}" for t, d in L.RECORD_TYPES.items()], "",
             f"Form rules (P158, rule 1 scoped in P163; form version {FORM_VERSION}, frozen; form.json allOf \"P158 rule n\"):", "",
-            *[f"- rule {n}, {t}." for n, (t, _) in enumerate(p158_rules(onto), 1)],
+            *[f"- rule {n}, {t}." + (f" {RETIRED_RULES[n]}" if n in RETIRED_RULES else "") for n, (t, _) in enumerate(p158_rules(onto), 1)],
             f"- species (form version {FORM_VERSION}, P179): {SPECIES_RULE}",
             "- nearest (a field of every record): for quantity other, the closest ontology id, else null; null for any other record.", "",
             f"Stances ({', '.join(L.STANCES)}): {stance_comment}", ""]
@@ -829,9 +841,10 @@ def codebook(onto, L):
                 missing.append(f"d. quantity {e['id']}: {f}")
     out += ["## d. Quantities (sources: ontology/ontology.yaml entries; kb/pilot/lists.py SETTING_QUANTITIES, SUBSTANCE_SCOPED, DEFAULT_DEFINITION)", ""]
     out += ["Symbols (P157d) are hints, local to the paper named: a symbol means its quantity only in that paper.", ""]
-    out += _table(["id", "name", "definition", "aliases", "symbols (paper)", "canonical unit", "dimension", "note", "role", "setting-only", "substance-scoped", "default definition key", "qualifiers (P182 scopes; kind, stat, between, n, x on every value fact)"], qrows)
+    out += _table(["id", "name", "definition", "aliases", "symbols (paper)", "canonical unit", "dimension", "note", "role", "setting-only", "substance-scoped", "default definition key", "qualifiers (P182 scopes)"], qrows)
     # e. qualifiers and tying rules
     out += ["", "## e. Qualifiers (sources: ontology/ontology.yaml qualifiers; tying rules: kb/pilot/check.py messages)", "",
+            f"{QUALIFIER_RULE} (P184)", "",
             "applies_to (P182): the entries a key may sit on; any = every value fact; unit = an attribute of a unit (a specimen, a measurement), never on a value record. "
             "A key outside its entry's scope is removed by the compiler and listed (qualifier out of scope).", ""]
     qr = []
@@ -1166,7 +1179,7 @@ def run_checks(onto):
     if sorted(form.get("$defs", {}).get("species", {}).get("enum", [])) != sorted(e["id"] for e in entries if e["type"] == "species"):
         bad.append("1a: the species values are not the species entries")
     cb = (SCHEMA / "CODEBOOK.md").read_text(encoding="utf-8") if (SCHEMA / "CODEBOOK.md").exists() else ""
-    if FORM_VERSION != "P179" or SPECIES_RULE not in cb:
+    if FORM_VERSION < "P179" or SPECIES_RULE not in cb:                         # P184: P179 or a later version
         bad.append("1b: form version P179 and the species rule in CODEBOOK.md")
     by = {e["id"]: e for e in entries}
     bad += [f"1c: {i} takes no species qualifier" for i in ("molar_mass", "molecule_diameter") if "species" not in entry_qualifiers(onto).get(i, [])]   # P182: derived

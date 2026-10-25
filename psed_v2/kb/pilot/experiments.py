@@ -26,7 +26,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from elements import PAPERS  # noqa: E402
 
-FIXED = ["paper", "run", "label", "kind", "how", "parent", "group", "group_label", "purpose", "claims", "via"]
+FIXED = ["paper", "run", "label", "kind", "how", "parent", "group", "group_label", "purpose", "claims", "via", "not_inherited"]   # P184: not_inherited
 RESULT_TYPES = ("observation", "derived", "model")
 
 
@@ -135,6 +135,7 @@ def table(pid, paper):
                    group=";".join(g["fact_id"] for g in gs), group_label=";".join(g["label_as_printed"] for g in gs),
                    purpose=";".join(dict.fromkeys(g["links"].split(";")[0] for g in gs if g["links"] and "#" in g["links"].split(";")[0])),
                    claims=";".join(sorted(set().union(*(claims[n] for n in mine), *(claims[g["fact_id"]] for g in gs)))), via="")
+        blocked = []                              # P184 (user): a parent's setting with several values is not inherited (listed per unit)
         for x in [e["fact_id"]] + chain:          # the condition vector: the entity's own settings, then the non-measurement activities above, nearest first
             if R[x]["type"] not in ("activity", "entity") or (R[x]["type"] == "activity" and R[x]["kind"] in MEAS):
                 continue
@@ -143,10 +144,16 @@ def table(pid, paper):
                 if is_condition(f) and f["quantity"]:
                     level[key(f)].append(f)
             for k, fs in level.items():
-                if "setting:" + k not in rec:
-                    rec["setting:" + k] = "; ".join(dict.fromkeys(t for t in (text(f) for f in fs) if t))
+                vals = list(dict.fromkeys(t for t in (text(f) for f in fs) if t))
+                if "setting:" + k in rec or k in blocked:
+                    continue
+                if x != e["fact_id"] and len(vals) > 1:
+                    blocked.append(k)
+                    continue
+                rec["setting:" + k] = "; ".join(vals)
         for k, vs in res.items():
             rec["result:" + k] = "; ".join(vs)
+        rec["not_inherited"] = "; ".join(blocked)
         out.append(rec)
     for w in rows:                                                              # cited works: their facts, via the citing paper
         if w["type"] != "cited" or "#" in w["fact_id"]:

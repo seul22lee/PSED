@@ -30,8 +30,13 @@ def instruction():
 TERMS (from the codebook):
 {terms}
 
-UNITS: one item per run, specimen, simulation and model run.
-- role: run, specimen, simulation or model_run; parent: a specimen's run, a model run's simulation; null otherwise.
+UNITS: one item per run, specimen, measurement, simulation and model run.
+- role: run, specimen, measurement, simulation or model_run; parent: a specimen's run, a measurement's specimen (or run or model run),
+  a model run's simulation; null otherwise.
+- method: a measurement's ontology method id (required); null on every other unit. One measurement per distinct measurement the paper
+  reports, introduced_in = the panel or element that reports it.
+- distinguished_by: a unit without a printed name is identified by its distinguishing conditions, each a quantity id, the value and
+  the unit as printed (evidence_quote = the words that state them); null when the unit has a printed name.
 - list every run even when several share all conditions; list a shared run once when the paper says the samples were coated together.
 - evidence_quote (every unit, never null) is copied from the paper: the words that state the deposition of a run, that name a
   specimen, a simulation or a model run.
@@ -54,6 +59,7 @@ TABLE LAYOUTS (one per table of TABLES below):
 PANEL LAYOUTS (one per figure panel of FIGURES below):
 {panels}
 - unit: the one unit of a panel_one_unit panel; axis_quantities and value_quantity: the quantity ids of a point_per_unit panel.
+- method: an image panel's (micrograph, photograph, map, spectrum) ontology method id; null otherwise.
 
 Every field is present; null when it does not apply. Answer with JSON matching the form."""
 
@@ -61,7 +67,7 @@ Every field is present; null when it does not apply. Answer with JSON matching t
 def jobs(pid):
     form = C.schema("form_pass0.json")
     prompt = "\n\n".join([instruction(), "CODEBOOK:\n" + render.codebook(), "EXAMPLE (another paper's gold, in the form):\n" + render.example(pid, form),
-                          "TABLES (markdown, then cell ids):\n" + render.tables(pid), "FIGURES (caption, panels, curves: id | panel | series label | x | y | "
+                          "TABLES (markdown, then cell ids):\n" + render.tables(pid), "FIGURES (caption, panels: id | type | what it shows, curves: id | panel | series label | x | y | "
                           "conditions):\n" + render.figures(pid), "ELEMENT INDEX (id, kind, locator):\n" + render.index(pid),
                           "PAPER (document.md):\n" + render.document(pid)])
     return [(0, "paper", prompt, C.provider_schema(form), [])]

@@ -57,8 +57,9 @@ rows are deleted.
 
 Terms:
 
-- **run**: one deposition the paper performs. A run exists where the paper STATES a deposition — in the experimental section, a caption ("deposited at … using … cycles", "films grown on glassy carbon"), a table row, a grid point. A stated deposition is a run even when no data of it is in the figures; data without a stated deposition is not a run. Specimens coated together share one run; separate depositions are separate runs even with the same chemistry, temperature and structure. (lists.py TERMS)
-- **specimen**: one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run. (lists.py TERMS)
+- **run**: one deposition under one set of conditions. The paper reports a run wherever it reports a deposition: experimental text, caption, table row, legend entry, grid point, or a series sentence ("at 110, 200 and 300 °C" reports three runs). List every run the paper reports, with or without figure data; evidence_quote = the words that report it. Specimens coated together share one run; separate depositions are separate runs even with the same chemistry, temperature and structure. (lists.py TERMS)
+- **specimen**: one physical piece that is measured or shown. A piece the paper distinguishes — by name, by a figure panel (micrograph, photograph, map, spectrum included), by a table row, or by the measurement made on it — is its own specimen; it comes from one run. (lists.py TERMS)
+- **measurement**: one distinct measurement the paper reports: its method (an ontology method id, required), on the specimen (or the run or model run) it measures (parent), introduced_in = the panel or element that reports it. (lists.py TERMS)
 - **input entity**: a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a deposition activity's inputs. (lists.py TERMS)
 - **simulation**: any model the paper applies to produce a computed value or curve — a numerical simulation, or an analytical equation fitted to or evaluated on the data; each evaluation with its own inputs is a model run (gor03's theory, art19's slope relation, gre23's eq 1–2). The paper's own model and a model it compares against are separate simulations. (lists.py TERMS)
 - **model run**: one set of inputs of a simulation whose result the paper reports. Two solution methods or approximations of the same inputs are one model run. (lists.py TERMS)
@@ -100,14 +101,14 @@ Record types:
 - caveat: a limitation or assumption the authors state about their own method or data (not a claim).
 - cited: a value or statement the paper attributes to another work (not a setting); quantity = the entry the value stands for, else other with a candidate; never null (P149). An element that states the paper's own value and a literature value yields both an observation (or setting) and a cited record (P150).
 
-Form rules (P158, rule 1 scoped in P163; form version P179, frozen; form.json allOf "P158 rule n"):
+Form rules (P158, rule 1 scoped in P163; form version P184, frozen; form.json allOf "P158 rule n"):
 
-- rule 1, step: a setting or observation of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163).
+- rule 1, step: a setting or observation of pulse_time, purge_time, exposure names its step (qualifier step: reactant_A, purge_A, reactant_B, purge_B, plasma, hold_A, hold_B, none); a stage, stat or structure_class qualifier does not stand in for it; definition, cited, model, derived, claim and caveat records are exempt (P163). Retired in form version P184 (user): a step is written only when the text names it; compile and form.json no longer require one.
 - rule 2, cited: a cited record carries no observation role: its kind is cited or null (measured, fitted, simulated are the roles of other records, never of a cited one).
 - rule 3, cited: kind cited only on a cited record (one field, one value: the record's type).
 - rule 4, definition and cited: quantity is never null: the entry the term or value stands for, else other with label_as_printed.
 - rule 5, other: label_as_printed is required (the label as printed, else the record's own meaning); nearest = the closest ontology id, or null.
-- species (form version P179, P179): On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty. This rule is about symbol records; settings and observations take their species from the text and the run's recipe fields.
+- species (form version P184, P179): On a record of type model / definition / cited, `species` is written only when the element's own text (sentence, table cell or header, caption) names that symbol's substance, and that text is the record's evidence quote. Never inferred from a symbol's letter (A, B), a recipe's reactant order, or a numeric value. No such text → species empty. This rule is about symbol records; settings and observations take their species from the text and the run's recipe fields.
 - nearest (a field of every record): for quantity other, the closest ontology id, else null; null for any other record.
 
 Stances (asserted, hedged, open, limitation): "likely", "may" -> hedged; "cannot be excluded", "further work" -> open; a stated shortcoming of the study or method -> limitation; asserted: stated as a finding, without hedging words (P143b)
@@ -130,7 +131,7 @@ Equation rule:
 
 Symbols (P157d) are hints, local to the paper named: a symbol means its quantity only in that paper.
 
-| id | name | definition | aliases | symbols (paper) | canonical unit | dimension | note | role | setting-only | substance-scoped | default definition key | qualifiers (P182 scopes; kind, stat, between, n, x on every value fact) |
+| id | name | definition | aliases | symbols (paper) | canonical unit | dimension | note | role | setting-only | substance-scoped | default definition key | qualifiers (P182 scopes) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | process_mode | process mode | Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV: three types of ALD processes); P179 (user): or hot-wire (a co-reactant activated on a heated filament, van der Zouw 2023 hot-wire ALD). | ALDMethod; ALD process |  |  | categorical |  | condition |  |  |  |  |
 | material | material | The material being deposited; value is a species id. | MaterialDeposited; Material; Deposited material; Film (process) |  |  | categorical |  | condition | yes |  |  |  |
@@ -245,6 +246,8 @@ Symbols (P157d) are hints, local to the paper named: a symbol means its quantity
 | pillar_spacing | Distance between pillars | Distance between neighbouring pillars that hold up the roof of a lateral high-aspect-ratio channel (PillarHall): a dimension of the test structure that sets the pillar effect on transport (Yim 2020 Table 1; Gao 2015 Sec. II: oxide pillars 10 µm apart). | Distance between pillars; distance between the oxide pillars | a (only in 10.1039_d0cp03358h) | µm | length |  |  |  |  |  | stage |
 
 ## e. Qualifiers (sources: ontology/ontology.yaml qualifiers; tying rules: kb/pilot/check.py messages)
+
+A qualifier is written only when the element's text states that property (the step named, the statistic named, the position named). A key the text does not state is left out; qualifiers may be empty. (P184)
 
 applies_to (P182): the entries a key may sit on; any = every value fact; unit = an attribute of a unit (a specimen, a measurement), never on a value record. A key outside its entry's scope is removed by the compiler and listed (qualifier out of scope).
 

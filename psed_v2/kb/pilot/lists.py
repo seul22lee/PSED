@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from vocab import (STRUCTURE_CLASSES, TRANSFORMS, CATEGORICAL_VALUES, CONCEPTS, ATTRIBUTES, TO_ABSORB, TRANSFORM_OUTPUTS, REPLACED, QUANTITIES, QUALIFIERS, METHODS, METHOD_CLASS,  # noqa: F401
                    METHOD_DEFINITION, SPECIES, MATERIALS, STRUCTURES, STRUCTURE_CLASS, TO_ABSORB_VALUES, FAMILIES, MECHANISMS as _MECH,
                    RELATIONS, KINDS, PHRASES, SPECIMEN_CLASSES, PILOT_MAP, OUTPUTS, AMBIGUOUS, BASES, ENTRIES, HIERARCHY, AMBIGUOUS_ALIASES, VALUE_ALIASES,
-                   LABELS as _LABELS, NAMES as _NAMES, FROM_OTHER)
+                   LABELS as _LABELS, NAMES as _NAMES, FROM_OTHER, METHOD_MEASUREMENT)
 
 
 # the process-defining settings, in the order the screens show them; a join or a natural series needs both entities to state the same
@@ -154,11 +154,15 @@ NK_REASONS = {
 EQUATION_VARIABLES = "variables (models and definitions): each symbol -> its quantity id, or null when no id fits."   # with RECORD_TYPES["model"]
 # P143b (user-approved): the tree terms; CODEBOOK.md reads this dict (ontology/export.py)
 TERMS = {
-    "run": "one deposition the paper performs. A run exists where the paper STATES a deposition — in the experimental section, a caption "
-           "(\"deposited at … using … cycles\", \"films grown on glassy carbon\"), a table row, a grid point. A stated deposition is a run even "
-           "when no data of it is in the figures; data without a stated deposition is not a run. Specimens coated together share one run; "
-           "separate depositions are separate runs even with the same chemistry, temperature and structure.",   # P146 (user)
-    "specimen": "one physical sample that is measured (a coated structure, a film, a substrate piece); it comes from one run.",
+    "run": "one deposition under one set of conditions. The paper reports a run wherever it reports a deposition: experimental text, "
+           "caption, table row, legend entry, grid point, or a series sentence (\"at 110, 200 and 300 °C\" reports three runs). List every "
+           "run the paper reports, with or without figure data; evidence_quote = the words that report it. Specimens coated together share "
+           "one run; separate depositions are separate runs even with the same chemistry, temperature and structure.",   # P184 (user); P146 (user)
+    "specimen": "one physical piece that is measured or shown. A piece the paper distinguishes — by name, by a figure panel (micrograph, "
+                "photograph, map, spectrum included), by a table row, or by the measurement made on it — is its own specimen; it comes from "
+                "one run.",   # P184 (user)
+    "measurement": "one distinct measurement the paper reports: its method (an ontology method id, required), on the specimen (or the run "
+                   "or model run) it measures (parent), introduced_in = the panel or element that reports it.",   # P184 (user)
     "input entity": "a thing that exists before any deposition (a substrate, a porous body), placed under the recipe and named in a "
                     "deposition activity's inputs.",
     "simulation": "any model the paper applies to produce a computed value or curve — a numerical simulation, or an analytical equation "
@@ -173,6 +177,7 @@ TERMS = {
         "A name the authors give such a set (\"Series A\") is kept as its label.",
 }
 HOW = ["stated", "inferred"]
+MEASUREMENT_METHODS = {m for m, x in METHOD_MEASUREMENT.items() if x}             # P184 (user): the ontology's measurement methods (facts.MEAS_METHODS deleted)
 DATA_KINDS = list(KINDS)                              # the stored kinds (vocab.KINDS, Sec. 18.5); the phrases are vocab.PHRASES
 
 

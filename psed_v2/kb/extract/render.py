@@ -64,15 +64,16 @@ def _figures_json(pid):
 
 
 def _by_figure(pid):
-    """figures.json entries by figure number: (curves, values, sets, derived)."""
+    """figures.json entries by figure number: (curves, values, sets, derived, inventory); P184: the inventory (every panel, its type and
+    what it shows)."""
     Fj = _figures_json(pid)
-    by_fig, vals, sets, der = (collections.defaultdict(list) for _ in range(4))
+    by_fig, vals, sets, der, inv = (collections.defaultdict(list) for _ in range(5))
     for c in Fj.get("curves", []):
         by_fig[str(c["figure"])].append(c)
-    for sec, d in (("values", vals), ("sets", sets), ("derived", der)):
+    for sec, d in (("values", vals), ("sets", sets), ("derived", der), ("inventory", inv)):
         for x in Fj.get(sec) or []:
             d[str(x["figure"])].append(x)
-    return by_fig, vals, sets, der
+    return by_fig, vals, sets, der, inv
 
 
 def figures(pid):
@@ -86,10 +87,12 @@ def figures(pid):
 def figure(cap, captext, rows, F):
     """One figure: its caption id and text, its panel ids, every figures.json entry of it (P148: one block, shared by pass 0 and
     pass 1)."""
-    by_fig, vals, sets, der = F
+    by_fig, vals, sets, der = F[:4]
     n = cap[3:].split(".")[0]
     panels = [x["element_id"] for x in rows if x["kind"] == "panel" and re.fullmatch(rf"fig{n}[a-z]*", x["element_id"])]
     lines = [f"FIGURE fig{n}: caption {cap}: {captext}", "panels: " + ", ".join(panels)]
+    for inv in F[4].get(n, []) if len(F) > 4 else []:                       # P184 (user): every panel of figures.json, image panels included
+        lines.append(f"panel fig{n}{inv.get('panel', '')} | {inv.get('panel_type', '')} | {inv.get('content', '')}")
     for c in by_fig.get(n, []):
         lines.append(f"curve {c['id']} | fig{n}{c.get('panel', '')} | {c.get('series', {}).get('label_raw', '')} | {c['x'].get('quantity', '')} | "
                      f"{c['y'].get('quantity', '')} | {_conds(c)}")

@@ -56,7 +56,9 @@ Fields
   material, substrate, reactant_A, reactant_B and structure is an id of the codebook's species, materials and structures (f); for
   a reactor or an instrument, the name only.
 - mentions: only names from PASS-0 UNITS (name as printed), exactly as listed.
-- step: by the run's recipe fields (CODEBOOK step values)."""
+- qualifiers: A qualifier is written only when the element's text states that property (the step named, the statistic named, the position named). A key the text does not state is left out; qualifiers may be empty.
+- step: the step the text names, hold included ('DEZ hold' -> hold_A, 'H2O hold' -> hold_B); when the text names no step, step is left
+  empty."""
 
 
 def container(eid):
