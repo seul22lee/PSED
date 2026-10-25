@@ -1,0 +1,32 @@
+rebuilt request hash equals the line's: True
+INSTRUCTION (verbatim):
+You read the text of one ALD paper and give, for each recipe (a deposition run) listed below, its recipe fields: reactant_A (one of air, al2o3, ar, bdeas, dez, ga2_nme2_6, ga2s3, gasx, glassy_carbon, h2, h2o, h2s, h_atom, hf_nme2_4, hfo2, mo, mo_ntbu2_nme22, mocl2o2, model_reactant, moo3, mos2, n2, o2, o_atom, pet, si, sicl4, sio2, tdmacph, tdmat, ticl4, tio2, tis2, tma, w_ntbu2_nme22, ws2, zn, zno); reactant_B (one of air, al2o3, ar, bdeas, dez, ga2_nme2_6, ga2s3, gasx, glassy_carbon, h2, h2o, h2s, h_atom, hf_nme2_4, hfo2, mo, mo_ntbu2_nme22, mocl2o2, model_reactant, moo3, mos2, n2, o2, o_atom, pet, si, sicl4, sio2, tdmacph, tdmat, ticl4, tio2, tis2, tma, w_ntbu2_nme22, ws2, zn, zno); carrier_gas (one of air, al2o3, ar, bdeas, dez, ga2_nme2_6, ga2s3, gasx, glassy_carbon, h2, h2o, h2s, h_atom, hf_nme2_4, hfo2, mo, mo_ntbu2_nme22, mocl2o2, model_reactant, moo3, mos2, n2, o2, o_atom, pet, si, sicl4, sio2, tdmacph, tdmat, ticl4, tio2, tis2, tma, w_ntbu2_nme22, ws2, zn, zno); process_mode (one of thermal, ozone, plasma, hot_wire); material (one of al2o3, ga2s3, gasx, glassy_carbon, hfo2, mo, moo3, mos2, pet, si, sio2, tio2, tis2, ws2, zn, zno); steps (the cycle's step sequence in order, each one of hold_A, hold_B, plasma, purge_A, purge_B, reactant_A, reactant_B). The fields: reactant_A: The first reactant of the ALD cycle, which reacts in a self-terminating way with the surface in step 1 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant A'); value is a species id.; reactant_B: The second reactant of the ALD cycle, which reacts in a self-terminating way with the adsorbed species in step 3 (Cremers 2019, Sec. I; Popov 2025, Table I 'Reactant B'); value is a species id.; carrier_gas: The inert gas in which the reactants are entrained and which purges the reactor between reactant pulses (Cremers 2019, Sec. II C; Popov 2025, Sec. I); value is a species id.; process_mode: Kind of ALD process by co-reactant activation: thermal, ozone-based or plasma-enhanced (Cremers 2019, Sec. IV: three types of ALD processes); P179 (user): or hot-wire (a co-reactant activated on a heated filament, van der Zouw 2023 hot-wire ALD).; material: The material being deposited; value is a species id.; steps: the steps of one ALD cycle in the order the paper gives them (the step qualifier's values). A field is stated for a run when the text states it for that run, for a set of runs it belongs to, or for every deposition of the paper; a run's own name in the text stating it states it too. reactant_A and reactant_B are the reactants in the order the text gives the cycle (the precursor dosed first, then the co-reactant). For each field give the quote copied verbatim from the TEXT (the words that state it) and the id of the element holding it. A field the text does not state: the value null, its quote an empty string, its element null. Never infer a field from another field, a number or a typical process.
+
+RECIPES line of run_fig2_c1:
+run_fig2_c1 | 10.0 sccm | The flow and the power were controlled in four different experiments, each experiment with a different closing of the gate valve (0 cm or completely open, 10, 15, and 20 cm). | -
+
+RESPONSE for run_fig2_c1:
+{
+ "id": "run_fig2_c1",
+ "reactant_A": null,
+ "reactant_A_quote": "",
+ "reactant_A_element": null,
+ "reactant_B": null,
+ "reactant_B_quote": "",
+ "reactant_B_element": null,
+ "carrier_gas": null,
+ "carrier_gas_quote": "",
+ "carrier_gas_element": null,
+ "process_mode": null,
+ "process_mode_quote": "",
+ "process_mode_element": null,
+ "material": null,
+ "material_quote": "",
+ "material_element": null,
+ "steps": null,
+ "steps_quote": "",
+ "steps_element": null
+}
+
+runs in the request: 21 | fields asked: ['reactant_A', 'reactant_B', 'carrier_gas', 'process_mode', 'material', 'steps']
+

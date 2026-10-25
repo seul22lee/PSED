@@ -9,3 +9,7 @@ run_tio2,reactant_B,h2o,$\text{H}_2\text{O}$,s8.p21
 run_tio2,carrier_gas,n2,,
 run_tio2,material,tio2,TiO2,s8.p21
 run_tio2,steps,"[""reactant_A"", ""purge_A"", ""reactant_B"", ""purge_B""]","In the TiO2 growth, the reactant pulse and purge times were also 0.1 and 4.0 s, respectively.",s8.p24
+sim_ylilammi,carrier_gas,n2,,
+sim_ylilammi,assumptions,"takes into account the gas transportation at low pressures, the dynamic Langmuir adsorption model for the film growth and the effect of channel narrowing due to film growth","The diffusion model takes into account the gas transportation at low pressures, the dynamic Langmuir adsorption model for the film growth and the effect of channel narrowing due to film growth.",abs.g2
+sim_gordon,carrier_gas,n2,,
+sim_gordon,assumptions,assumed that the gas enters the rectangular channel (height H ≪ width W) as a front with a constant concentration without any gas diffusion in the propagation direction (x-axis),"In the Gordon model for ALD conformality, it is assumed that the gas enters the rectangular channel (height  $H \ll$  width  $W$ ) as a front with a constant concentration without any gas diffusion in the propagation direction (x-axis).",s8.p11
