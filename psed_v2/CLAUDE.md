@@ -300,7 +300,9 @@ psed_v2/
   as before; how ''); no answer: other, listed (compile.MISSES, how 'no 0ax answer'); a user figure_axis decision gives its panel's series
   axis directly. Collect mode (figure_axes.py): the import (no write) and the legend parsing record every (panel, kind, text) asked: the
   0ax label list. A 0ax response missing a listed id or answering an unlisted one is a failed call (common.failure, ID_CHECKED). grow.py
-  run: figures import, figure_axes.py, the import again, then pass 0 and pass 1 (the plan counts the 0ax call).
+  run: figures import, figure_axes.py, the import again, then pass 0 and pass 1 (the plan counts the 0ax call). render.example skips a
+  paper with no gold. The PASS-0 UNITS block reads a unit's recipe fields as compile does (its fill entry, nulls too, over its own).
+  form_versions.csv: P184-r2 candidate for ela03 (pass 0 and pass 1 on the 0ax figure labels, records lines 52-72; sandbox kb/tmp/P201).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
