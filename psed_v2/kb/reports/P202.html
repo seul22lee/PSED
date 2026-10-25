@@ -1,0 +1,219 @@
+<!doctype html><html><head><meta charset='utf-8'><title>P202</title><style>body{font:13px monospace;margin:16px}table{border-collapse:collapse;margin-bottom:24px}td,th{border:1px solid #999;padding:2px 6px;vertical-align:top;text-align:left;max-width:40em;overflow-wrap:anywhere}pre{white-space:pre-wrap;border:1px solid #999;padding:8px}</style></head><body><h1>P202</h1>
+<h2>Summary</h2><p>kb/reports/P202.summary.txt</p>
+<pre>P202 (0 calls). Code (and decisions) one commit, outputs another.
+1. Pass-0 example. render.example gave &#x27;(no example)&#x27; for every paper: each candidate example failed form_pass0.json (P202.1_old_example_errors.csv, art19&#x27;s 17 units: 16 required fields missing on every unit, the recipe fields and their quotes (P181, P185, P187, P188) plus method and distinguished_by (P184); evidence_quote null, a field never null (P146); data as plain curve ids where the form wants {id, role}). Six golds have all four roles (yim20, gre23, ela03, gor03, yli18, art19); the P201 note saying none has them is corrected in CLAUDE.md (P202 line) and in the P201 report. Fix: each unit and layout is built from form_pass0.json&#x27;s own item schema (every property present, the gold&#x27;s value where the gold gives it, else null; evidence_quote = the words of the unit&#x27;s first evidence element, as SOURCES gives them, because the form takes no null quote; data = the unit&#x27;s gold curves, simulated for a model run, else measured). Now (P202.1_examples.csv): 12 targets get art19 (17 units, 1 table layout, 2 panel layouts), art19 gets yli18 (15 units); every example validates. ela03&#x27;s pass-0 prompt 170,830 -&gt; 191,769 chars.
+2. Silent empty answers. pass1_elements.response_schema: an answer is anyOf (nk none, records minItems 1) or (nk an NK reason, records maxItems 0); RULES: nk none always carries a record, an element with none (a table header cell among them) answers with a reason; common.failure fails a response with an answer nk none and no record. In the lines compile reads, 65 of 3191 answers are nk none with no record (25 table header cells); in the P201 ela03 run 25 of 210; all 90 fail the new answer schema; a minimal response (one answer with a record, one NK answer) validates and passes common.failure; turning the NK answer into nk none with no record fails both (P202.2_empty_answers.csv, P202.2_minimal_response.csv). Form version P202 (export.FORM_VERSION; CODEBOOK and form files print it): form_versions.csv P202 corpus candidate; P184-r2 rejected for ela03 (&#x27;P201: pass 0 ran without its example&#x27;); history rows. Not tested at the provider (0 calls): P148-cost2 drew a 400 for an anyOf of record types with $defs; this anyOf has no $defs; common.failure holds if the provider ignores it.
+3. Element ids. pass 0 (pass0_paper.id_enums, also the 0x extension) sends every id field as an enum of the paper&#x27;s ids, set after provider_schema (no length limit): introduced_in (element ids), data ids (compile.data_ids: figures.json curves, values, sets, derived, the set compile checks), a table layout&#x27;s table (table ids) and unit_name_cells (table cells), a panel layout&#x27;s panel (panel elements); 0ax label ids likewise (ela03&#x27;s 58 were sent as a plain string before). Ids outside the enums (P202.3_ids_outside_enum.csv, 62 rows): the P201 ela03 pass 0 (line 53): introduced_in &#x27;fig41 s&#x27;, &#x27;fig43 s&#x27;, &#x27;fig410 s&#x27;, &#x27;fig430 s&#x27; (8 units) and 5 panel layouts (those four and &#x27;fig1&#x27;, a figure whose panels are fig1a, fig1b); accepted pass-0 lines: ela03 line 2 introduced_in &#x27;s4.p24&#x27; (4 units) and data ids of fig12a / fig12b derived records no longer in figures.json (2 units); mat22 35 (introduced_in holding figures.json value ids and the table id &#x27;tab1&#x27;); mat23 6 (s3.p10, s3.p8, s3.p9: no such elements); yim22 2.
+Checks: export --check 21 / 21 (P202 listed; vocab and schema files regenerated: the form version stamp); pass 0, pass 1, 0x and 0ax jobs of ela03 build (--plan, 0 calls). Nothing compiled (no records change).
+</pre>
+<h2>1. why the old example failed (art19)</h2><p>kb/reports/P202.1_old_example_errors.csv</p>
+<table><tr><th>error</th><th>units</th></tr>
+<tr><td>missing reactant_A</td><td>17</td></tr>
+<tr><td>missing reactant_B</td><td>17</td></tr>
+<tr><td>missing carrier_gas</td><td>17</td></tr>
+<tr><td>missing process_mode</td><td>17</td></tr>
+<tr><td>missing material</td><td>17</td></tr>
+<tr><td>missing steps</td><td>17</td></tr>
+<tr><td>missing assumptions</td><td>17</td></tr>
+<tr><td>missing reactant_A_quote</td><td>17</td></tr>
+<tr><td>missing reactant_B_quote</td><td>17</td></tr>
+<tr><td>missing carrier_gas_quote</td><td>17</td></tr>
+<tr><td>missing process_mode_quote</td><td>17</td></tr>
+<tr><td>missing material_quote</td><td>17</td></tr>
+<tr><td>missing steps_quote</td><td>17</td></tr>
+<tr><td>missing assumptions_quote</td><td>17</td></tr>
+<tr><td>missing method</td><td>17</td></tr>
+<tr><td>missing distinguished_by</td><td>17</td></tr>
+<tr><td>not of type &#x27;string&#x27;</td><td>17</td></tr>
+<tr><td>[&#x27;art19:fig2B#c1&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig2B#c2&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig2B#c3&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig2B#c4&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig2B#c5&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig2B#c6&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig2B#c7&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig2B#c8&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig3#c1&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>[&#x27;art19:fig3#c2&#x27;] is not valid under any of the given schemas</td><td>1</td></tr>
+<tr><td>not of type &#x27;null&#x27;</td><td>1</td></tr>
+</table>
+<h2>1. the example each target gets</h2><p>kb/reports/P202.1_examples.csv</p>
+<table><tr><th>target</th><th>example_paper</th><th>units</th><th>table_layouts</th><th>panel_layouts</th><th>validates_form_pass0</th><th>example_chars</th></tr>
+<tr><td>yim20</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>mat22</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>gre23</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>ela03</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>gor03</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>yli18</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>gao15</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>art19</td><td>yli18</td><td>15</td><td>2</td><td>5</td><td>yes</td><td>17931</td></tr>
+<tr><td>yim22</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>hei24</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>mat23</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>zou23</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+<tr><td>wer21</td><td>art19</td><td>17</td><td>1</td><td>2</td><td>yes</td><td>21127</td></tr>
+</table>
+<h2>2. answers nk none with no record (accepted lines and the P201 run) against the new schema</h2><p>kb/reports/P202.2_empty_answers.csv</p>
+<table><tr><th>source</th><th>paper</th><th>line</th><th>section</th><th>form_version</th><th>element</th><th>header_cell</th><th>valid_new_schema</th></tr>
+<tr><td>accepted</td><td>yli18</td><td>166</td><td>fig4</td><td>P184</td><td>fig4</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.cap</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c0</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c1</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c2</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c3</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c4</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c5</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c6</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c7</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>yim20</td><td>154</td><td>tab2</td><td>P184-r1</td><td>tab2.r0c8</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>mat22</td><td>32</td><td>fig6</td><td>P184</td><td>fig6a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>mat22</td><td>32</td><td>fig6</td><td>P184</td><td>fig6b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>mat22</td><td>37</td><td>tab2</td><td>P184</td><td>tab2.cap</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>mat22</td><td>37</td><td>tab2</td><td>P184</td><td>tab2.r0c0</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>mat22</td><td>37</td><td>tab2</td><td>P184</td><td>tab2.r0c1</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>mat22</td><td>37</td><td>tab2</td><td>P184</td><td>tab2.r0c2</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>mat22</td><td>37</td><td>tab2</td><td>P184</td><td>tab2.r0c3</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>ela03</td><td>43</td><td>fig6</td><td>P184</td><td>fig6b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>ela03</td><td>51</td><td>tab1</td><td>P184</td><td>tab1.r0c0</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>ela03</td><td>51</td><td>tab1</td><td>P184</td><td>tab1.r0c1</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>ela03</td><td>51</td><td>tab1</td><td>P184</td><td>tab1.r0c2</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>ela03</td><td>51</td><td>tab1</td><td>P184</td><td>tab1.r0c3</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>ela03</td><td>51</td><td>tab1</td><td>P184</td><td>tab1.r0c4</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>ela03</td><td>51</td><td>tab1</td><td>P184</td><td>tab1.r0c5</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>gor03</td><td>24</td><td>fig4</td><td>P184</td><td>fig4</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>zou23</td><td>28</td><td>fig6</td><td>P184-r1</td><td>fig6a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>zou23</td><td>28</td><td>fig6</td><td>P184-r1</td><td>fig6b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>zou23</td><td>29</td><td>fig7</td><td>P184-r1</td><td>fig7a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>zou23</td><td>29</td><td>fig7</td><td>P184-r1</td><td>fig7b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>zou23</td><td>32</td><td>fig9</td><td>P184-r1</td><td>fig9.cap</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>zou23</td><td>32</td><td>fig9</td><td>P184-r1</td><td>fig9a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>zou23</td><td>32</td><td>fig9</td><td>P184-r1</td><td>fig9b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>yim22</td><td>38</td><td>fig2</td><td>P184</td><td>fig2b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>yim22</td><td>41</td><td>fig6</td><td>P184</td><td>fig6a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>yim22</td><td>41</td><td>fig6</td><td>P184</td><td>fig6b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>yim22</td><td>41</td><td>fig6</td><td>P184</td><td>fig6c</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>yim22</td><td>41</td><td>fig6</td><td>P184</td><td>fig6d</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>28</td><td>fig3</td><td>P184</td><td>fig3a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>28</td><td>fig3</td><td>P184</td><td>fig3b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>28</td><td>fig3</td><td>P184</td><td>fig3c</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>31</td><td>fig6</td><td>P184</td><td>fig6a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>31</td><td>fig6</td><td>P184</td><td>fig6b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>31</td><td>fig6</td><td>P184</td><td>fig6c</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>31</td><td>fig6</td><td>P184</td><td>fig6d</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>31</td><td>fig6</td><td>P184</td><td>fig6e</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>31</td><td>fig6</td><td>P184</td><td>fig6f</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>33</td><td>tabI</td><td>P184</td><td>tabI.r0c0</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>33</td><td>tabI</td><td>P184</td><td>tabI.r0c1</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>33</td><td>tabI</td><td>P184</td><td>tabI.r0c2</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>33</td><td>tabI</td><td>P184</td><td>tabI.r0c3</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>33</td><td>tabI</td><td>P184</td><td>tabI.r0c4</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>gre23</td><td>33</td><td>tabI</td><td>P184</td><td>tabI.r0c5</td><td>yes</td><td>no</td></tr>
+<tr><td>accepted</td><td>mat23</td><td>15</td><td>fig1</td><td>P184</td><td>fig1a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>mat23</td><td>15</td><td>fig1</td><td>P184</td><td>fig1b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>mat23</td><td>15</td><td>fig1</td><td>P184</td><td>fig1c</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>mat23</td><td>18</td><td>fig4</td><td>P184</td><td>fig4a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>mat23</td><td>18</td><td>fig4</td><td>P184</td><td>fig4b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>wer21</td><td>41</td><td>fig6</td><td>P184</td><td>fig6a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>wer21</td><td>41</td><td>fig6</td><td>P184</td><td>fig6b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>wer21</td><td>41</td><td>fig6</td><td>P184</td><td>fig6c</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>wer21</td><td>41</td><td>fig6</td><td>P184</td><td>fig6d</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>wer21</td><td>43</td><td>fig8</td><td>P184</td><td>fig8a</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>wer21</td><td>43</td><td>fig8</td><td>P184</td><td>fig8b</td><td></td><td>no</td></tr>
+<tr><td>accepted</td><td>wer21</td><td>47</td><td>fig13</td><td>P184</td><td>fig13</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>55</td><td>s3</td><td>P184-r2</td><td>s3.p22</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>55</td><td>s3</td><td>P184-r2</td><td>s3.p28</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>55</td><td>s3</td><td>P184-r2</td><td>s3.p30</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>55</td><td>s3</td><td>P184-r2</td><td>s3.p31</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>70</td><td>fig12</td><td>P184-r2</td><td>fig12a</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>70</td><td>fig12</td><td>P184-r2</td><td>fig12b</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.cap</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r0c0</td><td>yes</td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r0c1</td><td>yes</td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r0c2</td><td>yes</td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r0c3</td><td>yes</td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r0c4</td><td>yes</td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r0c5</td><td>yes</td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r1c0</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r1c1</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r1c2</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r1c3</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r2c0</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r2c1</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r2c2</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r2c3</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r3c0</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r3c1</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r3c2</td><td></td><td>no</td></tr>
+<tr><td>P201 run (P184-r2)</td><td>ela03</td><td>72</td><td>tab1</td><td>P184-r2</td><td>tab1.r3c3</td><td></td><td>no</td></tr>
+</table>
+<h2>2. a minimal response</h2><p>kb/reports/P202.2_minimal_response.csv</p>
+<table><tr><th>response</th><th>answers (id: nk, records)</th><th>valid against the new schema</th><th>common.failure</th></tr>
+<tr><td>minimal: one answer with a record, one NK answer</td><td>abs.g1: none, 1; abs.g2: no_knowledge, 0</td><td>True</td><td>(none)</td></tr>
+<tr><td>the same with the NK answer turned into nk none, no record</td><td>abs.g1: none, 1; abs.g2: none, 0</td><td>False</td><td>nk none with no record: abs.g2</td></tr>
+</table>
+<h2>3. pass-0 ids outside the new enums</h2><p>kb/reports/P202.3_ids_outside_enum.csv</p>
+<table><tr><th>paper</th><th>line</th><th>line_kind</th><th>unit</th><th>field</th><th>ids_outside_enum</th></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_1</td><td>introduced_in</td><td>mat22:fig2#v1;mat22:fig4#v3</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_2</td><td>introduced_in</td><td>mat22:fig2#v2;mat22:fig4#v2</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_3</td><td>introduced_in</td><td>mat22:fig2#v3;mat22:fig4#v1</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_4</td><td>introduced_in</td><td>mat22:fig2#v4;mat22:fig4#v11</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_5</td><td>introduced_in</td><td>mat22:fig2#v5;mat22:fig4#v10</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_6</td><td>introduced_in</td><td>mat22:fig2#v6;mat22:fig4#v9</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_7</td><td>introduced_in</td><td>mat22:fig2#v7;mat22:fig4#v8</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_8</td><td>introduced_in</td><td>mat22:fig2#v8;mat22:fig4#v7</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_9</td><td>introduced_in</td><td>mat22:fig2#v9;mat22:fig4#v6</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_10</td><td>introduced_in</td><td>mat22:fig2#v10;mat22:fig4#v5</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_11</td><td>introduced_in</td><td>mat22:fig2#v11;mat22:fig4#v4</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_12</td><td>introduced_in</td><td>mat22:fig2#v12;mat22:fig4#v12</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_13</td><td>introduced_in</td><td>mat22:fig2#v13;mat22:fig4#v17</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_14</td><td>introduced_in</td><td>mat22:fig2#v14;mat22:fig4#v16</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_15</td><td>introduced_in</td><td>mat22:fig2#v15;mat22:fig4#v15</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_16</td><td>introduced_in</td><td>mat22:fig2#v16;mat22:fig4#v14</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_17</td><td>introduced_in</td><td>mat22:fig2#v17;mat22:fig4#v13</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_18</td><td>introduced_in</td><td>mat22:fig2#v18;mat22:fig4#v21</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_19</td><td>introduced_in</td><td>mat22:fig2#v19;mat22:fig4#v20</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_20</td><td>introduced_in</td><td>mat22:fig2#v20;mat22:fig4#v19</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_21</td><td>introduced_in</td><td>mat22:fig2#v21;mat22:fig4#v18</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_22</td><td>introduced_in</td><td>mat22:fig2#v22;mat22:fig4#v28</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_23</td><td>introduced_in</td><td>mat22:fig2#v23;mat22:fig4#v27</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_24</td><td>introduced_in</td><td>mat22:fig2#v24;mat22:fig4#v26</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_25</td><td>introduced_in</td><td>mat22:fig2#v25;mat22:fig4#v25</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_26</td><td>introduced_in</td><td>mat22:fig2#v26;mat22:fig4#v24</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_27</td><td>introduced_in</td><td>mat22:fig2#v27;mat22:fig4#v23</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_28</td><td>introduced_in</td><td>mat22:fig2#v28;mat22:fig4#v22</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_29</td><td>introduced_in</td><td>mat22:fig2#v29;mat22:fig4#v32</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_30</td><td>introduced_in</td><td>mat22:fig2#v30;mat22:fig4#v31</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_31</td><td>introduced_in</td><td>mat22:fig2#v31;mat22:fig4#v30</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>run_grid_32</td><td>introduced_in</td><td>mat22:fig2#v32;mat22:fig4#v29</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>unit_tab1_r1</td><td>introduced_in</td><td>tab1</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>unit_tab1_r2</td><td>introduced_in</td><td>tab1</td></tr>
+<tr><td>mat22</td><td>4</td><td>accepted pass 0</td><td>unit_tab1_r3</td><td>introduced_in</td><td>tab1</td></tr>
+<tr><td>ela03</td><td>2</td><td>accepted pass 0</td><td>sim_diff_limited</td><td>data</td><td>ela03:fig12a#d1_1;ela03:fig12a#d2_1</td></tr>
+<tr><td>ela03</td><td>2</td><td>accepted pass 0</td><td>sim_react_limited</td><td>data</td><td>ela03:fig12b#d1_1;ela03:fig12b#d2_1</td></tr>
+<tr><td>ela03</td><td>2</td><td>accepted pass 0</td><td>sim_pred_p001</td><td>introduced_in</td><td>s4.p24</td></tr>
+<tr><td>ela03</td><td>2</td><td>accepted pass 0</td><td>sim_pred_p01</td><td>introduced_in</td><td>s4.p24</td></tr>
+<tr><td>ela03</td><td>2</td><td>accepted pass 0</td><td>sim_pred_p1</td><td>introduced_in</td><td>s4.p24</td></tr>
+<tr><td>ela03</td><td>2</td><td>accepted pass 0</td><td>sim_pred_p10</td><td>introduced_in</td><td>s4.p24</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>specimen_zno_1s</td><td>introduced_in</td><td>fig41 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>meas_epma_map_zno_1s</td><td>introduced_in</td><td>fig41 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>specimen_zno_3s</td><td>introduced_in</td><td>fig43 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>meas_epma_map_zno_3s</td><td>introduced_in</td><td>fig43 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>specimen_zno_10s</td><td>introduced_in</td><td>fig410 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>meas_epma_map_zno_10s</td><td>introduced_in</td><td>fig410 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>specimen_zno_30s</td><td>introduced_in</td><td>fig430 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>meas_epma_map_zno_30s</td><td>introduced_in</td><td>fig430 s</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>panel_layouts</td><td>panel</td><td>&quot;fig1&quot;</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>panel_layouts</td><td>panel</td><td>&quot;fig41 s&quot;</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>panel_layouts</td><td>panel</td><td>&quot;fig43 s&quot;</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>panel_layouts</td><td>panel</td><td>&quot;fig410 s&quot;</td></tr>
+<tr><td>ela03</td><td>53</td><td>P201 pass 0 (P184-r2, rejected)</td><td>panel_layouts</td><td>panel</td><td>&quot;fig430 s&quot;</td></tr>
+<tr><td>yim22</td><td>1</td><td>accepted pass 0</td><td>sim_model_a</td><td>introduced_in</td><td>s3.p2</td></tr>
+<tr><td>yim22</td><td>1</td><td>accepted pass 0</td><td>sim_model_b</td><td>introduced_in</td><td>s3.p3</td></tr>
+<tr><td>mat23</td><td>1</td><td>accepted pass 0</td><td>mat23:specimen:tald_150_10nm</td><td>introduced_in</td><td>s3.p8;s3.p9</td></tr>
+<tr><td>mat23</td><td>1</td><td>accepted pass 0</td><td>mat23:specimen:peald_150_21nm</td><td>introduced_in</td><td>s3.p8;s3.p9</td></tr>
+<tr><td>mat23</td><td>1</td><td>accepted pass 0</td><td>mat23:run:tald_150_quartz</td><td>introduced_in</td><td>s3.p10</td></tr>
+<tr><td>mat23</td><td>1</td><td>accepted pass 0</td><td>mat23:specimen:tald_150_quartz</td><td>introduced_in</td><td>s3.p10</td></tr>
+<tr><td>mat23</td><td>1</td><td>accepted pass 0</td><td>mat23:run:peald_150_quartz</td><td>introduced_in</td><td>s3.p10</td></tr>
+<tr><td>mat23</td><td>1</td><td>accepted pass 0</td><td>mat23:specimen:peald_150_quartz</td><td>introduced_in</td><td>s3.p10</td></tr>
+</table>
+</body></html>
