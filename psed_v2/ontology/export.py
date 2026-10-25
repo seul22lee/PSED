@@ -379,7 +379,7 @@ NOTE_WORDS, STATEMENT_WORDS = 20, 40
 PROVIDER_ENUM_MAX = 50                                                          # P133: a longer enum goes to the provider as a plain string
 FORM_CATEGORICALS = ["crystallinity"]                                          # P149 F3 (user): a categorical output whose value_text is its vocabularies list
 FORM_VERSION = "P204"                                                           # P158 (user): the pass-1 form frozen before round 2; P163: rule 1 scoped; P179: the species rule; P184: qualifiers only when stated, step as named; P202: P184's record rules, an answer nk none with at least one record, else an NK reason; P204: P202 plus no no_knowledge on an element holding a number (a header cell may); common.run writes it on every new line
-PASS0_FORM_VERSION = 7                                                          # P179 (user): version 2: process_mode on runs (1: P144-P178); P181: 3, the recipe fields; P184: 4, measurements, method, distinguished_by, panel method; P185: 5, material a recipe field; P187: 6, steps; P188: 7, assumptions
+PASS0_FORM_VERSION = 8                                                          # P179 (user): version 2: process_mode on runs (1: P144-P178); P181: 3, the recipe fields; P184: 4, measurements, method, distinguished_by, panel method; P185: 5, material a recipe field; P187: 6, steps; P188: 7, assumptions; P206b: 8, units a required array of at least one unit
 QUALIFIER_RULE = ("A qualifier is written only when the element's text states that property (the step named, the statistic named, the position "
                   "named). A key the text does not state is left out; qualifiers may be empty.")   # P184 (user): CODEBOOK and pass1_elements RULES
 RECIPE_FIELDS = ["reactant_A", "reactant_B", "carrier_gas", "process_mode", "material", "steps"]   # P185 (user): material; P187: steps (the cycle's step sequence)       # P181 (user): a run's (a model's) recipe fields, each with <field>_quote
@@ -621,7 +621,7 @@ def pass0_schema(onto, L):
         "description": f"One paper = its experiment units (runs, specimens, simulations, model runs), the layout of each table and of each figure panel "
                        f"(ontology version {onto['version']}, sha256 {h}).",
         "type": "object", "additionalProperties": False, "required": ["units", "table_layouts", "panel_layouts"],          # P144
-        "properties": {name: nullable({"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(fields),
+        "properties": {name: (lambda s: {**s, "minItems": 1} if name == "units" else nullable(s))({"type": "array", "items": {"type": "object", "additionalProperties": False, "required": list(fields),   # P206b (user): units never null, never empty
                                                                    "properties": {k: (v if (name, k) in P0_NOT_NULL else nullable(v)) for k, v in fields.items()},
                                                                    **({"allOf": [{"if": {"properties": {"role": {"enum": ["specimen", "model_run"]}}, "required": ["role"]},
                                                                                   "then": {"properties": {"parent": {"type": "string", "minLength": 1}}}},   # P146
@@ -1198,7 +1198,7 @@ def run_checks(onto):
     by = {e["id"]: e for e in entries}
     bad += [f"1c: {i} takes no species qualifier" for i in ("molar_mass", "molecule_diameter") if "species" not in entry_qualifiers(onto).get(i, [])]   # P182: derived
     p0 = json.loads((SCHEMA / "form_pass0.json").read_text(encoding="utf-8")) if (SCHEMA / "form_pass0.json").exists() else {}
-    unit = (p0.get("properties", {}).get("units", {}).get("anyOf") or [{}])[0].get("items", {})
+    unit = (lambda u: (u.get("anyOf") or [u])[0].get("items", {}))(p0.get("properties", {}).get("units", {}))   # P206b: units a plain array (nullable before)
     pm = json.dumps(unit.get("properties", {}).get("process_mode", {}))
     if "hot_wire" not in onto["vocabularies"]["process_mode"] or "hot_wire" not in pm or "process_mode_quote" not in json.dumps(unit.get("allOf", [])):
         bad.append("1d: process_mode (with hot_wire) and its quote on the pass-0 units")
@@ -1221,7 +1221,7 @@ def run_checks(onto):
                 not bad, f"problems: {bad}" if bad else "; ".join(f"{v}: {n} lines" for v, n in sorted(found.items())), bad))
     bad = []                                                                    # P181 (user): the recipe fields of pass 0
     p0 = json.loads((SCHEMA / "form_pass0.json").read_text(encoding="utf-8")) if (SCHEMA / "form_pass0.json").exists() else {}
-    unit = (p0.get("properties", {}).get("units", {}).get("anyOf") or [{}])[0].get("items", {})
+    unit = (lambda u: (u.get("anyOf") or [u])[0].get("items", {}))(p0.get("properties", {}).get("units", {}))   # P206b: units a plain array (nullable before)
     props, rules = unit.get("properties", {}), json.dumps(unit.get("allOf", []))
     species = sorted(e["id"] for e in entries if e["type"] == "species")
     for f in RECIPE_FIELDS + MODEL_FIELDS:                                      # P188: and the simulation's assumptions

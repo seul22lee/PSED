@@ -54,7 +54,7 @@ Every field is present; null when it does not apply. Answer with JSON matching t
 def job(pid):
     """(pass, section, prompt, response schema, element ids)."""
     form = C.schema("form_pass0.json")
-    item = form["properties"]["units"]["anyOf"][0]["items"]
+    item = form["properties"]["units"]["items"]                                 # P206b: a plain array (nullable before)
     _, _, units = PM.pass0_line(pid)
     cur = "\n".join(json.dumps({**{k: u.get(k) for k in ("id", "role", "parent", "name_as_printed", "introduced_in")},
                                 "data": [d.get("id") for d in u.get("data") or [] if isinstance(d, dict)] or None}, ensure_ascii=False) for u in units)
@@ -69,7 +69,7 @@ def job(pid):
                              "panel_methods": {"type": "array", "items": {"type": "object", "additionalProperties": False, "required": ["panel", "method"],
                                                                           "properties": {"panel": {"enum": panels or ["none"]},
                                                                                          "method": {"anyOf": [{"enum": methods}, {"type": "null"}]}}}}}}
-    return (K.EXTEND_PASS, "units", prompt, P0.id_enums(pid, C.provider_schema(schema)), [])   # P202: the unit id fields as pass 0's
+    return (K.EXTEND_PASS, "units", prompt, C.provider_schema(schema), [])      # P206b (user): the id fields plain strings, as pass 0's
 
 
 def main(arg):

@@ -339,6 +339,16 @@ psed_v2/
 - P206 (user): the pass-0 instruction: a least-squares fit to experimental data is not a simulation; its curve is fitted data of the
   experimental series it fits (form_candidates fit_is_not_simulation, included P206). Pass-1 form version P206 (P204's rules on the
   P206 pass-0 instruction): form_versions.csv corpus candidate.
+- P206b (user): render.example is compact: per role at most 3 gold units (render.example_units: run, simulation, specimen, model run,
+  measurement in that order, a unit only under a kept parent, gold order), every field as before, SOURCES and the layouts of those units'
+  tables and panels only. Pass 0 and 0x send introduced_in, data ids, table, unit_name_cells and panel as plain strings (P202's enums
+  withdrawn for them; 0ax keeps its enum); compile.drop_unknown_ids drops and lists (compile.log) an id the paper does not have
+  (introduced_in: an element or figures.json id; a layout with an unknown table or panel goes with it); a data id outside figures.json
+  stays bind's data_id_not_in_figures_json. form_pass0's units are a required array of at least one unit (pass-0 form version 8);
+  common.failure fails a pass-0 response with no unit (UNIT_CHECKED; user: pass 0 only, a 0x line holds only new units and may hold
+  none). compile.failed_lines: a pass-0, 0x or fill line that common.failure fails is read as absent by every reader of the latest such
+  line (after_pass0, latest_pass0, recipe_fill, pass0_object, Run.read, pass1_elements.units_block, process_mode_fill.pass0_line,
+  gates) and listed (compile.log; stderr / stdout of the prompt builders).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

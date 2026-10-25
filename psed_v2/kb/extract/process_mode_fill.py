@@ -22,10 +22,12 @@ FIELDS = ("process_mode", "process_mode_quote", "process_mode_element")
 
 def pass0_line(pid):
     """(line number, units) of the pass-0 line compile uses (Run.read: the one the pass-1 lines in use were written against); P185: with
-    the pass-0 extension's new units (compile.pass0_object)."""
+    the pass-0 extension's new units (compile.pass0_object). P206b (user): a failed pass-0, 0x or fill line is not read (Run.read), listed."""
     run = K.Run(pid)
     run.read()
     lines = C.lines(pid)
+    if K.failed_lines(lines):
+        print(f"{C.E.PAPERS.get(pid, pid)}: {K.failed_note(lines)}")
     n = next(n for n in run.lines_used if lines[n - 1]["pass"] == 0)
     _, obj, _ = K.pass0_object(pid, n, lines)
     return n, run, [u for u in (obj.get("units") or []) if isinstance(u, dict)]

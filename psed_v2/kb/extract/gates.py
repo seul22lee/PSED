@@ -37,7 +37,8 @@ def dev_papers():
 
 
 def pass0_values(pid):
-    obj = C.loads_json(C.lines(pid, 0)[-1]["response"])
+    lines = C.lines(pid)                                                        # P206b (user): the latest pass-0 line that is no failed call
+    obj = C.loads_json(lines[K.latest_pass0(lines) - 1]["response"])
     units = [u for u in obj.get("units") or [] if isinstance(u, dict)]
     n_el = len(C.E.load(pid))
     D = K.bind(pid, obj, None)["units"]                                         # P177b: the derived units of compile.bind
@@ -183,7 +184,7 @@ def plan(pids):
         pid, key = C.resolve(a)
         st = json.loads((C.V2 / "ingest" / "final" / pid / "structure.json").read_text(encoding="utf-8"))
         nf = 0 if (C.V2 / "ingest" / "final" / pid / "figures.json").exists() else sum(1 for c in st["captions"] if c["kind"] == "figure" and c.get("images"))
-        have0 = any(x["pass"] == 0 and x.get("form_version") == C.X.FORM_VERSION for x in (json.loads(y) for y in ((C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if (C.RECORDS / f"{pid}.jsonl").exists() else []) if y.strip()))
+        have0 = any(x["pass"] == 0 and x.get("form_version") == C.X.FORM_VERSION and not C.line_failure(x) for x in (json.loads(y) for y in ((C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if (C.RECORDS / f"{pid}.jsonl").exists() else []) if y.strip()))
         ng = len(P1.groups(pid)[0]) if (C.V2 / "kb" / "pilot" / f"{pid}.elements.csv").exists() else 0
         done1 = {x["section"] for x in (json.loads(y) for y in ((C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if (C.RECORDS / f"{pid}.jsonl").exists() else []) if y.strip()) if x["pass"] == 1 and x.get("form_version") == C.X.FORM_VERSION}
         n1 = sum(1 for g in (P1.groups(pid)[0] if ng else {}) if g not in done1)

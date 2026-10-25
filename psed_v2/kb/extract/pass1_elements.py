@@ -303,15 +303,19 @@ def step_examples(pid, form):
 def units_block(pid):
     """P148 (A5): PASS-0 UNITS, one line per unit of the latest pass-0 line: id | role | name | distinguished by | parent | data (id:role ...);
     P204 (user): distinguished by = the unit's distinguished_by, 'quantity value unit' joined by '; ', '-' when none (missing since P184). P161: then
-    the units compile.bind() derives (P177b) for the items no pass-0 unit holds, each line ending | <origin>; none, no line."""
+    the units compile.bind() derives (P177b) for the items no pass-0 unit holds, each line ending | <origin>; none, no line. P206b (user):
+    a pass-0, 0x or fill line that common.failure fails is not read (compile.failed_lines), listed on stderr."""
     import compile as K                                                         # P161 (compile imports this module)
-    p0 = C.lines(pid, 0)
-    if not p0:
-        raise C.Stop("no pass-0 line in records/: run pass0_paper.py first")
-    _, obj, _ = K.pass0_object(pid)                                             # P185: the latest pass-0 line with the extension's units
+    lines = C.lines(pid)
+    bad = K.failed_lines(lines)
+    if bad:
+        print(f"{C.E.PAPERS.get(pid, pid)}: PASS-0 UNITS: {K.failed_note(lines, bad)}", file=sys.stderr)
+    if K.latest_pass0(lines, bad) is None:
+        raise C.Stop("no pass-0 line in records/ that is no failed call: run pass0_paper.py first")
+    _, obj, _ = K.pass0_object(pid, None, lines)                                # P185: the latest pass-0 line with the extension's units
     items = (obj.get("units") or []) if isinstance(obj, dict) else obj       # P144: pass 0 is {units, table_layouts, panel_layouts}
     data = lambda it: " ".join(f"{d.get('id')}:{d.get('role') or 'null'}" if isinstance(d, dict) else str(d) for d in (it.get("data") or [])) or "-"   # noqa: E731
-    _, fill, _ = K.recipe_fill(pid)                                       # P181 (user): the recipe fields, in words, null ones omitted
+    _, fill, _ = K.recipe_fill(pid, lines)                                # P181 (user): the recipe fields, in words, null ones omitted
     words = {"reactant_A": "reactant_A", "reactant_B": "reactant_B", "carrier_gas": "carrier", "process_mode": "mode", "material": "material"}   # P185: material
     field = lambda it, f: {**it, **fill.get(it.get("id"), {})}.get(f)          # noqa: E731  P201: as compile reads a unit: its fill (nulls too) over its own fields
     recipe = lambda it: ", ".join(f"{words[f]} {field(it, f)}" for f in C.X.RECIPE_FIELDS if f in words and field(it, f))   # noqa: E731  P187: steps not shown

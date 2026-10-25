@@ -506,6 +506,19 @@ def pair_units(pid, key, units, measurements=False):
     return dict(comps=comps, esi=esi, pair_of=pair_of, status_g=status_g, status_p=status_p, links=links, bound=bound, gc=gc)
 
 
+EXAMPLE_PER_ROLE = 3                                                            # P206b (user): the compact example's units per role
+EXAMPLE_ROLES = ("run", "simulation", "specimen", "model_run", "measurement")    # parents before children
+
+
+def example_units(U):
+    """P206b (user): the compact example's gold units: per role (EXAMPLE_ROLES order) the first EXAMPLE_PER_ROLE units in gold order whose
+    parent is none or a kept unit; returned in gold order."""
+    keep = set()
+    for role in EXAMPLE_ROLES:
+        keep |= {u["gid"] for u in [u for u in U if u["role"] == role and (not u["parent"] or u["parent"] in keep)][:EXAMPLE_PER_ROLE]}
+    return [u for u in U if u["gid"] in keep]
+
+
 def example(pid, form):
     """One example in the pass-0 form: the gold units and layouts of the last dev paper in index order other than pid (never held-out)
     whose gold has runs, specimens, a simulation and model runs; ids role prefix + number; curves from gold_curve_units; then SOURCES:
@@ -520,12 +533,15 @@ def example(pid, form):
     specimen_class and structure_class from the gold row's qualifiers; a run's recipe fields (reactant_A, reactant_B, carrier_gas,
     process_mode, material) from its own setting, else the nearest ancestor's single value (P190), each with a quote
     (pass1_elements._quote, else the words of the setting's evidence element as SOURCES gives them). A field is null only where the
-    gold states nothing, or states it in no value the form takes (a quantity other, a method outside the form's list)."""
+    gold states nothing, or states it in no value the form takes (a quantity other, a method outside the form's list). P206b (user):
+    compact: per role at most EXAMPLE_PER_ROLE units of the gold paper (example_units: parents before children, a unit only under a kept
+    parent, gold order), every field present as before (distinguished_by still against all its gold siblings), the SOURCES lines of those
+    units only, the layouts of those units' tables and panels only (a layout's units: the kept ones)."""
     from jsonschema import Draft202012Validator
     import compile as K
     import pass1_elements as P1
     PRE = {"run": "r", "simulation": "sim", "specimen": "s", "model_run": "m", "measurement": "meas"}
-    item = lambda k: next(x for x in form["properties"][k]["anyOf"] if x.get("type") == "array")["items"]["properties"]   # noqa: E731
+    item = lambda k: next(x for x in form["properties"][k].get("anyOf", [form["properties"][k]]) if x.get("type") == "array")["items"]["properties"]   # noqa: E731  P206b: units a plain array
     build = lambda k, gold: {f: gold.get(f) for f in item(k)}                    # noqa: E731
     for p in [p for p in reversed(list(E.PAPERS)) if p != pid and p not in C.HELD_OUT]:
         if not (C.V2 / "kb" / "pilot" / f"{p}.facts.csv").exists():             # P201: a paper with no gold (wer21, P171) gives no example
@@ -534,6 +550,10 @@ def example(pid, form):
         if not {"run", "specimen", "simulation", "model_run"} <= {u["role"] for u in U}:
             continue
         U = U + gold_measurements(p, U)                                         # P204 (user, B1)
+        sib = collections.defaultdict(list)
+        for u in U:
+            sib[(u["parent"], u["role"])].append(u["gid"])
+        U = example_units(U)                                                    # P206b (user): compact
         G = {r["fact_id"]: r for r in _gold(p)}
         own = collections.defaultdict(list)
         for r in G.values():
@@ -552,9 +572,6 @@ def example(pid, form):
         check = lambda e, q: K.normalize(q) in K.normalize(text.get(e, ""))   # noqa: E731  (as pass 1's examples)
         quals = lambda r: dict(x.split("=", 1) for x in (r.get("qualifiers") or "").split(";") if "=" in x)   # noqa: E731
         qids, methods = set(form["$defs"]["quantity_id"]["enum"]), set(next(x for x in item("units")["method"]["anyOf"] if "enum" in x)["enum"])
-        sib = collections.defaultdict(list)
-        for u in U:
-            sib[(u["parent"], u["role"])].append(u["gid"])
 
         def printed(u):
             return bool(u["name"]) and any(K.normalize(u["name"]).lower() in K.normalize(text.get(e, "")).lower() for e in u["evidence"])
@@ -593,10 +610,10 @@ def example(pid, form):
         tl, pl = gold_layouts(p, key)
         obj = {"units": [unit_item(u) for u in U],
                "table_layouts": [build("table_layouts", {"table": t["table"], "layout": t["layout"].split()[0], "units": [ids[x] for x in t["units"] if x in ids] or None})
-                                 for t in tl if not t["minority_cells"]] or None,
+                                 for t in tl if not t["minority_cells"] and set(t["units"]) & set(ids)] or None,   # P206b: the kept units' tables only
                "panel_layouts": [build("panel_layouts", {"panel": x["panel"], "layout": x["layout"],
                                                          "unit": ids.get(x["units"][0]) if x["layout"] == "panel_one_unit" and x["units"] else None})
-                                 for x in pl if x["layout"] in ("curve_per_unit", "panel_one_unit", "point_per_unit")] or None}
+                                 for x in pl if x["layout"] in ("curve_per_unit", "panel_one_unit", "point_per_unit") and set(x["units"]) & set(ids)] or None}   # P206b: their panels only
         errs = list(Draft202012Validator(form).iter_errors(obj))
         if errs:
             continue

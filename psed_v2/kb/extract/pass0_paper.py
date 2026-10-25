@@ -68,37 +68,13 @@ PANEL LAYOUTS (one per figure panel of FIGURES below):
 Every field is present; null when it does not apply. Answer with JSON matching the form."""
 
 
-def id_enums(pid, s):
-    """P202 (user): pass 0's provider schema s (a units list, and the layouts when s has them) with every id field an enum of this
-    paper's ids, set after provider_schema (no enum length limit; as pass 1's answer ids): a unit's introduced_in (the element ids) and
-    data ids (compile.data_ids: figures.json curves, values, sets, derived); a table layout's table (the table ids) and unit_name_cells
-    (the table cells); a panel layout's panel (the panel elements). Returns s."""
-    import compile as K
-    els = C.E.load(pid)
-    eids, data = [r["element_id"] for r in els], K.data_ids(pid)
-    tables, cells = sorted({r["section"] for r in els if r["kind"] == "table_cell"}), [r["element_id"] for r in els if r["kind"] == "table_cell"]
-    panels = [r["element_id"] for r in els if r["kind"] == "panel"]
-    props = lambda k: s["properties"][k]["items"]["properties"] if k in s["properties"] else None   # noqa: E731
-    u = props("units")
-    u["introduced_in"]["items"]["enum"] = eids
-    if data:
-        u["data"]["items"]["properties"]["id"]["enum"] = data
-    if props("table_layouts") and tables:
-        props("table_layouts")["table"]["enum"] = tables + [None]
-        if cells:
-            props("table_layouts")["unit_name_cells"]["items"]["enum"] = cells
-    if props("panel_layouts") and panels:
-        props("panel_layouts")["panel"]["enum"] = panels + [None]
-    return s
-
-
 def jobs(pid):
     form = C.schema("form_pass0.json")
     prompt = "\n\n".join([instruction(), "CODEBOOK:\n" + render.codebook(), "EXAMPLE (another paper's gold, in the form):\n" + render.example(pid, form),
                           "TABLES (markdown, then cell ids):\n" + render.tables(pid), "FIGURES (caption, panels: id | type | what it shows, curves: id | panel | series label | x | y | "
                           "conditions):\n" + render.figures(pid), "ELEMENT INDEX (id, kind, locator):\n" + render.index(pid),
                           "PAPER (document.md):\n" + render.document(pid)])
-    return [(0, "paper", prompt, id_enums(pid, C.provider_schema(form)), [])]
+    return [(0, "paper", prompt, C.provider_schema(form), [])]                  # P206b (user): the id fields plain strings again (P202's enums withdrawn); compile drops and lists an unknown id
 
 
 THINKING = {"thinking_level": "MEDIUM"}                                         # user, P138 (was LOW, P133b); recorded in the line and the cache key
@@ -165,11 +141,16 @@ def measurement_named(pid, obj):
 def main(arg):
     pid, key = C.resolve(arg)
     if "--check" in sys.argv:                                                   # P160: the consistency check on the latest pass-0 line, no call
+        import compile as K
         lines = [json.loads(x) for x in (C.RECORDS / f"{pid}.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
-        rows = consistency(pid, C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"]))
+        bad = K.failed_lines(lines)                                             # P206b (user): a failed pass-0 line is skipped, listed
+        if bad:
+            print(f"{key}: {K.failed_note(lines, bad)}")
+        latest = next(x for n, x in reversed(list(enumerate(lines, 1))) if x["pass"] == 0 and n not in bad)
+        rows = consistency(pid, C.loads_json(latest["response"]))
         for r in rows:
             print(f"{key} {r['panel']} {r['layout']}: {r['items']} items, {r['held_pass0']} held by pass 0, {r['held_derived']} by derived units {r['flag']}")
-        obj = C.loads_json(next(x for x in reversed(lines) if x["pass"] == 0)["response"])
+        obj = C.loads_json(latest["response"])
         for r in model_named(pid, obj):                                         # P166
             print(f"{key} model {r['model']} named ({r['named']!r}); simulations: {r['simulations'] or 'none'} {r['flag']}")
         for r in measurement_named(pid, obj):                                   # P170
@@ -182,6 +163,9 @@ def main(arg):
         print(f"{key}: prompt {len(js[0][2])} chars, ~{len(js[0][2]) // 4} tokens")
         return 0
     out, _ = C.run(pid, jobs(pid), THINKING)
+    if not out:                                                                 # P206b: a failed call (no unit among the reasons) writes no line
+        print(f"{key} pass 0: no line written (a failed call: kb/records/failed_calls.csv)")
+        return 1
     obj = C.loads_json(out[0]["response"])
     units = (obj or {}).get("units") or [] if isinstance(obj, dict) else []
     roles = {}

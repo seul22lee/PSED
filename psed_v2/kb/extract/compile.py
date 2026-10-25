@@ -571,6 +571,7 @@ PROCESS_MODE_PASS = "0pm"                                                       
 RECIPE_FILL_PASS = "0rf"                                                         # P181: the records line of the recipe fill (the four recipe fields)
 FILL_PASSES = (PROCESS_MODE_PASS, RECIPE_FILL_PASS)
 EXTEND_PASS = "0x"                                                               # P184: the records line of the pass-0 extension (pass0_extend.py)
+READ_CHECKED = (0, EXTEND_PASS) + FILL_PASSES                                    # P206b (user): the lines whose readers skip a failed call
 
 
 VALUE_ENTRIES = {i for i, e in V.ENTRIES.items() if e["type"] in ("quantity", "categorical")}
@@ -586,10 +587,30 @@ def out_of_scope(quantity, key):
     return sc == "unit" or (quantity in VALUE_ENTRIES and quantity not in sc)
 
 
+def failed_lines(lines):
+    """P206b (user): {line number: why} of the pass-0, 0x and fill lines (READ_CHECKED) that common.failure fails (common.line_failure: a
+    pass-0 line with no unit among them). Every reader of the latest pass-0, 0x or fill line reads them as absent and lists them."""
+    return {n: why for n, x in enumerate(lines, 1) if x["pass"] in READ_CHECKED for why in [C.line_failure(x)] if why}
+
+
+def failed_note(lines, bad=None):
+    """P206b (user): the failed lines a reader skipped, in one line ('' when none)."""
+    bad = failed_lines(lines) if bad is None else bad
+    return ("records lines that are failed calls (common.failure), not read: " + "; ".join(f"{n} (pass {lines[n - 1]['pass']}: {w})" for n, w in bad.items())) if bad else ""
+
+
+def latest_pass0(lines, bad=None):
+    """P206b (user): the latest pass-0 line number that is no failed call (failed_lines), else None."""
+    bad = failed_lines(lines) if bad is None else bad
+    return max((i for i, x in enumerate(lines, 1) if x["pass"] == 0 and i not in bad), default=None)
+
+
 def after_pass0(lines, n0):
     """P200 (user): the line numbers written after the pass-0 line n0 and before the next pass-0 line: the only place compile reads a
-    pass-0 extension (EXTEND_PASS) or a fill line (FILL_PASSES) of that pass-0 line."""
-    return range(n0 + 1, min((i for i, x in enumerate(lines, 1) if x["pass"] == 0 and i > n0), default=len(lines) + 1))
+    pass-0 extension (EXTEND_PASS) or a fill line (FILL_PASSES) of that pass-0 line. P206b (user): a failed line is absent (failed_lines):
+    no next pass-0 line, and never one of the lines returned."""
+    bad = failed_lines(lines)
+    return [i for i in range(n0 + 1, min((i for i, x in enumerate(lines, 1) if x["pass"] == 0 and i > n0 and i not in bad), default=len(lines) + 1)) if i not in bad]
 
 
 def recipe_fill(pid, lines=None, n0=None):
@@ -599,9 +620,9 @@ def recipe_fill(pid, lines=None, n0=None):
     a quote found across elements gets them all as its element (';'-separated). Then a user's recipe decision (history.csv kind
     recipe_field, the paper in source_pids: id = the field, target = the value or null, parameters = the run ids, empty = every run of
     the fill) sets the field, listed. -> (line number, fields, [listed: run, field, value, reason]). P200 (user): the fill lines of the
-    pass-0 line n0 only (after_pass0; n0 None: the latest pass-0 line)."""
+    pass-0 line n0 only (after_pass0; n0 None: the latest pass-0 line). P206b (user): a failed line is skipped (latest_pass0, after_pass0)."""
     lines = C.lines(pid) if lines is None else lines
-    n0 = n0 or max((i for i, x in enumerate(lines, 1) if x["pass"] == 0), default=0)
+    n0 = n0 or latest_pass0(lines) or 0
     fl = [i for i in after_pass0(lines, n0) if lines[i - 1]["pass"] in FILL_PASSES]
     n = max(fl, default=None)
     if n is None:
@@ -634,12 +655,48 @@ def recipe_fill(pid, lines=None, n0=None):
     return n, out, listed
 
 
+def drop_unknown_ids(pid, obj, els):
+    """P206b (user): pass 0 and 0x send their id fields as plain strings again (P202's enums withdrawn): an id the paper does not have
+    is dropped and listed -> (object, [(unit id or layout, field, id)]): a unit's introduced_in (the paper's element ids, and its
+    figures.json ids, data_ids: the instruction's cell id of a unit established by a grid point), a table
+    layout's table (the tables of the table cells) and unit_name_cells (the table cells), a panel layout's panel (the panel elements); a
+    layout whose table or panel is unknown is dropped with it. A data id outside figures.json stays bind's (refs_unknown, dropped as
+    data_id_not_in_figures_json). A pass-0 line written before P144 (the units list itself) has introduced_in only."""
+    eids = {r["element_id"] for r in els} | set(data_ids(pid))
+    cells = {r["element_id"] for r in els if r["kind"] == "table_cell"}
+    known = {"table": {r["section"] for r in els if r["kind"] == "table_cell"}, "panel": {r["element_id"] for r in els if r["kind"] == "panel"}}
+    gone, units = [], []
+    for u in (obj.get("units") or [] if isinstance(obj, dict) else obj if isinstance(obj, list) else []):
+        if isinstance(u, dict) and isinstance(u.get("introduced_in"), list) and any(e not in eids for e in u["introduced_in"]):
+            gone += [(u.get("id"), "introduced_in", e) for e in u["introduced_in"] if e not in eids]
+            u = {**u, "introduced_in": [e for e in u["introduced_in"] if e in eids]}
+        units.append(u)
+    if not isinstance(obj, dict):
+        return (units if isinstance(obj, list) else obj), gone
+    out = {**obj, "units": units if obj.get("units") is not None else obj.get("units")}
+    for k, f in (("table_layouts", "table"), ("panel_layouts", "panel")):
+        keep = []
+        for x in obj.get(k) or []:
+            if isinstance(x, dict) and isinstance(x.get(f), str) and x[f] not in known[f]:
+                gone.append((k, f, x[f]))
+                continue
+            if isinstance(x, dict) and isinstance(x.get("unit_name_cells"), list) and any(c not in cells for c in x["unit_name_cells"]):
+                gone += [(f"{k} {x.get(f)}", "unit_name_cells", c) for c in x["unit_name_cells"] if c not in cells]
+                x = {**x, "unit_name_cells": [c for c in x["unit_name_cells"] if c in cells]}
+            keep.append(x)
+        if obj.get(k) is not None:
+            out[k] = keep
+    return out, gone
+
+
 def pass0_object(pid, n0=None, lines=None):
     """P185: the pass-0 object (line n0, else the latest pass-0 line) with the latest pass-0 extension's new units added (P184, records
     pass EXTEND_PASS; a unit whose id the pass-0 line holds is left out) -> (line number, object, extension line number or None). P200
-    (user): an extension line of the pass-0 line n0 only (after_pass0)."""
+    (user): an extension line of the pass-0 line n0 only (after_pass0). P206b (user): a failed line is skipped (latest_pass0, after_pass0)."""
     lines = C.lines(pid) if lines is None else lines
-    n0 = n0 or max(i for i, x in enumerate(lines, 1) if x["pass"] == 0)
+    n0 = n0 or latest_pass0(lines)
+    if n0 is None:
+        raise C.Stop("no pass-0 line that is no failed call in records/: run pass0_paper.py first")
     obj = C.loads_json(lines[n0 - 1]["response"])
     nx = max((i for i in after_pass0(lines, n0) if lines[i - 1]["pass"] == EXTEND_PASS), default=None)
     if nx and isinstance(obj, dict):
@@ -1162,9 +1219,14 @@ class Run:
         self.groups = P1.groups(self.pid)[0]
         latest, p0, el_line, fill = {}, None, {}, None
         grp_of = {r["element_id"]: g for g, rs in self.groups.items() for r in rs}
+        bad = failed_lines(lines)                                               # P206b (user): failed pass-0, 0x and fill lines, read as absent
+        if bad:
+            self.note("input: " + failed_note(lines, bad))
         ok = accepted_versions(self.key)                                        # P179b (user): only lines of an accepted form version
         self.versions_skipped = collections.Counter(line_version(x) for x in lines if x["pass"] == 1 and line_version(x) not in ok)
         for n, x in enumerate(lines, 1):
+            if n in bad:
+                continue
             if x["pass"] == 0:
                 p0 = n
             elif x["pass"] == 1 and line_version(x) in ok:
@@ -1175,7 +1237,7 @@ class Run:
             elif x["pass"] in FILL_PASSES:                                      # P179, P181: the latest fill of the pass-0 units
                 fill = n
         used = set(el_line.values())
-        before = [n for n, x in enumerate(lines, 1) if x["pass"] == 0 and used and n < min(used)]
+        before = [n for n, x in enumerate(lines, 1) if x["pass"] == 0 and n not in bad and used and n < min(used)]
         p0 = before[-1] if before else p0                                       # P143b: the pass-0 line the pass-1 lines in use were written against
         ignored = [n for n, x in enumerate(lines, 1) if x["pass"] == 1 and n not in used]
         if self.versions_skipped:
@@ -1201,6 +1263,10 @@ class Run:
             self.panel_method = {x["panel"]: x["method"] for x in ext.get("panel_methods") or [] if isinstance(x, dict) and x.get("panel") and x.get("method") in L.MEASUREMENT_METHODS}
             self.note(f"input: pass-0 extension = line {nx}: {len(new)} units (" + ", ".join(f"{r} {n}" for r, n in collections.Counter(u.get('role') for u in new).items())
                       + f"); {len(self.panel_method)} image panel methods")
+        p0obj, gone = drop_unknown_ids(self.pid, p0obj, self.els)                         # P206b (user): an id the paper does not have, dropped and listed
+        if gone:
+            self.count("input", "pass-0 ids the paper does not have (dropped)", len(gone))
+            self.note("input: pass-0 ids the paper does not have, dropped: " + "; ".join(f"{a} {f} {i}" for a, f, i in gone))
         self.pass0 = (p0obj.get("units") or []) if isinstance(p0obj, dict) else p0obj    # P144: {units, table_layouts, panel_layouts}
         self.layouts = {k: (p0obj.get(k) or []) for k in ("table_layouts", "panel_layouts")} if isinstance(p0obj, dict) else {}
         self.answers, self.form_version = {}, {}                                # element id -> [record] | "NK:..."; P158: its line's form version

@@ -109,12 +109,14 @@ def numeric_ids(pid):
 
 
 ID_CHECKED = ("0ax",)                                                           # P201 (user): passes whose answers must be exactly the job's ids
+UNIT_CHECKED = (0,)                                                             # P206b (user): passes whose response must hold a unit (pass 0; a 0x line holds only new units: none is an answer)
 
 
 def line_failure(x):
     """failure() of a records or cache line, with its listed ids for an ID_CHECKED pass; P204 (user, B2): a pass-1 line with its paper's
-    numeric ids."""
-    return failure(x.get("response"), x.get("element_ids") if x.get("pass") in ID_CHECKED else None, numeric_ids(x["pid"]) if x.get("pass") == 1 and x.get("pid") else None)
+    numeric ids; P206b (user): a UNIT_CHECKED line with the unit check."""
+    return failure(x.get("response"), x.get("element_ids") if x.get("pass") in ID_CHECKED else None, numeric_ids(x["pid"]) if x.get("pass") == 1 and x.get("pid") else None,
+                   x.get("pass") in UNIT_CHECKED)
 
 
 def cached(cp):
@@ -171,12 +173,14 @@ def call(client, prompt, rschema, thinking=None, cached=None):
                                   cache_read_tokens=u.cached_content_token_count or 0), ts
 
 
-def failure(text, ids=None, numeric=None):
+def failure(text, ids=None, numeric=None, units=False):
     """P196b (user) rule 1, P200 (user) extended: why a response is a failed call ('' when it is none): it does not parse (the tolerant JSON
     parse, figures.loads_json, the one compile uses), or a string of the parsed object (a key or a value) holds U+0000 or U+FFFD. P201
     (user): with ids (an ID_CHECKED pass), its answers (key answers, each an id) miss a listed id or answer an unlisted one. P202 (user):
     an answer with nk none and no record (pass 1's answer shapes, checked here in case the provider does not enforce the schema). P204
-    (user, B2): with numeric (pass 1: numeric_ids), an answer no_knowledge for an element holding a number."""
+    (user, B2): with numeric (pass 1: numeric_ids), an answer no_knowledge for an element holding a number. P206b (user): with units (a
+    pass-0 response, UNIT_CHECKED), a response with no unit (units null or empty; a line written before P144 is the units list itself):
+    every paper of the corpus has experiment or simulation units."""
     try:
         obj = loads_json(text)
     except (ValueError, TypeError) as e:
@@ -197,6 +201,9 @@ def failure(text, ids=None, numeric=None):
     nk_num = [str(a.get("id")) for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict) and a.get("nk") == "no_knowledge" and a.get("id") in (numeric or ())]
     if nk_num and not why:
         why = f"no_knowledge on an element holding a number: {', '.join(nk_num[:20])}"
+    us = (obj.get("units") if isinstance(obj, dict) else obj) if units else None
+    if units and not why and not (isinstance(us, list) and us):
+        why = f"no unit (units {'null' if us is None else 'empty' if us == [] else type(us).__name__})"
     if ids is not None and not why:
         got = [a.get("id") for a in (obj.get("answers") or [] if isinstance(obj, dict) else []) if isinstance(a, dict)]
         miss, extra = [i for i in ids if i not in got], sorted({str(i) for i in got if i not in ids})
@@ -258,7 +265,7 @@ def run(pid, jobs, thinking=None, form_version=None):
             for attempt in range(before + 1, 3):                                # P196b rule 2: the first attempt and one retry per request
                 text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
                 made += 1
-                why = failure(text, ids if pass_ in ID_CHECKED else None, numeric_ids(pid) if pass_ == 1 else None)
+                why = failure(text, ids if pass_ in ID_CHECKED else None, numeric_ids(pid) if pass_ == 1 else None, pass_ in UNIT_CHECKED)
                 if not why:
                     break
                 list_failed(dict(pid=pid, section=section, prompt_hash=h, model=MODEL, form_version=form_version or X.FORM_VERSION, request_ts=ts,
