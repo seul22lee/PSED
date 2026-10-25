@@ -13,6 +13,7 @@ the cached content is deleted when the run ends. The line records cache_read_tok
 Records: records/<pid>.jsonl (tracked), one line per call made, append-only.
 One retry on a transport error; a second failure, or any other error, stops the run.
 """
+import collections
 import datetime
 import hashlib
 import json
@@ -153,13 +154,28 @@ def call(client, prompt, rschema, thinking=None, cached=None):
                                   cache_read_tokens=u.cached_content_token_count or 0), ts
 
 
-def parses(text):
-    """P196b (user): a response parses when the tolerant JSON parse (figures.loads_json, the one compile uses) reads it."""
+def failure(text):
+    """P196b (user) rule 1, P200 (user) extended: why a response is a failed call ('' when it is none): it does not parse (the tolerant JSON
+    parse, figures.loads_json, the one compile uses), or a string of the parsed object (a key or a value) holds U+0000 or U+FFFD."""
     try:
-        loads_json(text)
-        return True
-    except (ValueError, TypeError):
-        return False
+        obj = loads_json(text)
+    except (ValueError, TypeError) as e:
+        return f"{type(e).__name__}: {e}"[:200]
+    bad, todo = collections.Counter(), [obj]
+    while todo:
+        x = todo.pop()
+        if isinstance(x, dict):
+            todo += list(x.keys()) + list(x.values())
+        elif isinstance(x, list):
+            todo += x
+        elif isinstance(x, str):
+            bad.update(c for c in x if c in "\x00\ufffd")
+    return "; ".join(f"U+{ord(c):04X} in a string of the parsed response ({n} times)" for c, n in sorted(bad.items()))
+
+
+def parses(text):
+    """P196b (user): a response is an answer when it is no failed call (failure)."""
+    return not failure(text)
 
 
 def failed_rows():
@@ -209,16 +225,13 @@ def run(pid, jobs, thinking=None, form_version=None):
             for attempt in range(before + 1, 3):                                # P196b rule 2: the first attempt and one retry per request
                 text, usage, ts = call(client, prompt[len(pre):] if pre else prompt, rschema, thinking, names.get(ph))
                 made += 1
-                if parses(text):
+                why = failure(text)
+                if not why:
                     break
-                try:
-                    loads_json(text)
-                except (ValueError, TypeError) as e:
-                    why = f"{type(e).__name__}: {e}"[:200]
                 list_failed(dict(pid=pid, section=section, prompt_hash=h, model=MODEL, form_version=form_version or X.FORM_VERSION, request_ts=ts,
                                  input_tokens=usage["input_tokens"], output_tokens=usage["output_tokens"], response_chars=len(text or ""), attempt=attempt,
                                  reason=why, note="", **{"pass": pass_}))
-                print(f"{pid}: {section}: the response does not parse (attempt {attempt}): listed in records/failed_calls.csv, not stored")
+                print(f"{pid}: {section}: a failed call (attempt {attempt}: {why}): listed in records/failed_calls.csv, not stored")
                 text = None
             if text is None:
                 if before >= 2:

@@ -62,15 +62,16 @@ def table_lines(md):
 
 def header_decisions():
     """P195 (user) A5: {(paper_id, table id): {column index: header text}} from ontology/history.csv rows of kind table_header decided by
-    the user (target: a JSON object c<j> -> text; an empty text keeps the column's header element with no text)."""
+    the user (target: a JSON object c<j> -> text; an empty text keeps the column's header element with no text). P200 (user): the latest
+    row per (paper, table) decides; target {} = no decision (the header as ingested)."""
     p = V2 / "ontology" / "history.csv"
     out = {}
     for r in (csv.DictReader(p.open(encoding="utf-8")) if p.exists() else []):
         if r.get("kind") == "table_header" and r.get("decided_by") == "user":
-            cols = {int(k.lstrip("c")): str(v) for k, v in json.loads(r["target"]).items()}
+            cols = {int(k.lstrip("c")): str(v) for k, v in json.loads(r["target"] or "{}").items()}
             for pid in r["source_pids"].split(";"):
                 out[(pid, r["id"])] = cols
-    return out
+    return {k: v for k, v in out.items() if v}
 
 
 def decided_table(pid, tid, md):

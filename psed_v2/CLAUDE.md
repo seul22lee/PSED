@@ -282,6 +282,12 @@ psed_v2/
   covers that element (grow.text_gate; RUN_<keys>.gate_text.csv). gre23 Table I header: a table_header decision (c0-c6, evidence PDF
   Table I, Greenberg 2024). The NUL in gre23's compiled units came from the model's response (records line 33 wrote the escape \u0000
   for degree, A-ring and mu); the PDF text layer, the ingest output and the prompt hold none (kb/reports/P199.2a_cause.csv).
+- P200 (user): table_header: the latest history row per (paper, table) decides, target {} = no decision (the header as ingested;
+  gre23 tabI back to the ingest output). Every provider call (common.failure): a response is a failed call when it does not parse or
+  any string of the parsed object holds U+0000 or U+FFFD. compile reads, per paper, the pass-1 lines of its latest accepted version
+  only (compile.paper_version: the version of its last accepting form_versions row; a paper without one: the corpus rows), and a 0x or
+  fill line only between the pass-0 line in use and the next pass-0 line (compile.after_pass0). grow.retired_by (the audits' dormant
+  test) reads exactly those lines: it calls compile.paper_version (no version list of its own).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

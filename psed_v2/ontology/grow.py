@@ -82,15 +82,27 @@ def doi_of():
 
 
 # ---------------------------------------------------------------- files
+_PAPER_VERSION = {}
+
+
+def paper_version(key):
+    """P200 (user): compile.paper_version (the paper's latest accepted version, whose pass-1 lines compile reads), read in a subprocess
+    (as paper_index), once per paper."""
+    if key not in _PAPER_VERSION:
+        code = f"import sys, json; sys.path.insert(0, {str(V2 / 'kb' / 'extract')!r}); import compile; print(json.dumps(compile.paper_version({key!r})))"
+        out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True).stdout
+        _PAPER_VERSION[key] = json.loads(out.strip().splitlines()[-1])
+    return _PAPER_VERSION[key]
+
+
 def retired_by(pid, element, label, unit=False):
     """P187 (user): the form version that retired a decision's row: a version accepted for this paper alone (ontology/form_versions.csv,
     a row with the paper) whose pass-1 lines answer the element, none of its records there carrying the label as quantity other (the
     adopted re-extraction no longer prints it). '' when no such version, or when the adopted lines still give the label as other.
-    P191 (user): unit=True, a unit row: retired when none of those records carries the label as other with a unit (no unit row printed)."""
+    P191 (user): unit=True, a unit row: retired when none of those records carries the label as other with a unit (no unit row printed).
+    P200 (user): the version is the one whose lines compile reads (paper_version: the paper's latest accepted version), no own list."""
     key = PAPERS.get(pid, pid)
-    fv = HERE / "form_versions.csv"
-    acc = [r["version"] for r in csv.DictReader(x for x in fv.open(encoding="utf-8") if not x.startswith("#"))
-           if r["paper"] == key and r["status"] == "accepted"] if fv.exists() else []
+    acc = [paper_version(key)] if paper_version(key) else []
     path = RECORDS / f"{pid}.jsonl"
     if not acc or not path.exists():
         return ""
@@ -1381,8 +1393,10 @@ def table_shapes(pid):
 
 
 def table_header_decided(pid):
-    """P195 (user) A5: the tables of a paper with a user's table_header decision (history.csv kind table_header)."""
-    return {h["id"] for h in rd(HISTORY) if h["kind"] == "table_header" and h["decided_by"] == "user" and pid in h["source_pids"].split(";")}
+    """P195 (user) A5: the tables of a paper with a user's table_header decision (history.csv kind table_header). P200 (user): the latest
+    row per (paper, table) decides; target {} = no decision (as elements.header_decisions, which text_gate reads)."""
+    last = {h["id"]: h["target"] for h in rd(HISTORY) if h["kind"] == "table_header" and h["decided_by"] == "user" and pid in h["source_pids"].split(";")}
+    return {t_ for t_, tg in last.items() if json.loads(tg or "{}")}
 
 
 def text_gate(pids):

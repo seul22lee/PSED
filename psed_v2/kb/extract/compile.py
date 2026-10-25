@@ -479,15 +479,23 @@ def out_of_scope(quantity, key):
     return sc == "unit" or (quantity in VALUE_ENTRIES and quantity not in sc)
 
 
-def recipe_fill(pid, lines=None):
+def after_pass0(lines, n0):
+    """P200 (user): the line numbers written after the pass-0 line n0 and before the next pass-0 line: the only place compile reads a
+    pass-0 extension (EXTEND_PASS) or a fill line (FILL_PASSES) of that pass-0 line."""
+    return range(n0 + 1, min((i for i, x in enumerate(lines, 1) if x["pass"] == 0 and i > n0), default=len(lines) + 1))
+
+
+def recipe_fill(pid, lines=None, n0=None):
     """P179, P181: the latest fill line of the pass-0 units (process_mode fill or recipe fill) as {unit id: {field, field_quote,
     field_element}} for export.RECIPE_FIELDS (a process_mode fill holds process_mode with quote and element). P182 (user): the importer's
     contract: a value whose quote is null or not found (quote_found, the record's element as its own text) is set to null and listed;
     a quote found across elements gets them all as its element (';'-separated). Then a user's recipe decision (history.csv kind
     recipe_field, the paper in source_pids: id = the field, target = the value or null, parameters = the run ids, empty = every run of
-    the fill) sets the field, listed. -> (line number, fields, [listed: run, field, value, reason])."""
+    the fill) sets the field, listed. -> (line number, fields, [listed: run, field, value, reason]). P200 (user): the fill lines of the
+    pass-0 line n0 only (after_pass0; n0 None: the latest pass-0 line)."""
     lines = C.lines(pid) if lines is None else lines
-    fl = [i for i, x in enumerate(lines, 1) if x["pass"] in FILL_PASSES]
+    n0 = n0 or max((i for i, x in enumerate(lines, 1) if x["pass"] == 0), default=0)
+    fl = [i for i in after_pass0(lines, n0) if lines[i - 1]["pass"] in FILL_PASSES]
     n = max(fl, default=None)
     if n is None:
         return None, {}, []
@@ -521,11 +529,12 @@ def recipe_fill(pid, lines=None):
 
 def pass0_object(pid, n0=None, lines=None):
     """P185: the pass-0 object (line n0, else the latest pass-0 line) with the latest pass-0 extension's new units added (P184, records
-    pass EXTEND_PASS; a unit whose id the pass-0 line holds is left out) -> (line number, object, extension line number or None)."""
+    pass EXTEND_PASS; a unit whose id the pass-0 line holds is left out) -> (line number, object, extension line number or None). P200
+    (user): an extension line of the pass-0 line n0 only (after_pass0)."""
     lines = C.lines(pid) if lines is None else lines
     n0 = n0 or max(i for i, x in enumerate(lines, 1) if x["pass"] == 0)
     obj = C.loads_json(lines[n0 - 1]["response"])
-    nx = max((i for i, x in enumerate(lines, 1) if x["pass"] == EXTEND_PASS), default=None)
+    nx = max((i for i in after_pass0(lines, n0) if lines[i - 1]["pass"] == EXTEND_PASS), default=None)
     if nx and isinstance(obj, dict):
         have = {u.get("id") for u in obj.get("units") or [] if isinstance(u, dict)}
         new = [u for u in C.loads_json(lines[nx - 1]["response"]).get("units") or [] if isinstance(u, dict) and u.get("id") and u["id"] not in have]
@@ -578,10 +587,30 @@ def line_version(x):
     return x.get("form_version") or "none"
 
 
+def version_rows():
+    return list(csv.DictReader(x for x in FORM_VERSIONS.open(encoding="utf-8") if not x.startswith("#"))) if FORM_VERSIONS.exists() else []   # P179c: # = the header
+
+
+def paper_version(key):
+    """P200 (user): a paper's latest accepted version (the version of its last accepting row of ontology/form_versions.csv, while a later
+    row of the paper does not withdraw it); None when the paper has no accepted row of its own. compile reads that version's pass-1 lines
+    only (accepted_versions); grow.retired_by reads the same lines."""
+    own, last = {}, []
+    for r in version_rows():
+        if r["paper"] == key:
+            own[r["version"]] = r["status"]
+            last += [r["version"]] if r["status"] == "accepted" else []
+    latest = [v for v in last if own[v] == "accepted"]
+    return latest[-1] if latest else None
+
+
 def accepted_versions(key):
     """P179b (user): the form versions whose pass-1 lines compile reads for a paper (key): status accepted in ontology/form_versions.csv
-    for that paper (a row with its key), else for every paper (a row with no paper)."""
-    rows = list(csv.DictReader(x for x in FORM_VERSIONS.open(encoding="utf-8") if not x.startswith("#"))) if FORM_VERSIONS.exists() else []   # P179c: # = the header
+    for that paper (a row with its key), else for every paper (a row with no paper). P200 (user): a paper with an accepted row of its own
+    reads its latest accepted version only (paper_version); else the corpus rows as before."""
+    if paper_version(key):
+        return {paper_version(key)}
+    rows = version_rows()
     st = {r["version"]: r["status"] for r in rows if not r["paper"]}
     st.update({r["version"]: r["status"] for r in rows if r["paper"] == key})
     return {v for v, x in st.items() if x == "accepted"}
@@ -989,7 +1018,7 @@ class Run:
                 self.note(f"input: group {g} has no pass-1 line")
         p0obj = C.loads_json(lines[p0 - 1]["response"])
         self.panel_method = {}
-        nx = max((i for i, x in enumerate(lines, 1) if x["pass"] == EXTEND_PASS), default=None)   # P184 (user): the pass-0 extension's units, added
+        nx = max((i for i in after_pass0(lines, p0) if lines[i - 1]["pass"] == EXTEND_PASS), default=None)   # P184 (user): the extension's units, added; P200: of p0
         if nx and isinstance(p0obj, dict):
             ext = C.loads_json(lines[nx - 1]["response"])
             have = {u.get("id") for u in p0obj.get("units") or [] if isinstance(u, dict)}
@@ -1009,7 +1038,7 @@ class Run:
             if e in parsed[n]:
                 self.answers[e] = parsed[n][e]
                 self.form_version[e] = lines[n - 1].get("form_version", "")     # P158: '' = written before the freeze
-        fill, self.fill, self.fill_listed = recipe_fill(self.pid, lines)        # P179, P181: the recipe fields (+ quote, element) on the units; P182: contract
+        fill, self.fill, self.fill_listed = recipe_fill(self.pid, lines, p0)    # P179, P181: the recipe fields (+ quote, element) on the units; P182: contract; P200: of p0
         for u in self.pass0:
             if isinstance(u, dict) and u.get("id") in self.fill:
                 u.update(self.fill[u["id"]])
