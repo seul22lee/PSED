@@ -63,9 +63,10 @@ psed_v2/
   kb/reports/R<n>_apply.*   # tracked (P157d): grow.py's decision audit of round n (A1 decision trace, A2 promotions, A3 open rows, acceptance), written by apply / grow.py audit <n>
                             # from P134, facts.csv is produced by kb/extract/compile.py; kb/pilot/<paper_id>.facts.py stays the gold
   agent/                    # tracked (directive, branch kb-agent; a top-level folder the directive names, outside R1's four): the Sec. 3.3.1
-                            #   KB question-answering agent: tools.py (six deterministic tools over kb/compiled; --check), agent.py (claude-sonnet-5-5
-                            #   tool loop, logs), run_cases.py (the three cases; --report -> runs/REPORT.md), app.py + static/index.html (local UI);
-                            #   runs/<case>_<timestamp>.json (one log per conversation); agent/README.md
+                            #   KB question-answering agent: tools.py (six deterministic tools over kb/compiled; --check), agent.py (provider layer,
+                            #   PSED_MODEL deepseek:<model> / anthropic:<model> from psed_v2/.env; tool loop, logs), run_cases.py (the three cases;
+                            #   --report -> runs/REPORT.md), app.py + static/index.html (local UI); runs/<case>_<timestamp>.json; agent/README.md.
+                            #   Worked on in its own worktree (../psed-agent); crops and .env come from the main checkout
 ```
 
 ## Environments

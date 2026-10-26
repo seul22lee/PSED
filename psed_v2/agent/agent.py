@@ -1,30 +1,76 @@
 #!/usr/bin/env python3
-"""The KB question-answering agent: a Claude model calls the deterministic tools of tools.py step by step until it answers.
+"""The KB question-answering agent: a model calls the deterministic tools of tools.py step by step until it answers.
 Every request, tool call, tool result and the final answer is logged to agent/runs/<case>_<timestamp>.json.
 
-    python3 -m psed_v2.agent.agent "question" [--case NAME] [--model ID] [--effort LEVEL]     # one question (batch mode)
-    python3 -m psed_v2.agent.agent --interactive                                              # a conversation with follow-ups
+    python3 -m psed_v2.agent.agent "question" [--case NAME] [--model PROVIDER:MODEL] [--effort LEVEL]   # one question (batch)
+    python3 -m psed_v2.agent.agent --interactive                                                        # follow-ups
 
-Model: claude-sonnet-5-5 (pinned; --model overrides), adaptive thinking with summarized display, streamed. Key: ANTHROPIC_API_KEY.
-Refusal fallback: the server-side default fallback (beta server-side-fallback-2026-07-01) is on; a turn served by another model is
-logged (model, fallback_ran). Cap: MAX_TOOL_CALLS tool calls per question; past it every call returns an error asking for the answer.
-Each tool result is sent to the model as tools.model_view(result) (curve points summarized, statements cut); the log keeps both the
-full result and the text sent. Runs with conda env psed310 (anthropic SDK).
+The model is PSED_MODEL ('provider:model', from the environment or psed_v2/.env; --model overrides): deepseek:<model>
+(the openai SDK on DeepSeek's OpenAI-compatible API, https://api.deepseek.com, key DEEPSEEK_API_KEY; thinking on, each turn's
+reasoning_content passed back in every later request as the API requires with tools) or anthropic:<model> (the anthropic SDK,
+key ANTHROPIC_API_KEY; adaptive thinking, summarized; the server-side refusal fallback on, a turn served by another model is
+logged as fallback_ran). psed_v2/.env is read from this checkout, else the main checkout (a linked worktree has none); its
+values are never logged and are scrubbed from logged errors. Both providers stream; the loop is one: the model calls tools,
+reads the results, calls again, until it answers. Cap: MAX_TOOL_CALLS tool calls per question; past it every call returns an
+error asking for the answer. Each tool result is sent as tools.model_view(result) (curve points summarized, statements cut);
+the log keeps the full result and the text sent, the provider, the model and the token usage of every request.
+Runs with conda env psed310 (anthropic and openai SDKs).
 """
-import argparse, datetime, hashlib, json, subprocess, sys, time
+import argparse, datetime, hashlib, json, os, re, subprocess, sys, time
 from pathlib import Path
 
 from . import tools as T
 
 HERE = Path(__file__).resolve().parent
 RUNS = HERE / "runs"
-MODEL = "claude-sonnet-5-5"
-EFFORT = "medium"
+DEFAULT_MODEL = "anthropic:claude-sonnet-5-5"
+EFFORT = {"anthropic": "medium", "deepseek": "high"}          # deepseek: the model's default level (low / high / max)
 MAX_TOKENS = 64000
 MAX_TOOL_CALLS = 15
 EXTRA_REQUESTS = 2                     # requests allowed after the cap before the question ends without an answer
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
-PRICE = {"input": 2.00, "cache_write": 2.50, "cache_read": 0.20, "output": 10.00}    # claude-sonnet-5-5, $ per million tokens
+DEEPSEEK_URL = "https://api.deepseek.com"
+# $ per million tokens; deepseek-flash at its peak rates (an upper bound; off-peak is half), api-docs.deepseek.com, 2026-10-25
+PRICES = {"claude-sonnet-5-5": {"input": 2.00, "cache_write": 2.50, "cache_read": 0.20, "output": 10.00},
+          "deepseek-flash": {"input": 0.30, "cache_write": 0.30, "cache_read": 0.006, "output": 1.20}}
+ENV_FILES = [T.V2 / ".env", T.MAIN / "psed_v2" / ".env"]
+SECRETS = set()
+
+
+def load_env():
+    """KEY=VALUE lines of the first psed_v2/.env found into os.environ where unset; returns its path (values are not logged)."""
+    for p in ENV_FILES:
+        if p.is_file():
+            for line in p.read_text(encoding="utf-8").splitlines():
+                m = re.match(r"\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$", line)
+                if m and not line.strip().startswith("#"):
+                    k, v = m.group(1), m.group(2).strip().strip('"').strip("'")
+                    os.environ.setdefault(k, v)
+            break
+    for k, v in os.environ.items():
+        if k.endswith("_API_KEY") and v:
+            SECRETS.add(v)
+    return next((str(p) for p in ENV_FILES if p.is_file()), None)
+
+
+def scrub(text):
+    """A string with every known key value (and a masked key fragment as APIs print them) replaced by ***."""
+    text = str(text)
+    for s in SECRETS:
+        text = text.replace(s, "***")
+    return re.sub(r"\b(sk-[A-Za-z0-9]{0,6})[A-Za-z0-9*._-]{6,}", r"\1***", text)
+
+
+def resolve_model(spec=None):
+    """(provider, model) from 'provider:model' (--model, else PSED_MODEL, else DEFAULT_MODEL); a bare model id names its provider."""
+    spec = spec or os.environ.get("PSED_MODEL") or DEFAULT_MODEL
+    if ":" in spec:
+        provider, model = spec.split(":", 1)
+    else:
+        provider, model = ("deepseek" if spec.startswith("deepseek") else "anthropic"), spec
+    if provider not in PROVIDERS:
+        raise ValueError(f"unknown provider '{provider}' in '{spec}' (known: {', '.join(PROVIDERS)})")
+    return provider, model
 
 
 def paper_list():
@@ -98,7 +144,8 @@ TOOL_SCHEMAS = [
      "input_schema": {"type": "object", "properties": {
          "filters": {"type": "array", "items": {"type": "object", "properties": {
              "concept": {"type": "string", "description": "a concept id from resolve, or 'structure' / 'method'"},
-             "value": {"description": "a number, an id, or a list of ids"},
+             "value": {"description": "a number, an id, or a list of ids",
+                       "anyOf": [{"type": "number"}, {"type": "string"}, {"type": "array", "items": {"type": "string"}}]},
              "unit": {"type": "string", "description": "the unit of a numeric value or range, e.g. '°C', 'nm'"},
              "min": {"type": "number"}, "max": {"type": "number"},
              "qualifiers": {"type": "object", "description": "e.g. {\"step\": \"reactant_A\"}", "additionalProperties": {"type": "string"}}},
@@ -150,6 +197,10 @@ TOOL_SCHEMAS = [
 ]
 
 
+OPENAI_TOOLS = [{"type": "function", "function": {"name": t["name"], "description": t["description"], "parameters": t["input_schema"]}}
+                for t in TOOL_SCHEMAS]
+
+
 def _now():
     return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
 
@@ -161,45 +212,39 @@ def _sha(x):
 def _git():
     try:
         head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=HERE, capture_output=True, text=True).stdout.strip()
+        branch = subprocess.run(["git", "branch", "--show-current"], cwd=HERE, capture_output=True, text=True).stdout.strip()
         dirty = subprocess.run(["git", "status", "--porcelain", "--", str(T.KBDIR), str(T.ONTOLOGY)], cwd=HERE,
                                capture_output=True, text=True).stdout.strip()
-        return {"commit": head, "kb_or_ontology_modified": bool(dirty)}
+        return {"commit": head, "branch": branch, "kb_or_ontology_modified": bool(dirty)}
     except OSError:
         return {}
 
 
-def cost(usage):
-    """Estimated dollars of one response's usage (PRICE; cache writes at the 5-minute rate)."""
-    u = usage or {}
-    return round((u.get("input_tokens", 0) * PRICE["input"] + u.get("cache_creation_input_tokens", 0) * PRICE["cache_write"]
-                  + u.get("cache_read_input_tokens", 0) * PRICE["cache_read"] + u.get("output_tokens", 0) * PRICE["output"]) / 1e6, 6)
+def cost(usage, model):
+    """Estimated dollars of one response's normalized usage (PRICES); None for a model without a price."""
+    p, u = PRICES.get(model), usage or {}
+    if not p:
+        return None
+    return round((u.get("input_tokens", 0) * p["input"] + u.get("cache_creation_input_tokens", 0) * p["cache_write"]
+                  + u.get("cache_read_input_tokens", 0) * p["cache_read"] + u.get("output_tokens", 0) * p["output"]) / 1e6, 6)
 
 
-class Conversation:
-    """One conversation: questions and follow-ups, the model's turns, the tool calls and their results, all logged."""
+# ------------------------------------------------------------------------------------------------------------ providers
+class AnthropicProvider:
+    """Claude through the anthropic SDK: beta streaming messages, adaptive thinking (summarized), prompt caching, fallback."""
+    name, key_var = "anthropic", "ANTHROPIC_API_KEY"
 
-    def __init__(self, case=None, mode="batch", model=MODEL, effort=EFFORT, runs_dir=RUNS, client=None):
-        import anthropic                                   # imported here so tools-only use needs no SDK
+    def __init__(self, model, effort=None, client=None):
+        import anthropic
+        self.model, self.effort = model, effort or EFFORT["anthropic"]
         self.client = client or anthropic.Anthropic()
-        self.model, self.effort, self.mode = model, effort, mode
-        self.system = SYSTEM.format(papers=paper_list(), max_calls=MAX_TOOL_CALLS, mode=MODES[mode])
-        self.messages = []
-        ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.path = Path(runs_dir) / f"{case or 'chat'}_{ts}.json"
-        self.log = {"case": case, "mode": mode, "model": model, "effort": effort, "thinking": "adaptive, summarized",
-                    "max_tool_calls": MAX_TOOL_CALLS, "started": _now(), "recipe_source": T.RECIPE_SOURCE, "git": _git(),
-                    "sdk": getattr(anthropic, "__version__", ""), "system_prompt": self.system,
-                    "system_sha": _sha(self.system), "tools_sha": _sha(TOOL_SCHEMAS), "turns": [], "usage_total": {},
-                    "cost_usd_estimate": 0.0}
+        self.sdk = f"anthropic {getattr(anthropic, '__version__', '')}"
 
-    def save(self):
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        tmp = self.path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(self.log, ensure_ascii=False, indent=1), encoding="utf-8")
-        tmp.replace(self.path)
+    def user(self, text):
+        return [{"role": "user", "content": text}]
 
-    def _request(self, emit):
-        params = dict(model=self.model, max_tokens=MAX_TOKENS, system=self.system, tools=TOOL_SCHEMAS, messages=self.messages,
+    def request(self, system, messages, emit):
+        params = dict(model=self.model, max_tokens=MAX_TOKENS, system=system, tools=TOOL_SCHEMAS, messages=messages,
                       thinking={"type": "adaptive", "display": "summarized"}, output_config={"effort": self.effort},
                       cache_control={"type": "ephemeral"}, betas=[FALLBACK_BETA], fallbacks="default")
         with self.client.beta.messages.stream(**params) as stream:
@@ -211,7 +256,123 @@ class Conversation:
                         emit("text", {"text": ev.delta.text})
                     elif ev.delta.type == "thinking_delta":
                         emit("thinking", {"text": ev.delta.thinking})
-            return stream.get_final_message()
+            resp = stream.get_final_message()
+        raw = resp.usage.to_dict() if resp.usage else {}
+        out = {"text": "", "thinking": [], "tool_calls": [], "model": resp.model, "request_id": getattr(resp, "_request_id", None),
+               "stop_raw": resp.stop_reason, "stop": resp.stop_reason, "usage_raw": raw,
+               "usage": {k: raw.get(k, 0) or 0 for k in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")},
+               "fallback_ran": resp.model != self.model or any(b.type == "fallback" for b in resp.content),
+               "message": {"role": "assistant", "content": resp.content}}
+        for b in resp.content:
+            if b.type == "thinking":
+                out["thinking"].append(b.thinking)
+            elif b.type == "text":
+                out["text"] += b.text
+            elif b.type == "tool_use":
+                out["tool_calls"].append({"id": b.id, "name": b.name, "input": b.input})
+        return out
+
+    def tool_results(self, results):
+        return [{"role": "user", "content": [{"type": "tool_result", "tool_use_id": r["id"], "content": r["content"],
+                                              **({"is_error": True} if r["is_error"] else {})} for r in results]}]
+
+
+class DeepSeekProvider:
+    """DeepSeek through the openai SDK (OpenAI-compatible chat completions): streamed, thinking on, tools as functions."""
+    name, key_var = "deepseek", "DEEPSEEK_API_KEY"
+    STOP = {"stop": "end_turn", "tool_calls": "tool_use", "length": "max_tokens", "content_filter": "refusal"}
+
+    def __init__(self, model, effort=None, client=None):
+        import openai
+        self.model, self.effort = model, effort or EFFORT["deepseek"]
+        self.client = client or openai.OpenAI(api_key=os.environ.get(self.key_var), base_url=DEEPSEEK_URL)
+        self.sdk = f"openai {openai.__version__}"
+
+    def user(self, text):
+        return [{"role": "user", "content": text}]
+
+    def request(self, system, messages, emit):
+        stream = self.client.chat.completions.create(
+            model=self.model, messages=[{"role": "system", "content": system}] + messages, tools=OPENAI_TOOLS, stream=True,
+            stream_options={"include_usage": True}, max_tokens=MAX_TOKENS, reasoning_effort=self.effort,
+            extra_body={"thinking": {"type": "enabled"}})
+        text, reasoning, calls, finish, raw, model, rid = [], [], {}, None, {}, self.model, None
+        for ch in stream:
+            model, rid = ch.model or model, ch.id or rid
+            if ch.usage:
+                raw = ch.usage.model_dump()
+            for c in ch.choices:
+                d = c.delta
+                if d.content:
+                    text.append(d.content)
+                    emit("text", {"text": d.content})
+                rc = getattr(d, "reasoning_content", None)
+                if rc:
+                    reasoning.append(rc)
+                    emit("thinking", {"text": rc})
+                for tc in d.tool_calls or []:
+                    x = calls.setdefault(tc.index, {"id": "", "name": "", "arguments": ""})
+                    x["id"] = tc.id or x["id"]
+                    if tc.function and tc.function.name:
+                        if not x["name"]:
+                            emit("tool_start", {"name": tc.function.name})
+                        x["name"] += tc.function.name
+                    if tc.function and tc.function.arguments:
+                        x["arguments"] += tc.function.arguments
+                finish = c.finish_reason or finish
+        tool_calls = []
+        for i in sorted(calls):
+            x = calls[i]
+            try:
+                args, err = json.loads(x["arguments"] or "{}"), None
+            except ValueError as e:
+                args, err = {}, f"arguments are not valid JSON ({e}): {x['arguments'][:300]}"
+            tool_calls.append({"id": x["id"], "name": x["name"], "input": args, **({"parse_error": err} if err else {})})
+        msg = {"role": "assistant", "content": "".join(text) or None, "reasoning_content": "".join(reasoning)}
+        if calls:
+            msg["tool_calls"] = [{"id": calls[i]["id"], "type": "function",
+                                  "function": {"name": calls[i]["name"], "arguments": calls[i]["arguments"]}} for i in sorted(calls)]
+        det = raw.get("completion_tokens_details") or {}
+        hit = raw.get("prompt_cache_hit_tokens", (raw.get("prompt_tokens_details") or {}).get("cached_tokens", 0)) or 0
+        usage = {"input_tokens": raw.get("prompt_cache_miss_tokens", (raw.get("prompt_tokens", 0) or 0) - hit) or 0,
+                 "cache_creation_input_tokens": 0, "cache_read_input_tokens": hit, "output_tokens": raw.get("completion_tokens", 0) or 0,
+                 "reasoning_tokens": det.get("reasoning_tokens") or 0}
+        return {"text": "".join(text), "thinking": ["".join(reasoning)] if reasoning else [], "tool_calls": tool_calls, "model": model,
+                "request_id": rid, "stop_raw": finish, "stop": self.STOP.get(finish, finish), "usage_raw": raw, "usage": usage,
+                "fallback_ran": False, "message": msg}
+
+    def tool_results(self, results):
+        return [{"role": "tool", "tool_call_id": r["id"], "content": r["content"]} for r in results]
+
+
+PROVIDERS = {"anthropic": AnthropicProvider, "deepseek": DeepSeekProvider}
+
+
+# ------------------------------------------------------------------------------------------------------------ the conversation
+class Conversation:
+    """One conversation: questions and follow-ups, the model's turns, the tool calls and their results, all logged."""
+
+    def __init__(self, case=None, mode="batch", model=None, effort=None, runs_dir=RUNS, client=None, origin="cli"):
+        env_file = load_env()
+        provider, model_id = resolve_model(model)
+        self.provider = PROVIDERS[provider](model_id, effort, client)
+        self.model, self.mode = model_id, mode
+        self.system = SYSTEM.format(papers=paper_list(), max_calls=MAX_TOOL_CALLS, mode=MODES[mode])
+        self.messages = []
+        ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.path = Path(runs_dir) / f"{case or 'chat'}_{ts}.json"
+        self.log = {"case": case, "mode": mode, "origin": origin, "provider": provider, "model": model_id, "effort": self.provider.effort,
+                    "thinking": "adaptive, summarized" if provider == "anthropic" else "enabled (reasoning_content)",
+                    "max_tool_calls": MAX_TOOL_CALLS, "started": _now(), "recipe_source": T.RECIPE_SOURCE, "git": _git(),
+                    "sdk": self.provider.sdk, "env_file": env_file, "system_prompt": self.system, "system_sha": _sha(self.system),
+                    "tools_sha": _sha(TOOL_SCHEMAS), "turns": [], "usage_total": {}, "cost_usd_estimate": 0.0,
+                    "price_per_mtok": PRICES.get(model_id)}
+
+    def save(self):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = self.path.with_suffix(".tmp")
+        tmp.write_text(json.dumps(self.log, ensure_ascii=False, indent=1), encoding="utf-8")
+        tmp.replace(self.path)
 
     def ask(self, text, emit=None):
         """One user question (or follow-up) to its final answer; returns the answer text ('' when there is none)."""
@@ -219,54 +380,50 @@ class Conversation:
         turn = {"user": text, "started": _now(), "steps": [], "final_answer": "", "tool_calls": 0, "requests": 0,
                 "stop": None, "cap_reached": False}
         self.log["turns"].append(turn)
-        self.messages.append({"role": "user", "content": text})
+        self.messages += self.provider.user(text)
         self.save()
         n_calls = 0
         while True:
             turn["requests"] += 1
             t0 = time.time()
             try:
-                resp = self._request(emit)
-            except Exception as e:  # noqa: BLE001 - an API failure ends the question and is logged
-                turn["stop"] = f"error: {type(e).__name__}: {e}"
+                reply = self.provider.request(self.system, self.messages, emit)
+            except Exception as e:  # noqa: BLE001 - an API failure ends the question and is logged (key values scrubbed)
+                turn["stop"] = scrub(f"error: {type(e).__name__}: {e}")
                 emit("error", {"message": turn["stop"]})
                 self.save()
                 return ""
-            usage = resp.usage.to_dict() if resp.usage else {}
-            step = {"type": "assistant", "request": turn["requests"], "ms": int((time.time() - t0) * 1000), "model": resp.model,
-                    "fallback_ran": resp.model != self.model or any(b.type == "fallback" for b in resp.content),
-                    "request_id": getattr(resp, "_request_id", None), "stop_reason": resp.stop_reason, "usage": usage,
-                    "cost_usd_estimate": cost(usage), "thinking": [], "text": "", "tool_calls": []}
-            for b in resp.content:
-                if b.type == "thinking":
-                    step["thinking"].append(b.thinking)
-                elif b.type == "text":
-                    step["text"] += b.text
-                elif b.type == "tool_use":
-                    step["tool_calls"].append({"id": b.id, "name": b.name, "input": b.input})
+            step = {"type": "assistant", "request": turn["requests"], "ms": int((time.time() - t0) * 1000), "provider": self.provider.name,
+                    "model": reply["model"], "fallback_ran": reply["fallback_ran"], "request_id": reply["request_id"],
+                    "stop_reason": reply["stop"], "stop_raw": reply["stop_raw"], "usage": reply["usage"], "usage_raw": reply["usage_raw"],
+                    "cost_usd_estimate": cost(reply["usage"], self.model), "thinking": reply["thinking"], "text": reply["text"],
+                    "tool_calls": reply["tool_calls"]}
             turn["steps"].append(step)
-            for k, v in usage.items():
-                if isinstance(v, (int, float)):
-                    self.log["usage_total"][k] = self.log["usage_total"].get(k, 0) + v
-            self.log["cost_usd_estimate"] = round(self.log["cost_usd_estimate"] + step["cost_usd_estimate"], 6)
+            for k, v in reply["usage"].items():
+                self.log["usage_total"][k] = self.log["usage_total"].get(k, 0) + v
+            if step["cost_usd_estimate"] is not None:
+                self.log["cost_usd_estimate"] = round(self.log["cost_usd_estimate"] + step["cost_usd_estimate"], 6)
             emit("assistant", step)
-            self.messages.append({"role": "assistant", "content": resp.content})
-            if resp.stop_reason == "pause_turn":
+            self.messages.append(reply["message"])
+            if reply["stop"] == "pause_turn":
                 self.save()
                 continue
-            if resp.stop_reason != "tool_use" or not step["tool_calls"]:
-                turn["stop"] = resp.stop_reason
-                turn["final_answer"] = step["text"]
+            if reply["stop"] != "tool_use" or not reply["tool_calls"]:
+                turn["stop"] = reply["stop"]
+                turn["final_answer"] = reply["text"]
                 turn["tool_calls"] = n_calls
                 self.save()
-                emit("final", {"text": step["text"], "stop_reason": resp.stop_reason, "path": str(self.path)})
-                return step["text"]
+                emit("final", {"text": reply["text"], "stop_reason": reply["stop"], "path": str(self.path)})
+                return reply["text"]
             results = []
-            for call in step["tool_calls"]:
+            for call in reply["tool_calls"]:
                 t1 = time.time()
                 if n_calls >= MAX_TOOL_CALLS:
                     turn["cap_reached"] = True
                     result = {"error": f"tool-call cap of {MAX_TOOL_CALLS} reached; answer now from the results you have"}
+                elif call.get("parse_error"):
+                    n_calls += 1
+                    result = {"error": f"tool call not run: {call['parse_error']}"}
                 else:
                     n_calls += 1
                     result = T.run_tool(call["name"], call["input"])
@@ -276,9 +433,8 @@ class Conversation:
                        "sent": sent, "sent_chars": len(sent)}
                 turn["steps"].append(rec)
                 emit("tool_result", rec)
-                results.append({"type": "tool_result", "tool_use_id": call["id"], "content": sent,
-                                **({"is_error": True} if "error" in result else {})})
-            self.messages.append({"role": "user", "content": results})
+                results.append({"id": call["id"], "content": sent, "is_error": "error" in result})
+            self.messages += self.provider.tool_results(results)
             turn["tool_calls"] = n_calls
             self.save()
             if turn["requests"] > MAX_TOOL_CALLS + EXTRA_REQUESTS:
@@ -293,8 +449,8 @@ def main():
     ap.add_argument("question", nargs="?")
     ap.add_argument("--interactive", action="store_true")
     ap.add_argument("--case")
-    ap.add_argument("--model", default=MODEL)
-    ap.add_argument("--effort", default=EFFORT, choices=["low", "medium", "high", "xhigh", "max"])
+    ap.add_argument("--model", help="provider:model (default PSED_MODEL)")
+    ap.add_argument("--effort", choices=["low", "medium", "high", "xhigh", "max"])
     a = ap.parse_args()
 
     def emit(kind, data):
@@ -307,6 +463,7 @@ def main():
             print(f"\n{data['message']}", file=sys.stderr)
 
     conv = Conversation(case=a.case, mode="interactive" if a.interactive else "batch", model=a.model, effort=a.effort)
+    print(f"{conv.log['provider']}:{conv.model} (effort {conv.provider.effort}), log {conv.path}")
     q = a.question
     while True:
         if not q:
@@ -319,7 +476,8 @@ def main():
             if not q:
                 break
         conv.ask(q, emit)
-        print(f"\n\nlog: {conv.path}  (estimated ${conv.log['cost_usd_estimate']:.4f} so far)")
+        c = conv.log["cost_usd_estimate"]
+        print(f"\n\nlog: {conv.path}  (estimated ${c:.4f} so far)" if conv.log["price_per_mtok"] else f"\n\nlog: {conv.path}")
         if not a.interactive:
             break
         q = None

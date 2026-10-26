@@ -2,10 +2,11 @@
 """The question-answering agent's tools: deterministic Python over the compiled knowledge base, no model call here.
 
 Reads kb/compiled/<pid>.facts.csv and .binding.csv (the unit tree, values, claims, comparison sets, figure bindings),
-kb/<pid>.figures.json (panels, curves, figure-derived values), kb/pilot/<pid>.elements.csv (crop paths),
-kb/records/<pid>.jsonl pass '0rf' lines (the recipe fill: every 0rf line merged in file order, the line compile.log names last),
-ontology/ontology.yaml and ontology/units.yaml. Every tool returns a JSON-able dict: every value carries its fact_id, data_kind
-and unit, every unit its paper and label as printed.
+kb/<pid>.figures.json (panels, curves, figure-derived values), kb/pilot/<pid>.elements.csv (crop paths), a run's recipe
+fields (default kb/compiled/<pid>.recipe_fields.csv; RECIPE_SOURCE=records: kb/records/<pid>.jsonl pass '0rf' lines merged),
+ontology/ontology.yaml and ontology/units.yaml. Crops are read from ingest/final of this checkout, else of the main checkout
+(a linked worktree has none). Every tool returns a JSON-able dict: every value carries its fact_id, data_kind and unit,
+every unit its paper and label as printed.
 
 Rules the tools apply (general, keyed on no paper, element or value):
   - inheritance: a unit inherits its ancestors' conditions; per (quantity, qualifiers) the nearest level holding the key wins;
@@ -20,7 +21,7 @@ Rules the tools apply (general, keyed on no paper, element or value):
 
     python3 -m psed_v2.agent.tools --check      # the three cases' expected tool paths and the five known KB issues
 """
-import argparse, collections, csv, functools, inspect, json, math, os, re, sys
+import argparse, collections, csv, functools, inspect, json, math, os, re, subprocess, sys
 from pathlib import Path
 
 import yaml
@@ -31,7 +32,22 @@ REPO = V2.parent
 KBDIR = V2 / "kb"
 COMPILED = KBDIR / "compiled"
 ONTOLOGY = V2 / "ontology"
-FINAL = V2 / "ingest/final"
+
+
+def main_checkout():
+    """The repository's main checkout (the parent of git's common directory); differs from REPO in a linked worktree."""
+    try:
+        common = subprocess.run(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"], cwd=HERE,
+                                capture_output=True, text=True, check=True).stdout.strip()
+        return Path(common).parent
+    except (OSError, subprocess.CalledProcessError):
+        return REPO
+
+
+MAIN = main_checkout()
+# the ingested papers (crops) are not in git: this checkout's psed_v2/ingest/final, else the main checkout's
+FINAL = next((p for p in (V2 / "ingest/final", MAIN / "psed_v2/ingest/final") if p.is_dir()), V2 / "ingest/final")
+CROP_ROOT = FINAL.parents[2]                                # crop paths are relative to this root ('psed_v2/ingest/final/...')
 
 OWN = ("measured", "stated", "read_from_figure", "computed_by_authors", "computed_by_kb")
 GROUPS = {"own": 0, "cited": 1, "model": 2}
@@ -42,10 +58,10 @@ KEY_CONDITIONS = ("deposition_temperature", "reactant_A", "reactant_B", "materia
 LEVEL_NAMES = {"specimen": "this unit", "film": "this unit", "model_run": "this unit", "run": "run", "recipe": "recipe",
                "simulation": "simulation", "paper": "paper", "measurement": "measurement"}
 STATEMENT_CHARS = 200                                       # statement length sent to the model (the log keeps the full text)
-# where a run's reactants, carrier gas, process mode and material come from: 'records' (the directive: every 0rf line merged, the line
-# compile.log names last) or 'compiled' (kb/compiled/<pid>.recipe_fields.csv: compile's importer, with its quote check and the user's
-# history.csv recipe decisions); --check lists where the two differ
-RECIPE_SOURCE = os.environ.get("PSED_AGENT_RECIPE_SOURCE", "records")
+# where a run's reactants, carrier gas, process mode and material come from: 'compiled' (default, user: kb/compiled/<pid>.recipe_fields.csv,
+# compile's importer with its quote check and the user's history.csv recipe decisions) or 'records' (every 0rf line merged in file order,
+# the line compile.log names last); --check lists where the two differ
+RECIPE_SOURCE = os.environ.get("PSED_AGENT_RECIPE_SOURCE", "compiled")
 
 
 def group_of(data_kind):
@@ -565,13 +581,17 @@ def resolve(term, kind=None):
         if f" {name} " in tw or (len(t) >= 3 and f" {t} " in f" {name} "):
             for cid, how in ids:
                 add(cid, "partial", how)
-    if len(t) >= 5:
-        for cid, c in O.classes.items():
-            if t in norm_term(c.get("definition", "")):
-                add(cid, "definition", "structure class definition")
-        for cid, e in O.entries.items():
-            if e["type"] in ("structure", "method", "species") and t in norm_term(e.get("definition", "")):
-                add(cid, "definition", "definition")
+    defs = [(cid, norm_term(c.get("definition", "")), "structure class definition") for cid, c in O.classes.items()]
+    defs += [(cid, norm_term(e.get("definition", "")), "definition") for cid, e in O.entries.items()
+             if e["type"] in ("structure", "method", "species")]
+    words = t.split()
+    phrases = [" ".join(words[i:i + n]) for n in range(len(words), 1, -1) for i in range(len(words) - n + 1)] or [t]
+    for ph in phrases:                                      # the longest part of the term (2+ words) that a definition holds
+        found = [(cid, how) for cid, d, how in defs if len(ph) >= 5 and f" {ph} " in f" {d} "]
+        for cid, how in found:
+            add(cid, "definition", how if ph == t else f"{how} holds '{ph}'")
+        if found:
+            break
     printed = collections.Counter()
     for f in K.facts.values():
         if f["quantity"] and f["label_as_printed"] and norm_term(f["label_as_printed"]) == t:
@@ -835,7 +855,7 @@ def _images(K, uids, methods=None):
                    "figure": panel.get("figure", ""), "panel_letter": panel.get("panel", ""),
                    "panel_type": panel.get("panel_type", ""), "description": panel.get("content", ""),
                    "method": [m for m in meth if m], "crop_path": path,
-                   "crop_present": bool(path and (REPO / path).exists()),
+                   "crop_present": bool(path and (CROP_ROOT / path).exists()),
                    "binding": "bound" if b["unit_fact_id"] else "ambiguous", "fact_ids": fids,
                    "statements": [K.facts[x]["statement"] for x in fids]}
             if b["unit_fact_id"]:
@@ -1259,14 +1279,14 @@ def check():
         sizes[name] = len(model_view(r))
         return r
 
-    # recipe fill: the directive's 0rf merge against compile's recipe_fields.csv (listed, not a pass / fail item)
+    # recipe fill: compile's recipe_fields.csv against the 0rf merge (listed, not a pass / fail item)
     print(f"INFO recipe source in use: {RECIPE_SOURCE}")
     for k in sorted(set(K.fill_records) | set(K.fill_compiled)):
         a, b = K.fill_records.get(k, {}), K.fill_compiled.get(k, {})
         for f in RECIPE_FIELDS:
             va, vb = a.get(f, {}).get("value"), b.get(f, {}).get("value")
             if va != vb:
-                print(f"INFO recipe fill differs  {k[0]} {k[1]} {f}: 0rf merge {va}  |  recipe_fields.csv {vb}")
+                print(f"INFO recipe fill differs  {k[0]} {k[1]} {f}: recipe_fields.csv {vb}  |  0rf merge {va}")
 
     # case 1
     r = size("resolve SEM", resolve("SEM", "method"))

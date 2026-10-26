@@ -7,36 +7,49 @@ call or the final answer.
 ```
 psed_v2/agent/
   tools.py          the six tools (no model call) + unit_tree for the UI; --check runs the expected paths and the known KB issues
-  agent.py          Conversation: the tool loop, streaming, logging; CLI for one question or an interactive chat
+  agent.py          Conversation: the provider layer (DeepSeek / Anthropic), the tool loop, streaming, logging; CLI for one question or a chat
   run_cases.py      the three preset queries, 3 runs each; --report writes runs/REPORT.md from the logs
   app.py            FastAPI app; static/index.html is the page (no build step)
-  runs/             one JSON log per conversation: <case>_<timestamp>.json (chat_<timestamp>.json for free questions)
+  runs/             one JSON log per conversation: <case>_<timestamp>.json (chat_<timestamp>.json for free questions); field origin:
+                    run_cases (the batch runs the report reads), app (the web app), cli
 ```
 
 ## Run
 
-Conda env `psed310` (it has `anthropic`; `fastapi` was added for the app). From the repository root:
+Conda env `psed310` (it has `anthropic` and `openai`; `fastapi` was added for the app). The agent code lives on branch
+`kb-agent`, checked out as its own worktree (`git worktree add ../psed-agent kb-agent`); run from that worktree's root.
+`psed_v2/.env` (not in git) is read from the worktree, else from the main checkout; it sets `PSED_MODEL` and the keys.
+Crops are read from the main checkout's `psed_v2/ingest/final/` when the worktree has none.
 
 ```
-export ANTHROPIC_API_KEY=...
 ~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.tools --check            # no key needed
 ~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.run_cases --plan         # planned calls and cost, no call
 ~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.run_cases                # 3 cases x 3 runs (asks y/n first)
 ~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.run_cases --report       # -> runs/REPORT.md
 ~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.agent "question"         # one question
 ~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.agent --interactive      # follow-ups in one conversation
-~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.app                      # http://127.0.0.1:8765/
+~/miniconda3/envs/psed310/bin/python -m psed_v2.agent.app [--port 8770]       # http://127.0.0.1:8765/ by default
 ```
 
 `python -m psed_v2.agent.tools --call find_samples '{"filters": [...]}'` prints one tool's full result.
 
 ## Model and loop
 
-`claude-sonnet-5-5`, adaptive thinking (summarized display), effort `medium` (`--effort` to change), streamed.
-At most 15 tool calls per question; past the cap each call returns an error asking for the answer. The server-side
-refusal fallback (`fallbacks: "default"`) is on; a turn served by another model is logged (`model`, `fallback_ran`).
-Prompt caching is on (the tools and system prompt, then the conversation). Batch mode (the presets) never asks a
-clarifying question and states its reading; interactive mode (free questions in the app, `--interactive`) may ask one.
+`PSED_MODEL=provider:model` (env or `.env`; `--model` overrides) picks the provider:
+
+- `deepseek:deepseek-flash` (in use): the openai SDK on DeepSeek's OpenAI-compatible API (`https://api.deepseek.com`,
+  `DEEPSEEK_API_KEY`); tool schemas sent in the OpenAI `tools` format; thinking on, effort `high` (the model's default);
+  each turn's `reasoning_content` is passed back in every later request, as the API requires when tools are present.
+  Verified on 2026-10-25: `GET /models` lists `deepseek-flash` (DeepSeek-V4.1-Flash), and a tool-call request returned a
+  function call. Cost estimates use the peak rates ($0.30 / $0.006 cached / $1.20 per million input / cached / output).
+- `anthropic:claude-sonnet-5-5`: the anthropic SDK, adaptive thinking (summarized), effort `medium`, prompt caching, the
+  server-side refusal fallback (`fallbacks: "default"`; a turn served by another model is logged as `fallback_ran`).
+
+Both stream, and the loop is the same: the model calls tools, reads the results, calls again, then answers. At most 15
+tool calls per question; past the cap each call returns an error asking for the answer. The log records the provider,
+the model, and each request's token usage (input, cached input, output, reasoning) with a cost estimate. Key values are
+never logged; errors are scrubbed of them. Batch mode (the presets) never asks a clarifying question and states its
+reading; interactive mode (free questions in the app, `--interactive`) may ask one.
 
 The system prompt carries the rules: every number from a tool result with its fact_id in brackets; only the 13 papers;
 a cited value is reported as cited, never as evidence; "not recorded" when the KB has none; no guessed causes; report
@@ -82,9 +95,9 @@ General rules in the tools (no logic keyed on a paper, element or value):
 ## Recipe fill: two sources
 
 `RECIPE_SOURCE` (env `PSED_AGENT_RECIPE_SOURCE`) picks where a run's reactants, carrier gas, process mode and material
-come from: `records` (default, the directive: every `0rf` line merged in file order, the line compile.log names last) or
-`compiled` (`kb/compiled/<pid>.recipe_fields.csv`: compile's importer, with its quote check and the user's history.csv
-recipe decisions). They differ on 32 fields; `tools --check` lists them. Examples: yli18 runs `process_mode` thermal
+come from: `compiled` (default, user: `kb/compiled/<pid>.recipe_fields.csv`, compile's importer with its quote check and
+the user's history.csv recipe decisions) or `records` (an option: every `0rf` line merged in file order, the line
+compile.log names last). They differ on 32 fields; `tools --check` lists them. Examples: yli18 runs `process_mode` thermal
 (records) vs null (the user's P182 decision); yli18 simulations `carrier_gas` null vs n2 (the user's decision); gao15
 Fig. 3 runs reactant A / B tma / h2o (records) vs null (quote not found). The log records the source used.
 
@@ -103,7 +116,11 @@ description is the figure stage's panel description from `kb/<pid>.figures.json`
 
 ## Validation (run_cases.py --report)
 
-Per case and run: the tool calls in order with a key result each, the plan, the final answer, the deviations from the
-expected path, every number of the answer against the text the tools sent (exact / rounded / not found), and the counts
-the figure shows (samples, papers, images, values, curves) from the logged results. Per case: whether the tool path,
-the numbers and the cited fact ids are identical across runs.
+Reads the logs of origin `run_cases`. Per case and run: the tool calls in order with a key result each, the plan, the
+case listing (case 1: every sample with paper, method and structure, the papers, every image with method and sample,
+the images not tied to one sample; case 2: every sample with each condition it matched, whether pulse_time and
+purge_time were filtered; case 3: the values sorted by how they were obtained, the filled species, the citation traces),
+the deviations from the expected path, the final answer, every number of the answer against the text the tools sent
+(exact / rounded / not found), and the counts the figure shows. Each run's sets are compared with "the reference": the
+expected path run on the tools at report time (the directive's arguments; no counts pinned). Per case: the differences
+between runs (tool path, samples, images, values, traced citations, numbers, cited fact ids, figure counts).

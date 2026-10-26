@@ -133,8 +133,8 @@ async function api(path, opt) {
 async function init() {
   try {
     S.status = await api("/api/status");
-    $("#status").innerHTML = `model ${esc(S.status.model)} · effort ${esc(S.status.effort)} · ≤${S.status.max_tool_calls} tool calls · recipe ${esc(S.status.recipe_source)} · ` +
-      (S.status.api_key ? "API key set" : `<span style="color:var(--bad)">ANTHROPIC_API_KEY not set</span> (saved logs still open)`);
+    $("#status").innerHTML = `${esc(S.status.provider)}:${esc(S.status.model)} · effort ${esc(S.status.effort)} · ≤${S.status.max_tool_calls} tool calls · recipe ${esc(S.status.recipe_source)} · ` +
+      (S.status.api_key ? `${esc(S.status.key_var)} set` : `<span style="color:var(--bad)">${esc(S.status.key_var)} not set</span> (saved logs still open)`);
     $("#presets").innerHTML = Object.entries(S.status.presets).map(([k, q]) => `<button data-case="${k}" title="${esc(q)}">${k.replace("case", "Case ")}</button>`).join(" ");
     $("#presets").querySelectorAll("button").forEach(b => b.onclick = () => preset(b.dataset.case));
   } catch (e) { $("#status").textContent = "server error: " + e.message; }
@@ -151,7 +151,8 @@ async function newConv(kase) {
 }
 async function preset(kase) {
   if (S.busy) return;
-  try { await newConv(kase); await askQ(S.status.presets[kase]); } catch (e) { flash(e.message); }
+  S.busy = true; $("#askbtn").disabled = true;            // no other input while the conversation starts
+  try { await newConv(kase); S.busy = false; await askQ(S.status.presets[kase]); } catch (e) { S.busy = false; $("#askbtn").disabled = false; flash(e.message); }
 }
 async function askQ(text) {
   if (!text.trim() || S.busy) return;
@@ -276,9 +277,9 @@ function renderCards() {
         const calls = (s.tool_calls || []).map(c => c.name).join(", ");
         const label = calls ? "plan / next step" : "answer";
         const u = s.usage || {};
-        h += `<div class="card llm${sel}" data-step="${id}"><span class="tag">LLM</span><span class="name">${label}</span><span class="meta">${u.input_tokens ?? 0}+${u.cache_read_input_tokens ?? 0} cached in · ${u.output_tokens ?? 0} out${s.fallback_ran ? " · fallback " + esc(s.model) : ""}</span>` +
+        h += `<div class="card llm${sel}" data-step="${id}"><span class="tag">LLM</span><span class="name">${label}</span><span class="meta">${esc(s.model)} · ${u.input_tokens ?? 0}+${u.cache_read_input_tokens ?? 0} cached in · ${u.output_tokens ?? 0} out${u.reasoning_tokens ? ` (${u.reasoning_tokens} reasoning)` : ""}${s.fallback_ran ? " · fallback " + esc(s.model) : ""}</span>` +
           (s.text && calls ? `<div class="res">${esc(s.text)}</div>` : "") + (calls ? `<div class="args">→ ${esc(calls)}</div>` : `<div class="res note">final answer (see conversation)</div>`) +
-          ((s.thinking || []).filter(Boolean).length ? `<details><summary>thinking summary</summary><div class="note">${esc(s.thinking.join("\n"))}</div></details>` : "") + `</div>`;
+          ((s.thinking || []).filter(Boolean).length ? `<details><summary>thinking</summary><div class="note">${esc(s.thinking.join("\n"))}</div></details>` : "") + `</div>`;
       } else if (s.type === "tool_result") {
         n++;
         h += `<div class="card kb${sel}" data-step="${id}"><span class="tag">KB</span><span class="name">${esc(s.name)}</span><span class="meta">#${s.call} · ${s.ms} ms · ${s.sent_chars} chars sent</span>` +
@@ -317,7 +318,7 @@ function showEvidence(s) {
   if (s.type === "assistant") {
     ev.innerHTML = `<h3>LLM turn ${s.request}</h3><p class="note">model ${esc(s.model)} · stop ${esc(s.stop_reason)} · ${esc(JSON.stringify(s.usage))}</p>` +
       (s.text ? `<h3>Text</h3><div class="msg">${md(s.text, knownFacts())}</div>` : "") +
-      ((s.thinking || []).filter(Boolean).length ? `<h3>Thinking summary</h3><pre>${esc(s.thinking.join("\n"))}</pre>` : "") +
+      ((s.thinking || []).filter(Boolean).length ? `<h3>Thinking</h3><pre>${esc(s.thinking.join("\n"))}</pre>` : "") +
       ((s.tool_calls || []).length ? `<h3>Tool calls</h3><pre>${esc(JSON.stringify(s.tool_calls, null, 1))}</pre>` : "");
     return;
   }
@@ -342,7 +343,7 @@ function showEvidence(s) {
     h += `<h3>Not matched, by filter</h3>` + table(Object.entries(r.not_matched_by_filter).map(([f, c]) => ({ f, c })), [["f", "filter"], ["c", "samples", x => esc(Object.entries(x).map(([a, b]) => `${a} ${b}`).join(", "))]]);
   } else if (s.name === "get_records") {
     const k = r.counts;
-    h += `<p>${k.values} values from ${esc((k.papers || []).join(", "))}${k.curves != null ? `, ${k.curves} curves` : ""}${k.images != null ? `, ${k.images} images` : ""}.</p>`;
+    h += `<p>${k.values} values${(k.papers || []).length ? " from " + esc(k.papers.join(", ")) : ""}${k.curves != null ? `, ${k.curves} curves` : ""}${k.images != null ? `, ${k.images} images` : ""}.</p>`;
     h += `<h3>Values</h3>` + valuesTable(r.values || [], "values");
     if ((r.curves || []).length) h += `<h3>Curves</h3>` + curvesHTML(r.curves);
     if ((r.images || []).length) h += `<h3>Images</h3>` + imagesHTML(r.images);
