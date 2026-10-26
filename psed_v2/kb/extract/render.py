@@ -325,12 +325,13 @@ def _agree(u, g):
         return False
 
 
-def compiled_units(pid, rows=None):
+def compiled_units(pid, rows=None, dist=None):
     """P186 (user): the experiment units of kb/compiled/<pid>.facts.csv in the pass-0 unit form, for pair_units: a run (a deposition
     activity), a specimen (an entity under a deposition or under a specimen; the compiler's films included), a simulation (a simulation
     activity), a model run (an entity under a simulation), a measurement (a measurement activity under one of those entities); name =
     the label, introduced_in = its evidence elements, parent = the nearest unit above, data = the points_ref of the facts under it (a
-    run's or specimen's measurements included), method of a measurement; own = its settings (quantity, value)."""
+    run's or specimen's measurements included), method of a measurement; own = its settings (quantity, value). P210 (user): dist = the
+    distinguished_by conditions [(quantity, value, unit)] of a unit with no printed name ({compiled unit id: [...]}, compile.unit_dist)."""
     rows = list(csv.DictReader((C.V2 / "kb" / "compiled" / f"{pid}.facts.csv").open(encoding="utf-8"))) if rows is None else rows   # P188: or the rows given
     R = {r["fact_id"]: r for r in rows}
     kids = collections.defaultdict(list)
@@ -369,8 +370,27 @@ def compiled_units(pid, rows=None):
         return [dict(id=x, role=None) for x in dict.fromkeys(out)]
     return [dict(id=i, role=ro, name_as_printed=R[i]["label_as_printed"], parent=up(i), introduced_in=[e for e in R[i]["evidence"].split(";") if e],
                  data=data(i), method=R[i]["method"] or (i.split(":meas:")[-1] if ro == "measurement" else ""),
-                 own=sorted({(c["quantity"], c["value"] or c["value_text"]) for c in kids.get(i, []) if c["type"] == "setting" and c["quantity"]}))
+                 own=sorted({(c["quantity"], c["value"] or c["value_text"]) for c in kids.get(i, []) if c["type"] == "setting" and c["quantity"]}),
+                 dist=(dist or {}).get(i, []))
             for i, ro in role.items()]
+
+
+def dist_conditions(y):
+    """P210 (user): a unit's distinguished_by conditions (compiled_units dist) as unit_conditions gives conditions: {quantity: canonical value}."""
+    import compile as K
+    return {q: K.canon(dict(value=str(v), unit=u or "", quantity=q)) for q, v, u in y.get("dist") or [] if q and v not in (None, "")}
+
+
+def dist_own(y):
+    """P210 (user): a unit's distinguished_by conditions as own settings (quantity, value as the facts write it)."""
+    import compile as K
+    out = set()
+    for q, v, _ in y.get("dist") or []:
+        try:
+            out.add((q, K.num_text(float(v))))
+        except (TypeError, ValueError):
+            out.add((q, str(v)))
+    return out
 
 
 def gold_measurements(pid, units):
@@ -426,7 +446,7 @@ def pair_units(pid, key, units, measurements=False):
                 for y in P:
                     if y["role"] != "run" or y["id"] in linked_p:
                         continue
-                    uv = unit_conditions(y, values)
+                    uv = {**dist_conditions(y), **unit_conditions(y, values)}   # P210 (user): a unit with no printed name by its distinguished_by
                     if not uv or not any(q in gv for q in uv):
                         continue
                     if all(q not in uv or _agree(uv[q], gv[q]) for q in gv):
@@ -471,7 +491,7 @@ def pair_units(pid, key, units, measurements=False):
             cands = [y for y in P if y["role"] == g["role"] and y["id"] not in linked_p and ppar.get(y["id"]) in partners[gpar[g["gid"]]]]
             if len(cands) > 1:
                 cands = ([y for y in cands if y.get("method") and y["method"] == g.get("method")] if g["role"] == "measurement" else
-                         [y for y in cands if set(map(tuple, y.get("own") or [])) & gown[g["gid"]]])
+                         [y for y in cands if (set(map(tuple, y.get("own") or [])) | dist_own(y)) & gown[g["gid"]]])
             if len(cands) == 1:
                 link(g, cands[0], "parent"); linked_g.add(g["gid"]); linked_p.add(cands[0]["id"]); grew = True
     # components per role

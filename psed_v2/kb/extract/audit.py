@@ -171,7 +171,7 @@ def main(arg):
     comp = [r for r in rows if "#" in r["fact_id"]]
     CR, GR = {r["fact_id"]: r for r in rows}, {r["fact_id"]: r for r in gold}
     import render                                                               # P194 (user): the matcher's one-to-one assignment (compile.assign)
-    pr = render.pair_units(run.pid, run.key, render.compiled_units(run.pid, rows), measurements=True)
+    pr = render.pair_units(run.pid, run.key, render.compiled_units(run.pid, rows, dist=K.unit_dist(run)), measurements=True)   # P210 (user)
     assigned = {gold[i]["fact_id"]: comp[j]["fact_id"] for i, j in K.assign(gold, comp, {g: set(ps) for g, ps in pr["pair_of"].items()}).items()}
     out, texts, matched_c = [], [], set()
     for g in gold:

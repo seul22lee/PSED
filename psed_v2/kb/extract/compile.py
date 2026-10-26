@@ -858,6 +858,40 @@ def paper_text(pid):
     return _PAPER_TEXT[pid]
 
 
+CELL_PAIR = re.compile(r"^\s*([^=:]*?)\s*[=:]\s*(\S.*?)\s*$")                    # P210: '<key> = <value>' or '<key>: <value>' (the key may be empty)
+
+
+def cell_pairs(v):
+    """P210 (user): the (key, value) pairs one figures.json value (a cell or peak) prints, normalize()d: its value (value_text, the value as
+    printed) under its quantity and under its label (under no key when it has neither), each at coordinate under its quantity and the
+    printed coordinate under its axis (the texts P150 X2 counts as the cell's)."""
+    k = lambda x: normalize(str(x or "")).lower()                               # noqa: E731
+    vals = [x for x in (v.get("value_text"), v.get("value_raw"), v.get("value")) if x not in (None, "")]
+    keys = {k(v.get("quantity")), k(v.get("label"))} - {""} or {""}
+    out = {(key, str(x)) for key in keys for x in vals}
+    out |= {(k(q), str(x)) for q, x in (v.get("at") or {}).items()} | {(k(q), str(x)) for q, x in (v.get("at_raw") or {}).items()}
+    return out
+
+
+def cell_quote(quote, cells):
+    """P210 (user): whether a quote of '<key> = <value>' pairs (or '<key>: <value>'; ';'-separated, an opening 'at' dropped) is printed by one
+    cell of the panel: every pair's key is a key of that cell's pair (cell_pairs: its quantity or label, a coordinate's quantity) and its
+    value equals the pair's value (as numbers, else as normalized text). cells: [cell_pairs(v)]."""
+    q = re.sub(r"^\s*at\s+", "", quote or "", flags=re.I)
+    parts = [x for x in re.split(r"\s*;\s*", q) if x.strip()]
+    pairs = [CELL_PAIR.match(x) for x in parts]
+    if not pairs or not all(pairs):
+        return False
+    want = [(normalize(m.group(1)).lower(), normalize(m.group(2)).lower()) for m in pairs]
+
+    def same(a, b):
+        try:
+            return abs(float(a) - float(b)) <= 1e-9 * max(abs(float(a)), abs(float(b)), 1.0)
+        except ValueError:
+            return normalize(a).lower() == normalize(b).lower()
+    return any(all(any(kk == ck and same(vv, cv) for ck, cv in c) for kk, vv in want) for c in cells)
+
+
 def quote_found(pid, quote, own="", eid=None):
     """P182 (user, b): the one quote check of compile step d and of the recipe-fill importer. The quote normalize()d; own = the
     normalized texts it is checked against first (step d: scope(); the importer: the element it names). Found in own: 'own' (contiguous)
@@ -1962,7 +1996,9 @@ class Run:
             if c.get("series", {}).get("label_raw"):
                 self.labels[str(c["figure"])].append(c["series"]["label_raw"])
         self.cells = collections.defaultdict(list)                              # P150 X2: (figure, panel) -> cell and peak texts
+        self.cell_kv = collections.defaultdict(list)                            # P210: (figure, panel) -> each cell's (key, value) pairs
         for v in Fj.get("values", []):
+            self.cell_kv[(str(v["figure"]), v.get("panel", ""))].append(cell_pairs(v))
             self.cells[(str(v["figure"]), v.get("panel", ""))] += [str(x) for x in (v.get("value_text"), v.get("label"), v.get("value_raw", v.get("value")),
                                                                                     *(v.get("at_raw") or {}).values()) if x not in (None, "")]
         out = []
@@ -1972,6 +2008,11 @@ class Run:
                 out.append(r)
                 continue
             how, els = quote_found(self.pid, r["rec"].get("quote"), normalize(" ".join(self.scope(r["eid"]))), r["eid"])   # P182 (user, b)
+            fm = re.fullmatch(r"fig(\d+)([a-zA-Z]*|\.cap)", r["eid"])
+            if not how and fm and cell_quote(r["rec"].get("quote"), [c for (n, pn), cs in self.cell_kv.items() if n == fm.group(1)
+                                                                    and (fm.group(2) in ("", ".cap") or pn == fm.group(2)) for c in cs]):
+                how, els = "own", [r["eid"]]                                    # P210 (user): '<key> = <value>' printed by a cell of the panel
+                self.count("d", "quote: key = value of a cell of the panel (P210)")
             if not how:
                 self.drop("d", r["eid"], r["rec"], "quote_not_found", "quote")
                 continue
@@ -3492,6 +3533,13 @@ def gold_rows(pid):
     return rows
 
 
+def unit_dist(run):
+    """P210 (user): {compiled unit id: [(quantity, value, unit)]}: the distinguished_by conditions of each pass-0 unit with no printed name
+    (render.compiled_units dist, the pairing of render.pair_units)."""
+    return {run.node[u["id"]][0]: [(d.get("quantity"), d.get("value"), d.get("unit")) for d in u["distinguished_by"] if isinstance(d, dict)]
+            for u in run.pass0 if isinstance(u, dict) and not u.get("name_as_printed") and isinstance(u.get("distinguished_by"), list) and u.get("id") in run.node}
+
+
 def diff(run):
     """Gold kb/pilot/<pid>.facts.csv (gold_rows, P165) against the compiled rows by matches() (P134 key, canonical units, D13); one gold
     row per compiled row by assign() (P194 (user): one-to-one, most pairs, then agreement; it replaced first come); run.match_pairs keeps
@@ -3501,7 +3549,7 @@ def diff(run):
     gold = gold_rows(run.pid)
     comp = run.rows
     import render                                                               # P188: the units paired, for measurement activities
-    pr = render.pair_units(run.pid, run.key, render.compiled_units(run.pid, comp), measurements=True)
+    pr = render.pair_units(run.pid, run.key, render.compiled_units(run.pid, comp, dist=unit_dist(run)), measurements=True)   # P210: dist
     pairs = {g: set(ps) for g, ps in pr["pair_of"].items()}
     m = assign(gold, comp, pairs)
     run.match_pairs = [(gold[i]["fact_id"], comp[j]["fact_id"]) for i, j in sorted(m.items())]

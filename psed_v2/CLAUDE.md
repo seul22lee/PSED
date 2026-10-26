@@ -378,6 +378,12 @@ psed_v2/
   P194's symbol of coated_aspect_ratio). grow.retired_by reads, of the paper's version, the line compile reads for the element (the
   latest answering it): a decided row it prints under another spelling (the symbol) with quantity other is dormant (P187), listed
   with the version. audit.py traces a P204 A3 merge (audit.merged_into: the fuller fact whose evidence lists every source).
+- P210 (user, compile only): step d: a quote of '<key> = <value>' pairs (or '<key>: <value>'; ';'-separated, an opening 'at' dropped) on a
+  figure element (a panel; a caption: the whole figure) is found when one cell of that panel prints every pair: the value its value
+  text / value or an at coordinate, the key its quantity or label (none when it has neither) or the coordinate's quantity
+  (compile.cell_pairs, cell_quote). Pairing (render.pair_units): a compiled unit with no printed name carries its pass-0
+  distinguished_by (compile.unit_dist -> compiled_units dist); the cell stage reads them as conditions (render.dist_conditions) and the
+  parent stage as own settings (dist_own).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;
