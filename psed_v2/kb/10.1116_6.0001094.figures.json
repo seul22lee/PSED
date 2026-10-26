@@ -3,7 +3,7 @@
  "key": "wer21",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T11:17:29",
+ "imported_at": "2026-10-25T20:03:54",
  "inventory": [
   {
    "id": "wer21:fig2",
@@ -37,7 +37,7 @@
      "key": "Pressure",
      "unit": "mbar",
      "quantity": "process_pressure",
-     "how": "name 'pressure'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -49,7 +49,7 @@
      "key": "Power",
      "unit": "W",
      "quantity": "plasma_power",
-     "how": "symbol 'Power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -85,7 +85,7 @@
      "key": "gas flow",
      "unit": "",
      "quantity": "gas_flow_rate",
-     "how": "name 'gas flow'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -135,7 +135,7 @@
      "key": "Counts/s",
      "unit": "Counts/s",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts/s'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -147,7 +147,7 @@
      "key": "pressure",
      "unit": "mbar",
      "quantity": "process_pressure",
-     "how": "name 'pressure'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -187,7 +187,7 @@
      "key": "Counts/s",
      "unit": "Counts/s",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts/s'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -199,7 +199,7 @@
      "key": "flow",
      "unit": "sccm",
      "quantity": "gas_flow_rate",
-     "how": "alias 'flow'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -214,7 +214,8 @@
    "panel_type": "plot",
    "content": "Total intensity as a function of plasma power for various oxygen flow rates",
    "quantities": [
-    "plasma_power"
+    "plasma_power",
+    "signal_intensity"
    ],
    "flags": [
     "F3",
@@ -235,7 +236,7 @@
      "key": "Power",
      "unit": "",
      "quantity": "plasma_power",
-     "how": "symbol 'Power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -246,11 +247,11 @@
      "label_raw": "I_total",
      "key": "I_total",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
-     "never": "Plasma internals",
-     "never_label": "Itotal",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -259,7 +260,7 @@
      "key": "flow rate",
      "unit": "",
      "quantity": "gas_flow_rate",
-     "how": "alias 'flow rate'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -273,7 +274,10 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Universal trend for scaled atomic and ionic intensities",
-   "quantities": [],
+   "quantities": [
+    "signal_intensity",
+    "signal_intensity"
+   ],
    "flags": [
     "F3",
     "F3",
@@ -292,11 +296,11 @@
      "label_raw": "I_O/I_total",
      "key": "I_O/I_total",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
-     "never": "Plasma internals",
-     "never_label": "IO/Itotal",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -304,11 +308,11 @@
      "label_raw": "I_O2+/I_total",
      "key": "I_O2+/I_total",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
-     "never": "Plasma internals",
-     "never_label": "IO2+/Itotal (symbol in 10.1116_6.0001094)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -317,7 +321,7 @@
      "key": "flow rate",
      "unit": "",
      "quantity": "gas_flow_rate",
-     "how": "alias 'flow rate'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -332,7 +336,8 @@
    "panel_type": "plot",
    "content": "Intensity of the ionic line scaled with total intensity as a function of power",
    "quantities": [
-    "plasma_power"
+    "plasma_power",
+    "signal_intensity"
    ],
    "flags": [
     "F3",
@@ -353,7 +358,7 @@
      "key": "Power",
      "unit": "",
      "quantity": "plasma_power",
-     "how": "symbol 'Power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -364,11 +369,11 @@
      "label_raw": "I_O2+/I_total",
      "key": "I_O2+/I_total",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
-     "never": "Plasma internals",
-     "never_label": "IO2+/Itotal (symbol in 10.1116_6.0001094)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -377,7 +382,7 @@
      "key": "flow rate",
      "unit": "",
      "quantity": "gas_flow_rate",
-     "how": "alias 'flow rate'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -392,7 +397,8 @@
    "panel_type": "plot",
    "content": "Intensity of the atomic line scaled with total intensity as a function of power",
    "quantities": [
-    "plasma_power"
+    "plasma_power",
+    "signal_intensity"
    ],
    "flags": [
     "F3",
@@ -413,7 +419,7 @@
      "key": "Power",
      "unit": "",
      "quantity": "plasma_power",
-     "how": "symbol 'Power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -424,11 +430,11 @@
      "label_raw": "I_O/I_total",
      "key": "I_O/I_total",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "signal_intensity",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
-     "never": "Plasma internals",
-     "never_label": "IO/Itotal",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -437,7 +443,7 @@
      "key": "flow rate",
      "unit": "",
      "quantity": "gas_flow_rate",
-     "how": "alias 'flow rate'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -477,7 +483,7 @@
      "key": "m/z = +16 (O⁺)\nCounts/s",
      "unit": "Counts/s",
      "quantity": "signal_intensity",
-     "how": "alias 'm/z = +16 (O⁺) Counts/s'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -517,7 +523,7 @@
      "key": "m/z = +32 (O₂⁺)\nCounts/s",
      "unit": "Counts/s",
      "quantity": "signal_intensity",
-     "how": "alias 'm/z = +32 (O₂⁺) Counts/s'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -557,7 +563,7 @@
      "key": "m/z = -16 (O⁻)\nCounts/s",
      "unit": "Counts/s",
      "quantity": "signal_intensity",
-     "how": "alias 'm/z = -16 (O⁻) Counts/s'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -597,7 +603,7 @@
      "key": "m/z = -32 (O₂⁻)\nCounts/s",
      "unit": "Counts/s",
      "quantity": "signal_intensity",
-     "how": "alias 'm/z = -32 (O₂⁻) Counts/s'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -666,7 +672,7 @@
      "key": "Depth",
      "unit": "m",
      "quantity": "distance",
-     "how": "symbol 'Depth' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -678,7 +684,7 @@
      "key": "Coverage",
      "unit": "",
      "quantity": "normalized_thickness",
-     "how": "symbol 'Coverage' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -690,7 +696,7 @@
      "key": "pressure",
      "unit": "mbar",
      "quantity": "process_pressure",
-     "how": "name 'pressure'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -702,7 +708,7 @@
      "key": "power",
      "unit": "",
      "quantity": "plasma_power",
-     "how": "symbol 'power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -714,7 +720,7 @@
      "key": "pulse time",
      "unit": "",
      "quantity": "pulse_time",
-     "how": "id 'pulse time'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -743,7 +749,7 @@
      "key": "Depth",
      "unit": "m",
      "quantity": "distance",
-     "how": "symbol 'Depth' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -755,7 +761,7 @@
      "key": "Coverage",
      "unit": "",
      "quantity": "normalized_thickness",
-     "how": "symbol 'Coverage' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -767,7 +773,7 @@
      "key": "power",
      "unit": "W",
      "quantity": "plasma_power",
-     "how": "symbol 'power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -779,7 +785,7 @@
      "key": "pulse time",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "id 'pulse time'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -791,7 +797,7 @@
      "key": "pressure",
      "unit": "",
      "quantity": "process_pressure",
-     "how": "name 'pressure'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -824,7 +830,7 @@
      "key": "Power",
      "unit": "W",
      "quantity": "plasma_power",
-     "how": "symbol 'Power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -836,7 +842,7 @@
      "key": "p_O",
      "unit": "mbar",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_O' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -848,7 +854,7 @@
      "key": "pressure",
      "unit": "",
      "quantity": "process_pressure",
-     "how": "name 'pressure'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -877,7 +883,7 @@
      "key": "Pressure",
      "unit": "mbar",
      "quantity": "process_pressure",
-     "how": "name 'pressure'",
+     "how": "0ax answer (records line 53)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -889,7 +895,7 @@
      "key": "p_O",
      "unit": "mbar",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_O' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -901,7 +907,7 @@
      "key": "power",
      "unit": "W",
      "quantity": "plasma_power",
-     "how": "symbol 'power' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -960,7 +966,7 @@
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
     "key": "Pressure",
-    "how": "name 'pressure'",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
@@ -970,7 +976,7 @@
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -1230,7 +1236,7 @@
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
     "key": "Pressure",
-    "how": "name 'pressure'",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
@@ -1240,7 +1246,7 @@
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -1484,7 +1490,7 @@
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
     "key": "Pressure",
-    "how": "name 'pressure'",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
@@ -1494,7 +1500,7 @@
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -1762,7 +1768,7 @@
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
     "key": "Pressure",
-    "how": "name 'pressure'",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
@@ -1772,7 +1778,7 @@
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -2080,7 +2086,7 @@
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
     "key": "Pressure",
-    "how": "name 'pressure'",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
@@ -2090,7 +2096,7 @@
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -2534,7 +2540,7 @@
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
     "key": "Pressure",
-    "how": "name 'pressure'",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
@@ -2544,7 +2550,7 @@
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -2852,17 +2858,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_total",
     "unit_raw": "",
     "key": "I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -2997,17 +3003,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_total",
     "unit_raw": "",
     "key": "I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -3142,17 +3148,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_total",
     "unit_raw": "",
     "key": "I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -3287,17 +3293,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_total",
     "unit_raw": "",
     "key": "I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -3464,17 +3470,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_total",
     "unit_raw": "",
     "key": "I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -3625,17 +3631,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_total",
     "unit_raw": "",
     "key": "I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -3796,23 +3802,23 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -3876,6 +3882,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "x denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "10.0 sccm",
@@ -3898,7 +3914,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 7e-05,
     "y": 0.00014000000000000012,
     "note": "figure-stage flags: F3"
    },
@@ -3925,23 +3941,23 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -4021,6 +4037,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "x denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "20.0 sccm",
@@ -4043,7 +4069,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.0011300000000000001,
     "y": 0.0014600000000000001,
     "note": "figure-stage flags: F3"
    },
@@ -4070,23 +4096,23 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -4166,6 +4192,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "x denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "50.0 sccm",
@@ -4188,7 +4224,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.0013000000000000002,
     "y": 0.0007399999999999999,
     "note": "figure-stage flags: F3"
    },
@@ -4215,23 +4251,23 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -4319,6 +4355,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "x denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "100.0 sccm",
@@ -4341,7 +4387,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.00231,
     "y": 0.00103,
     "note": "figure-stage flags: F3"
    },
@@ -4368,23 +4414,23 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -4464,6 +4510,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "x denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "200.0 sccm",
@@ -4486,7 +4542,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.00332,
     "y": 0.00115,
     "note": "figure-stage flags: F3"
    },
@@ -4513,23 +4569,23 @@
     "unit": "sccm"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -4625,6 +4681,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "x denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "400.0 sccm",
@@ -4647,7 +4713,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.0033399999999999997,
     "y": 0.00121,
     "note": "figure-stage flags: F3"
    },
@@ -4680,17 +4746,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -4778,6 +4844,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "10.0 sccm",
@@ -4833,17 +4909,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -4923,6 +4999,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "20.0 sccm",
@@ -4978,17 +5064,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -5068,6 +5154,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "50.0 sccm",
@@ -5123,17 +5219,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -5221,6 +5317,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "100.0 sccm",
@@ -5276,17 +5382,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -5366,6 +5472,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "200.0 sccm",
@@ -5421,17 +5537,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O2+/I_total",
     "unit_raw": "",
     "key": "I_O2+/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -5519,6 +5635,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "400.0 sccm",
@@ -5574,17 +5700,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -5672,6 +5798,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "10.0 sccm",
@@ -5727,17 +5863,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -5817,6 +5953,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "20.0 sccm",
@@ -5872,17 +6018,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -5962,6 +6108,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "50.0 sccm",
@@ -6017,17 +6173,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -6115,6 +6271,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "100.0 sccm",
@@ -6170,17 +6336,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -6260,6 +6426,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "200.0 sccm",
@@ -6315,17 +6491,17 @@
     "label_raw": "Power",
     "unit_raw": "",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": "unit not printed"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "signal_intensity",
     "unit": "",
     "transform": "",
     "label_raw": "I_O/I_total",
     "unit_raw": "",
     "key": "I_O/I_total",
-    "how": "",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "points": [
@@ -6413,6 +6589,16 @@
     ]
    ],
    "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    },
     "gas_flow_rate": {
      "key_raw": "flow rate",
      "raw": "400.0 sccm",
@@ -6465,7 +6651,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -6475,7 +6661,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -6716,7 +6902,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -6726,7 +6912,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -6967,7 +7153,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -6977,7 +7163,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -7218,7 +7404,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -7228,7 +7414,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -7469,7 +7655,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -7479,7 +7665,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -7720,7 +7906,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -7730,7 +7916,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -7974,7 +8160,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -7984,7 +8170,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -8228,7 +8414,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -8238,7 +8424,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -8482,7 +8668,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -8492,7 +8678,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -8736,7 +8922,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -8746,7 +8932,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -8990,7 +9176,7 @@
     "label_raw": "Depth (m)",
     "unit_raw": "m",
     "key": "Depth",
-    "how": "symbol 'Depth' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -9000,7 +9186,7 @@
     "label_raw": "Coverage",
     "unit_raw": "",
     "key": "Coverage",
-    "how": "symbol 'Coverage' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -9240,7 +9426,7 @@
     "label_raw": "Power (W)",
     "unit_raw": "W",
     "key": "Power",
-    "how": "symbol 'Power' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -9250,7 +9436,7 @@
     "label_raw": "p_O (mbar)",
     "unit_raw": "mbar",
     "key": "p_O",
-    "how": "symbol 'p_O' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -9355,7 +9541,7 @@
     "label_raw": "Pressure (mbar)",
     "unit_raw": "mbar",
     "key": "Pressure",
-    "how": "name 'pressure'",
+    "how": "0ax answer (records line 53)",
     "unit_reason": ""
    },
    "y": {
@@ -9365,7 +9551,7 @@
     "label_raw": "p_O (mbar)",
     "unit_raw": "mbar",
     "key": "p_O",
-    "how": "symbol 'p_O' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10025,7 +10211,18 @@
     "wer21:fig6b#c5",
     "wer21:fig6b#c6"
    ],
-   "conditions": {},
+   "conditions": {
+    "signal_intensity": {
+     "key_raw": "x denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    }
+   },
    "label": "Fig. 6b series (flow rate)"
   },
   {
@@ -10043,7 +10240,18 @@
     "wer21:fig6c#c5",
     "wer21:fig6c#c6"
    ],
-   "conditions": {},
+   "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    }
+   },
    "label": "Fig. 6c series (flow rate)"
   },
   {
@@ -10061,7 +10269,18 @@
     "wer21:fig6d#c5",
     "wer21:fig6d#c6"
    ],
-   "conditions": {},
+   "conditions": {
+    "signal_intensity": {
+     "key_raw": "y denominator",
+     "raw": "I_total",
+     "quantity": "signal_intensity",
+     "role": "output",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "I_total"
+    }
+   },
    "label": "Fig. 6d series (flow rate)"
   },
   {
@@ -10135,7 +10354,7 @@
    "source": "wer21:fig11#c1",
    "quantity": "normalized_thickness",
    "qualifiers": "position=plateau",
-   "value": 1.005,
+   "value": 1.0050000000000001,
    "unit": "1",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
@@ -10178,7 +10397,7 @@
    "source": "wer21:fig11#c1",
    "quantity": "penetration_depth",
    "qualifiers": "level=50%",
-   "value": 13735.714285714288,
+   "value": 13735.714285714286,
    "unit": "µm",
    "method": "half_value_crossing",
    "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
@@ -10483,6 +10702,6 @@
   "curves": 43,
   "peaks": 16,
   "derived": 8,
-  "labels_other": 13
+  "labels_other": 8
  }
 }

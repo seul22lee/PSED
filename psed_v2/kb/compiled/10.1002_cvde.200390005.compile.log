@@ -1,27 +1,40 @@
-input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P158 6, P179 4
-input: 24 lines; pass 0 = line 2; 6 pass-1 lines for 6 groups; ignored lines 3 (abstract+s1+s2+s3+s4+s5+s6), 4 (s7+s8+s9+s10), 5 (fig1), 6 (fig3), 7 (fig2), 8 (fig4), 10 (abstract+s1+s2+s3+s4+s5+s6), 11 (s7+s8+s9+s10), 12 (fig3), 13 (fig4)
-input: pass-0 extension = line 16: 3 units (measurement 3); 1 image panel methods
-input: recipe fill = line 18: run_30k_L reactant_A hf_nme2_4, reactant_B h2o, carrier_gas n2, process_mode thermal, material hfo2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_4k_L reactant_A hf_nme2_4, reactant_B h2o, carrier_gas n2, process_mode thermal, material hfo2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_2k_L reactant_A hf_nme2_4, reactant_B h2o, carrier_gas n2, process_mode thermal, material hfo2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; sim_kinetic_model 
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P158 6, P179 4, P184 6
+input: 32 lines; pass 0 = line 26; 6 pass-1 lines for 6 groups; ignored lines 3 (abstract+s1+s2+s3+s4+s5+s6), 4 (s7+s8+s9+s10), 5 (fig1), 6 (fig3), 7 (fig2), 8 (fig4), 10 (abstract+s1+s2+s3+s4+s5+s6), 11 (s7+s8+s9+s10), 12 (fig3), 13 (fig4), 19 (abstract+s1+s2+s3+s4+s5+s6), 20 (s7+s8+s9+s10), 21 (fig1), 22 (fig3), 23 (fig2), 24 (fig4)
 a0: s10.p1: value_text 'flow-type' -> flow_type (value:reactor_type: value alias 'flow-type')
-a1: symbol species eq3 'N_walls' model None: record -, definition - -> no species
+a1: symbol species s4.p7 'N_walls' definition atoms_per_cycle: record -, definition - -> no species
+a1: symbol species eq3 'N_walls' model atoms_per_cycle: record -, definition - -> no species
+a1: symbol species s4.p8 'a' definition aspect_ratio: record -, definition - -> no species
 a1: symbol species eq4 'a' model aspect_ratio: record -, definition - -> no species
-a1: symbol species eq5 'J' model None: record -, definition - -> no species
+a1: symbol species s6.p4 'J' definition other: record -, definition - -> no species
+a1: symbol species eq5 'J' model other: record -, definition - -> no species
+a1: symbol species s6.p5 't' definition pulse_time: record -, definition - -> no species
 a1: symbol species eq6 't' model pulse_time: record -, definition - -> no species
+a1: symbol species s6.p6 'Pt' definition exposure: record -, definition - -> no species
 a1: symbol species eq7 'Pt' model exposure: record -, definition - -> no species
 a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -> kept: its own element names it
 a1: symbol species s6.p7 'Pt' derived exposure: record hf_nme2_4, definition - -> kept: its own element names it
 a1: symbol species eq8 'CF' model other: record -, definition - -> no species
+a1: symbol species s7.p7 'd' definition feature_width: record -, definition - -> no species
 a1: symbol species eq9 'J' model other: record -, definition - -> no species
+a1: symbol species s7.p8 'S' definition saturation_density: record -, definition - -> no species
 a1: symbol species eq10 'dt' model time: record -, definition - -> no species
-a1: symbol species eq11 't' model pulse_time: record -, definition - -> no species
-a1: symbol species eq12 't' model pulse_time: record -, definition - -> no species
-a1: symbol species eq13 '(Pt)_{sidewalls}' model exposure: record -, definition - -> no species
-a1: symbol species eq14 '(Pt)_{bottom}' model exposure: record -, definition - -> no species
-a1: symbol species eq15 '(Pt)_{total}' model exposure: record -, definition - -> no species
+a1: symbol species s7.p9 'L' definition feature_depth: record -, definition - -> no species
+a1: symbol species eq11 't' model time: record -, definition - -> no species
+a1: symbol species eq12 't' model time: record -, definition - -> no species
+a1: symbol species s7.p10 '(Pt)_{\\text{sidewalls}}' definition exposure: record -, definition - -> no species
+a1: symbol species eq13 '(Pt)_{\\text{sidewalls}}' model exposure: record -, definition - -> no species
+a1: symbol species s7.p11 '(Pt)_{\\text{bottom}}' definition exposure: record -, definition - -> no species
+a1: symbol species eq14 '(Pt)_{\\text{bottom}}' model exposure: record -, definition - -> no species
+a1: symbol species s7.p12 '(Pt)_{\\text{total}}' definition exposure: record -, definition - -> no species
+a1: symbol species eq15 '(Pt)_{\\text{total}}' model exposure: record -, definition - -> no species
+a1: symbol species s8.p1 'a' derived aspect_ratio: record -, definition - -> no species
 a1: symbol species fig1 'd' definition feature_width: record -, definition - -> no species
 a1: symbol species fig1 'L' definition feature_depth: record -, definition - -> no species
+a1: symbol species s6.p6 'Pt': species hf_nme2_4 from the symbol's evidence in this paper (s6.p7)
 a1: symbol species eq7 'Pt': species hf_nme2_4 from the symbol's evidence in this paper (s6.p7)
+a1: qualifier out of scope: s7.p10 definition exposure position=sidewall (record)
 a1: qualifier out of scope: eq13 model exposure position=sidewall (record)
+a1: qualifier out of scope: s7.p11 definition exposure position=bottom (record)
 a1: qualifier out of scope: eq14 model exposure position=bottom (record)
 a: eq8: variables_unmapped 'CF' -> 'other'
 a: eq8: variables_unmapped 'p' -> 'other'
@@ -42,45 +55,47 @@ a: eq12: variables_unmapped 'A_{\\text{hole}}' -> 'other'
 a: eq13: variables_unmapped 'm' -> 'other'
 a: eq14: variables_unmapped 'm' -> 'other'
 a: eq15: variables_unmapped 'm' -> 'other'
-h: simulation sim_kinetic_model ('Kinetic Model') -> model gordon_plug_flow (symbol 'Kinetic Model' of this paper)
+a: eq8: variable 'A' -> aspect_ratio (C5, from the paper's definition)
+a: eq9: variable 'A' -> aspect_ratio (C5, from the paper's definition)
+d: quote found across elements: s6.p10 caveat None -> evidence s6.p9;s6.p10
+d: quote found across elements: fig1 definition penetration_depth -> evidence s7.p5
 h: tree from pass 0: run 3, simulation 1, specimen 3, model_run 1, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
-i: merged s6.p7 into s4.p1;s6.p7 (saturation_density 2.5e+18)
-i: merged s8.p1 into s7.p13;s8.p1 (exposure 9000)
-i: merged fig3 into fig3.cap;fig3 (aspect_ratio )
-i: merged fig2.cap into s8.p1;fig2.cap (material hfo2)
-j: derived over 2 entities: 0 rows; not derived: {'stated: gor03:s8.p3#1 30000 L': 1, 'n: no fact for gpc': 2, 'gpc: no fact for n': 2, 'no fact for H': 2, 'no fact for rho': 2, 'no fact for mg': 2, 'no fact for t': 2, 'no fact for h2': 2, 'no fact for phi': 2, 'no fact for T': 2, 'lam: no fact for T': 2, 'no fact for p': 1}
-j: caveats (query.caveats_of): 2, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
-j: claim nodes (query.claim_nodes): 8 nodes for 8 claims; claims without a full triple (query.node_of empty): 0
-j: comparisons from figures.json (1c): 0
-j: transforms (P195): 3 computed facts ({'exposure_per_run': 3}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
-step input: {'pass-0 extension units': 3, 'records': 87}
-step a0: {'value_text promoted (value:reactor_type: value)': 1}
-step a1: {'symbol species: no species': 15, 'symbol species: kept: its own element names it': 2, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: thermal': 3, 'material from the recipe field: hfo2': 3, 'qualifier out of scope: position': 2}
-step a: {'variables_unmapped (set to null)': 19, 'kept': 93}
-step b: {'kept': 93}
-step c: {'quantity_other (kept)': 7, 'kept': 93}
-step d: {'quote_noncontiguous (kept)': 1, 'quote_not_found': 3, 'kept': 90}
-step e: {'kept': 90}
-step f: {'species_resolved': 9, 'species_unresolved (kept)': 1, 'kept': 90}
-step h: {'simulation linked to a model entry': 1, 'measurement unit': 3, 'place: claim -> paper': 8, 'place: about paper -> recipe': 27, 'place: about paper, method -> paper method activity': 6, 'place: model about a simulation -> simulation': 13, 'place: derived about a simulation -> simulation': 4, 'place: caveat -> paper': 2, 'place: definition -> paper': 8, 'place: result about a specimen -> its measurement': 5, 'place: setting about a run -> deposition': 15, 'place: model about a model run -> model run': 2}
-step m: {'label_as_printed filled with the quantity id': 3, 'statement filled from the quote': 67, 'links resolved': 6}
+j: derived over 2 entities: 0 rows; not derived: {'stated: gor03:s8.p3#1 30000 L': 1, 'n: no fact for gpc': 2, 'gpc: no fact for n': 2, 'no fact for H': 2, 'no fact for rho': 2, 'no fact for mg': 2, 'no fact for t': 2, 'no fact for h2': 2, 'no fact for phi': 2, 'no fact for d': 1, 'lam: no fact for d': 1, 'no fact for p': 1, 'no fact for T': 1, 'lam: no fact for T': 1}
+j: caveats (query.caveats_of): 4, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 1
+j: claim nodes (query.claim_nodes): 11 nodes for 14 claims; claims without a full triple (query.node_of empty): 0
+j: comparisons from figures.json (1c): 2
+j: transforms (P195): 6 computed facts ({'exposure_per_run': 6}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
+step input: {'records': 92, 'distinguished_by parts (P205)': 9}
+step a0: {'value_text promoted (value:reactor_type: value)': 1, 'quantity other: never.csv word': 1}
+step a1: {'symbol species: no species': 27, 'symbol species: kept: its own element names it': 2, "symbol species: from the symbol's evidence in this paper": 2, 'material from the recipe field: hfo2': 3, 'qualifier out of scope: position': 4}
+step a: {'variables_unmapped (set to null)': 19, 'variable filled from a definition (C5)': 2, 'schema:enum': 2, 'kept': 102}
+step a_fields: {'effect': 1, 'value_text': 1}
+step b: {'model_with_value (kept)': 1, 'kept': 102}
+step c: {'quantity_other (kept)': 7, 'quantity_other never (kept)': 1, 'kept': 102}
+step d: {'quote_not_found': 13, "quote found in the paper's elements concatenated (P182)": 2, 'quote_noncontiguous (kept)': 1, 'kept': 89}
+step e: {'kept': 89}
+step e2: {'value in its quote: as printed (the quote names no unit)': 6, 'value in its quote: as printed': 29, 'value in its quote: converted': 5, 'kept': 89}
+step f: {'species_resolved': 3, 'kept': 89}
+step h: {'measurement unit': 3, 'place: claim -> paper': 14, 'place: about paper -> recipe': 29, 'place: about paper, method -> paper method activity': 7, 'place: definition -> paper': 14, 'place: caveat -> paper': 4, 'place: model about a simulation -> simulation': 9, 'place: result about a specimen -> its measurement': 4, 'place: setting about a run -> deposition': 6, 'place: model about a model run -> model run': 1, 'place: model about a model run -> simulation': 1}
+step m: {'label_as_printed filled with the quantity id': 1, 'statement filled from the quote': 57, 'links resolved': 4}
 step 1c: {'curve -> model': 1, 'unbound item (image): ambiguous': 1}
-step i: {'merged': 4, 'kept': 87}
-step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 8, 'exposure_per_run: printed output disagrees': 3, 'sheet_resistance: inputs missing': 8, 'moles_deposited: inputs missing': 8, 'coating_mass_fraction: inputs missing': 8, 'deposition_rate: inputs missing': 8, 'coated_ar: inputs missing': 8, 'normalize_front_slope: inputs missing': 8, 'exposure_per_run: inputs missing': 2, 'exposure_per_run: computed': 3}
-step k: {'statement from the record': 86, 'statement_copies_text (reported by check)': 41, 'statement assembled': 4}
+step i: {'kept': 90}
+step n: {'comparison series': 1, 'comparison grid': 1}
+step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 8, 'exposure_per_run: computed': 6, 'sheet_resistance: inputs missing': 8, 'moles_deposited: inputs missing': 8, 'coating_mass_fraction: inputs missing': 8, 'deposition_rate: inputs missing': 8, 'coated_ar: inputs missing': 8, 'normalize_front_slope: inputs missing': 8, 'exposure_per_run: inputs missing': 2}
+step k: {'statement from the record': 89, 'statement_copies_text (reported by check)': 33, 'statement assembled': 7}
 diff against the gold:
-  setting        52   38   24  0.63  0.46
-  model          21   15   12  0.80  0.57
-  claim          18    8    4  0.50  0.22
+  setting        52   28   23  0.82  0.44
+  model          21   18   13  0.72  0.62
+  claim          18   14    6  0.43  0.33
   cited          11    0    0     -  0.00
-  activity       11   11    7  0.64  0.64
-  observation    11   10    3  0.30  0.27
-  derived        10    9    6  0.67  0.60
-  definition      8    8    0  0.00  0.00
-  caveat          7    2    1  0.50  0.14
+  observation    11    8    5  0.62  0.45
+  activity       11   12    6  0.50  0.55
+  derived        10   10    4  0.40  0.40
+  definition      8   14    2  0.14  0.25
+  caveat          7    4    3  0.75  0.43
   entity          6    4    4  1.00  0.67
-  comparison      1    0    0     -  0.00
+  comparison      1    2    0  0.00  0.00
   paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 2/8
 gold model rows with quantity and value: 0: {}
-observations: gold 11, compiled 10, matched 3
+observations: gold 11, compiled 8, matched 5

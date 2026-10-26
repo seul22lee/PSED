@@ -1,23 +1,21 @@
 fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
-gao15:abs.g1#1,claim,,,,,abs.g1,gao15:abs.g1#2,type 'definition' vs 'claim'
-gao15:abs.g2#3,setting,aspect_ratio,,,,abs.g2,gao15:s6.p1#2,quantity 'feature_width' vs 'aspect_ratio'
+gao15:abs.g2#1,claim,feature_depth,,µm,,abs.g2,gao15:abs.g2#2,type 'definition' vs 'claim'
+gao15:abs.g2#2,claim,feature_width,,nm,,abs.g2,gao15:abs.g2#1,type 'definition' vs 'claim'
+gao15:abs.g2#3,claim,aspect_ratio,,,,abs.g2,gao15:abs.g2#4,type 'derived' vs 'claim'
 gao15:s5.p4#3,cited,aspect_ratio,200,,,s5.p4,gao15:s5.p4#1,"value '5' '' vs '200' '' (canonical ('dimensionless', 5.0) vs ('dimensionless', 200.0))"
 gao15:s6.p1#1,setting,feature_width,200,nm,,s6.p1,gao15:s6.p1#2,"value '' 'nm' vs '200' 'nm' (canonical None vs ('length', 200.0))"
 gao15:s6.p1#2,setting,feature_width,500,nm,,s6.p1;s6.x1,gao15:s6.p1#2,"value '' 'nm' vs '500' 'nm' (canonical None vs ('length', 500.0))"
 gao15:s6.p1#3,setting,feature_width,1000,nm,,s6.p1,gao15:s6.p1#2,"value '' 'nm' vs '1000' 'nm' (canonical None vs ('length', 1000.0))"
+gao15:s6.p3#1,setting,film_thickness,1.4,µm,,s6.p3,gao15:s6.p3#2,quantity 'other' vs 'film_thickness'
+gao15:s6.p3#2,setting,film_thickness,400,nm,,s6.p3,gao15:s6.p3#2,"quantity 'other' vs 'film_thickness'; value '1.4' 'µm' vs '400' 'nm' (canonical ('length', 1400.0) vs ('length', 400.0))"
 gao15:s6.p18#2,observation,coated_aspect_ratio,130,,,s6.p18,gao15:s6.p16#1,"quantity '' vs 'coated_aspect_ratio'; value '' '' vs '130' '' (canonical None vs ('dimensionless', 130.0))"
 gao15:s6.p21#2,observation,coated_aspect_ratio,104,,,s6.p21,gao15:s6.p20#1,"quantity 'film_thickness' vs 'coated_aspect_ratio'; value '' '' vs '104' '' (canonical None vs ('dimensionless', 104.0))"
-gao15:s6.p22#1,observation,step_coverage,0.9,,,s6.p22,gao15:s6.p22#1,"quantity 'film_thickness' vs 'step_coverage'; value '' '' vs '0.9' '' (canonical None vs ('dimensionless', 0.9))"
-gao15:s6.p22#2,observation,penetration_depth,130,,,s6.p22,gao15:s6.p22#1,"quantity 'film_thickness' vs 'penetration_depth'; value '' '' vs '130' '' (canonical None vs ('130', ''))"
+gao15:s6.p21#3,caveat,film_thickness,10,nm,,s6.p21,gao15:s6.p21#6,"quantity '' vs 'film_thickness'; value '' '' vs '10' 'nm' (canonical None vs ('length', 10.0))"
+gao15:s7.p3#1,setting,cycle_number,1109,cycle,,s7.p3,,no gold row on this element
+gao15:s7.p3#2,setting,cycle_number,2000,cycle,,s7.p3,,no gold row on this element
 gao15:fig1.cap#1,setting,structure,,,pillarhall_1,fig1.cap,gao15:s5.p4#7,type 'definition' vs 'setting'; quantity 'aspect_ratio' vs 'structure'; value_text '' vs 'pillarhall_1'
-gao15:s6.p21#4,setting,pillar_spacing,10,µm,,s6.p21,gao15:s6.p21#5,"quantity 'other' vs 'pillar_spacing'; value '10' 'nm' vs '10' 'µm' (canonical ('length', 10.0) vs ('length', 10000.0))"
-gao15:s6.p5#9,setting,feature_depth,5,mm,,s6.p5,gao15:s6.p5#1,"quantity 'other' vs 'feature_depth'; value_text '20 × 25 mm2' vs ''; value '' '' vs '5' 'mm' (canonical None vs ('length', 5000000.0))"
-gao15:s6.x1#1,setting,feature_width,500,nm,,s6.x1,gao15:s6.x1#1,"quantity 'pillar_spacing' vs 'feature_width'; value '10' 'µm' vs '500' 'nm' (canonical ('length', 10000.0) vs ('length', 500.0))"
 gao15:fig2.cap#1,setting,feature_width,500,nm,,fig2.cap,gao15:fig2.cap#2,"quantity 'aspect_ratio' vs 'feature_width'; value '40' '' vs '500' 'nm' (canonical ('dimensionless', 40.0) vs ('length', 500.0))"
 gao15:fig3g#1,setting,feature_width,500,nm,,fig3g,gao15:fig3g#1,"type 'observation' vs 'setting'; quantity '' vs 'feature_width'; value '' '' vs '500' 'nm' (canonical None vs ('length', 500.0))"
-gao15:fig5a#1,observation,film_thickness,106.14,nm,,fig5a,gao15:s6.p20#1,"value '' '' vs '106.14' 'nm' (canonical None vs ('length', 106.14))"
-gao15:fig5a#2,observation,penetration_depth,71.5,µm,,fig5a,gao15:s6.p21#1,"value '52' 'µm' vs '71.5' 'µm' (canonical ('length', 52000.0) vs ('length', 71500.0))"
-gao15:s6.p17#4,derived,feature_width,287.72,nm,,s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap;fig5a;fig6.cap,gao15:abs.g2#1,"type 'definition' vs 'derived'; value '' '' vs '287.72' 'nm' (canonical None vs ('length', 287.72))"
-gao15:s6.p12#6,derived,coated_aspect_ratio,125,,,s6.p12;s6.p13;fig3c,gao15:s6.p12#1,"type 'definition' vs 'derived'; quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '' '' vs '125' '' (canonical None vs ('dimensionless', 125.0))"
-gao15:s6.p12#7,derived,coated_aspect_ratio,180,,,s6.p12;s6.p13;fig3f,gao15:s6.p12#1,"type 'definition' vs 'derived'; quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '' '' vs '180' '' (canonical None vs ('dimensionless', 180.0))"
-gao15:s6.p12#8,derived,coated_aspect_ratio,155,,,s6.p12;s6.p13;fig3i,gao15:s6.p12#1,"type 'definition' vs 'derived'; quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '' '' vs '155' '' (canonical None vs ('dimensionless', 155.0))"
+gao15:s6.p13#4,derived,coated_aspect_ratio,125,,,s6.p13;fig3c,gao15:s6.p12#1,"type 'definition' vs 'derived'; quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '' '' vs '125' '' (canonical None vs ('dimensionless', 125.0))"
+gao15:s6.p13#5,derived,coated_aspect_ratio,180,,,s6.p13;fig3f,gao15:s6.p12#1,"type 'definition' vs 'derived'; quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '' '' vs '180' '' (canonical None vs ('dimensionless', 180.0))"
+gao15:s6.p13#6,derived,coated_aspect_ratio,155,,,s6.p13;fig3i,gao15:s6.p12#1,"type 'definition' vs 'derived'; quantity 'penetration_depth' vs 'coated_aspect_ratio'; value '' '' vs '155' '' (canonical None vs ('dimensionless', 155.0))"

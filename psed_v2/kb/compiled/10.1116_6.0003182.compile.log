@@ -1,78 +1,67 @@
-input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 13
-input: 36 lines; pass 0 = line 2; 13 pass-1 lines for 13 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8), 4 (s9+s10+s11), 5 (s12), 6 (s13+s14), 7 (s15), 8 (fig2), 9 (fig3), 10 (fig4), 11 (fig5), 12 (fig6), 13 (fig1), 14 (tabI), 15 (tabII)
-input: pass-0 extension = line 20: 3 units (simulation 1, model_run 2); 8 image panel methods
-input: recipe field set to null: run_120 process_mode thermal (quote null)
-input: recipe field set to null: run_160 process_mode thermal (quote null)
-input: recipe field set to null: run_120_160 process_mode thermal (quote null)
-input: recipe field set to null: run_test process_mode thermal (quote null)
-input: recipe field set to null: run_120_160 material zno (quote not found (abs.g3))
-input: recipe field set to null: run_120_160 material zno (quote not found (abs.g3))
-input: recipe fill = line 36: run_120 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']; run_160 reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']; run_120_160 reactant_A dez, reactant_B h2o, carrier_gas n2, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']; run_test reactant_A dez, reactant_B h2o, carrier_gas n2, material zno, steps ['reactant_A', 'hold_A', 'purge_A', 'reactant_B', 'hold_B', 'purge_B']; sim_1 
-a0: fig3.cap: legend label '120/160 °C' parsed to nothing
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 13, P184 13
+input: 51 lines; pass 0 = line 38; 13 pass-1 lines for 13 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8), 4 (s9+s10+s11), 5 (s12), 6 (s13+s14), 7 (s15), 8 (fig2), 9 (fig3), 10 (fig4), 11 (fig5), 12 (fig6), 13 (fig1), 14 (tabI), 15 (tabII), 22 (abstract+s0+s1+s2+s3+s4+s5+s6+s7+s8), 23 (s9+s10+s11), 24 (s12), 25 (s13+s14), 26 (s15), 27 (fig2), 28 (fig3), 29 (fig4), 30 (fig5), 31 (fig6), 32 (fig1), 33 (tabI), 34 (tabII)
+a1: symbol species s6.p2 '\\phi_i' cited porosity: record -, definition - -> no species
 a1: symbol species s6.p2 'AR' cited aspect_ratio: record -, definition - -> no species
-a1: symbol species s6.p4 'AR' cited aspect_ratio: record -, definition - -> no species
-a1: symbol species s9.p2 'T' definition deposition_temperature: record -, definition - -> no species
-a1: symbol species s9.p2 'd_NP' definition particle_diameter: record -, definition - -> no species
-a1: symbol species s9.p2 'L' definition feature_depth: record -, definition - -> no species
-a1: symbol species s9.p2 'φ_i' definition porosity: record -, definition - -> no species
-a1: symbol species s9.p6 'T' definition deposition_temperature: record -, definition - -> no species
-a1: symbol species s9.p7 't_hold' definition pulse_time: record -, definition - -> no species
-a1: symbol species eq1 't_hold' model pulse_time: record -, definition - -> no species
-a1: symbol species s9.p8 't_purge' definition purge_time: record -, definition - -> no species
-a1: symbol species eq2 't_purge' model purge_time: record -, definition - -> no species
-a1: symbol species s9.p9 't_purge' derived purge_time: record h2o, definition - -> kept: its own element names it
-a1: symbol species s9.p9 't_purge' derived purge_time: record h2o, definition - -> kept: its own element names it
-a1: symbol species s12.p1 'ϕ_f' derived porosity: record -, definition - -> no species
-a1: symbol species s12.p1 'ϕ_f' derived porosity: record -, definition - -> no species
-a1: symbol species s12.p1 'ϕ_f' derived porosity: record -, definition - -> no species
-a1: symbol species s12.p6 'x' definition reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s6.p5 'T' cited deposition_temperature: record -, definition - -> no species
+a1: symbol species s6.p5 'T' cited deposition_temperature: record -, definition - -> no species
+a1: symbol species eq1 't_{\\text{hold}}' model pulse_time: record -, definition - -> no species
+a1: symbol species eq2 't_{\\text{purge}}' model purge_time: record -, definition - -> no species
+a1: symbol species s9.p9 '\\theta_f' cited surface_coverage: record -, definition - -> no species
+a1: symbol species s9.p9 't_{\\text{purge}}' derived purge_time: record -, definition - -> no species
+a1: symbol species s9.p9 't_{\\text{purge}}' derived purge_time: record -, definition - -> no species
+a1: symbol species s12.p1 '\\phi_f' derived porosity: record -, definition - -> no species
+a1: symbol species s12.p1 '\\phi_f' derived porosity: record -, definition - -> no species
+a1: symbol species s12.p1 '\\phi_f' derived porosity: record -, definition - -> no species
 a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species s12.p6 'x' cited reaction_stoichiometry: record -, definition - -> no species
-a1: symbol species s12.p9 'ȳ' definition reaction_stoichiometry: record -, definition - -> no species
-a1: symbol species eq6 'ȳ' model reaction_stoichiometry: record -, definition s12.p9: {'zno'} -> from the definition (zno)
-a1: symbol species eq7 'ȳ' model reaction_stoichiometry: record -, definition s12.p9: {'zno'} -> from the definition (zno)
-a1: symbol species eq8 'ȳ' model reaction_stoichiometry: record -, definition s12.p9: {'zno'} -> from the definition (zno)
-a1: symbol species s12.p13 'c' definition other: record -, definition - -> no species
+a1: symbol species eq6 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species eq7 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species eq8 '\\bar{y}' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p14 '\\bar{\\nu}' derived reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p14 '\\bar{\\nu}' derived reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species s12.p14 '\\bar{\\nu}' derived reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species fig2.cap 'T' definition deposition_temperature: record -, definition - -> no species
-a1: symbol species fig3.cap '\\Delta n_g' definition gas_moles_per_cycle: record -, definition - -> no species
+a1: symbol species fig3.cap '\\delta p' definition pressure_rise: record -, definition - -> no species
+a1: symbol species fig3.cap '\\Delta n_g' definition gas_moles_per_cycle: record dez, definition - -> kept: its own element names it
+a1: symbol species fig3.cap 'TS' definition pressure_rate: record -, definition - -> no species
 a1: symbol species fig1.cap 'T' definition deposition_temperature: record -, definition - -> no species
 a1: symbol species fig1.cap 'd_NP' definition particle_diameter: record -, definition - -> no species
 a1: symbol species fig1.cap 'L' definition feature_depth: record -, definition - -> no species
-a1: symbol species fig1.cap 'φ_i' definition porosity: record -, definition - -> no species
-a1: symbol species tabI.cap '\\phi_f' definition porosity: record -, definition - -> no species
-a1: symbol species tabI.cap '\\Delta n_s' definition deposited_moles_per_cycle: record -, definition - -> no species
-a1: symbol species tabI.cap '\\Delta n_g' definition gas_moles_per_cycle: record dez, definition - -> kept: its own element names it
-a1: symbol species tabI.cap '\\bar{\\nu}' definition reaction_stoichiometry: record -, definition - -> no species
-a1: symbol species tabI.r0c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' model reaction_stoichiometry: record -, definition - -> no species
+a1: symbol species fig1.cap '\\phi_i' definition porosity: record -, definition - -> no species
 a1: symbol species tabI.r1c4 '\\Delta n_s (\\mu\\text{mol}/\\text{cyc})' derived deposited_moles_per_cycle: record -, definition - -> no species
-a1: symbol species tabI.r1c5 '\\Delta n_g (\\mu\\text{mol}/\\text{cyc})' derived gas_moles_per_cycle: record dez, definition - -> species cleared (no evidence)
 a1: symbol species tabI.r1c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' derived reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species tabI.r2c4 '\\Delta n_s (\\mu\\text{mol}/\\text{cyc})' derived deposited_moles_per_cycle: record -, definition - -> no species
-a1: symbol species tabI.r2c5 '\\Delta n_g (\\mu\\text{mol}/\\text{cyc})' derived gas_moles_per_cycle: record dez, definition - -> species cleared (no evidence)
 a1: symbol species tabI.r2c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' derived reaction_stoichiometry: record -, definition - -> no species
 a1: symbol species tabI.r3c4 '\\Delta n_s (\\mu\\text{mol}/\\text{cyc})' derived deposited_moles_per_cycle: record -, definition - -> no species
-a1: symbol species tabI.r3c5 '\\Delta n_g (\\mu\\text{mol}/\\text{cyc})' derived gas_moles_per_cycle: record dez, definition - -> species cleared (no evidence)
 a1: symbol species tabI.r3c6 '\\bar{\\nu} = \\Delta n_g / \\Delta n_s + 1' derived reaction_stoichiometry: record -, definition - -> no species
-a1: symbol species s9.p8 't_purge': species h2o from the symbol's evidence in this paper (s9.p9)
-a1: symbol species eq2 't_purge': species h2o from the symbol's evidence in this paper (s9.p9)
-a1: symbol species s12.p9 'ȳ': species zno from the symbol's evidence in this paper (eq6, eq7, eq8)
-a1: symbol species fig3.cap '\\Delta n_g': species dez from the symbol's evidence in this paper (tabI.cap)
-a1: qualifier out of scope: s12.p9 definition reaction_stoichiometry species=zno (record)
-a1: qualifier out of scope: eq6 model reaction_stoichiometry species=zno (record)
-a1: qualifier out of scope: eq7 model reaction_stoichiometry species=zno (record)
-a1: qualifier out of scope: eq8 model reaction_stoichiometry species=zno (record)
+a1: symbol species tabII.r1c1 'Wt. %' derived phase_fraction: record -, definition - -> no species
+a1: symbol species tabII.r2c1 'Wt. %' derived phase_fraction: record -, definition - -> no species
+a1: symbol species tabII.r3c1 'Wt. %' derived phase_fraction: record -, definition - -> no species
+a1: symbol species s9.p9 'T' model deposition_temperature: record -, definition - -> no species
+a1: symbol species s9.p9 'T' model deposition_temperature: record -, definition - -> no species
 d: quote found across elements: s6.p3 claim None -> evidence s6.p3;s6.p4
-d: quote found across elements: s12.p15 caveat None -> evidence s12.p14;s12.p15
+d: quote found across elements: s13.p3 derived phase_fraction -> evidence s13.p2;s13.p3
+d: quote found across elements: s13.p3 derived phase_fraction -> evidence s13.p2;s13.p3
+d: quote found across elements: fig1b setting deposition_temperature -> evidence abs.g3
+d: quote found across elements: fig1b setting deposition_temperature -> evidence abs.g3
+d: quote found across elements: s9.p6 setting material -> evidence s9.p1
+d: quote found across elements: s9.p6 setting material -> evidence s9.p1
+d: quote found across elements: s9.p6 setting material -> evidence s9.p1
+e2: value not in its quote: s6.p8 setting partial_pressure value 1199.9 Torr: 'reactant partial pressure of ~ 9 Torr'
 g: s12.p1: mention_unmatched ['120/160 °C']
-g: s12.p1: mention_unmatched ['120 °C']
-g: s12.p1: mention_unmatched ['160 °C']
+g: s12.p1: mention_unmatched ['120/160 °C']
+g: s12.p1: mention_unmatched ['120/160 °C']
+g: s12.x1: mention_unmatched ['120/160 °C']
+g: s12.x1: mention_unmatched ['120/160 °C']
+g: s12.x1: mention_unmatched ['120/160 °C']
+g: s12.p14: mention_unmatched ['120/160 °C']
 h: tree from pass 0: run 4, simulation 1, specimen 3, model_run 2, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
-h: specimen_created gre23:run:run_test:film
-h: 4 result rows moved to gre23:ent:specimen_120
-h: 4 result rows moved to gre23:ent:specimen_120_160
-h: 4 result rows moved to gre23:ent:specimen_160
-h: 1 result rows moved to gre23:run:run_test:film
+h: specimen_created gre23:run:r4:film
+h: 4 result rows moved to gre23:ent:s1
+h: 4 result rows moved to gre23:ent:s2
+h: 4 result rows moved to gre23:ent:s3
+h: 1 result rows moved to gre23:run:r4:film
 n: qualifier out of scope: fig6d observation distance element=C (figure)
 n: qualifier out of scope: fig6d observation distance element=O (figure)
 n: qualifier out of scope: fig6d observation distance element=Zn (figure)
@@ -86,67 +75,76 @@ n: qualifier out of scope: fig6f observation distance element=O (figure)
 n: qualifier out of scope: fig6f observation distance element=Zn (figure)
 n: qualifier out of scope: fig6f observation distance element=Al (figure)
 i: merged s6.p8 into abs.g3;s6.p8 (aspect_ratio 7800)
+i: merged s8.p1 into abs.g3;s8.p1 (particle_diameter 100)
 i: merged s8.p1 into abs.g3;s8.p1 (body_thickness 1.55)
 i: merged s8.p1 into abs.g3;s8.p1 (porosity 50.5)
 i: merged s9.p4 into s6.p8;s9.p4 (cycle_number 20)
-i: merged s12.p12 into s9.p5;s12.p12 (gas_flow_rate 20)
-i: merged fig2.cap into s9.p5;s12.p12;fig2.cap (gas_flow_rate 20)
-i: merged fig5.cap into s9.p6;fig5.cap (deposition_temperature 120)
-i: merged fig5.cap into s9.p6;fig5.cap (deposition_temperature 160)
-i: merged fig5.cap into s9.p6;fig5.cap (deposition_temperature )
-i: merged fig5 into s13.p2;fig5 (phase detected)
-i: merged fig5 into s13.p2;fig5 (phase detected)
-i: caveat ('gre23', '', '', '', 'the 160°c sample cross section is incomplete due to sample damage during transport and handling.'): merged fig6.cap into s15.p6;fig6.cap
-i: definition ('gre23', 't', 'deposition temperature t'): merged fig1.cap into s9.p2;fig1.cap
-i: definition ('gre23', 'dnp', 'np diameter dnp'): merged fig1.cap into s9.p2;fig1.cap
-i: definition ('gre23', 'l', 'half-thickness l'): merged fig1.cap into s9.p2;fig1.cap
-i: definition ('gre23', 'φi', 'initial porosity, \\phii'): merged fig1.cap into s9.p2;fig1.cap
+i: merged s9.p6 into s6.p8;s9.p4;s9.p6 (cycle_number 20)
+i: merged s10.p1 into abs.g3;s8.p1;s10.p1 (particle_diameter 100)
+i: merged fig4.cap into s9.p6;fig4.cap (deposition_temperature 120)
+i: merged fig4.cap into s9.p6;fig4.cap (deposition_temperature 160)
+i: merged fig5.cap into s9.p6;fig4.cap;fig5.cap (deposition_temperature 120)
+i: merged fig5.cap into s9.p6;fig4.cap;fig5.cap (deposition_temperature 160)
+i: merged abs.g3 into abs.g3;s9.p6;fig4.cap;fig5.cap (deposition_temperature 120)
+i: merged abs.g3 into abs.g3;s9.p6;fig4.cap;fig5.cap (deposition_temperature 160)
+i: merged tabI.cap into abs.g3;s8.p1;tabI.cap (porosity 50.5)
+i: merged tabI.r1c0 into abs.g3;s9.p6;fig4.cap;fig5.cap;tabI.r1c0 (deposition_temperature 120)
+i: merged tabI.r1c1 into s12.p1;tabI.r1c1 (mass_gain 28.4)
+i: merged tabI.r1c3 into s12.p1;tabI.r1c3 (growth_per_cycle 2.37)
 i: merged tabI.r1c6 into s12.p14;tabI.r1c6 (reaction_stoichiometry 1.395)
+i: merged tabI.r2c0 into abs.g3;s9.p6;fig4.cap;fig5.cap;tabI.r2c0 (deposition_temperature 160)
+i: merged tabI.r2c1 into s12.p1;tabI.r2c1 (mass_gain 36.4)
+i: merged tabI.r2c3 into s12.p1;tabI.r2c3 (growth_per_cycle 3.48)
 i: merged tabI.r2c6 into s12.p14;tabI.r2c6 (reaction_stoichiometry 1.88)
+i: merged tabI.r3c1 into s12.p1;tabI.r3c1 (mass_gain 26.4)
+i: merged tabI.r3c3 into s12.p1;tabI.r3c3 (growth_per_cycle 2.14)
 i: merged tabI.r3c6 into s12.p14;tabI.r3c6 (reaction_stoichiometry 1.365)
-i: merged tabII.r1c0 into s9.p6;fig5.cap;tabII.r1c0 (deposition_temperature 120)
+i: merged tabII.r1c0 into abs.g3;s9.p6;fig4.cap;fig5.cap;tabI.r1c0;tabII.r1c0 (deposition_temperature 120)
+i: merged tabII.r1c1 into s13.p2;s13.p3;tabII.r1c1 (phase_fraction 23.3)
 i: merged tabII.r1c2 into s13.p3;tabII.r1c2 (crystallite_size 6)
-i: merged tabII.r2c0 into s9.p6;fig5.cap;tabII.r2c0 (deposition_temperature 160)
-i: merged tabII.r3c0 into s9.p6;fig5.cap;tabII.r3c0 (deposition_temperature )
+i: merged tabII.r2c0 into abs.g3;s9.p6;fig4.cap;fig5.cap;tabI.r2c0;tabII.r2c0 (deposition_temperature 160)
+i: merged tabII.r3c1 into s13.p2;s13.p3;tabII.r3c1 (phase_fraction 17.7)
 i: merged tabII.r3c2 into s13.p3;tabII.r3c2 (crystallite_size 5.1)
-j: derived over 4 entities: 2 rows; not derived: {'stated: gre23:abs.g3#1 >10000 Torr·s': 4, 'stated: gre23:s12.p1#6 2.37 Å/cycle': 1, 'no fact for H': 4, 'no fact for rb': 4, 'no fact for m0': 3, 'no fact for t': 6, 'no fact for h2': 4, 'stated: gre23:s12.p1#7 3.48 Å/cycle': 1, 'stated: gre23:abs.g4#1 0.21 nm/cycle': 1, 'n: no fact for gpc': 1, 'gpc: no fact for n': 1, 'no fact for mg': 1, 'no fact for T': 1, 'lam: no fact for T': 1}
-j: caveats (query.caveats_of): 6, linked to facts 2, to nodes 0; facts reached through query.caveats_for: 15
-j: claim nodes (query.claim_nodes): 19 nodes for 24 claims; claims without a full triple (query.node_of empty): 2
+i: merged s9.p4 (process_pressure 9 -) into the fact with qualifiers step=hold_A (s9.p4;fig3.cap)
+i: merged s12.p12 (gas_flow_rate 20 gas=n2) into the fact with qualifiers gas=n2;step=purge_A (s9.p5;s12.p12)
+i: merged s9.p9 (purge_time 48 -) into the fact with qualifiers species=dez;step=purge_A (s9.p9;s14.p6)
+j: derived over 6 entities: 2 rows; not derived: {'stated: gre23:s6.p8#5 17000 Torr·s': 4, 'stated: gre23:s12.p1#9 2.37 Å/cycle': 1, 'no fact for H': 6, 'no fact for rb': 6, 'no fact for m0': 3, 'no fact for t': 8, 'no fact for h2': 6, 'no fact for p': 8, 'lam: no fact for p': 6, 'stated: gre23:s12.p1#10 3.48 Å/cycle': 1, 'stated: gre23:s12.p1#8 2.14 Å/cycle': 1, 'n: no fact for gpc': 3, 'gpc: no fact for n': 3, 'no fact for mg': 3, 'no fact for phi': 2}
+j: caveats (query.caveats_of): 5, linked to facts 3, to nodes 0; facts reached through query.caveats_for: 21
+j: claim nodes (query.claim_nodes): 21 nodes for 23 claims; claims without a full triple (query.node_of empty): 2
 j: comparisons from figures.json (1c): 1
-j: transforms (P195): 8 computed facts ({'sheet_resistance': 2, 'coating_mass_fraction': 3, 'deposition_rate': 3}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
-step input: {'pass-0 extension units': 3, 'records': 227, 'legend conditions of a pass-0 unit (run)': 1, 'coordinate of a pass-0 unit (other)': 1}
-step a0: {'derived legend label parsed to nothing (other)': 1}
-step a1: {'symbol species: no species': 36, 'symbol species: kept: its own element names it': 3, 'symbol species: from the definition': 3, 'symbol species: species cleared (no evidence)': 3, "symbol species: from the symbol's evidence in this paper": 4, 'material from the recipe field: zno': 3, 'qualifier out of scope: species': 4}
-step a: {'schema:enum': 1, 'kept': 230}
-step a_fields: {'cause': 1}
-step b: {'kept': 230}
-step c: {'quantity_other (kept)': 4, 'kept': 230}
-step d: {"quote found in the paper's elements concatenated (P182)": 2, 'quote_not_found': 18, 'quote_noncontiguous (kept)': 2, 'derived condition (figures.json, no quote check)': 1, 'kept': 212}
-step e: {'unit_unresolved (kept as printed)': 12, 'kept': 212}
-step f: {'species_resolved': 6, 'kept': 212}
-step g: {'mention_unmatched': 3}
-step h: {'simulation name unresolved (unmapped, field model)': 1, 'place: claim -> paper': 24, 'place: about paper -> recipe': 59, 'place: result about a run -> its specimen measurement': 25, 'place: cited -> paper': 8, 'place: definition -> paper': 28, 'place: caveat -> paper': 7, 'place: setting about a run -> deposition': 16, 'place: about paper, method -> paper method activity': 10, 'place: result about a specimen -> its measurement': 34, 'specimen_created': 1, 'place: result about a run -> film measurement': 1}
-step m: {'label_as_printed filled with the quantity id': 1, 'statement filled from the quote': 166, 'links resolved': 7}
-step 1c: {'figure label other (condition)': 1, 'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 13, 'unbound item (image): no unit named': 1, 'image -> a measurement (photograph)': 3, 'unbound item (panel): ambiguous': 1, 'image -> a measurement (sem_eds)': 3, 'curve -> observation (legend qualifier)': 12}
-step n: {'qualifier out of scope: element': 12, 'comparison replicate': 1}
-step i: {'merged': 19, 'caveat merged': 1, 'definition merged': 4, 'kept': 219}
-step 6b: {'dimension mismatch flagged': 12}
-step j: {'derived_needs_outside_fact': 9, 'derived shell_volume_fraction': 2, 'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 11, 'exposure_per_run: inputs missing': 11, 'sheet_resistance: inputs missing': 9, 'moles_deposited: inputs missing': 11, 'coating_mass_fraction: inputs missing': 8, 'deposition_rate: inputs missing': 8, 'coated_ar: inputs missing': 11, 'normalize_front_slope: inputs missing': 11, 'sheet_resistance: computed': 2, 'coating_mass_fraction: computed': 3, 'deposition_rate: computed': 3}
-step k: {'statement from the record': 188, 'statement_copies_text (reported by check)': 74, 'statement assembled': 41}
+j: transforms (P195): 6 computed facts ({'moles_deposited': 3, 'deposition_rate': 3}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
+step input: {'records': 206, 'distinguished_by parts (P205)': 6}
+step a0: {'quantity other: never.csv word': 1}
+step a1: {'symbol species: no species': 39, 'symbol species: kept: its own element names it': 1, 'material from the recipe field: zno': 4}
+step a: {'kept': 216}
+step b: {'model_with_value (kept)': 2, 'kept': 216}
+step c: {'quantity_other (kept)': 4, 'quantity_other never (kept)': 1, 'kept': 216}
+step d: {"quote found in the paper's elements concatenated (P182)": 8, 'quote_not_found': 4, 'quote_noncontiguous (kept)': 3, 'kept': 212}
+step e: {'kept': 212}
+step e2: {'value in its quote: as printed': 109, 'value in its quote: as printed (the quote names no unit)': 29, 'value in its quote: converted': 5, 'value_not_in_quote': 1, "not checked: a figure panel's record": 7, 'kept': 211}
+step f: {'species_resolved': 8, 'kept': 211}
+step g: {'mention_unmatched': 7}
+step h: {'measurement unit': 19, 'specimen_created': 1, 'place: claim -> paper': 23, 'place: about paper -> recipe': 64, 'place: cited -> paper': 12, 'place: setting about a run -> deposition': 20, 'place: about paper, method -> paper method activity': 4, 'place: result about a run -> its specimen measurement': 38, 'place: caveat -> paper': 5, 'place: result about a specimen -> its measurement': 28, 'place: definition -> paper': 8, 'place: result about a run -> film measurement': 1, 'place: setting about a specimen -> deposition': 6, 'place: model about a model run -> model run': 2}
+step m: {'statement filled from the quote': 163, 'label_as_printed filled with the quantity id': 3, 'links resolved': 9}
+step 1c: {'figure axis unit unknown (values as printed)': 1, 'curve -> observation': 10, 'curve -> observation (legend quantity)': 3, 'unbound item (image): ambiguous': 1, 'image -> a measurement (photograph)': 3, 'unbound item (panel): ambiguous': 1, 'image -> a measurement (a photograph)': 3, 'curve -> observation (legend qualifier)': 12}
+step n: {'qualifier out of scope: element': 12, 'comparison series': 1}
+step i: {'distinguished_by part: same fact held (not written)': 3, 'merged': 31, 'merged into the fact with the fuller qualifiers': 3, 'kept': 205}
+step j: {'derived_needs_outside_fact': 3, 'derived shell_volume_fraction': 2, 'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 11, 'exposure_per_run: inputs missing': 11, 'sheet_resistance: inputs missing': 8, 'moles_deposited: inputs missing': 8, 'coating_mass_fraction: inputs missing': 8, 'deposition_rate: inputs missing': 8, 'coated_ar: inputs missing': 11, 'normalize_front_slope: inputs missing': 11, 'sheet_resistance: inputs ambiguous': 3, 'moles_deposited: computed': 3, 'coating_mass_fraction: printed output disagrees': 3, 'deposition_rate: computed': 3}
+step k: {'statement from the record': 174, 'statement_copies_text (reported by check)': 84, 'statement assembled': 39}
 diff against the gold:
-  observation    89   66   24  0.36  0.27
-  setting        89   55   26  0.47  0.29
-  claim          57   24   18  0.75  0.32
-  cited          57    8    7  0.88  0.12
-  caveat         53    6    6  1.00  0.11
-  activity       41   34    7  0.21  0.17
-  derived        31   37   14  0.38  0.45
-  model          18    9    8  0.89  0.44
-  entity         18    6    0  0.00  0.00
-  definition     16   24    3  0.12  0.19
+  observation    89   61   21  0.34  0.24
+  setting        89   56   22  0.39  0.25
+  cited          57   12    6  0.50  0.11
+  claim          57   23   17  0.74  0.30
+  caveat         53    5    3  0.60  0.06
+  activity       41   32   16  0.50  0.39
+  derived        31   38   21  0.55  0.68
+  entity         18    6    4  0.67  0.22
+  model          18   10    9  0.90  0.50
+  definition     16    8    2  0.25  0.12
   identity        3    0    0     -  0.00
   comparison      1    1    0  0.00  0.00
   paper           1    1    1  1.00  1.00
 gold definitions with an eq* element in evidence: 6/16
 gold model rows with quantity and value: 2: {'other': 2}
-observations: gold 89, compiled 66, matched 24
+observations: gold 89, compiled 61, matched 21

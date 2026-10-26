@@ -1,0 +1,15 @@
+check,result
+figures import of the thirteen (P208b 1: decisions first),"13 papers imported, one at a time"
+compile the thirteen into kb/compiled,done; every paper on P206
+"binding.py --write --reason ""P208: final pipeline""",683 items written (P208b.5_binding_write.csv)
+binding.py --check,"binding regression: 683 items, 0 lost their unit"
+grow.py audit 1,result: PASS
+grow.py audit 2,result: PASS
+grow.py audit 3,result: PASS
+grow.py audit 4,result: PASS
+grow.py audit 5,result: PASS
+export --check,vocab.py and schema/ up to date; 21 checks pass
+cards,total errors 0
+gold readability,"12 of 12 papers, 5357 rows"
+score.py P208 (the twelve with a gold),exit 0: kb/reports/P208.<key>.* and kb/compiled/score_summary.csv
+gates.py reference,ontology/gates.csv rewritten (P208b.5_gates.csv)

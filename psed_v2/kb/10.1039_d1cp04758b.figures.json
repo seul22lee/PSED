@@ -3,7 +3,7 @@
  "key": "yim22",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T12:50:16",
+ "imported_at": "2026-10-25T20:03:57",
  "inventory": [
   {
    "id": "yim22:fig1a",
@@ -31,7 +31,10 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Simulated partial pressure of Reactant A along the microchannel for different times",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "partial_pressure"
+   ],
    "flags": [
     "F4"
    ],
@@ -44,20 +47,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "p_A (Pa)",
      "key": "p_A",
      "unit": "Pa",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -69,7 +72,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -81,7 +84,7 @@
      "key": "p_{A0}",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -93,7 +96,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -104,8 +107,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -117,7 +120,7 @@
      "key": "time",
      "unit": "",
      "quantity": "time",
-     "how": "id 'time'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -132,6 +135,7 @@
    "panel_type": "plot",
    "content": "Simulated surface coverage along the microchannel for different times",
    "quantities": [
+    "dimensionless_distance",
     "surface_coverage"
    ],
    "flags": [
@@ -146,12 +150,12 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
@@ -159,7 +163,7 @@
      "key": "θ",
      "unit": "-",
      "quantity": "surface_coverage",
-     "how": "symbol '\\theta' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -171,7 +175,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -183,7 +187,7 @@
      "key": "p_{A0}",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -195,7 +199,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -206,8 +210,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -219,7 +223,7 @@
      "key": "time",
      "unit": "",
      "quantity": "time",
-     "how": "id 'time'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -233,7 +237,10 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying initial partial pressure of Reactant A",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -244,20 +251,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -269,7 +276,7 @@
      "key": "p_{A0}",
      "unit": "",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -283,7 +290,10 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying pulse length of Reactant A",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -294,20 +304,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -319,7 +329,7 @@
      "key": "t_1",
      "unit": "",
      "quantity": "pulse_time",
-     "how": "symbol 't_1' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -333,7 +343,10 @@
    "panel": "c",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying molecular mass of Reactant A",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -344,20 +357,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -369,7 +382,7 @@
      "key": "M_A",
      "unit": "",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -383,7 +396,10 @@
    "panel": "d",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying film density",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -394,20 +410,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -419,7 +435,7 @@
      "key": "rho",
      "unit": "",
      "quantity": "film_density",
-     "how": "symbol 'rho' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -433,7 +449,10 @@
    "panel": "e",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying adsorption density",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -444,20 +463,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -468,8 +487,8 @@
      "label_raw": "q",
      "key": "q",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_density",
+     "how": "the user's symbol decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -483,7 +502,10 @@
    "panel": "f",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying desorption probability",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -494,20 +516,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -519,7 +541,7 @@
      "key": "P_d",
      "unit": "",
      "quantity": "p_d",
-     "how": "id 'p_d'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -533,7 +555,10 @@
    "panel": "g",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying sticking coefficient",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -544,20 +569,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -569,7 +594,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -583,7 +608,10 @@
    "panel": "h",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying ALD process temperature",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -594,20 +622,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -619,7 +647,7 @@
      "key": "T",
      "unit": "",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -633,7 +661,10 @@
    "panel": "i",
    "panel_type": "plot",
    "content": "Simulated thickness profile for varying inert gas pressure",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -644,20 +675,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -669,7 +700,7 @@
      "key": "p_i",
      "unit": "",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_i' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -683,7 +714,10 @@
    "panel": "a",
    "panel_type": "plot",
    "content": "Thickness profiles simulated with constant cycle count of 250 and varied channel height",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -694,20 +728,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -719,7 +753,7 @@
      "key": "cycles",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "name 'cycles'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -731,7 +765,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -745,7 +779,10 @@
    "panel": "b",
    "panel_type": "plot",
    "content": "Thickness profiles simulated with constant channel height of 500 nm and varied cycle counts",
-   "quantities": [],
+   "quantities": [
+    "dimensionless_distance",
+    "film_thickness"
+   ],
    "flags": [],
    "status": "imported",
    "verdict": "ok",
@@ -756,20 +793,20 @@
      "label_raw": "x (µm)",
      "key": "x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "dimensionless_distance",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "dimension_mismatch"
     },
     {
      "axis": "y",
      "label_raw": "s (nm)",
      "key": "s",
      "unit": "nm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "film_thickness",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -781,7 +818,7 @@
      "key": "channel height",
      "unit": "nm",
      "quantity": "feature_width",
-     "how": "alias 'channel height'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -793,7 +830,7 @@
      "key": "N",
      "unit": "-",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -822,7 +859,7 @@
      "key": "x̃",
      "unit": "-",
      "quantity": "dimensionless_distance",
-     "how": "symbol '\\tilde{x}' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -834,7 +871,7 @@
      "key": "s/N",
      "unit": "nm",
      "quantity": "growth_per_cycle",
-     "how": "symbol 's/N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -846,7 +883,7 @@
      "key": "cycles",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "name 'cycles'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -858,7 +895,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -887,7 +924,7 @@
      "key": "x̃",
      "unit": "-",
      "quantity": "dimensionless_distance",
-     "how": "symbol '\\tilde{x}' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -899,7 +936,7 @@
      "key": "s/N",
      "unit": "nm",
      "quantity": "growth_per_cycle",
-     "how": "symbol 's/N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -911,7 +948,7 @@
      "key": "channel height",
      "unit": "nm",
      "quantity": "feature_width",
-     "how": "alias 'channel height'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -923,7 +960,7 @@
      "key": "N",
      "unit": "-",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -938,7 +975,8 @@
    "panel_type": "plot",
    "content": "Half-thickness penetration depth of scaled thickness profile vs channel filling fraction",
    "quantities": [
-    "dimensionless_distance"
+    "fill_fraction",
+    "coated_aspect_ratio"
    ],
    "flags": [],
    "status": "imported",
@@ -950,8 +988,8 @@
      "label_raw": "1-2s/H (-)",
      "key": "1-2s/H",
      "unit": "-",
-     "quantity": "other",
-     "how": "",
+     "quantity": "fill_fraction",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -962,8 +1000,8 @@
      "label_raw": "x̃₅₀% (-)",
      "key": "x̃₅₀%",
      "unit": "-",
-     "quantity": "dimensionless_distance",
-     "how": "symbol 'x̃₅₀%' of this paper",
+     "quantity": "coated_aspect_ratio",
+     "how": "the user's supersede decision (2026-10-25, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -978,6 +1016,7 @@
    "panel_type": "plot",
    "content": "Slope at half-thickness penetration depth vs channel filling fraction",
    "quantities": [
+    "fill_fraction",
     "front_slope"
    ],
    "flags": [],
@@ -990,8 +1029,8 @@
      "label_raw": "1-2s/H (-)",
      "key": "1-2s/H",
      "unit": "-",
-     "quantity": "other",
-     "how": "",
+     "quantity": "fill_fraction",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1003,11 +1042,11 @@
      "key": "|d(s/N)/dx̃| at x̃₅₀%",
      "unit": "nm",
      "quantity": "front_slope",
-     "how": "symbol '|d(s/N)/dx̃| at x̃₅₀%' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": "dimension_mismatch"
+     "unit_reason": ""
     }
    ]
   },
@@ -1037,7 +1076,7 @@
      "key": "Kn",
      "unit": "-",
      "quantity": "knudsen_number",
-     "how": "alias 'Kn'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1060,8 +1099,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1073,7 +1112,7 @@
      "key": "H",
      "unit": "μm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1085,7 +1124,7 @@
      "key": "N",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1097,7 +1136,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1109,7 +1148,7 @@
      "key": "t1",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "symbol 't_1' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1121,7 +1160,7 @@
      "key": "MA",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1133,7 +1172,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1168,7 +1207,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1180,7 +1219,7 @@
      "key": "c",
      "unit": "-",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1191,8 +1230,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1204,7 +1243,7 @@
      "key": "H",
      "unit": "μm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1216,7 +1255,7 @@
      "key": "N",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1228,7 +1267,7 @@
      "key": "t1",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "symbol 't_1' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1240,7 +1279,7 @@
      "key": "MA",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1252,7 +1291,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1287,7 +1326,7 @@
      "key": "MA",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1299,7 +1338,7 @@
      "key": "c",
      "unit": "-",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1310,8 +1349,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1323,7 +1362,7 @@
      "key": "H",
      "unit": "μm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1335,7 +1374,7 @@
      "key": "N",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1347,7 +1386,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1359,7 +1398,7 @@
      "key": "t1",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "symbol 't_1' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1371,7 +1410,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1406,7 +1445,7 @@
      "key": "c",
      "unit": "-",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1418,7 +1457,7 @@
      "key": "c",
      "unit": "-",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1429,8 +1468,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1442,7 +1481,7 @@
      "key": "H",
      "unit": "μm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1454,7 +1493,7 @@
      "key": "N",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1466,7 +1505,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1478,7 +1517,7 @@
      "key": "t1",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "symbol 't_1' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1490,7 +1529,7 @@
      "key": "MA",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1526,7 +1565,7 @@
      "key": "\\tilde{x}",
      "unit": "-",
      "quantity": "dimensionless_distance",
-     "how": "symbol '\\tilde{x}' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1538,7 +1577,7 @@
      "key": "\\theta",
      "unit": "-",
      "quantity": "surface_coverage",
-     "how": "symbol '\\theta' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1550,7 +1589,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1562,7 +1601,7 @@
      "key": "t_1",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "symbol 't_1' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1574,7 +1613,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1586,7 +1625,7 @@
      "key": "p_A0",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1598,7 +1637,7 @@
      "key": "N",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1610,7 +1649,7 @@
      "key": "M_A",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1621,12 +1660,12 @@
      "label_raw": "d_A",
      "key": "d_A",
      "unit": "m",
-     "quantity": "other",
-     "how": "",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "unit_unknown"
     },
     {
      "axis": "condition",
@@ -1634,7 +1673,7 @@
      "key": "p_I",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_I' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1645,8 +1684,8 @@
      "label_raw": "M_I",
      "key": "M_I",
      "unit": "kg mol-1",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molar_mass",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1658,7 +1697,7 @@
      "key": "d_I",
      "unit": "m",
      "quantity": "molecule_diameter",
-     "how": "symbol 'd_I' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1670,7 +1709,7 @@
      "key": "\\rho",
      "unit": "kg m-3",
      "quantity": "film_density",
-     "how": "symbol '\\rho' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1682,7 +1721,7 @@
      "key": "M",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "symbol 'M' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1694,7 +1733,7 @@
      "key": "P_d",
      "unit": "s-1",
      "quantity": "p_d",
-     "how": "id 'p_d'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1705,8 +1744,8 @@
      "label_raw": "q",
      "key": "q",
      "unit": "nm-2",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_density",
+     "how": "the user's symbol decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1718,7 +1757,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1729,8 +1768,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1766,7 +1805,7 @@
      "key": "\\tilde{x}",
      "unit": "-",
      "quantity": "dimensionless_distance",
-     "how": "symbol '\\tilde{x}' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1778,7 +1817,7 @@
      "key": "\\theta",
      "unit": "-",
      "quantity": "surface_coverage",
-     "how": "symbol '\\theta' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1790,7 +1829,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1802,7 +1841,7 @@
      "key": "t_1",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "symbol 't_1' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1814,7 +1853,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1826,7 +1865,7 @@
      "key": "p_A0",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1838,7 +1877,7 @@
      "key": "N",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "symbol 'N' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1850,7 +1889,7 @@
      "key": "M_A",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1861,12 +1900,12 @@
      "label_raw": "d_A",
      "key": "d_A",
      "unit": "m",
-     "quantity": "other",
-     "how": "",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
-     "unit_reason": ""
+     "unit_reason": "unit_unknown"
     },
     {
      "axis": "condition",
@@ -1874,7 +1913,7 @@
      "key": "p_I",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_I' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1885,8 +1924,8 @@
      "label_raw": "M_I",
      "key": "M_I",
      "unit": "kg mol-1",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molar_mass",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1898,7 +1937,7 @@
      "key": "d_I",
      "unit": "m",
      "quantity": "molecule_diameter",
-     "how": "symbol 'd_I' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1910,7 +1949,7 @@
      "key": "\\rho",
      "unit": "kg m-3",
      "quantity": "film_density",
-     "how": "symbol '\\rho' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1922,7 +1961,7 @@
      "key": "M",
      "unit": "kg mol-1",
      "quantity": "molar_mass",
-     "how": "symbol 'M' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1934,7 +1973,7 @@
      "key": "P_d",
      "unit": "s-1",
      "quantity": "p_d",
-     "how": "id 'p_d'",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1945,8 +1984,8 @@
      "label_raw": "q",
      "key": "q",
      "unit": "nm-2",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_density",
+     "how": "the user's symbol decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1958,7 +1997,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -1969,8 +2008,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 49)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -2000,23 +2039,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "p_A (Pa)",
     "unit_raw": "Pa",
     "key": "p_A",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -2120,6 +2159,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -2158,23 +2206,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "p_A (Pa)",
     "unit_raw": "Pa",
     "key": "p_A",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -2286,6 +2334,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -2324,23 +2381,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "p_A (Pa)",
     "unit_raw": "Pa",
     "key": "p_A",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -2452,6 +2509,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -2490,23 +2556,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "partial_pressure",
     "unit": "Pa",
     "transform": "",
     "label_raw": "p_A (Pa)",
     "unit_raw": "Pa",
     "key": "p_A",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -2626,6 +2692,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -2664,14 +2739,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
     "quantity": "surface_coverage",
@@ -2680,7 +2755,7 @@
     "label_raw": "θ (-)",
     "unit_raw": "",
     "key": "θ",
-    "how": "symbol '\\theta' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -2792,6 +2867,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -2830,14 +2914,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
     "quantity": "surface_coverage",
@@ -2846,7 +2930,7 @@
     "label_raw": "θ (-)",
     "unit_raw": "",
     "key": "θ",
-    "how": "symbol '\\theta' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -2958,6 +3042,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -2996,14 +3089,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
     "quantity": "surface_coverage",
@@ -3012,7 +3105,7 @@
     "label_raw": "θ (-)",
     "unit_raw": "",
     "key": "θ",
-    "how": "symbol '\\theta' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3124,6 +3217,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -3162,14 +3264,14 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
     "quantity": "surface_coverage",
@@ -3178,7 +3280,7 @@
     "label_raw": "θ (-)",
     "unit_raw": "",
     "key": "θ",
-    "how": "symbol '\\theta' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3292,6 +3394,15 @@
      "value": 0.5,
      "value_max": null,
      "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
     }
    },
    "conditions_raw": {
@@ -3328,23 +3439,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3435,23 +3546,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3542,23 +3653,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3649,23 +3760,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3756,23 +3867,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3863,23 +3974,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -3970,23 +4081,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4077,23 +4188,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4184,23 +4295,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4291,23 +4402,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4398,23 +4509,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4505,23 +4616,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4612,23 +4723,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4719,23 +4830,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4826,23 +4937,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4933,23 +5044,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -4963,7 +5074,7 @@
     ],
     [
      110.0,
-     31.0
+     30.999999999999996
     ],
     [
      125.0,
@@ -5040,23 +5151,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5147,23 +5258,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5254,23 +5365,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5361,23 +5472,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5468,23 +5579,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5567,23 +5678,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5666,23 +5777,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5773,23 +5884,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5880,23 +5991,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -5987,23 +6098,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6102,23 +6213,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6217,23 +6328,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6324,23 +6435,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6431,23 +6542,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6538,23 +6649,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6653,23 +6764,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6768,23 +6879,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6875,23 +6986,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -6982,23 +7093,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7089,23 +7200,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7196,23 +7307,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7303,23 +7414,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7410,23 +7521,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7517,23 +7628,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7624,23 +7735,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7731,23 +7842,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7838,23 +7949,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -7945,23 +8056,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8052,23 +8163,23 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8163,23 +8274,23 @@
     "unit_missing": true
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8288,23 +8399,23 @@
     "unit_missing": true
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8413,23 +8524,23 @@
     "unit_missing": true
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8538,23 +8649,23 @@
     "unit_missing": true
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8663,23 +8774,23 @@
     "unit_missing": true
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8788,23 +8899,23 @@
     "unit_missing": true
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -8913,23 +9024,23 @@
     "unit_missing": true
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9037,23 +9148,23 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9153,23 +9264,23 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9269,23 +9380,23 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9385,23 +9496,23 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9501,23 +9612,23 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9617,23 +9728,23 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9733,23 +9844,23 @@
     "unit": "cycle"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "dimensionless_distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "x (µm)",
     "unit_raw": "µm",
     "key": "x",
-    "how": "",
-    "unit_reason": ""
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": "dimension_mismatch"
    },
    "y": {
-    "quantity": "other",
+    "quantity": "film_thickness",
     "unit": "nm",
     "transform": "",
     "label_raw": "s (nm)",
     "unit_raw": "nm",
     "key": "s",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -9864,7 +9975,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -9874,7 +9985,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -9989,7 +10100,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -9999,7 +10110,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10114,7 +10225,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10124,7 +10235,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10239,7 +10350,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10249,7 +10360,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10364,7 +10475,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10374,7 +10485,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10489,7 +10600,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10499,7 +10610,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10614,7 +10725,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10624,7 +10735,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10738,7 +10849,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10748,7 +10859,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10862,7 +10973,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10872,7 +10983,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -10986,7 +11097,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -10996,7 +11107,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -11110,7 +11221,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -11120,7 +11231,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -11234,7 +11345,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -11244,7 +11355,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -11358,7 +11469,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -11368,7 +11479,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -11482,7 +11593,7 @@
     "label_raw": "x̃ (-)",
     "unit_raw": "-",
     "key": "x̃",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -11492,7 +11603,7 @@
     "label_raw": "s/N (nm)",
     "unit_raw": "nm",
     "key": "s/N",
-    "how": "symbol 's/N' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -11597,52 +11708,52 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "-",
+    "quantity": "fill_fraction",
+    "unit": "%",
     "transform": "",
     "label_raw": "1-2s/H (-)",
     "unit_raw": "-",
     "key": "1-2s/H",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "dimensionless_distance",
+    "quantity": "coated_aspect_ratio",
     "unit": "1",
     "transform": "",
     "label_raw": "x̃₅₀% (-)",
     "unit_raw": "-",
     "key": "x̃₅₀%",
-    "how": "symbol 'x̃₅₀%' of this paper",
+    "how": "the user's supersede decision (2026-10-25, history.csv)",
     "unit_reason": ""
    },
    "points": [
     [
-     0.012,
+     1.2,
      220.0
     ],
     [
-     0.018,
+     1.7999999999999998,
      234.0
     ],
     [
-     0.023,
+     2.3,
      240.0
     ],
     [
-     0.05,
+     5.0,
      250.0
     ],
     [
-     0.09,
+     9.0,
      252.0
     ],
     [
-     0.23,
+     23.0,
      238.0
     ],
     [
-     0.44,
+     44.0,
      206.0
     ]
    ],
@@ -11676,13 +11787,24 @@
      206.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "H",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "H"
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.428,
     "y": 0.46
    },
    "set": "yim22:cmp:fig5e",
@@ -11704,52 +11826,52 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "-",
+    "quantity": "fill_fraction",
+    "unit": "%",
     "transform": "",
     "label_raw": "1-2s/H (-)",
     "unit_raw": "-",
     "key": "1-2s/H",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
-    "quantity": "dimensionless_distance",
+    "quantity": "coated_aspect_ratio",
     "unit": "1",
     "transform": "",
     "label_raw": "x̃₅₀% (-)",
     "unit_raw": "-",
     "key": "x̃₅₀%",
-    "how": "symbol 'x̃₅₀%' of this paper",
+    "how": "the user's supersede decision (2026-10-25, history.csv)",
     "unit_reason": ""
    },
    "points": [
     [
-     0.0018,
+     0.18,
      262.0
     ],
     [
-     0.0038,
+     0.38,
      262.0
     ],
     [
-     0.0075,
+     0.75,
      262.0
     ],
     [
-     0.018,
+     1.7999999999999998,
      260.0
     ],
     [
-     0.038,
+     3.8,
      259.0
     ],
     [
-     0.09,
+     9.0,
      252.0
     ],
     [
-     0.19,
+     19.0,
      241.0
     ]
    ],
@@ -11783,13 +11905,24 @@
      241.0
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "H",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "H"
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.1882,
     "y": 0.21
    },
    "set": "yim22:cmp:fig5e",
@@ -11811,13 +11944,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "-",
+    "quantity": "fill_fraction",
+    "unit": "%",
     "transform": "",
     "label_raw": "1-2s/H (-)",
     "unit_raw": "-",
     "key": "1-2s/H",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -11827,36 +11960,36 @@
     "label_raw": "|d(s/N)/dx̃| at x̃₅₀% (nm)",
     "unit_raw": "nm",
     "key": "|d(s/N)/dx̃| at x̃₅₀%",
-    "how": "symbol '|d(s/N)/dx̃| at x̃₅₀%' of this paper",
-    "unit_reason": "dimension_mismatch"
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": ""
    },
    "points": [
     [
-     0.012,
+     1.2,
      0.0034
     ],
     [
-     0.018,
+     1.7999999999999998,
      0.00325
     ],
     [
-     0.023,
+     2.3,
      0.0031
     ],
     [
-     0.05,
+     5.0,
      0.00295
     ],
     [
-     0.09,
+     9.0,
      0.00262
     ],
     [
-     0.23,
+     23.0,
      0.0015
     ],
     [
-     0.44,
+     44.0,
      0.00075
     ]
    ],
@@ -11890,13 +12023,24 @@
      0.00075
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "H",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "H"
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.428,
     "y": 2.6499999999999997e-05
    },
    "set": "yim22:cmp:fig5f",
@@ -11918,13 +12062,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "-",
+    "quantity": "fill_fraction",
+    "unit": "%",
     "transform": "",
     "label_raw": "1-2s/H (-)",
     "unit_raw": "-",
     "key": "1-2s/H",
-    "how": "",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -11934,37 +12078,37 @@
     "label_raw": "|d(s/N)/dx̃| at x̃₅₀% (nm)",
     "unit_raw": "nm",
     "key": "|d(s/N)/dx̃| at x̃₅₀%",
-    "how": "symbol '|d(s/N)/dx̃| at x̃₅₀%' of this paper",
-    "unit_reason": "dimension_mismatch"
+    "how": "the user's alias decision (2026-10-24, history.csv)",
+    "unit_reason": ""
    },
    "points": [
     [
-     0.0018,
+     0.18,
      0.00292
     ],
     [
-     0.0038,
+     0.38,
      0.00293
     ],
     [
-     0.0075,
+     0.75,
      0.00295
     ],
     [
-     0.018,
+     1.7999999999999998,
      0.00295
     ],
     [
-     0.038,
+     3.8,
      0.00292
     ],
     [
-     0.09,
+     9.0,
      0.00262
     ],
     [
-     0.19,
-     0.00185
+     19.0,
+     0.0018500000000000003
     ]
    ],
    "points_raw": [
@@ -11997,14 +12141,25 @@
      0.00185
     ]
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "H",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "H"
+    }
+   },
    "conditions_raw": {},
    "flags": [],
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
-    "y": 1.0999999999999998e-05
+    "x": 0.1882,
+    "y": 1.0999999999999996e-05
    },
    "set": "yim22:cmp:fig5f",
    "provenance": {
@@ -12031,7 +12186,7 @@
     "label_raw": "Kn (-)",
     "unit_raw": "",
     "key": "Kn",
-    "how": "alias 'Kn'",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -12153,6 +12308,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -12255,7 +12419,7 @@
     "label_raw": "Kn (-)",
     "unit_raw": "",
     "key": "Kn",
-    "how": "alias 'Kn'",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -12377,6 +12541,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -12479,7 +12652,7 @@
     "label_raw": "Kn (-)",
     "unit_raw": "",
     "key": "Kn",
-    "how": "alias 'Kn'",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -12601,6 +12774,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -12703,7 +12885,7 @@
     "label_raw": "T (K)",
     "unit_raw": "K",
     "key": "T",
-    "how": "symbol 'T' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -12713,7 +12895,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -12761,6 +12943,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -12853,7 +13044,7 @@
     "label_raw": "T (K)",
     "unit_raw": "K",
     "key": "T",
-    "how": "symbol 'T' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -12863,7 +13054,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -12911,6 +13102,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -13003,7 +13203,7 @@
     "label_raw": "MA (kg mol-1)",
     "unit_raw": "kg mol-1",
     "key": "MA",
-    "how": "alias 'MA'",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -13013,7 +13213,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -13061,6 +13261,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -13153,7 +13362,7 @@
     "label_raw": "MA (kg mol-1)",
     "unit_raw": "kg mol-1",
     "key": "MA",
-    "how": "alias 'MA'",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -13163,7 +13372,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -13211,6 +13420,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -13303,7 +13521,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -13313,7 +13531,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -13361,6 +13579,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -13453,7 +13680,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "y": {
@@ -13463,7 +13690,7 @@
     "label_raw": "c (-)",
     "unit_raw": "",
     "key": "c",
-    "how": "symbol 'c' of this paper",
+    "how": "0ax answer (records line 49)",
     "unit_reason": ""
    },
    "points": [
@@ -13511,6 +13738,15 @@
     ]
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -13603,7 +13839,7 @@
     "label_raw": "\\tilde{x} (-)",
     "unit_raw": "",
     "key": "\\tilde{x}",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -13613,7 +13849,7 @@
     "label_raw": "\\theta (-)",
     "unit_raw": "",
     "key": "\\theta",
-    "how": "symbol '\\theta' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -13803,6 +14039,16 @@
      "value_max": null,
      "unit": "g/mol"
     },
+    "gas_phase_diffusion_coefficient": {
+     "key_raw": "d_A",
+     "raw": "6.0e-10 m",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "role": "model_parameter",
+     "value": 6e-10,
+     "value_max": null,
+     "unit": "m",
+     "unit_unresolved": true
+    },
     "molecule_diameter": {
      "key_raw": "d_I",
      "raw": "3.74e-10 m",
@@ -13830,12 +14076,30 @@
      "value_max": null,
      "unit": "1/s"
     },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "4 nm-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.5 µm",
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
      "value_max": null,
      "unit": "µm"
     }
@@ -13897,7 +14161,7 @@
     "label_raw": "\\tilde{x} (-)",
     "unit_raw": "",
     "key": "\\tilde{x}",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -13907,7 +14171,7 @@
     "label_raw": "\\theta (-)",
     "unit_raw": "",
     "key": "\\theta",
-    "how": "symbol '\\theta' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -14097,6 +14361,16 @@
      "value_max": null,
      "unit": "g/mol"
     },
+    "gas_phase_diffusion_coefficient": {
+     "key_raw": "d_A",
+     "raw": "6.0e-10 m",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "role": "model_parameter",
+     "value": 6e-10,
+     "value_max": null,
+     "unit": "m",
+     "unit_unresolved": true
+    },
     "molecule_diameter": {
      "key_raw": "d_I",
      "raw": "3.74e-10 m",
@@ -14124,12 +14398,30 @@
      "value_max": null,
      "unit": "1/s"
     },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "4 nm-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.5 µm",
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
      "value_max": null,
      "unit": "µm"
     }
@@ -14191,7 +14483,7 @@
     "label_raw": "\\tilde{x} (-)",
     "unit_raw": "",
     "key": "\\tilde{x}",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -14201,7 +14493,7 @@
     "label_raw": "\\theta (-)",
     "unit_raw": "",
     "key": "\\theta",
-    "how": "symbol '\\theta' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -14399,6 +14691,16 @@
      "value_max": null,
      "unit": "g/mol"
     },
+    "gas_phase_diffusion_coefficient": {
+     "key_raw": "d_A",
+     "raw": "6.0e-10 m",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "role": "model_parameter",
+     "value": 6e-10,
+     "value_max": null,
+     "unit": "m",
+     "unit_unresolved": true
+    },
     "molecule_diameter": {
      "key_raw": "d_I",
      "raw": "3.74e-10 m",
@@ -14426,12 +14728,30 @@
      "value_max": null,
      "unit": "1/s"
     },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "4 nm-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.5 µm",
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
      "value_max": null,
      "unit": "µm"
     }
@@ -14493,7 +14813,7 @@
     "label_raw": "\\tilde{x} (-)",
     "unit_raw": "",
     "key": "\\tilde{x}",
-    "how": "symbol '\\tilde{x}' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -14503,7 +14823,7 @@
     "label_raw": "\\theta (-)",
     "unit_raw": "",
     "key": "\\theta",
-    "how": "symbol '\\theta' of this paper",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -14701,6 +15021,16 @@
      "value_max": null,
      "unit": "g/mol"
     },
+    "gas_phase_diffusion_coefficient": {
+     "key_raw": "d_A",
+     "raw": "6.0e-10 m",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "role": "model_parameter",
+     "value": 6e-10,
+     "value_max": null,
+     "unit": "m",
+     "unit_unresolved": true
+    },
     "molecule_diameter": {
      "key_raw": "d_I",
      "raw": "3.74e-10 m",
@@ -14728,12 +15058,30 @@
      "value_max": null,
      "unit": "1/s"
     },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "4 nm-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.5 µm",
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
      "value_max": null,
      "unit": "µm"
     }
@@ -14822,6 +15170,15 @@
      "value": 0.5,
      "value_max": null,
      "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
     }
    },
    "label": "Fig. 2a series (time)"
@@ -14864,6 +15221,15 @@
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
      "value_max": null,
      "unit": "µm"
     }
@@ -14942,8 +15308,8 @@
    "id": "yim22:cmp:fig4e",
    "figure": "4",
    "panel": "e",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "saturation_density",
    "varied_raw": "q",
    "members": [
     "yim22:fig4e#c1",
@@ -14953,7 +15319,7 @@
     "yim22:fig4e#c5"
    ],
    "conditions": {},
-   "label": "Fig. 4e replicates (q)"
+   "label": "Fig. 4e series (q)"
   },
   {
    "id": "yim22:cmp:fig4f",
@@ -15160,7 +15526,18 @@
     "yim22:fig5e#c1",
     "yim22:fig5e#c2"
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "H",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "H"
+    }
+   },
    "label": "Fig. 5e replicates (dataset)"
   },
   {
@@ -15174,7 +15551,18 @@
     "yim22:fig5f#c1",
     "yim22:fig5f#c2"
    ],
-   "conditions": {},
+   "conditions": {
+    "feature_width": {
+     "key_raw": "x denominator",
+     "raw": "H",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": null,
+     "value_max": null,
+     "unit": "",
+     "text": "H"
+    }
+   },
    "label": "Fig. 5f replicates (dataset)"
   },
   {
@@ -15190,6 +15578,15 @@
     "yim22:fig6a#c3"
    ],
    "conditions": {
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
+     "value_max": null,
+     "unit": "µm"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.1 μm",
@@ -15313,6 +15710,16 @@
      "value_max": null,
      "unit": "g/mol"
     },
+    "gas_phase_diffusion_coefficient": {
+     "key_raw": "d_A",
+     "raw": "6.0e-10 m",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "role": "model_parameter",
+     "value": 6e-10,
+     "value_max": null,
+     "unit": "m",
+     "unit_unresolved": true
+    },
     "molecule_diameter": {
      "key_raw": "d_I",
      "raw": "3.74e-10 m",
@@ -15340,12 +15747,30 @@
      "value_max": null,
      "unit": "1/s"
     },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "4 nm-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.5 µm",
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
      "value_max": null,
      "unit": "µm"
     }
@@ -15417,6 +15842,16 @@
      "value_max": null,
      "unit": "g/mol"
     },
+    "gas_phase_diffusion_coefficient": {
+     "key_raw": "d_A",
+     "raw": "6.0e-10 m",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "role": "model_parameter",
+     "value": 6e-10,
+     "value_max": null,
+     "unit": "m",
+     "unit_unresolved": true
+    },
     "molecule_diameter": {
      "key_raw": "d_I",
      "raw": "3.74e-10 m",
@@ -15444,12 +15879,30 @@
      "value_max": null,
      "unit": "1/s"
     },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "4 nm-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.5 µm",
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
      "value_max": null,
      "unit": "µm"
     }
@@ -15521,6 +15974,16 @@
      "value_max": null,
      "unit": "g/mol"
     },
+    "gas_phase_diffusion_coefficient": {
+     "key_raw": "d_A",
+     "raw": "6.0e-10 m",
+     "quantity": "gas_phase_diffusion_coefficient",
+     "role": "model_parameter",
+     "value": 6e-10,
+     "value_max": null,
+     "unit": "m",
+     "unit_unresolved": true
+    },
     "molecule_diameter": {
      "key_raw": "d_I",
      "raw": "3.74e-10 m",
@@ -15548,12 +16011,30 @@
      "value_max": null,
      "unit": "1/s"
     },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "4 nm-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 4.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
     "feature_width": {
      "key_raw": "H",
      "raw": "0.5 µm",
      "quantity": "feature_width",
      "role": "condition",
      "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "10 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 10000.0,
      "value_max": null,
      "unit": "µm"
     }
@@ -15569,6 +16050,6 @@
   "converted": 0,
   "curves": 98,
   "derived": 3,
-  "labels_other": 43
+  "labels_other": 1
  }
 }

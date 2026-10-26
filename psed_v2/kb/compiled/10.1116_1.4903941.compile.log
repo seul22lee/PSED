@@ -1,80 +1,55 @@
-input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 8
-input: 25 lines; pass 0 = line 2; 8 pass-1 lines for 8 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7), 4 (s8+s9), 5 (fig1), 6 (fig2), 7 (fig3), 8 (fig4), 9 (fig5), 10 (fig6)
-input: pass-0 extension = line 15: 30 units (measurement 15, run 6, specimen 9); 12 image panel methods
-input: recipe field set to null: run_al2o3_110c_50nm reactant_A tma (quote not found (abs.g3))
-input: recipe field set to null: run_al2o3_110c_50nm reactant_B h2o (quote not found (abs.g3))
-input: recipe field set to null: run_tio2_110c_50nm reactant_B h2o (quote not found (abs.g3))
-input: recipe field set to null: run_al2o3_200c_50nm reactant_A tma (quote not found (abs.g3))
-input: recipe field set to null: run_al2o3_200c_50nm reactant_B h2o (quote not found (abs.g3))
-input: recipe field set to null: run_tio2_200c_50nm reactant_B h2o (quote not found (abs.g3))
-input: recipe field set to null: run_al2o3_300c_50nm reactant_A tma (quote not found (abs.g3))
-input: recipe field set to null: run_al2o3_300c_50nm reactant_B h2o (quote not found (abs.g3))
-input: recipe field set to null: run_tio2_300c_50nm reactant_B h2o (quote not found (abs.g3))
-input: recipe fill = line 25: run_al2o3_300c reactant_A tma, reactant_B h2o, carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_110c reactant_A ticl4, reactant_B h2o, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_110c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_110c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_200c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_200c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_al2o3_300c_50nm carrier_gas n2, material al2o3, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']; run_tio2_300c_50nm reactant_A ticl4, carrier_gas n2, material tio2, steps ['reactant_A', 'purge_A', 'reactant_B', 'purge_B']
-a0: fig5.cap: quantity 'LHAR gap size' -> feature_width (quantity: alias 'LHAR gap size')
-a0: fig5.cap: quantity 'LHAR gap size' -> feature_width (quantity: alias 'LHAR gap size')
-a0: fig5.cap: quantity 'LHAR gap size' -> feature_width (quantity: alias 'LHAR gap size')
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 8, P184 8
+input: 35 lines; pass 0 = line 27; 8 pass-1 lines for 8 groups; ignored lines 3 (abstract+s0+s1+s2+s3+s4+s5+s6+s7), 4 (s8+s9), 5 (fig1), 6 (fig2), 7 (fig3), 8 (fig4), 9 (fig5), 10 (fig6), 17 (abstract+s0+s1+s2+s3+s4+s5+s6+s7), 18 (s8+s9), 19 (fig1), 20 (fig2), 21 (fig3), 22 (fig4), 23 (fig5), 24 (fig6)
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
 a1: symbol species s5.p4 'AR' cited aspect_ratio: record -, definition - -> no species
-d: quote found across elements: s6.p13 observation penetration_depth -> evidence s6.p12;s6.p13
-d: quote found across elements: s6.p13 observation penetration_depth -> evidence s6.p12;s6.p13
-d: quote found across elements: s6.p13 observation penetration_depth -> evidence s6.p12;s6.p13
 d: quote found across elements: fig1 setting pillar_spacing -> evidence s6.p21
-d: quote found across elements: fig1 setting feature_depth -> evidence s6.p5
-d: quote found across elements: fig1 setting feature_width -> evidence s6.x1
+d: quote found across elements: fig5b setting feature_width -> evidence s6.p22
+d: quote found across elements: fig5b setting feature_width -> evidence s6.p22
+d: quote found across elements: fig5b setting feature_width -> evidence s6.p22
 h: tree from pass 0: run 8, simulation 0, specimen 13, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s6.x1 into s6.p1;s6.x1 (feature_width 500)
-i: merged s7.p3 into s6.p17;s7.p3 (deposition_temperature 300)
-i: merged s7.p3 into s6.p17;s7.p3 (feature_width 500)
-i: merged s7.p4 into s6.p17;s7.p3;s7.p4 (deposition_temperature 300)
-i: merged s7.p4 into s6.p17;s7.p3;s7.p4 (feature_width 500)
-i: merged fig3.cap into s6.p7;fig3.cap (film_thickness 50)
-i: merged fig4.cap into s6.p17;s7.p3;s7.p4;fig4.cap (deposition_temperature 300)
-i: merged fig4.cap into s6.p17;s7.p3;s7.p4;fig4.cap (feature_width 500)
+i: merged s6.p21 into s6.p4;s6.p21 (pillar_spacing 10)
+i: merged fig4.cap into s6.p17;fig4.cap (deposition_temperature 300)
 i: merged fig4.cap into s6.p17;fig4.cap (film_thickness 100)
-i: merged fig5.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap (deposition_temperature 300)
-i: merged fig5.cap into s7.p3;fig5.cap (cycle_number 1109)
-i: merged fig5.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap (feature_width 500)
-i: merged fig5.cap into s7.p3;fig5.cap (deposition_temperature 110)
-i: merged fig5.cap into s7.p3;fig5.cap (cycle_number 2000)
 i: merged fig5.cap into s7.p3;fig5.cap (film_thickness 100)
-i: merged fig6.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap;fig6.cap (deposition_temperature 300)
+i: merged fig6.cap into s6.p17;fig4.cap;fig6.cap (deposition_temperature 300)
 i: merged fig6.cap into s7.p4;fig6.cap (aspect_ratio 400)
-i: merged fig6.cap into s6.p17;s7.p3;s7.p4;fig4.cap;fig5.cap;fig6.cap (feature_width 500)
-j: derived over 13 entities: 0 rows; not derived: {'no fact for p': 26, 'n: no fact for gpc': 13, 'gpc: no fact for n': 13, 'no fact for H': 13, 'no fact for rho': 13, 'no fact for mg': 13, 'derive raised: cannot convert cycle to 1': 4, 'no fact for h2': 13, 'no fact for phi': 13, 'lam: no fact for p': 13, 'no fact for t': 9}
-j: caveats (query.caveats_of): 0, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
-j: claim nodes (query.claim_nodes): 7 nodes for 11 claims; claims without a full triple (query.node_of empty): 4
-j: comparisons from figures.json (1c): 6
-j: transforms (P195): 4 computed facts ({'final_channel_height': 1, 'coated_ar': 3}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
-step input: {'pass-0 extension units': 30, 'records': 107, 'legend conditions of a pass-0 unit (measurement)': 3, 'coordinate of a pass-0 unit (value)': 3}
-step a0: {'quantity promoted (quantity: alias)': 3}
+i: merged fig6.cap into fig4.cap;fig6.cap (feature_width 500)
+i: merged s6.p7 (film_thickness 50 kind=target) into the fact with qualifiers kind=target;stage=final (s6.p7;fig3.cap)
+i: merged fig4.cap;fig6.cap (feature_width 500 -) into the fact with qualifiers stage=initial (s6.p17;fig4.cap;fig6.cap)
+j: derived over 13 entities: 0 rows; not derived: {'no fact for p': 26, 'n: no fact for gpc': 13, 'gpc: no fact for n': 13, 'no fact for H': 13, 'no fact for rho': 13, 'no fact for mg': 13, 'no fact for N': 9, 'no fact for h2': 13, 'no fact for phi': 13, 'lam: no fact for p': 13, 'derive raised: cannot convert cycle to 1': 4}
+j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
+j: claim nodes (query.claim_nodes): 4 nodes for 10 claims; claims without a full triple (query.node_of empty): 6
+j: comparisons from figures.json (1c): 11
+j: transforms (P195): 3 computed facts ({'coated_ar': 3}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
+step input: {'records': 87, 'legend conditions of a pass-0 unit (specimen)': 3, 'coordinate of a pass-0 unit (value)': 3, 'distinguished_by parts (P205)': 39}
 step a1: {'symbol species: no species': 2, 'material from the recipe field: al2o3': 4, 'material from the recipe field: tio2': 4}
-step a: {'kept': 118}
-step b: {'statement_only (kept: P138 form)': 1, 'kept': 118}
-step c: {'quantity_other (kept)': 2, 'kept': 118}
-step d: {"quote found in the paper's elements concatenated (P182)": 6, 'quote_not_found': 12, 'derived condition (figures.json, no quote check)': 3, 'kept': 106}
-step e: {'kept': 106}
-step f: {'species_resolved': 9, 'kept': 106}
-step h: {'measurement unit': 15, 'place: claim -> paper': 11, 'place: about paper -> recipe': 25, 'place: cited -> paper': 5, 'place: about paper, method -> paper method activity': 5, 'place: observation about a measurement -> the measurement': 11, 'place: setting about a specimen -> deposition': 16, 'place: setting about a run -> deposition': 20, 'place: definition -> paper': 1, 'place: setting about a specimen sharing its deposition -> specimen': 7, 'place: result about a specimen -> its measurement': 2, 'place: setting about a measurement -> the measurement': 3}
-step m: {'statement filled from the quote': 90, 'label_as_printed filled with the quantity id': 5, 'links resolved': 7}
-step 1c: {'unbound item (image): no unit named': 2, 'image -> a measurement (infrared_microscopy)': 9, 'image -> a measurement (optical_microscopy)': 1, 'curve -> observation': 4, 'image -> a measurement (sem)': 1}
-step i: {'merged': 18, 'kept': 103}
-step n: {'comparison replicate': 2, 'comparison series': 3, 'comparison grid': 1}
-step 6b: {'dimension mismatch flagged': 1}
-step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 20, 'exposure_per_run: inputs missing': 21, 'sheet_resistance: inputs missing': 21, 'moles_deposited: inputs missing': 21, 'coating_mass_fraction: inputs missing': 21, 'deposition_rate: inputs missing': 21, 'coated_ar: inputs missing': 17, 'normalize_front_slope: inputs missing': 21, 'final_channel_height: computed': 1, 'coated_ar: inputs ambiguous': 1, 'coated_ar: computed': 3}
-step k: {'statement from the record': 88, 'statement_copies_text (reported by check)': 33, 'statement assembled': 19}
+step a: {'kept': 137}
+step b: {'statement_only (kept: P138 form)': 2, 'kept': 137}
+step c: {'kept': 137}
+step d: {"quote found in the paper's elements concatenated (P182)": 4, 'quote_not_found': 22, 'derived condition (figures.json, no quote check)': 3, 'kept': 115}
+step e: {'kept': 115}
+step e2: {'value in its quote: as printed': 69, 'value in its quote: as printed (the quote names no unit)': 2, "not checked: a figure panel's record": 14, 'kept': 115}
+step f: {'species_resolved': 16, 'kept': 115}
+step h: {'measurement unit': 15, 'place: claim -> paper': 10, 'place: cited -> paper': 5, 'place: about paper -> recipe': 22, 'place: about paper, method -> paper method activity': 6, 'place: result about a specimen -> its measurement': 13, 'place: setting about a run -> deposition': 35, 'place: setting about a specimen -> deposition': 13, 'place: caveat -> paper': 1, 'place: setting about a specimen sharing its deposition -> specimen': 10}
+step m: {'statement filled from the quote': 98, 'label_as_printed filled with the quantity id': 3, 'links resolved': 4}
+step 1c: {'unbound item (image): no unit named': 2, 'image -> a measurement (a photograph)': 11, 'curve -> observation': 4}
+step i: {'distinguished_by part: same fact held (not written)': 12, 'merged': 8, 'merged into the fact with the fuller qualifiers': 2, 'kept': 108}
+step n: {'comparison replicate': 1, 'comparison series': 7, 'comparison grid': 3}
+step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 21, 'exposure_per_run: inputs missing': 21, 'sheet_resistance: inputs missing': 21, 'moles_deposited: inputs missing': 21, 'coating_mass_fraction: inputs missing': 21, 'deposition_rate: inputs missing': 21, 'coated_ar: inputs missing': 17, 'normalize_front_slope: inputs missing': 21, 'coated_ar: computed': 3, 'coated_ar: inputs ambiguous': 1}
+step k: {'statement from the record': 93, 'statement_copies_text (reported by check)': 45, 'statement assembled': 18}
 diff against the gold:
-  setting        92   59   47  0.80  0.51
-  observation    44   28   22  0.79  0.50
-  activity       25   26   21  0.81  0.84
+  setting        92   63   52  0.83  0.57
+  observation    44   29   27  0.93  0.61
+  activity       25   28   22  0.79  0.88
   entity         15   13   12  0.92  0.80
-  claim          13   11    9  0.82  0.69
+  claim          13   10    5  0.50  0.38
   cited          12    5    4  0.80  0.33
-  caveat          7    0    0     -  0.00
-  derived         6    4    0  0.00  0.00
-  comparison      5    6    2  0.33  0.40
+  caveat          7    1    0  0.00  0.00
+  derived         6    3    0  0.00  0.00
+  comparison      5   11    4  0.36  0.80
   definition      5    0    0     -  0.00
   paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 0/5
 gold model rows with quantity and value: 0: {}
-observations: gold 44, compiled 28, matched 22
+observations: gold 44, compiled 29, matched 27

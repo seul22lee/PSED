@@ -1,111 +1,154 @@
-input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 11, P179 4
-input: 36 lines; pass 0 = line 3; 11 pass-1 lines for 11 groups; ignored lines 4 (abstract+s1+s2+s3+s4+s5), 5 (s6+s7+s8+s9+s10+s11+s12+s13+s14), 6 (fig1), 7 (fig1A), 8 (fig1B), 9 (fig1C), 10 (fig2), 11 (fig2A), 12 (fig2B), 13 (fig3), 14 (tab1), 16 (abstract+s1+s2+s3+s4+s5), 17 (fig1), 18 (fig1C), 19 (tab1)
-input: pass-0 extension = line 23: 16 units (measurement 16); 1 image panel methods
-input: recipe fill = line 25: run_sio2_3_8s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_sio2_12s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_sio2_38s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_sio2_120s reactant_A bdeas, reactant_B o2, process_mode plasma, material sio2; run_tio2_12s reactant_A tdmat, reactant_B o2, process_mode plasma, material tio2; run_tio2_120s reactant_A tdmat, reactant_B o2, process_mode plasma, material tio2; run_al2o3_120s reactant_A tma, reactant_B o2, process_mode plasma, material al2o3; run_hfo2_120s reactant_A tdmacph, reactant_B o2, process_mode plasma, material hfo2; sim_slope 
+input: pass-1 lines of a form version not accepted (ontology/form_versions.csv), not read: P163 11, P179 4, P184 11
+input: 49 lines; pass 0 = line 38; 11 pass-1 lines for 11 groups; ignored lines 4 (abstract+s1+s2+s3+s4+s5), 5 (s6+s7+s8+s9+s10+s11+s12+s13+s14), 6 (fig1), 7 (fig1A), 8 (fig1B), 9 (fig1C), 10 (fig2), 11 (fig2A), 12 (fig2B), 13 (fig3), 14 (tab1), 16 (abstract+s1+s2+s3+s4+s5), 17 (fig1), 18 (fig1C), 19 (tab1), 26 (abstract+s1+s2+s3+s4+s5), 27 (s6+s7+s8+s9+s10+s11+s12+s13+s14), 28 (fig1), 29 (fig1A), 30 (fig1B), 31 (fig1C), 32 (fig2), 33 (fig2A), 34 (fig2B), 35 (fig3), 36 (tab1)
+a0: s5.p3: quantity 'spatial resolution' -> probe_resolution (quantity: alias 'spatial resolution')
 a0: fig2B: value_text 'SiO2' -> sio2 (material: id 'sio2')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig2B: value_text 'SiO2' -> sio2 (material: id 'sio2')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig2B: value_text 'SiO2' -> sio2 (material: id 'sio2')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig2B: value_text 'SiO2' -> sio2 (material: id 'sio2')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig2B: value_text 'TiO2' -> tio2 (material: id 'tio2')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig2B: value_text 'TiO2' -> tio2 (material: id 'tio2')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig2B: value_text 'Al2O3' -> al2o3 (material: id 'al2o3')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
 a0: fig2B: value_text 'HfO2' -> hfo2 (material: id 'hfo2')
-a0: fig2B: quantity 'exposure time' -> pulse_time (quantity: alias 'exposure time')
-a0: fig3.cap: value_text 'SiO_{2}' -> sio2 (material: id 'sio2')
-a0: fig3.cap: value_text 'TiO_{2}' -> tio2 (material: id 'tio2')
-a1: symbol species abs.g2 'r' derived recombination_probability: record o_atom, definition tab1.cap: {'o_atom'} -> backed by the definition
-a1: symbol species abs.g2 'r' derived recombination_probability: record o_atom, definition tab1.cap: {'o_atom'} -> backed by the definition
-a1: symbol species abs.g3 'r' derived recombination_probability: record o_atom, definition tab1.cap: {'o_atom'} -> backed by the definition
-a1: symbol species abs.g3 'r' derived recombination_probability: record o_atom, definition tab1.cap: {'o_atom'} -> backed by the definition
-a1: symbol species s3.p3 'r' cited recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
+a0: s5.p1: value_text 'SiO2' -> sio2 (material: id 'sio2')
+a0: s5.p1: value_text 'SiO2' -> sio2 (material: id 'sio2')
+a0: s5.p1: value_text 'SiO2' -> sio2 (material: id 'sio2')
+a0: s5.p1: value_text 'SiO2' -> sio2 (material: id 'sio2')
+a0: s5.p1: value_text 'TiO2' -> tio2 (material: id 'tio2')
+a0: s5.p1: value_text 'TiO2' -> tio2 (material: id 'tio2')
+a0: s5.p1: value_text 'Al2O3' -> al2o3 (material: id 'al2o3')
+a0: s5.p1: value_text 'HfO2' -> hfo2 (material: id 'hfo2')
 a1: symbol species s4.p1 'θ(z, t)' definition surface_coverage: record -, definition - -> no species
 a1: symbol species s4.p2 's_0' definition initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species s4.p2 'r' definition recombination_probability: record -, definition - -> no species
 a1: symbol species s4.p3 'AR' model aspect_ratio: record -, definition - -> no species
 a1: symbol species s4.p3 's_0' model initial_sticking_coefficient: record -, definition - -> no species
 a1: symbol species s4.p8 'PD^{50%}' definition penetration_depth: record -, definition - -> no species
-a1: symbol species s4.p11 '\\tilde{z}_{50%}' definition coated_aspect_ratio: record -, definition - -> no species
-a1: symbol species s6.p4 '\\tilde{z}_{50\\%}' definition dimensionless_distance: record -, definition - -> no species
+a1: symbol species s4.p11 'z̃_{50%}' definition coated_aspect_ratio: record -, definition - -> no species
+a1: symbol species s6.p2 'AR' cited aspect_ratio: record -, definition - -> no species
+a1: symbol species s6.p2 'AR' cited aspect_ratio: record -, definition - -> no species
+a1: symbol species s6.p2 'AR' cited aspect_ratio: record -, definition - -> no species
+a1: symbol species s6.p2 'AR' cited aspect_ratio: record hfo2, definition - -> kept: its own element names it
+a1: symbol species s6.p4 '\\tilde{z}_{50%}' definition dimensionless_distance: record -, definition - -> no species
 a1: symbol species s6.p5 'r' derived recombination_probability: record o_atom, definition tab1.cap: {'o_atom'} -> backed by the definition
 a1: symbol species s6.p5 'r' derived recombination_probability: record o_atom, definition tab1.cap: {'o_atom'} -> backed by the definition
-a1: symbol species s6.p5 't_{50\\%}' derived pulse_time: record o_atom, definition - -> species cleared (no evidence)
-a1: symbol species s6.p5 't_{50\\%}' derived pulse_time: record o_atom, definition - -> species cleared (no evidence)
+a1: symbol species s6.p5 't_{50%}' derived other: record -, definition - -> no species
+a1: symbol species s6.p5 't_{50%}' derived other: record -, definition - -> no species
+a1: symbol species s6.p5 't_{50%}' derived other: record -, definition - -> no species
+a1: symbol species s6.p5 't_{50%}' derived other: record -, definition - -> no species
+a1: symbol species fig1.cap 'r' definition recombination_probability: record -, definition - -> no species
 a1: symbol species fig1C 'r' model recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
 a1: symbol species fig3.cap 'r' derived recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
 a1: symbol species fig3.cap 'r' derived recombination_probability: record -, definition tab1.cap: {'o_atom'} -> from the definition (o_atom)
 a1: symbol species tab1.cap 'r' definition recombination_probability: record o_atom, definition - -> kept: its own element names it
-a1: symbol species s4.p2 'r': species o_atom from the symbol's evidence in this paper (abs.g2, abs.g3, fig1C, fig3.cap, s3.p3, s6.p5, tab1.cap)
-a1: qualifier out of scope: s6.p2 cited step_coverage surface=sio2 (record)
-a1: qualifier out of scope: s6.p2 cited step_coverage surface=al2o3 (record)
-a1: qualifier out of scope: s6.p2 cited step_coverage surface=tio2 (record)
-a1: qualifier out of scope: s6.p2 cited step_coverage surface=hfo2 (record)
-a1: qualifier out of scope: s6.p4 definition dimensionless_distance level=50% (record)
-a1: qualifier out of scope: fig3.cap derived recombination_probability stage=initial (record)
-a1: qualifier out of scope: fig3.cap derived recombination_probability stage=initial (record)
-d: quote found across elements: s6.p9 caveat None -> evidence s6.p8;s6.p9
-h: simulation sim_slope ('eq 6') -> model arts_slope (symbol 'eq 6' of this paper)
-h: tree from pass 0: run 8, simulation 1, specimen 8, model_run 2, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
+a1: symbol species s4.p2 'r': species o_atom from the symbol's evidence in this paper (fig1C, fig3.cap, s6.p5, tab1.cap)
+a1: symbol species fig1.cap 'r': species o_atom from the symbol's evidence in this paper (fig1C, fig3.cap, s6.p5, tab1.cap)
+a1: symbol species s4.p3 'AR': species hfo2 from the symbol's evidence in this paper (s6.p2)
+a1: symbol species s6.p2 'AR': species hfo2 from the symbol's evidence in this paper (s6.p2)
+a1: symbol species s6.p2 'AR': species hfo2 from the symbol's evidence in this paper (s6.p2)
+a1: symbol species s6.p2 'AR': species hfo2 from the symbol's evidence in this paper (s6.p2)
+a1: qualifier out of scope: s2.p1 claim coated_aspect_ratio surface=sio2 (record)
+a1: qualifier out of scope: s2.p1 claim coated_aspect_ratio surface=al2o3 (record)
+a1: qualifier out of scope: s2.p1 claim coated_aspect_ratio surface=hfo2 (record)
+a1: qualifier out of scope: s4.p3 model aspect_ratio species=hfo2 (record)
+a1: qualifier out of scope: s4.p7 setting normalized_thickness position=entrance (record)
+a1: qualifier out of scope: s6.p1 claim coated_aspect_ratio species=al2o3 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=sio2 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=al2o3 (record)
+a1: qualifier out of scope: s6.p2 cited aspect_ratio species=hfo2 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=tio2 (record)
+a1: qualifier out of scope: s6.p2 cited aspect_ratio species=hfo2 (record)
+a1: qualifier out of scope: s6.p2 cited step_coverage species=hfo2 (record)
+a1: qualifier out of scope: s6.p2 cited aspect_ratio species=hfo2 (record)
+a1: qualifier out of scope: s6.p2 cited aspect_ratio species=hfo2 (record)
+a1: qualifier out of scope: fig3.cap derived recombination_probability specimen_class=film (record)
+a1: qualifier out of scope: fig3.cap derived recombination_probability specimen_class=film (record)
+d: quote found across elements: s4.p5 claim None -> evidence s4.p5;s4.p6
+d: quote found across elements: fig2A observation coated_aspect_ratio -> evidence s6.p8
+d: quote found across elements: fig2A observation coated_aspect_ratio -> evidence s5.p1
+d: quote found across elements: fig2A observation coated_aspect_ratio -> evidence s4.p1
+d: quote found across elements: fig2A observation coated_aspect_ratio -> evidence s12.p3
+d: quote found across elements: fig2A observation coated_aspect_ratio -> evidence s12.p3
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+d: quote found across elements: s5.p1 setting material -> evidence s5.p2
+d: quote found across elements: s5.p1 setting pulse_time -> evidence s5.p2
+e2: value not in its quote: s6.p2 cited aspect_ratio value 30 1: 'on a trench with an AR of ~30.24'
+e2: value not in its quote: s6.p2 cited aspect_ratio value 30 1: 'trench-like holes with AR = 30.25'
+g: eq1: mention_unmatched ['eq 1']
+g: eq2: mention_unmatched ['eq 2']
+g: eq3: mention_unmatched ['eq 3']
+g: eq4: mention_unmatched ['eq 4']
+g: eq5: mention_unmatched ['eq 5']
+g: eq6: mention_unmatched ['eq 6']
+h: tree from pass 0: run 8, simulation 0, specimen 8, model_run 0, series 0, cited_work 0; identity rows: none (pass 0 carries no identity)
 i: merged s5.p1 into s4.p10;s5.p1 (process_pressure 50)
-i: claim ('art19', 'material', 'causes', 'surface_recombination', 'a strong variation in film penetration depth is observed, revealing that the surface recombination of plasma radicals is highly material-dependent.'): merged fig2B into fig2.cap;fig2B
+i: claim ('art19', 'surface_recombination', 'limits', 'penetration_depth', 'through surface recombination, the density of plasma radicals decreases exponentially versus distance into the trench. this sets a practical limit on the penetration depth of the deposited film'): merged fig1A into fig1.cap;fig1A
 i: merged fig3.cap into s6.p5;fig3.cap (recombination_probability 6e-05)
 i: merged fig3.cap into s6.p5;fig3.cap (recombination_probability 7e-05)
 i: merged tab1.r1c1 into s6.p5;fig3.cap;tab1.r1c1 (recombination_probability 6e-05)
 i: merged tab1.r2c1 into s6.p5;fig3.cap;tab1.r2c1 (recombination_probability 7e-05)
-i: merged tab1.r3c1 into abs.g3;tab1.r3c1 (recombination_probability )
-i: merged tab1.r4c1 into abs.g3;tab1.r4c1 (recombination_probability )
-i: merged fig2B into fig2B;tab1.r3c0 (material al2o3)
-i: merged fig2B into fig2B;tab1.r4c0 (material hfo2)
-i: merged fig3.cap into fig3.cap;tab1.r1c0 (material sio2)
-i: merged fig3.cap into fig3.cap;tab1.r2c0 (material tio2)
-i: merged s5.p2 into s5.p2;fig2B (material sio2)
-i: merged s5.p2 into s5.p2;fig2B (material sio2)
-i: merged s5.p2 into s5.p2;fig2B (material sio2)
-i: merged s5.p2 into s5.p2;fig2B (material sio2)
-i: merged s5.p2 into s5.p2;fig2B (material tio2)
-i: merged s5.p2 into s5.p2;fig2B (material tio2)
-i: merged s5.p2 into s5.p2;fig2B;tab1.r3c0 (material al2o3)
-i: merged s5.p2 into s5.p2;fig2B;tab1.r4c0 (material hfo2)
-j: derived over 10 entities: 0 rows; not derived: {'no fact for p': 18, 'n: no fact for gpc': 10, 'gpc: no fact for n': 10, 'no fact for H': 10, 'no fact for rho': 10, 'no fact for mg': 10, 'no fact for t': 10, 'no fact for h2': 10, 'no fact for phi': 10, 'lam: no fact for p': 8, 'no fact for T': 2, 'lam: no fact for T': 2}
-j: caveats (query.caveats_of): 4, linked to facts 1, to nodes 0; facts reached through query.caveats_for: 2
-j: claim nodes (query.claim_nodes): 7 nodes for 18 claims; claims without a full triple (query.node_of empty): 1
-j: comparisons from figures.json (1c): 4
+i: merged tab1.r3c1 into s6.p5;tab1.r3c1 (recombination_probability )
+i: merged tab1.r4c1 into s6.p5;tab1.r4c1 (recombination_probability )
+i: merged s5.p1 into s5.p1;fig2B (material sio2)
+i: merged s5.p1 into s5.p1;fig2B (material sio2)
+i: merged s5.p1 into s5.p1;fig2B (material sio2)
+i: merged s5.p1 into s5.p1;fig2B (material sio2)
+i: merged fig2B (pulse_time 3.8 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+i: merged fig2B (pulse_time 12 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+i: merged fig2B (pulse_time 38 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+i: merged fig2B (pulse_time 120 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+i: merged fig2B (pulse_time 12 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+i: merged fig2B (pulse_time 120 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+i: merged fig2B (pulse_time 120 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+i: merged fig2B (pulse_time 120 -) into the fact with qualifiers species=o2;step=plasma (s5.p2;fig2B)
+j: derived over 8 entities: 8 rows; not derived: {'no fact for p': 8, 'n: no fact for gpc': 8, 'gpc: no fact for n': 8, 'no fact for H': 8, 'no fact for rho': 8, 'no fact for mg': 8, 'no fact for t': 8, 'no fact for h2': 8, 'no fact for phi': 8, 'stated: art19:s4.p10#3 0.1 mm': 8}
+j: caveats (query.caveats_of): 1, linked to facts 0, to nodes 0; facts reached through query.caveats_for: 0
+j: claim nodes (query.claim_nodes): 8 nodes for 19 claims; claims without a full triple (query.node_of empty): 7
+j: comparisons from figures.json (1c): 5
 j: transforms (P195): 0 computed facts ({}); declared without a function: unit_conversion, thickness_to_gpc, x_over_width, normalize_thickness, aspect_ratio, exposure, step_coverage, gpc_from_atoms, atoms_from_gpc, density_to_bulk, moles_from_mass_gain, target_gpc, plasma_h2_fraction, shell_volume_fraction, h_per_metal, mean_free_path, knudsen_number, body_thickness; lists.DERIVED entries with no declaration (left running): exposure, growth_per_cycle, atoms_per_cycle, element_ratio{element=H;reference_element=Mo}, density_relative_to_bulk, moles_from_mass_gain, growth_per_cycle{kind=target;over=run}, plasma_gas_ratio{gas=h2;relative_to=all_gases}, shell_volume_fraction, mean_free_path, knudsen_number
-step input: {'pass-0 extension units': 16, 'records': 103, 'legend conditions of a pass-0 unit (specimen)': 8, 'coordinate of a pass-0 unit (species)': 10, 'coordinate of a pass-0 unit (value)': 8, 'legend conditions of a pass-0 unit (model_run)': 2}
-step a0: {'value_text promoted (material: id)': 10, 'quantity promoted (quantity: alias)': 8}
-step a1: {'symbol species: backed by the definition': 6, 'symbol species: from the definition': 4, 'symbol species: no species': 8, 'symbol species: species cleared (no evidence)': 2, 'symbol species: kept: its own element names it': 1, "symbol species: from the symbol's evidence in this paper": 1, 'process_mode from the recipe field: plasma': 8, 'material from the recipe field: sio2': 4, 'material from the recipe field: tio2': 2, 'material from the recipe field: al2o3': 1, 'material from the recipe field: hfo2': 1, 'qualifier out of scope: surface': 4, 'qualifier out of scope: level': 1, 'qualifier out of scope: stage': 2}
-step a: {'kept': 137}
-step b: {'model_with_value (kept)': 3, 'kept': 137}
-step c: {'kept': 137}
-step d: {"quote found in the paper's elements concatenated (P182)": 1, 'derived condition (figures.json, no quote check)': 18, 'kept': 137}
-step e: {'kept': 137}
-step f: {'species_resolved': 29, 'kept': 137}
-step h: {'simulation linked to a model entry': 1, 'measurement unit': 16, 'place: claim -> paper': 19, 'place: result about a specimen -> its measurement': 15, 'place: cited -> paper': 11, 'place: definition -> paper': 8, 'place: about paper -> recipe': 19, 'place: model about a simulation -> simulation': 1, 'place: setting about a run -> deposition': 28, 'place: about paper, method -> paper method activity': 1, 'place: derived about a model run -> model run': 8, 'place: caveat -> paper': 5, 'place: setting about a model run sharing its simulation -> model run': 4, 'place: result about a run -> its specimen measurement': 2, 'place: setting about a specimen -> deposition': 16}
-step m: {'statement filled from the quote': 97, 'links resolved': 19}
-step 1c: {'unbound item (image): ambiguous': 1, 'curve -> observation': 8, 'curve -> model': 2}
-step i: {'merged': 19, 'claim merged': 1, 'kept': 127}
-step n: {'comparison series': 3, 'comparison grid': 1}
-step j: {'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 19, 'exposure_per_run: inputs missing': 19, 'sheet_resistance: inputs missing': 19, 'moles_deposited: inputs missing': 19, 'coating_mass_fraction: inputs missing': 19, 'deposition_rate: inputs missing': 19, 'coated_ar: inputs missing': 19, 'normalize_front_slope: inputs missing': 19}
-step k: {'statement from the record': 117, 'statement_copies_text (reported by check)': 39, 'statement assembled': 10}
+step input: {'records': 119, 'legend conditions of a pass-0 unit (specimen)': 8, 'coordinate of a pass-0 unit (species)': 8, 'coordinate of a pass-0 unit (value)': 8, 'distinguished_by parts (P205)': 16}
+step a0: {'quantity promoted (quantity: alias)': 1, 'value_text promoted (material: id)': 16}
+step a1: {'symbol species: no species': 16, 'symbol species: kept: its own element names it': 2, 'symbol species: backed by the definition': 2, 'symbol species: from the definition': 3, "symbol species: from the symbol's evidence in this paper": 6, 'process_mode from the recipe field: plasma': 8, 'material from the recipe field: sio2': 4, 'material from the recipe field: tio2': 2, 'material from the recipe field: al2o3': 1, 'material from the recipe field: hfo2': 1, 'qualifier out of scope: surface': 3, 'qualifier out of scope: species': 10, 'qualifier out of scope: position': 1, 'qualifier out of scope: specimen_class': 2}
+step a: {'kept': 167}
+step b: {'model_with_value (kept)': 3, 'kept': 167}
+step c: {'quantity_other (kept)': 4, 'kept': 167}
+step d: {"quote found in the paper's elements concatenated (P182)": 22, 'quote_not_found': 8, 'derived condition (figures.json, no quote check)': 16, 'kept': 159}
+step e: {'kept': 159}
+step e2: {'value in its quote: as printed (the quote names no unit)': 20, 'value in its quote: as printed': 50, 'value_not_in_quote': 2, "not checked: a figure panel's record": 15, 'kept': 157}
+step f: {'species_resolved': 26, 'kept': 157}
+step g: {'mention_unmatched': 6}
+step h: {'measurement unit': 16, 'place: claim -> paper': 20, 'place: cited -> paper': 13, 'place: definition -> paper': 9, 'place: about paper -> recipe': 38, 'place: setting about a run -> deposition': 39, 'place: about paper, method -> paper method activity': 2, 'place: result about a specimen -> its measurement': 18, 'place: caveat -> paper': 2, 'place: setting about a specimen -> deposition': 16}
+step m: {'statement filled from the quote': 123, 'label_as_printed filled with the quantity id': 2, 'links resolved': 17, 'links named elements without facts': 4}
+step 1c: {'unbound item (image): ambiguous': 1, 'curve -> observation': 8, 'unbound item (curve): layout other': 2}
+step i: {'distinguished_by part: same fact held (not written)': 16, 'merged': 11, 'claim merged': 1, 'merged into the fact with the fuller qualifiers': 8, 'kept': 129}
+step n: {'comparison series': 4, 'comparison grid': 1}
+step j: {'derived knudsen_number': 8, 'declared, no function (not computed): unit_conversion': 1, 'declared, no function (not computed): thickness_to_gpc': 1, 'declared, no function (not computed): x_over_width': 1, 'declared, no function (not computed): normalize_thickness': 1, 'declared, no function (not computed): aspect_ratio': 1, 'declared, no function (not computed): exposure': 1, 'declared, no function (not computed): step_coverage': 1, 'declared, no function (not computed): gpc_from_atoms': 1, 'declared, no function (not computed): atoms_from_gpc': 1, 'declared, no function (not computed): density_to_bulk': 1, 'declared, no function (not computed): moles_from_mass_gain': 1, 'declared, no function (not computed): target_gpc': 1, 'declared, no function (not computed): plasma_h2_fraction': 1, 'declared, no function (not computed): shell_volume_fraction': 1, 'declared, no function (not computed): h_per_metal': 1, 'declared, no function (not computed): mean_free_path': 1, 'declared, no function (not computed): knudsen_number': 1, 'declared, no function (not computed): body_thickness': 1, 'final_channel_height: inputs missing': 16, 'exposure_per_run: inputs missing': 16, 'sheet_resistance: inputs missing': 16, 'moles_deposited: inputs missing': 16, 'coating_mass_fraction: inputs missing': 16, 'deposition_rate: inputs missing': 16, 'coated_ar: inputs missing': 16, 'normalize_front_slope: inputs missing': 16}
+step k: {'statement from the record': 121, 'statement_copies_text (reported by check)': 37, 'statement assembled': 16}
 diff against the gold:
-  setting        50   45   26  0.58  0.52
-  observation    36   19   10  0.53  0.28
-  cited          23   11    7  0.64  0.30
-  model          22   11   10  0.91  0.45
-  activity       22   31   16  0.52  0.73
-  definition     16    8    5  0.62  0.31
-  claim          13   18    9  0.50  0.69
-  entity         12   10    8  0.80  0.67
-  caveat          8    4    1  0.25  0.12
-  derived         7   11    5  0.45  0.71
-  comparison      4    4    2  0.50  0.50
+  setting        50   44   20  0.45  0.40
+  observation    36   26   12  0.46  0.33
+  cited          23   13    8  0.62  0.35
+  activity       22   26   21  0.81  0.95
+  model          22    9    8  0.89  0.36
+  definition     16    9    5  0.56  0.31
+  claim          13   19    7  0.37  0.54
+  entity         12    8    8  1.00  0.67
+  caveat          8    1    0  0.00  0.00
+  derived         7   16    6  0.38  0.86
+  comparison      4    5    3  0.60  0.75
   paper           1    1    0  0.00  0.00
 gold definitions with an eq* element in evidence: 0/16
 gold model rows with quantity and value: 2: {'aspect_ratio': 1, 'initial_sticking_coefficient': 1}
-observations: gold 36, compiled 19, matched 10
+observations: gold 36, compiled 26, matched 12

@@ -3,7 +3,7 @@
  "key": "mat23",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T12:50:16",
+ "imported_at": "2026-10-25T20:03:52",
  "inventory": [
   {
    "id": "mat23:fig1a",
@@ -26,7 +26,7 @@
      "key": "Temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -38,7 +38,19 @@
      "key": "Growth per cycle",
      "unit": "Å",
      "quantity": "growth_per_cycle",
-     "how": "id 'growth per cycle'",
+     "how": "0ax answer (records line 19)",
+     "ambiguous": [],
+     "never": "",
+     "never_label": "",
+     "unit_reason": ""
+    },
+    {
+     "axis": "series",
+     "label_raw": "ALD method",
+     "key": "ALD method",
+     "unit": "",
+     "quantity": "process_mode",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -67,7 +79,7 @@
      "key": "#ALD cycle",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "alias '#ALD cycle'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -79,7 +91,7 @@
      "key": "Thickness",
      "unit": "nm",
      "quantity": "film_thickness",
-     "how": "name 'thickness'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -90,8 +102,8 @@
      "label_raw": "process and temperature",
      "key": "process",
      "unit": "",
-     "quantity": "other",
-     "how": "",
+     "quantity": "process_mode",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -103,7 +115,7 @@
      "key": "temperature",
      "unit": "",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -132,7 +144,7 @@
      "key": "Pulse time",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "id 'pulse time'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -144,7 +156,7 @@
      "key": "Growth per cycle",
      "unit": "Å",
      "quantity": "growth_per_cycle",
-     "how": "id 'growth per cycle'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -155,8 +167,8 @@
      "label_raw": "precursor",
      "key": "precursor",
      "unit": "",
-     "quantity": "reactant_A",
-     "how": "alias 'Precursor'",
+     "quantity": "qualifier:species",
+     "how": "names the qualifier species",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -215,7 +227,7 @@
      "key": "2θ",
      "unit": "°",
      "quantity": "diffraction_angle",
-     "how": "symbol '2θ' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -227,7 +239,7 @@
      "key": "Intensity",
      "unit": "a.u.",
      "quantity": "signal_intensity",
-     "how": "alias 'Intensity'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -239,7 +251,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -330,7 +342,7 @@
      "key": "Binding Energy",
      "unit": "eV",
      "quantity": "binding_energy",
-     "how": "id 'binding energy'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -342,7 +354,7 @@
      "key": "Counts per second",
      "unit": "a.u.",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts per second'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -354,7 +366,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -385,7 +397,7 @@
      "key": "Binding Energy",
      "unit": "eV",
      "quantity": "binding_energy",
-     "how": "id 'binding energy'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -397,7 +409,7 @@
      "key": "Counts per second",
      "unit": "a.u.",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts per second'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -409,7 +421,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -440,7 +452,7 @@
      "key": "Binding Energy",
      "unit": "eV",
      "quantity": "binding_energy",
-     "how": "id 'binding energy'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -452,7 +464,7 @@
      "key": "Counts per second",
      "unit": "a.u.",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts per second'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -464,7 +476,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -495,7 +507,7 @@
      "key": "Binding Energy",
      "unit": "eV",
      "quantity": "binding_energy",
-     "how": "id 'binding energy'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -507,7 +519,7 @@
      "key": "Counts per second",
      "unit": "a.u.",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts per second'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -519,7 +531,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -550,7 +562,7 @@
      "key": "Binding Energy",
      "unit": "eV",
      "quantity": "binding_energy",
-     "how": "id 'binding energy'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -562,7 +574,7 @@
      "key": "Counts per second",
      "unit": "a.u.",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts per second'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -574,7 +586,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -605,7 +617,7 @@
      "key": "Binding Energy",
      "unit": "eV",
      "quantity": "binding_energy",
-     "how": "id 'binding energy'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -617,7 +629,7 @@
      "key": "Counts per second",
      "unit": "a.u.",
      "quantity": "signal_intensity",
-     "how": "alias 'Counts per second'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -629,7 +641,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -679,7 +691,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -729,7 +741,7 @@
      "key": "temperature",
      "unit": "°C",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 19)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -741,7 +753,7 @@
      "key": "ALD process",
      "unit": "",
      "quantity": "process_mode",
-     "how": "alias 'ALD process'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -767,7 +779,7 @@
     "label_raw": "Temperature (°C)",
     "unit_raw": "°C",
     "key": "Temperature",
-    "how": "name 'temperature'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "y": {
@@ -777,7 +789,7 @@
     "label_raw": "Growth per cycle(Å)",
     "unit_raw": "Å",
     "key": "Growth per cycle",
-    "how": "id 'growth per cycle'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -858,7 +870,7 @@
     "label_raw": "Temperature (°C)",
     "unit_raw": "°C",
     "key": "Temperature",
-    "how": "name 'temperature'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "y": {
@@ -868,7 +880,7 @@
     "label_raw": "Growth per cycle(Å)",
     "unit_raw": "Å",
     "key": "Growth per cycle",
-    "how": "id 'growth per cycle'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -941,7 +953,7 @@
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "alias '#ALD cycle'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -951,7 +963,7 @@
     "label_raw": "Thickness(nm)",
     "unit_raw": "nm",
     "key": "Thickness",
-    "how": "name 'thickness'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -1083,7 +1095,7 @@
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "alias '#ALD cycle'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -1093,7 +1105,7 @@
     "label_raw": "Thickness(nm)",
     "unit_raw": "nm",
     "key": "Thickness",
-    "how": "name 'thickness'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -1225,7 +1237,7 @@
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "alias '#ALD cycle'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -1235,7 +1247,7 @@
     "label_raw": "Thickness(nm)",
     "unit_raw": "nm",
     "key": "Thickness",
-    "how": "name 'thickness'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -1367,7 +1379,7 @@
     "label_raw": "#ALD cycle",
     "unit_raw": "",
     "key": "#ALD cycle",
-    "how": "alias '#ALD cycle'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -1377,7 +1389,7 @@
     "label_raw": "Thickness(nm)",
     "unit_raw": "nm",
     "key": "Thickness",
-    "how": "name 'thickness'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -1509,7 +1521,7 @@
     "label_raw": "Pulse time(s)",
     "unit_raw": "s",
     "key": "Pulse time",
-    "how": "id 'pulse time'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "y": {
@@ -1519,7 +1531,7 @@
     "label_raw": "Growth per cycle(Å)",
     "unit_raw": "Å",
     "key": "Growth per cycle",
-    "how": "id 'growth per cycle'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -1608,7 +1620,7 @@
     "label_raw": "Pulse time(s)",
     "unit_raw": "s",
     "key": "Pulse time",
-    "how": "id 'pulse time'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "y": {
@@ -1618,7 +1630,7 @@
     "label_raw": "Growth per cycle(Å)",
     "unit_raw": "Å",
     "key": "Growth per cycle",
-    "how": "id 'growth per cycle'",
+    "how": "0ax answer (records line 19)",
     "unit_reason": ""
    },
    "points": [
@@ -2173,22 +2185,22 @@
    "id": "mat23:cmp:fig1a",
    "figure": "1",
    "panel": "a",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "process_mode",
    "varied_raw": "ALD method",
    "members": [
     "mat23:fig1a#c1",
     "mat23:fig1a#c2"
    ],
    "conditions": {},
-   "label": "Fig. 1a replicates (ALD method)"
+   "label": "Fig. 1a series (ALD method)"
   },
   {
    "id": "mat23:cmp:fig1b",
    "figure": "1",
    "panel": "b",
-   "kind": "replicate",
-   "varied": "",
+   "kind": "series",
+   "varied": "process_mode;deposition_temperature",
    "varied_raw": "process and temperature",
    "members": [
     "mat23:fig1b#c1",
@@ -2197,21 +2209,21 @@
     "mat23:fig1b#c4"
    ],
    "conditions": {},
-   "label": "Fig. 1b replicates (process and temperature)"
+   "label": "Fig. 1b series (process and temperature)"
   },
   {
    "id": "mat23:cmp:fig1c",
    "figure": "1",
    "panel": "c",
-   "kind": "series",
-   "varied": "reactant_A",
+   "kind": "replicate",
+   "varied": "",
    "varied_raw": "precursor",
    "members": [
     "mat23:fig1c#c1",
     "mat23:fig1c#c2"
    ],
    "conditions": {},
-   "label": "Fig. 1c series (precursor)"
+   "label": "Fig. 1c replicates (precursor)"
   },
   {
    "id": "mat23:cmp:fig4b",
@@ -2348,6 +2360,6 @@
   "curves": 10,
   "peaks": 4,
   "derived": 4,
-  "labels_other": 5
+  "labels_other": 4
  }
 }

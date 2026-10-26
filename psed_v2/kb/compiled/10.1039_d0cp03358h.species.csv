@@ -1,15 +1,16 @@
 element,label,type,quantity,record_species,definition,own_element_names,outcome,species,fact_id
-s18.p3,c_H2O,cited,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1","al2o3,h2o,si",backed by the definition,h2o,yim20:s18.p3#1
-s18.p3,c_H2O,cited,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1","al2o3,h2o,si",backed by the definition,h2o,yim20:s18.p3#2
-s18.p3,c_TMA,cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1","al2o3,si,tma",backed by the definition,tma,yim20:s18.p3#3
+s3.p3,\tilde{x},definition,dimensionless_distance,,,ar,no species,,yim20:s3.p3#1
+s3.p5,\tilde{\xi},definition,other,,,,no species,,yim20:s3.p5#1
 s19.p1,c_A,model,initial_sticking_coefficient,,,,no species,,yim20:s19.p1#1
-s19.p2,K_n,model,knudsen_number,,,,no species,,yim20:s19.p2#1
-s19.p4,c_TMA,derived,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1","al2o3,h2o,tma",backed by the definition,tma,yim20:s19.p4#1
-s19.p4,c_H2O,derived,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1","al2o3,h2o,tma",backed by the definition,h2o,yim20:s19.p4#2
+s19.p2,Kn,definition,knudsen_number,,,,symbol species conflict,,yim20:s19.p2#1
+s19.p3,Kn,derived,knudsen_number,tma,,"h2o,tma",symbol species conflict,,yim20:s19.p3#4
+s19.p3,Kn,derived,knudsen_number,h2o,,"h2o,tma",symbol species conflict,,yim20:s19.p3#5
+s19.p4,c_TMA,derived,initial_sticking_coefficient,tma,tabu1.r2c0,"al2o3,h2o,tma",backed by the definition,tma,yim20:s19.p4#1
+s19.p4,c_H2O,derived,initial_sticking_coefficient,h2o,tabu1.r3c0,"al2o3,h2o,tma",backed by the definition,h2o,yim20:s19.p4#2
 fig1.cap,H,definition,feature_width,,,,no species,,yim20:fig1.cap#1
 fig1.cap,L,definition,feature_depth,,,,no species,,yim20:fig1.cap#2
 fig2.cap,\tilde{x},definition,dimensionless_distance,,,,no species,,yim20:fig2.cap#1
-fig2.cap,\tilde{\xi},definition,dimensionless_distance,,,,no species,,yim20:fig2.cap#2
+fig2.cap,\tilde{\xi},definition,other,,,,no species,,yim20:fig2.cap#2
 fig3.cap,PD^{50%},definition,penetration_depth,,,al2o3,no species,,yim20:fig3.cap#1
 fig10.cap,T,model,deposition_temperature,,,"al2o3,n2,tma",no species,,yim20:fig10.cap#1
 fig10.cap,t_p,model,pulse_time,tma,,"al2o3,n2,tma",kept: its own element names it,tma,yim20:fig10.cap#2
@@ -18,98 +19,124 @@ fig10.cap,\rho_B,model,partial_pressure,n2,,"al2o3,n2,tma",kept: its own element
 fig10.cap,M_A,model,molar_mass,tma,,"al2o3,n2,tma",kept: its own element names it,tma,yim20:fig10.cap#5
 fig10.cap,M_B,model,molar_mass,n2,tabu2.r8c0,"al2o3,n2,tma",backed by the definition,n2,yim20:fig10.cap#6
 fig10.cap,d_A,model,molecule_diameter,tma,,"al2o3,n2,tma",kept: its own element names it,tma,yim20:fig10.cap#7
-fig10.cap,d_B,model,molecule_diameter,n2,"tabu1.r7c0, tabu1.r7c1","al2o3,n2,tma",backed by the definition,n2,yim20:fig10.cap#8
+fig10.cap,d_B,model,molecule_diameter,n2,tabu1.r7c0,"al2o3,n2,tma",backed by the definition,n2,yim20:fig10.cap#8
 fig10.cap,b_{\text{film}},model,b_film,,,"al2o3,n2,tma",no species,,yim20:fig10.cap#9
 fig10.cap,b_{\text{TMA}},model,other,,,"al2o3,n2,tma",no species,,yim20:fig10.cap#10
 fig10.cap,\rho,model,film_density,al2o3,,"al2o3,n2,tma",kept: its own element names it,al2o3,yim20:fig10.cap#12
 fig10.cap,q,model,saturation_density,,tabu2.r16c0,"al2o3,n2,tma",from the definition,model_reactant,yim20:fig10.cap#13
 fig10.cap,K,model,adsorption_equilibrium_constant,,,"al2o3,n2,tma",no species,,yim20:fig10.cap#14
-fig10.cap,c_{\text{TMA}},model,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1","al2o3,n2,tma",backed by the definition,tma,yim20:fig10.cap#15
+fig10.cap,c_{\text{TMA}},model,initial_sticking_coefficient,tma,tabu1.r2c0,"al2o3,n2,tma",backed by the definition,tma,yim20:fig10.cap#15
 fig10.cap,P_d,model,p_d,,,"al2o3,n2,tma",no species,,yim20:fig10.cap#16
-fig10a,N,model,cycle_number,,,"al2o3,n2,tma",no species,,yim20:fig10a#1
-fig10d,H,model,feature_width,,,"al2o3,n2,tma",no species,,yim20:fig10d#1
-tab1.r1c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r1c9#1
-tab1.r1c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r1c10#1
-tab1.r1c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r1c12#1
-tab1.r2c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r2c9#1
-tab1.r2c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r2c10#1
-tab1.r2c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r2c12#1
-tab1.r3c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r3c9#1
-tab1.r3c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r3c10#1
-tab1.r3c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r3c12#1
-tab1.r4c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r4c9#1
-tab1.r4c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r4c10#1
-tab1.r4c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r4c12#1
-tab1.r5c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r5c9#1
-tab1.r5c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r5c10#1
-tab1.r5c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r5c12#1
-tab1.r6c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r6c9#1
-tab1.r6c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r6c10#1
-tab1.r6c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r6c12#1
-tab1.r7c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r7c10#1
-tab1.r7c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r7c12#1
-tab1.r8c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r8c9#1
-tab1.r8c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r8c10#1
-tab1.r8c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r8c12#1
-tab1.r9c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r9c9#1
-tab1.r9c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r9c10#1
-tab1.r9c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r9c12#1
-tab1.r10c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r10c9#1
-tab1.r10c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r10c10#1
-tab1.r10c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r10c12#1
-tab1.r12c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r12c9#1
-tab1.r12c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r12c10#1
-tab1.r12c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r12c12#1
-tab1.r13c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r13c9#1
-tab1.r13c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r13c10#1
-tab1.r13c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r13c12#1
-tab1.r14c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r14c9#1
-tab1.r14c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r14c10#1
-tab1.r14c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r14c12#1
-tab1.r15c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r15c9#1
-tab1.r15c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r15c10#1
-tab1.r15c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r15c12#1
-tab1.r16c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r16c9#1
-tab1.r16c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r16c10#1
-tab1.r16c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r16c12#1
-tab1.r18c9,S_I/N (GPC_I),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r18c9#1
-tab1.r18c10,S_IIb/N (GPC_IIb),derived,growth_per_cycle,,,,no species,,yim20:tab1.r18c10#1
-tab1.r18c12,x̃_50%,derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r18c12#1
-tab2.r1c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r1c6#1
-tab2.r2c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r2c6#1
-tab2.r3c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r3c6#1
-tab2.r3c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1",h2o,backed by the definition,h2o,
-tab2.r4c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r4c6#1
-tab2.r5c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r5c6#1
-tab2.r5c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1",h2o,backed by the definition,h2o,yim20:tab2.r5c7#1
-tab2.r6c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,yim20:tab2.r6c6#1
-tab2.r7c6,c_{\text{TMA}},derived,initial_sticking_coefficient,tma,"tabu1.r2c0, tabu1.r2c1",tma,backed by the definition,tma,
-tab2.r7c7,c_{\text{H}_2\text{O}},derived,initial_sticking_coefficient,h2o,"tabu1.r3c0, tabu1.r3c1",h2o,backed by the definition,h2o,
+tab1.r1c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r1c9#1
+tab1.r1c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r1c10#1
+tab1.r1c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r1c12#1
+tab1.r2c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r2c9#1
+tab1.r2c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r2c10#1
+tab1.r2c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r2c12#1
+tab1.r3c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r3c9#1
+tab1.r3c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r3c10#1
+tab1.r3c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r3c12#1
+tab1.r4c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r4c9#1
+tab1.r4c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r4c10#1
+tab1.r4c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r4c12#1
+tab1.r5c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r5c9#1
+tab1.r5c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r5c10#1
+tab1.r5c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r5c12#1
+tab1.r6c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r6c9#1
+tab1.r6c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r6c10#1
+tab1.r6c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r6c12#1
+tab1.r7c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r7c10#1
+tab1.r7c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r7c12#1
+tab1.r8c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r8c9#1
+tab1.r8c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r8c10#1
+tab1.r8c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r8c12#1
+tab1.r9c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r9c9#1
+tab1.r9c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r9c10#1
+tab1.r9c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r9c12#1
+tab1.r10c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r10c9#1
+tab1.r10c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r10c10#1
+tab1.r10c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r10c12#1
+tab1.r12c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r12c9#1
+tab1.r12c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r12c10#1
+tab1.r12c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r12c12#1
+tab1.r13c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r13c9#1
+tab1.r13c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r13c10#1
+tab1.r13c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r13c12#1
+tab1.r14c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r14c9#1
+tab1.r14c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r14c10#1
+tab1.r14c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r14c12#1
+tab1.r15c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r15c9#1
+tab1.r15c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r15c10#1
+tab1.r15c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r15c12#1
+tab1.r16c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r16c9#1
+tab1.r16c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r16c10#1
+tab1.r16c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r16c12#1
+tab1.r18c9,S_I/N (GPC_I) (nm),derived,growth_per_cycle,,,si,no species,,yim20:tab1.r18c9#1
+tab1.r18c10,S_IIb/N (GPC_IIb) (nm),derived,growth_per_cycle,,,,no species,,yim20:tab1.r18c10#1
+tab1.r18c12,x̃_50% (–),derived,coated_aspect_ratio,,,,no species,,yim20:tab1.r18c12#1
+tab2.cap,c_{\text{TMA}},definition,initial_sticking_coefficient,tma,,"al2o3,h2o,tma",kept: its own element names it,tma,yim20:tab2.cap#1
+tab2.cap,c_{\text{H}_2\text{O}},definition,initial_sticking_coefficient,h2o,,"al2o3,h2o,tma",kept: its own element names it,h2o,yim20:tab2.cap#2
+tab2.r1c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r1c6#1
+tab2.r2c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r2c6#1
+tab2.r3c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r3c6#1
+tab2.r3c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,tabu1.r3c0,h2o,backed by the definition,h2o,yim20:tab2.r3c7#1
+tab2.r4c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r4c6#1
+tab2.r5c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r5c6#1
+tab2.r5c7,c_{\text{H}_2\text{O}},cited,initial_sticking_coefficient,h2o,tabu1.r3c0,h2o,backed by the definition,h2o,yim20:tab2.r5c7#1
+tab2.r6c6,c_{\text{TMA}},cited,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,yim20:tab2.r6c6#1
+tab2.r7c6,c_{\text{TMA}},derived,initial_sticking_coefficient,tma,tabu1.r2c0,tma,backed by the definition,tma,
+tab2.r7c7,c_{\text{H}_2\text{O}},derived,initial_sticking_coefficient,h2o,tabu1.r3c0,h2o,backed by the definition,h2o,
+tabu1.r0c0,a,definition,pillar_spacing,,,,no species,,yim20:tabu1.r0c0#1
+tabu1.r0c1,a,definition,pillar_spacing,,,,no species,,yim20:tabu1.r0c1#1
+tabu1.r1c0,A,definition,other,,,,no species,,
+tabu1.r1c1,A,definition,other,,,,no species,,yim20:tabu1.r1c1#1
+tabu1.r2c0,c_{\text{TMA}},definition,initial_sticking_coefficient,tma,,tma,kept: its own element names it,tma,yim20:tabu1.r2c0#1
+tabu1.r2c1,c_{\text{TMA}},definition,initial_sticking_coefficient,tma,,tma,kept: its own element names it,tma,yim20:tabu1.r2c1#1
+tabu1.r3c0,c_{\text{H}_2\text{O}},definition,initial_sticking_coefficient,h2o,,h2o,kept: its own element names it,h2o,yim20:tabu1.r3c0#1
+tabu1.r3c1,c_{\text{H}_2\text{O}},definition,initial_sticking_coefficient,h2o,,h2o,kept: its own element names it,h2o,yim20:tabu1.r3c1#1
+tabu1.r4c0,b,definition,b_film,,,,no species,,yim20:tabu1.r4c0#1
+tabu1.r4c1,b,definition,b_film,,,,no species,,yim20:tabu1.r4c1#1
+tabu1.r5c0,d,definition,other,,,,no species,,yim20:tabu1.r5c0#1
+tabu1.r5c1,d,definition,other,,,,no species,,yim20:tabu1.r5c1#1
+tabu1.r6c0,d_{\text{A}},definition,molecule_diameter,,,model_reactant,from the symbol's evidence in this paper,tma,yim20:tabu1.r6c0#1
+tabu1.r6c1,d_{\text{A}},definition,molecule_diameter,,,model_reactant,from the symbol's evidence in this paper,tma,yim20:tabu1.r6c1#1
+tabu1.r7c0,d_{\text{B}},definition,molecule_diameter,,,n2,from the symbol's evidence in this paper,n2,yim20:tabu1.r7c0#1
+tabu1.r7c1,d_{\text{B}},definition,molecule_diameter,,,n2,from the symbol's evidence in this paper,n2,yim20:tabu1.r7c1#1
+tabu1.r8c0,D,definition,effective_diffusion_coefficient,,,,no species,,
+tabu1.r8c1,D,definition,effective_diffusion_coefficient,,,,no species,,yim20:tabu1.r8c1#1
+tabu1.r9c0,D_0,definition,other,,,,no species,,yim20:tabu1.r9c0#1
+tabu1.r9c1,D_0,definition,other,,,,no species,,yim20:tabu1.r9c1#1
+tabu1.r10c0,F,definition,other,,,,no species,,yim20:tabu1.r10c0#1
+tabu1.r10c1,F,definition,other,,,,no species,,yim20:tabu1.r10c1#1
 tabu2.r2c0,H,definition,feature_width,,,,no species,,yim20:tabu2.r2c0#1
 tabu2.r3c0,h,definition,other,,,,no species,,
 tabu2.r4c0,K,definition,adsorption_equilibrium_constant,,,,no species,,yim20:tabu2.r4c0#1
-tabu2.r5c0,K_n,definition,knudsen_number,,,,no species,,yim20:tabu2.r5c0#1
+tabu2.r5c0,K_n,definition,knudsen_number,,,,symbol species conflict,,yim20:tabu2.r5c0#1
+tabu2.r5c1,Kn,definition,knudsen_number,,,,symbol species conflict,,yim20:tabu2.r5c1#1
 tabu2.r6c0,L,definition,feature_depth,,,,no species,,yim20:tabu2.r6c0#1
 tabu2.r7c0,l,definition,pillar_spacing,,,,no species,,
-tabu2.r8c0,M_B,definition,molar_mass,,,n2,from the symbol's evidence in this paper,n2,yim20:tabu2.r8c0#1
-tabu2.r9c0,M_A,definition,molar_mass,,,model_reactant,from the symbol's evidence in this paper,tma,yim20:tabu2.r9c0#1
+tabu2.r8c0,M_{\text{B}},definition,molar_mass,,,n2,from the symbol's evidence in this paper,n2,yim20:tabu2.r8c0#1
+tabu2.r9c0,M_{\text{A}},definition,molar_mass,,,model_reactant,from the symbol's evidence in this paper,tma,yim20:tabu2.r9c0#1
 tabu2.r10c0,N,definition,cycle_number,,,,no species,,yim20:tabu2.r10c0#1
-tabu2.r11c0,p_A0,definition,partial_pressure,,,model_reactant,no species,,yim20:tabu2.r11c0#1
-tabu2.r12c0,p_B,definition,partial_pressure,,,n2,no species,,yim20:tabu2.r12c0#1
-tabu2.r13c0,PD^50%,definition,penetration_depth,,,,no species,,yim20:tabu2.r13c0#1
-tabu2.r14c0,P_d,definition,p_d,,,,no species,,yim20:tabu2.r14c0#1
+tabu2.r11c0,p_{\text{A0}},definition,partial_pressure,,,model_reactant,no species,,yim20:tabu2.r11c0#1
+tabu2.r12c0,p_{\text{B}},definition,partial_pressure,,,n2,no species,,yim20:tabu2.r12c0#1
+tabu2.r13c0,\text{PD}^{50\%},definition,penetration_depth,,,,no species,,yim20:tabu2.r13c0#1
+tabu2.r14c0,P_{\text{d}},definition,p_d,,,,no species,,yim20:tabu2.r14c0#1
 tabu2.r15c0,Q,definition,other,,,,no species,,yim20:tabu2.r15c0#1
-tabu2.r16c0,q,definition,saturation_density,,,model_reactant,from the symbol's evidence in this paper,model_reactant,
+tabu2.r16c0,q,definition,saturation_density,,,model_reactant,no species,,
 tabu2.r17c0,R,definition,other,,,,no species,,yim20:tabu2.r17c0#1
-tabu2.r18c0,R_row,definition,other,,,,no species,,yim20:tabu2.r18c0#1
-tabu2.r19c0,S_I,definition,film_thickness,,,si,no species,,yim20:tabu2.r19c0#1
-tabu2.r20c0,S_II,definition,film_thickness,,,,no species,,yim20:tabu2.r20c0#1
-tabu2.r21c0,t_p,definition,pulse_time,,,,from the symbol's evidence in this paper,tma,yim20:tabu2.r21c0#1
+tabu2.r18c0,R_{\text{row}},definition,other,,,,no species,,yim20:tabu2.r18c0#1
+tabu2.r19c0,S_{\text{I}},definition,film_thickness,,,si,no species,,yim20:tabu2.r19c0#1
+tabu2.r20c0,S_{\text{II}},definition,film_thickness,,,,no species,,yim20:tabu2.r20c0#1
+tabu2.r21c0,t_{\text{p}},definition,pulse_time,,,,from the symbol's evidence in this paper,tma,yim20:tabu2.r21c0#1
 tabu2.r22c0,W,definition,feature_extent,,,,no species,,yim20:tabu2.r22c0#1
 tabu2.r23c0,x,definition,distance,,,,no species,,yim20:tabu2.r23c0#1
-tabu2.r24c0,x_50%,definition,penetration_depth,,,,no species,,yim20:tabu2.r24c0#1
+tabu2.r24c0,x_{50\%},definition,penetration_depth,,,,no species,,yim20:tabu2.r24c0#1
+tabu2.r24c1,PD^{50%},definition,penetration_depth,,,,no species,,yim20:tabu2.r24c1#1
 tabu2.r25c0,\tilde{x},definition,dimensionless_distance,,,,no species,,yim20:tabu2.r25c0#1
-tabu2.r26c0,\lambda_TMA,definition,mean_free_path,tma,,tma,kept: its own element names it,tma,yim20:tabu2.r26c0#1
+tabu2.r25c1,\tilde{x},definition,dimensionless_distance,,,,no species,,yim20:tabu2.r25c1#1
+tabu2.r26c0,\lambda_{\text{TMA}},definition,mean_free_path,tma,,tma,kept: its own element names it,tma,yim20:tabu2.r26c0#1
 tabu2.r27c0,\rho,definition,film_density,,,,from the symbol's evidence in this paper,al2o3,yim20:tabu2.r27c0#1
 tabu2.r28c0,\theta,definition,surface_coverage,,,,no species,,yim20:tabu2.r28c0#1
-tabu2.r29c0,\xi,definition,other,,,,no species,,yim20:tabu2.r29c0#1
+tabu2.r29c0,\xi,definition,dimensionless_distance,,,,no species,,yim20:tabu2.r29c0#1
+tabu2.r29c1,\tilde{\xi},definition,dimensionless_distance,,,,no species,,yim20:tabu2.r29c1#1

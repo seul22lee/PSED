@@ -1,73 +1,72 @@
 metric,value
 ontology_hash,14d6d846b9f9a8aa6a07491c23c3ccc93b30778916b75f379e7cc06bf85d6683
-lines_used,2;22;23;24;25;26;27;28;29;30;31;32;33;34
-lines_ignored,3;4;5;6;7;8;9;10;11;12;13;14;15
-facts,229
-tree_rows,42
+lines_used,38;39;40;41;42;43;44;45;46;47;48;49;50;51
+lines_ignored,3;4;5;6;7;8;9;10;11;12;13;14;15;22;23;24;25;26;27;28;29;30;31;32;33;34
+facts,213
+tree_rows,40
 derived_by_kb,2
-dropped,19
-unmapped,19
-unmapped_never,0
+dropped,5
+unmapped,10
+unmapped_never,1
 promoted,0
-step_input:pass-0 extension units,3
-step_input:records,227
-step_input:legend conditions of a pass-0 unit (run),1
-step_input:coordinate of a pass-0 unit (other),1
-step_a0:derived legend label parsed to nothing (other),1
-step_a1:symbol species: no species,36
-step_a1:symbol species: kept: its own element names it,3
-step_a1:symbol species: from the definition,3
-step_a1:symbol species: species cleared (no evidence),3
-step_a1:symbol species: from the symbol's evidence in this paper,4
-step_a1:material from the recipe field: zno,3
-step_a1:qualifier out of scope: species,4
-step_a:schema:enum,1
-step_a:kept,230
-step_a_fields:cause,1
-step_b:kept,230
+step_input:records,206
+step_input:distinguished_by parts (P205),6
+step_a0:quantity other: never.csv word,1
+step_a1:symbol species: no species,39
+step_a1:symbol species: kept: its own element names it,1
+step_a1:material from the recipe field: zno,4
+step_a:kept,216
+step_b:model_with_value (kept),2
+step_b:kept,216
 step_c:quantity_other (kept),4
-step_c:kept,230
-step_d:quote found in the paper's elements concatenated (P182),2
-step_d:quote_not_found,18
-step_d:quote_noncontiguous (kept),2
-"step_d:derived condition (figures.json, no quote check)",1
+step_c:quantity_other never (kept),1
+step_c:kept,216
+step_d:quote found in the paper's elements concatenated (P182),8
+step_d:quote_not_found,4
+step_d:quote_noncontiguous (kept),3
 step_d:kept,212
-step_e:unit_unresolved (kept as printed),12
 step_e:kept,212
-step_f:species_resolved,6
-step_f:kept,212
-step_g:mention_unmatched,3
-"step_h:simulation name unresolved (unmapped, field model)",1
-step_h:place: claim -> paper,24
-step_h:place: about paper -> recipe,59
-step_h:place: result about a run -> its specimen measurement,25
-step_h:place: cited -> paper,8
-step_h:place: definition -> paper,28
-step_h:place: caveat -> paper,7
-step_h:place: setting about a run -> deposition,16
-"step_h:place: about paper, method -> paper method activity",10
-step_h:place: result about a specimen -> its measurement,34
+step_e2:value in its quote: as printed,109
+step_e2:value in its quote: as printed (the quote names no unit),29
+step_e2:value in its quote: converted,5
+step_e2:value_not_in_quote,1
+step_e2:not checked: a figure panel's record,7
+step_e2:kept,211
+step_f:species_resolved,8
+step_f:kept,211
+step_g:mention_unmatched,7
+step_h:measurement unit,19
 step_h:specimen_created,1
+step_h:place: claim -> paper,23
+step_h:place: about paper -> recipe,64
+step_h:place: cited -> paper,12
+step_h:place: setting about a run -> deposition,20
+"step_h:place: about paper, method -> paper method activity",4
+step_h:place: result about a run -> its specimen measurement,38
+step_h:place: caveat -> paper,5
+step_h:place: result about a specimen -> its measurement,28
+step_h:place: definition -> paper,8
 step_h:place: result about a run -> film measurement,1
-step_m:label_as_printed filled with the quantity id,1
-step_m:statement filled from the quote,166
-step_m:links resolved,7
-step_1c:figure label other (condition),1
+step_h:place: setting about a specimen -> deposition,6
+step_h:place: model about a model run -> model run,2
+step_m:statement filled from the quote,163
+step_m:label_as_printed filled with the quantity id,3
+step_m:links resolved,9
 step_1c:figure axis unit unknown (values as printed),1
-step_1c:curve -> observation,13
-step_1c:unbound item (image): no unit named,1
+step_1c:curve -> observation,10
+step_1c:curve -> observation (legend quantity),3
+step_1c:unbound item (image): ambiguous,1
 step_1c:image -> a measurement (photograph),3
 step_1c:unbound item (panel): ambiguous,1
-step_1c:image -> a measurement (sem_eds),3
+step_1c:image -> a measurement (a photograph),3
 step_1c:curve -> observation (legend qualifier),12
 step_n:qualifier out of scope: element,12
-step_n:comparison replicate,1
-step_i:merged,19
-step_i:caveat merged,1
-step_i:definition merged,4
-step_i:kept,219
-step_6b:dimension mismatch flagged,12
-step_j:derived_needs_outside_fact,9
+step_n:comparison series,1
+step_i:distinguished_by part: same fact held (not written),3
+step_i:merged,31
+step_i:merged into the fact with the fuller qualifiers,3
+step_i:kept,205
+step_j:derived_needs_outside_fact,3
 step_j:derived shell_volume_fraction,2
 "step_j:declared, no function (not computed): unit_conversion",1
 "step_j:declared, no function (not computed): thickness_to_gpc",1
@@ -89,28 +88,29 @@ step_j:derived shell_volume_fraction,2
 "step_j:declared, no function (not computed): body_thickness",1
 step_j:final_channel_height: inputs missing,11
 step_j:exposure_per_run: inputs missing,11
-step_j:sheet_resistance: inputs missing,9
-step_j:moles_deposited: inputs missing,11
+step_j:sheet_resistance: inputs missing,8
+step_j:moles_deposited: inputs missing,8
 step_j:coating_mass_fraction: inputs missing,8
 step_j:deposition_rate: inputs missing,8
 step_j:coated_ar: inputs missing,11
 step_j:normalize_front_slope: inputs missing,11
-step_j:sheet_resistance: computed,2
-step_j:coating_mass_fraction: computed,3
+step_j:sheet_resistance: inputs ambiguous,3
+step_j:moles_deposited: computed,3
+step_j:coating_mass_fraction: printed output disagrees,3
 step_j:deposition_rate: computed,3
-step_k:statement from the record,188
-step_k:statement_copies_text (reported by check),74
-step_k:statement assembled,41
-diff:setting,gold 89 compiled 55 matched 26 P 0.47 R 0.29
-diff:observation,gold 89 compiled 66 matched 24 P 0.36 R 0.27
-diff:cited,gold 57 compiled 8 matched 7 P 0.88 R 0.12
-diff:claim,gold 57 compiled 24 matched 18 P 0.75 R 0.32
-diff:caveat,gold 53 compiled 6 matched 6 P 1.00 R 0.11
-diff:activity,gold 41 compiled 34 matched 7 P 0.21 R 0.17
-diff:derived,gold 31 compiled 37 matched 14 P 0.38 R 0.45
-diff:entity,gold 18 compiled 6 matched 0 P 0.00 R 0.00
-diff:model,gold 18 compiled 9 matched 8 P 0.89 R 0.44
-diff:definition,gold 16 compiled 24 matched 3 P 0.12 R 0.19
+step_k:statement from the record,174
+step_k:statement_copies_text (reported by check),84
+step_k:statement assembled,39
+diff:observation,gold 89 compiled 61 matched 21 P 0.34 R 0.24
+diff:setting,gold 89 compiled 56 matched 22 P 0.39 R 0.25
+diff:claim,gold 57 compiled 23 matched 17 P 0.74 R 0.30
+diff:cited,gold 57 compiled 12 matched 6 P 0.50 R 0.11
+diff:caveat,gold 53 compiled 5 matched 3 P 0.60 R 0.06
+diff:activity,gold 41 compiled 32 matched 16 P 0.50 R 0.39
+diff:derived,gold 31 compiled 38 matched 21 P 0.55 R 0.68
+diff:model,gold 18 compiled 10 matched 9 P 0.90 R 0.50
+diff:entity,gold 18 compiled 6 matched 4 P 0.67 R 0.22
+diff:definition,gold 16 compiled 8 matched 2 P 0.25 R 0.12
 diff:identity,gold 3 compiled 0 matched 0 P - R 0.00
-diff:comparison,gold 1 compiled 1 matched 0 P 0.00 R 0.00
 diff:paper,gold 1 compiled 1 matched 1 P 1.00 R 1.00
+diff:comparison,gold 1 compiled 1 matched 0 P 0.00 R 0.00

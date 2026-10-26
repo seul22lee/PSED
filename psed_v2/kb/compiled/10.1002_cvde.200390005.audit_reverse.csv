@@ -1,33 +1,38 @@
 fact_id,type,quantity,value,unit,value_text,evidence,nearest_gold,why
-gor03:abs.g2#1,observation,coated_aspect_ratio,43,,,abs.g2,gor03:abs.g2#1,"type 'claim' vs 'observation'; quantity '' vs 'coated_aspect_ratio'; value '' '' vs '43' '' (canonical None vs ('dimensionless', 43.0))"
-gor03:s3.p1#1,setting,aspect_ratio,,,,s3.p1,gor03:s3.p1#1,type 'definition' vs 'setting'
-gor03:s3.p10#1,observation,aspect_ratio,43,,,s3.p10,,no gold row on this element
-gor03:s4.p1#1,setting,saturation_density,2.5e+18,m-2,,s4.p1;s6.p7,gor03:s6.p7#1,"quantity 'molar_mass' vs 'saturation_density'; value '354' 'g/mol' vs '2.5e+18' 'm-2' (canonical ('molar_mass', 354.0) vs ('areal_density', 2.5))"
-gor03:s4.p2#1,setting,saturation_density,5e+18,m-2,,s4.p2,gor03:s4.p2#1,type 'observation' vs 'setting'
+gor03:abs.g2#1,claim,aspect_ratio,43,,,abs.g2,gor03:abs.g2#1,"quantity '' vs 'aspect_ratio'; value '' '' vs '43' '' (canonical None vs ('dimensionless', 43.0))"
+gor03:s3.p4#1,claim,step_coverage,100,%,,s3.p4,gor03:abs.g2#1,"quantity '' vs 'step_coverage'; value '' '' vs '100' '%' (canonical None vs ('dimensionless', 1.0))"
+gor03:s3.p10#1,setting,material,,,hfo2,s3.p10,,no gold row on this element
+gor03:s3.p10#2,setting,aspect_ratio,43,,,s3.p10,,no gold row on this element
 gor03:s4.p3#1,observation,growth_per_cycle,0.1,nm/cycle,,s4.p3,gor03:s4.p3#1,"quantity 'atoms_per_cycle' vs 'growth_per_cycle'; value '2.5' 'nm-2' vs '0.1' 'nm/cycle' (canonical ('areal_density', 2.5) vs ('length_per_cycle', 0.1))"
+gor03:s4.p6#1,claim,,,,,s4.p6,gor03:s4.p5#2,type 'model' vs 'claim'
+gor03:s4.p7#1,definition,atoms_per_cycle,,,,s4.p7,gor03:s4.p7#1,type 'model' vs 'definition'; quantity '' vs 'atoms_per_cycle'
 gor03:eq4#1,model,aspect_ratio,,,,eq4,gor03:s3.p1#1,type 'definition' vs 'model'
+gor03:s6.p2#1,claim,initial_sticking_coefficient,1,,,s6.p2,gor03:s6.p2#1,"quantity '' vs 'initial_sticking_coefficient'; value '' '' vs '1' '' (canonical None vs ('dimensionless', 1.0))"
+gor03:s6.p4#1,definition,other,,,,s6.p4,gor03:s6.p4#1,type 'model' vs 'definition'; quantity '' vs 'other'
+gor03:s6.p5#1,definition,pulse_time,,s,,s6.p5,gor03:s6.p5#1,quantity 'partial_pressure' vs 'pulse_time'
 gor03:s6.p9#1,observation,initial_sticking_coefficient,0.07,,,s6.p9,gor03:s6.p9#1,type 'cited' vs 'observation'
 gor03:s7.p2#1,caveat,,,,,s7.p2,gor03:s3.p9#2,type 'model' vs 'caveat'
 gor03:s7.p3#1,claim,,,,,s7.p3,gor03:s7.p3#1,type 'model' vs 'claim'
-gor03:s7.p5#1,claim,,,,,s7.p5,gor03:s7.p4#1,type 'model' vs 'claim'
-gor03:s7.p6#1,definition,distance,,,,s7.p6,gor03:s7.p6#1,quantity 'penetration_depth' vs 'distance'
-gor03:s7.p7#1,definition,other,,,,s7.p7,gor03:s7.p4#1,type 'model' vs 'definition'; quantity '' vs 'other'
+gor03:s7.p7#1,definition,feature_width,,,,s7.p7,gor03:s7.p4#1,type 'model' vs 'definition'; quantity '' vs 'feature_width'
 gor03:s7.p8#1,definition,saturation_density,,,,s7.p8,gor03:s7.p8#1,type 'model' vs 'definition'; quantity '' vs 'saturation_density'
-gor03:s8.p1#6,observation,film_thickness,25,nm,,s8.p1,gor03:s8.p1#9,type 'setting' vs 'observation'
-gor03:s8.p1#7,observation,feature_extent,0.25,µm,,s8.p1,gor03:s8.p1#6,"type 'setting' vs 'observation'; value '0.30' 'µm' vs '0.25' 'µm' (canonical ('length', 300.0) vs ('length', 250.0))"
-gor03:s8.p1#8,observation,feature_width,0.12,µm,,s8.p1,gor03:s8.p1#7,"type 'setting' vs 'observation'; value '0.17' 'µm' vs '0.12' 'µm' (canonical ('length', 170.0) vs ('length', 120.0))"
-gor03:s8.p2#1,claim,step_coverage,100,%,,s8.p2,gor03:s8.p2#1,"quantity '' vs 'step_coverage'; value '' '' vs '100' '%' (canonical None vs ('dimensionless', 1.0))"
-gor03:s8.p4#1,claim,step_coverage,100,%,,s8.p4,gor03:s8.p4#1,"quantity '' vs 'step_coverage'; value '' '' vs '100' '%' (canonical None vs ('dimensionless', 1.0))"
+gor03:s7.p9#1,definition,feature_depth,,,,s7.p9,gor03:s7.p9#1,type 'model' vs 'definition'; quantity '' vs 'feature_depth'
+gor03:s7.p10#1,definition,exposure,,,,s7.p10,gor03:s7.p10#1,type 'model' vs 'definition'; quantity '' vs 'exposure'
+gor03:s7.p11#1,definition,exposure,,,,s7.p11,gor03:s7.p11#1,type 'model' vs 'definition'; quantity '' vs 'exposure'
+gor03:s7.p12#1,definition,exposure,,,,s7.p12,gor03:s7.p12#1,type 'model' vs 'definition'; quantity '' vs 'exposure'
+gor03:s7.p13#1,claim,,,,,s7.p13,gor03:s7.p12#1,type 'model' vs 'claim'
+gor03:s8.p1#4,setting,aspect_ratio,36,,,s8.p1,gor03:s8.p1#1,"quantity 'material' vs 'aspect_ratio'; value_text 'hfo2' vs ''; value '' '' vs '36' '' (canonical None vs ('dimensionless', 36.0))"
+gor03:s8.p1#5,observation,film_thickness,25,nm,,s8.p1,gor03:s8.p1#9,type 'setting' vs 'observation'
+gor03:s8.p1#7,model,exposure,9000,L,,s8.p1,gor03:s7.p13#2,type 'derived' vs 'model'
+gor03:s8.p2#1,claim,step_coverage,1,,,s8.p2,gor03:s8.p2#1,"quantity '' vs 'step_coverage'; value '' '' vs '1' '' (canonical None vs ('dimensionless', 1.0))"
+gor03:s8.p4#1,claim,step_coverage,1,,,s8.p4,gor03:s8.p4#1,"quantity '' vs 'step_coverage'; value '' '' vs '1' '' (canonical None vs ('dimensionless', 1.0))"
 gor03:s10.p1#2,setting,carrier_gas,,,n2,s10.p1,gor03:s10.p1#1,quantity 'reactor' vs 'carrier_gas'; value_text 'Harvard flow tube reactor' vs 'n2'
-gor03:fig1.cap#1,definition,structure,,,,fig1.cap,,no gold row on this element
 gor03:fig1#1,definition,feature_width,,,,fig1,,no gold row on this element
 gor03:fig1#2,definition,feature_depth,,,,fig1,,no gold row on this element
-gor03:fig2.cap#4,setting,other,0.1,µm,,fig2.cap,gor03:s8.p3#1,"quantity 'exposure' vs 'other'; value '30000' 'L' vs '0.1' 'µm' (canonical ('exposure', 3.99966) vs ('length', 100.0))"
-gor03:fig4.cap#1,definition,source_temperature,,,,fig4.cap,gor03:s10.p1#1,type 'setting' vs 'definition'; quantity 'reactor' vs 'source_temperature'; value_text 'Harvard flow tube reactor' vs ''
-gor03:fig4.cap#2,definition,deposition_temperature,,,,fig4.cap,gor03:s10.p1#1,type 'setting' vs 'definition'; quantity 'reactor' vs 'deposition_temperature'; value_text 'Harvard flow tube reactor' vs ''
-gor03:s10.p1#3,setting,process_mode,,,thermal,s10.p1,gor03:s10.p1#1,quantity 'reactor' vs 'process_mode'; value_text 'Harvard flow tube reactor' vs 'thermal'
-gor03:s10.p1#4,setting,process_mode,,,thermal,s10.p1,gor03:s10.p1#1,quantity 'reactor' vs 'process_mode'; value_text 'Harvard flow tube reactor' vs 'thermal'
-gor03:s10.p1#5,setting,process_mode,,,thermal,s10.p1,gor03:s10.p1#1,quantity 'reactor' vs 'process_mode'; value_text 'Harvard flow tube reactor' vs 'thermal'
-gor03:s8.p3#4,derived,exposure,999.915,Pa s,,s8.p3,gor03:s8.p3#1,"type 'setting' vs 'derived'; value '30000' 'L' vs '999.915' 'Pa s' (canonical ('exposure', 3.99966) vs ('exposure', 999.915))"
+gor03:s7.p5#1,definition,penetration_depth,,,,s7.p5,gor03:s7.p4#1,type 'model' vs 'definition'; quantity '' vs 'penetration_depth'
+gor03:fig2.cap#1,setting,other,0.1,µm,,fig2.cap,gor03:s8.p3#1,"quantity 'exposure' vs 'other'; value '30000' 'L' vs '0.1' 'µm' (canonical ('exposure', 3.99966) vs ('length', 100.0))"
+gor03:s8.p3#5,derived,exposure,999.915,Pa s,,s8.p3,gor03:s8.p3#1,"type 'setting' vs 'derived'; value '30000' 'L' vs '999.915' 'Pa s' (canonical ('exposure', 3.99966) vs ('exposure', 999.915))"
 gor03:s8.p5#5,derived,exposure,133.322,Pa s,,s8.p5,gor03:s8.p5#1,"type 'setting' vs 'derived'; value '4000' 'L' vs '133.322' 'Pa s' (canonical ('exposure', 0.533288) vs ('exposure', 133.322))"
 gor03:s8.p5#6,derived,exposure,93.3254,Pa s,,s8.p5,gor03:s8.p5#1,"type 'setting' vs 'derived'; value '4000' 'L' vs '93.3254' 'Pa s' (canonical ('exposure', 0.533288) vs ('exposure', 93.3254))"
+gor03:s8.p3#6,derived,exposure,999.915,Pa s,,s8.p3,gor03:s8.p3#1,"type 'setting' vs 'derived'; value '30000' 'L' vs '999.915' 'Pa s' (canonical ('exposure', 3.99966) vs ('exposure', 999.915))"
+gor03:s8.p5#7,derived,exposure,133.322,Pa s,,s8.p5,gor03:s8.p5#1,"type 'setting' vs 'derived'; value '4000' 'L' vs '133.322' 'Pa s' (canonical ('exposure', 0.533288) vs ('exposure', 133.322))"
+gor03:s8.p5#8,derived,exposure,93.3254,Pa s,,s8.p5,gor03:s8.p5#1,"type 'setting' vs 'derived'; value '4000' 'L' vs '93.3254' 'Pa s' (canonical ('exposure', 0.533288) vs ('exposure', 93.3254))"

@@ -3,7 +3,7 @@
  "key": "yli18",
  "model": "gemini-3.8-flash",
  "prompt_sha256": "1cb472bef3852c7e81cbb547315c371b30706702e2c6440ee9740c2aae6e5373",
- "imported_at": "2026-10-24T12:50:16",
+ "imported_at": "2026-10-25T20:03:47",
  "inventory": [
   {
    "id": "yli18:fig1",
@@ -22,6 +22,7 @@
    "panel_type": "plot",
    "content": "Reactant pressure distribution along the channel for different pulse times comparing numerical and approximate models",
    "quantities": [
+    "distance",
     "partial_pressure"
    ],
    "flags": [
@@ -37,8 +38,8 @@
      "label_raw": "Location x (μm)",
      "key": "Location x",
      "unit": "μm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -50,7 +51,7 @@
      "key": "Pressure p_A",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "alias 'Pressure p_A'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -62,7 +63,7 @@
      "key": "H",
      "unit": "μm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -73,8 +74,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -86,7 +87,7 @@
      "key": "p_{A0}",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -98,7 +99,7 @@
      "key": "M_A",
      "unit": "kg/mol",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -109,11 +110,11 @@
      "label_raw": "d_A",
      "key": "d_A",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molecule_diameter",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "dA; dB [pm] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -121,11 +122,11 @@
      "label_raw": "M_B",
      "key": "M_B",
      "unit": "kg/mol",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molar_mass",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "MA; MB [kg mol-1]",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -133,11 +134,11 @@
      "label_raw": "d_B",
      "key": "d_B",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molecule_diameter",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "dA; dB [pm] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -145,11 +146,11 @@
      "label_raw": "p_B",
      "key": "p_B",
      "unit": "Pa",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Model internals not in Sec. 8",
-     "never_label": "pB [Pa]",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -157,11 +158,11 @@
      "label_raw": "q",
      "key": "q",
      "unit": "m^-2",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_density",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Model internals not in Sec. 8",
-     "never_label": "q [m-2] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -170,7 +171,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -181,8 +182,8 @@
      "label_raw": "K",
      "key": "K",
      "unit": "Pa^-1",
-     "quantity": "other",
-     "how": "",
+     "quantity": "adsorption_equilibrium_constant",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -194,7 +195,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -206,7 +207,7 @@
      "key": "gpc_{sat}",
      "unit": "pm",
      "quantity": "saturation_growth_per_cycle",
-     "how": "alias 'gpc_{sat}'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -218,7 +219,7 @@
      "key": "pulse time",
      "unit": "",
      "quantity": "pulse_time",
-     "how": "id 'pulse time'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -233,6 +234,7 @@
    "panel_type": "plot",
    "content": "Development of surface coverage with time and location inside channel",
    "quantities": [
+    "distance",
     "surface_coverage"
    ],
    "flags": [
@@ -247,8 +249,8 @@
      "label_raw": "Location x (µm)",
      "key": "Location x",
      "unit": "µm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -260,7 +262,7 @@
      "key": "Surface coverage (θ)",
      "unit": "",
      "quantity": "surface_coverage",
-     "how": "alias 'Surface coverage (θ)'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -272,7 +274,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -283,8 +285,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -296,7 +298,7 @@
      "key": "p_{A0}",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -308,7 +310,7 @@
      "key": "M_A",
      "unit": "kg/mol",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -319,11 +321,11 @@
      "label_raw": "d_A",
      "key": "d_A",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molecule_diameter",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "dA; dB [pm] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -331,11 +333,11 @@
      "label_raw": "M_B",
      "key": "M_B",
      "unit": "kg/mol",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molar_mass",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "MA; MB [kg mol-1]",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -343,11 +345,11 @@
      "label_raw": "d_B",
      "key": "d_B",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molecule_diameter",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "dA; dB [pm] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -355,11 +357,11 @@
      "label_raw": "p_B",
      "key": "p_B",
      "unit": "Pa",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Model internals not in Sec. 8",
-     "never_label": "pB [Pa]",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -367,11 +369,11 @@
      "label_raw": "q",
      "key": "q",
      "unit": "m-2",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_density",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Model internals not in Sec. 8",
-     "never_label": "q [m-2] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -380,7 +382,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -391,8 +393,8 @@
      "label_raw": "K",
      "key": "K",
      "unit": "Pa-1",
-     "quantity": "other",
-     "how": "",
+     "quantity": "adsorption_equilibrium_constant",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -404,7 +406,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -416,7 +418,7 @@
      "key": "gpc_{sat}",
      "unit": "pm",
      "quantity": "saturation_growth_per_cycle",
-     "how": "alias 'gpc_{sat}'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -428,7 +430,7 @@
      "key": "Pulse time",
      "unit": "",
      "quantity": "pulse_time",
-     "how": "id 'pulse time'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -443,6 +445,7 @@
    "panel_type": "plot",
    "content": "Film thickness profiles calculated for different original channel heights",
    "quantities": [
+    "distance",
     "film_thickness"
    ],
    "flags": [],
@@ -455,8 +458,8 @@
      "label_raw": "Location x (μm)",
      "key": "Location x",
      "unit": "μm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "distance",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -468,7 +471,7 @@
      "key": "Film thickness",
      "unit": "nm",
      "quantity": "film_thickness",
-     "how": "id 'film thickness'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -480,7 +483,7 @@
      "key": "cycle count",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "alias 'cycle count'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -492,7 +495,7 @@
      "key": "reactant pulse length",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "alias 'reactant pulse length'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -504,7 +507,7 @@
      "key": "temperature",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "name 'temperature'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -516,7 +519,7 @@
      "key": "channel height H",
      "unit": "",
      "quantity": "feature_width",
-     "how": "alias 'channel height H'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -545,7 +548,7 @@
      "key": "Pulse length",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "alias 'pulse length'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -557,7 +560,7 @@
      "key": "Penetration depth x_p",
      "unit": "µm",
      "quantity": "penetration_depth",
-     "how": "alias 'Penetration depth x_p'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -569,7 +572,7 @@
      "key": "H",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "symbol 'H' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -580,8 +583,8 @@
      "label_raw": "W",
      "key": "W",
      "unit": "mm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "feature_extent",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -593,7 +596,7 @@
      "key": "p_{A0}",
      "unit": "Pa",
      "quantity": "partial_pressure",
-     "how": "symbol 'p_A0' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -605,7 +608,7 @@
      "key": "M_A",
      "unit": "kg/mol",
      "quantity": "molar_mass",
-     "how": "alias 'MA'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -616,11 +619,11 @@
      "label_raw": "d_A",
      "key": "d_A",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molecule_diameter",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "dA; dB [pm] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -628,11 +631,11 @@
      "label_raw": "M_B",
      "key": "M_B",
      "unit": "kg/mol",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molar_mass",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "MA; MB [kg mol-1]",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -640,11 +643,11 @@
      "label_raw": "d_B",
      "key": "d_B",
      "unit": "pm",
-     "quantity": "other",
-     "how": "",
+     "quantity": "molecule_diameter",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Molecule properties",
-     "never_label": "dA; dB [pm] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -652,11 +655,11 @@
      "label_raw": "p_B",
      "key": "p_B",
      "unit": "Pa",
-     "quantity": "other",
-     "how": "",
+     "quantity": "partial_pressure",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Model internals not in Sec. 8",
-     "never_label": "pB [Pa]",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -664,11 +667,11 @@
      "label_raw": "q",
      "key": "q",
      "unit": "m^-2",
-     "quantity": "other",
-     "how": "",
+     "quantity": "saturation_density",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
-     "never": "Model internals not in Sec. 8",
-     "never_label": "q [m-2] (symbol in 10.1063_1.5028178)",
+     "never": "",
+     "never_label": "",
      "unit_reason": ""
     },
     {
@@ -677,7 +680,7 @@
      "key": "T",
      "unit": "K",
      "quantity": "deposition_temperature",
-     "how": "symbol 'T' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -688,8 +691,8 @@
      "label_raw": "K",
      "key": "K",
      "unit": "Pa^-1",
-     "quantity": "other",
-     "how": "",
+     "quantity": "adsorption_equilibrium_constant",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -701,7 +704,7 @@
      "key": "c",
      "unit": "",
      "quantity": "initial_sticking_coefficient",
-     "how": "symbol 'c' of this paper",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -713,7 +716,7 @@
      "key": "t_p",
      "unit": "s",
      "quantity": "pulse_time",
-     "how": "symbol 't_p' of this paper",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -725,7 +728,7 @@
      "key": "gpc_{sat}",
      "unit": "pm",
      "quantity": "saturation_growth_per_cycle",
-     "how": "alias 'gpc_{sat}'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -754,7 +757,7 @@
      "key": "Location",
      "unit": "µm",
      "quantity": "distance",
-     "how": "alias 'Location'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -766,7 +769,7 @@
      "key": "Film thickness",
      "unit": "nm",
      "quantity": "film_thickness",
-     "how": "id 'film thickness'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -778,7 +781,7 @@
      "key": "cycle count",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "alias 'cycle count'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -807,7 +810,7 @@
      "key": "Location",
      "unit": "µm",
      "quantity": "distance",
-     "how": "alias 'Location'",
+     "how": "the user's alias decision (2026-10-24, history.csv)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -819,7 +822,7 @@
      "key": "Film thickness",
      "unit": "nm",
      "quantity": "film_thickness",
-     "how": "id 'film thickness'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -831,7 +834,7 @@
      "key": "cycles",
      "unit": "",
      "quantity": "cycle_number",
-     "how": "name 'cycles'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -843,7 +846,7 @@
      "key": "channel gap height",
      "unit": "µm",
      "quantity": "feature_width",
-     "how": "alias 'channel gap height'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -855,7 +858,7 @@
      "key": "channel length",
      "unit": "mm",
      "quantity": "feature_depth",
-     "how": "alias 'channel length'",
+     "how": "0ax answer (records line 172)",
      "ambiguous": [],
      "never": "",
      "never_label": "",
@@ -875,13 +878,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -891,7 +894,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -980,7 +983,7 @@
      56.6
     ],
     [
-     62.0,
+     62.00000000000001,
      54.3
     ],
     [
@@ -1064,7 +1067,7 @@
      4.8
     ],
     [
-     125.0,
+     125.00000000000001,
      3.0
     ],
     [
@@ -1340,23 +1343,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -1366,6 +1396,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -1408,7 +1447,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -1430,13 +1469,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -1446,7 +1485,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -1487,7 +1526,7 @@
      10.6
     ],
     [
-     125.0,
+     125.00000000000001,
      2.7
     ],
     [
@@ -1559,23 +1598,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -1585,6 +1651,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -1627,7 +1702,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -1649,13 +1724,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -1665,7 +1740,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -2042,23 +2117,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -2068,6 +2170,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -2110,7 +2221,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -2132,13 +2243,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -2148,7 +2259,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -2261,23 +2372,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -2287,6 +2425,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -2329,7 +2476,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -2351,13 +2498,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -2367,7 +2514,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -2672,23 +2819,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -2698,6 +2872,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -2740,7 +2923,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -2762,13 +2945,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -2778,7 +2961,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -2899,23 +3082,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -2925,6 +3135,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -2967,7 +3186,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -2989,13 +3208,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -3005,7 +3224,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -3310,23 +3529,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -3336,6 +3582,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -3378,7 +3633,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -3400,13 +3655,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -3416,7 +3671,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -3529,23 +3784,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -3555,6 +3837,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -3597,7 +3888,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 1.0
    },
    "set": "yli18:cmp:fig2",
@@ -3619,13 +3910,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -3635,7 +3926,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -3668,23 +3959,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -3694,6 +4012,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -3736,7 +4063,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.0,
     "y": 0.3
    },
    "set": "yli18:cmp:fig2",
@@ -3758,13 +4085,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -3774,7 +4101,7 @@
     "label_raw": "Pressure p_A (Pa)",
     "unit_raw": "Pa",
     "key": "Pressure p_A",
-    "how": "alias 'Pressure p_A'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -3807,23 +4134,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -3833,6 +4187,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -3875,7 +4238,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.0,
     "y": 0.3
    },
    "set": "yli18:cmp:fig2",
@@ -3897,13 +4260,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -3913,7 +4276,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -3954,7 +4317,7 @@
      0.99
     ],
     [
-     123.0,
+     122.99999999999999,
      0.96
     ],
     [
@@ -4106,23 +4469,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -4132,6 +4522,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -4173,7 +4572,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.9,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -4195,13 +4594,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -4211,7 +4610,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -4228,7 +4627,7 @@
      0.99
     ],
     [
-     125.0,
+     125.00000000000001,
      0.94
     ],
     [
@@ -4332,23 +4731,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -4358,6 +4784,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -4399,7 +4834,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -4421,13 +4856,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -4437,7 +4872,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -4630,23 +5065,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -4656,6 +5118,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -4697,7 +5168,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.8,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -4719,13 +5190,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -4735,7 +5206,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -4848,23 +5319,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -4874,6 +5372,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -4915,7 +5422,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -4937,13 +5444,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -4953,7 +5460,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -5114,23 +5621,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -5140,6 +5674,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -5181,7 +5724,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.6,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -5203,13 +5746,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -5219,7 +5762,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -5332,23 +5875,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -5358,6 +5928,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -5399,7 +5978,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -5421,13 +6000,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -5437,7 +6016,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -5606,23 +6185,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -5632,6 +6238,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -5673,7 +6288,7 @@
    "kind": "read_from_figure",
    "uncertainty": {
     "basis": "digitized",
-    "x": null,
+    "x": 0.74,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -5695,13 +6310,13 @@
     "kind": "simulated"
    },
    "x": {
-    "quantity": "other",
+    "quantity": "distance",
     "unit": "µm",
     "transform": "",
     "label_raw": "Location x (µm)",
     "unit_raw": "µm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -5711,7 +6326,7 @@
     "label_raw": "Surface coverage (θ)",
     "unit_raw": "",
     "key": "Surface coverage (θ)",
-    "how": "alias 'Surface coverage (θ)'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -5832,23 +6447,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -5858,6 +6500,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -5899,7 +6550,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 2.0,
     "y": 0.01
    },
    "set": "yli18:cmp:fig3",
@@ -5921,13 +6572,13 @@
     "series_structure": "replicate"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -5937,7 +6588,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -5986,7 +6637,7 @@
      19.8
     ],
     [
-     500.0,
+     500.00000000000006,
      8.6
     ],
     [
@@ -6102,7 +6753,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 6.15,
     "y": 1.062
    },
    "set": "yli18:cmp:fig4",
@@ -6127,13 +6778,13 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -6143,7 +6794,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -6168,7 +6819,7 @@
      48.2
     ],
     [
-     250.0,
+     250.00000000000003,
      27.8
     ],
     [
@@ -6278,7 +6929,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 1.1500000000000001,
     "y": 1.05
    },
    "set": "yli18:cmp:fig4",
@@ -6303,13 +6954,13 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -6319,7 +6970,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -6344,7 +6995,7 @@
      34.8
     ],
     [
-     125.0,
+     125.00000000000001,
      14.6
     ],
     [
@@ -6438,7 +7089,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.77,
     "y": 1.06
    },
    "set": "yli18:cmp:fig4",
@@ -6463,13 +7114,13 @@
     "unit": "µm"
    },
    "x": {
-    "quantity": "other",
-    "unit": "μm",
+    "quantity": "distance",
+    "unit": "µm",
     "transform": "",
     "label_raw": "Location x (μm)",
     "unit_raw": "μm",
     "key": "Location x",
-    "how": "",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -6479,7 +7130,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -6590,7 +7241,7 @@
    "kind": "simulated",
    "uncertainty": {
     "basis": "",
-    "x": null,
+    "x": 0.6,
     "y": 0.9400000000000001
    },
    "set": "yli18:cmp:fig4",
@@ -6618,7 +7269,7 @@
     "label_raw": "Pulse length (s)",
     "unit_raw": "s",
     "key": "Pulse length",
-    "how": "alias 'pulse length'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -6628,7 +7279,7 @@
     "label_raw": "Penetration depth x_p (µm)",
     "unit_raw": "µm",
     "key": "Penetration depth x_p",
-    "how": "alias 'Penetration depth x_p'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -6829,23 +7480,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5×10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -6855,6 +7533,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -6932,7 +7619,7 @@
     "label_raw": "Pulse length (s)",
     "unit_raw": "s",
     "key": "Pulse length",
-    "how": "alias 'pulse length'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -6942,7 +7629,7 @@
     "label_raw": "Penetration depth x_p (µm)",
     "unit_raw": "µm",
     "key": "Penetration depth x_p",
-    "how": "alias 'Penetration depth x_p'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -7119,23 +7806,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5×10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -7145,6 +7859,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -7222,7 +7945,7 @@
     "label_raw": "Pulse length (s)",
     "unit_raw": "s",
     "key": "Pulse length",
-    "how": "alias 'pulse length'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "y": {
@@ -7232,7 +7955,7 @@
     "label_raw": "Penetration depth x_p (µm)",
     "unit_raw": "µm",
     "key": "Penetration depth x_p",
-    "how": "alias 'Penetration depth x_p'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "points": [
@@ -7329,23 +8052,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5×10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -7355,6 +8105,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -7432,7 +8191,7 @@
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "alias 'Location'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -7442,7 +8201,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -7695,7 +8454,7 @@
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "alias 'Location'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -7705,7 +8464,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -8262,7 +9021,7 @@
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "alias 'Location'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -8272,7 +9031,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -8465,7 +9224,7 @@
     "label_raw": "Location (µm)",
     "unit_raw": "µm",
     "key": "Location",
-    "how": "alias 'Location'",
+    "how": "the user's alias decision (2026-10-24, history.csv)",
     "unit_reason": ""
    },
    "y": {
@@ -8475,7 +9234,7 @@
     "label_raw": "Film thickness (nm)",
     "unit_raw": "nm",
     "key": "Film thickness",
-    "how": "id 'film thickness'",
+    "how": "0ax answer (records line 172)",
     "unit_reason": ""
    },
    "points": [
@@ -8844,23 +9603,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^18 m^-2",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -8870,6 +9656,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^-1",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -8919,23 +9714,50 @@
      "value_max": null,
      "unit": "µm"
     },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
     "partial_pressure": {
-     "key_raw": "p_{A0}",
-     "raw": "100 Pa",
+     "key_raw": "p_B",
+     "raw": "300 Pa",
      "quantity": "partial_pressure",
      "role": "condition",
-     "value": 100.0,
+     "value": 300.0,
      "value_max": null,
      "unit": "Pa"
     },
     "molar_mass": {
-     "key_raw": "M_A",
-     "raw": "0.0749 kg/mol",
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
      "quantity": "molar_mass",
      "role": "condition",
-     "value": 74.89999999999999,
+     "value": 28.0,
      "value_max": null,
      "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
     },
     "deposition_temperature": {
      "key_raw": "T",
@@ -8945,6 +9767,15 @@
      "value": 226.85000000000002,
      "value_max": null,
      "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
     },
     "initial_sticking_coefficient": {
      "key_raw": "c",
@@ -9014,11 +9845,925 @@
  ],
  "derived": [
   {
+   "id": "yli18:fig3#d1_1",
+   "source": "yli18:fig3#c1",
+   "quantity": "surface_coverage",
+   "qualifiers": "position=plateau",
+   "value": 0.9949999999999999,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig3#d1_2",
+   "source": "yli18:fig3#c1",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 137.6315789473684,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig3#d3_1",
+   "source": "yli18:fig3#c3",
+   "quantity": "surface_coverage",
+   "qualifiers": "position=plateau",
+   "value": 0.99875,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig3#d3_2",
+   "source": "yli18:fig3#c3",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 97.78365384615384,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig3#d5_1",
+   "source": "yli18:fig3#c5",
+   "quantity": "surface_coverage",
+   "qualifiers": "position=plateau",
+   "value": 0.992,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig3#d5_2",
+   "source": "yli18:fig3#c5",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 56.0125,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig3#d7_1",
+   "source": "yli18:fig3#c7",
+   "quantity": "surface_coverage",
+   "qualifiers": "position=plateau",
+   "value": 0.995,
+   "unit": "1",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig3#d7_2",
+   "source": "yli18:fig3#c7",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 46.267857142857146,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "feature_width": {
+     "key_raw": "H",
+     "raw": "0.5 µm",
+     "quantity": "feature_width",
+     "role": "condition",
+     "value": 0.5,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "feature_extent": {
+     "key_raw": "W",
+     "raw": "0.1 mm",
+     "quantity": "feature_extent",
+     "role": "condition",
+     "value": 100.00000000000001,
+     "value_max": null,
+     "unit": "µm"
+    },
+    "partial_pressure": {
+     "key_raw": "p_B",
+     "raw": "300 Pa",
+     "quantity": "partial_pressure",
+     "role": "condition",
+     "value": 300.0,
+     "value_max": null,
+     "unit": "Pa"
+    },
+    "molar_mass": {
+     "key_raw": "M_B",
+     "raw": "0.028 kg/mol",
+     "quantity": "molar_mass",
+     "role": "condition",
+     "value": 28.0,
+     "value_max": null,
+     "unit": "g/mol"
+    },
+    "molecule_diameter": {
+     "key_raw": "d_B",
+     "raw": "374 pm",
+     "quantity": "molecule_diameter",
+     "role": "condition",
+     "value": 374.0,
+     "value_max": null,
+     "unit": "pm"
+    },
+    "saturation_density": {
+     "key_raw": "q",
+     "raw": "5 × 10^{18} m^{-2}",
+     "quantity": "saturation_density",
+     "role": "model_parameter",
+     "value": 5.0,
+     "value_max": null,
+     "unit": "nm-2"
+    },
+    "deposition_temperature": {
+     "key_raw": "T",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    },
+    "adsorption_equilibrium_constant": {
+     "key_raw": "K",
+     "raw": "100 Pa^{-1}",
+     "quantity": "adsorption_equilibrium_constant",
+     "role": "model_parameter",
+     "value": 100.0,
+     "value_max": null,
+     "unit": "1/Pa"
+    },
+    "initial_sticking_coefficient": {
+     "key_raw": "c",
+     "raw": "0.01",
+     "quantity": "initial_sticking_coefficient",
+     "role": "model_parameter",
+     "value": 0.01,
+     "value_max": null,
+     "unit": "1"
+    },
+    "saturation_growth_per_cycle": {
+     "key_raw": "gpc_{sat}",
+     "raw": "106 pm",
+     "quantity": "saturation_growth_per_cycle",
+     "role": "model_parameter",
+     "value": 0.10599999999999998,
+     "value_max": null,
+     "unit": "nm/cycle"
+    }
+   },
+   "figure": "3",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig4#d1_1",
+   "source": "yli18:fig4#c1",
+   "quantity": "film_thickness",
+   "qualifiers": "position=plateau",
+   "value": 105.66666666666667,
+   "unit": "nm",
+   "method": "plateau",
+   "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    }
+   },
+   "figure": "4",
+   "panel": ""
+  },
+  {
+   "id": "yli18:fig4#d1_2",
+   "source": "yli18:fig4#c1",
+   "quantity": "penetration_depth",
+   "qualifiers": "level=50%",
+   "value": 460.7725321888412,
+   "unit": "µm",
+   "method": "half_value_crossing",
+   "rule": "P86: the x where y first falls below 50 % of the plateau, linear interpolation",
+   "conditions": {
+    "cycle_number": {
+     "key_raw": "cycle count",
+     "raw": "1000",
+     "quantity": "cycle_number",
+     "role": "condition",
+     "value": 1000.0,
+     "value_max": null,
+     "unit": "cycle"
+    },
+    "pulse_time": {
+     "key_raw": "reactant pulse length",
+     "raw": "0.1 s",
+     "quantity": "pulse_time",
+     "role": "condition",
+     "value": 0.1,
+     "value_max": null,
+     "unit": "s"
+    },
+    "deposition_temperature": {
+     "key_raw": "temperature",
+     "raw": "500 K",
+     "quantity": "deposition_temperature",
+     "role": "condition",
+     "value": 226.85000000000002,
+     "value_max": null,
+     "unit": "°C"
+    }
+   },
+   "figure": "4",
+   "panel": ""
+  },
+  {
    "id": "yli18:fig6#d1_1",
    "source": "yli18:fig6#c1",
    "quantity": "film_thickness",
    "qualifiers": "position=plateau",
-   "value": 52.34444444444444,
+   "value": 52.34444444444445,
    "unit": "nm",
    "method": "plateau",
    "rule": "P86: mean of the longest run of points within 5 % of the running maximum (at least 4 points)",
@@ -9194,7 +10939,7 @@
   "sets": 3,
   "converted": 0,
   "curves": 29,
-  "derived": 6,
-  "labels_other": 24
+  "derived": 16,
+  "labels_other": 0
  }
 }
