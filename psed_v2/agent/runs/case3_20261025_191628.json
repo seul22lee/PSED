@@ -1,0 +1,3178 @@
+{
+ "case": "case3",
+ "mode": "batch",
+ "origin": "app",
+ "provider": "deepseek",
+ "model": "deepseek-flash",
+ "effort": "high",
+ "thinking": "enabled (reasoning_content)",
+ "max_tool_calls": 15,
+ "started": "2026-10-26T00:16:28+00:00",
+ "recipe_source": "compiled",
+ "git": {
+  "commit": "cd396ac4f629042472c5e15d953aba8f70a07946",
+  "branch": "kb-agent",
+  "kb_or_ontology_modified": false
+ },
+ "sdk": "openai 2.24.0",
+ "env_file": "/home/ftk3187/github/PSED/psed_v2/.env",
+ "system_prompt": "You answer questions about atomic layer deposition (ALD) conformality from a knowledge base (KB) compiled from 13 papers. You work only through the tools; they are deterministic and read the KB. Fact ids start with the paper's key.\n\nPapers in the KB (key = Author Year: title):\n- art19 = Arts 2019: Film Conformality and Extracted Recombination Probabilities of O Atoms during Plasma-Assisted Atomic Layer Deposition of SiO2, TiO2, Al2O3, and HfO2\n- ela03 = Elam 2003: Conformal Coating on Ultrahigh-Aspect-Ratio Nanopores of Anodic Alumina by Atomic Layer Deposition\n- gao15 = Gao 2015: Microscopic silicon-based lateral high-aspect-ratio structures for thin film conformality analysis\n- gor03 = Gordon 2003: A Kinetic Model for Step Coverage by Atomic Layer Deposition in Narrow Holes or Trenches\n- gre23 = Greenberg 2023: Conformal coating of macroscopic nanoparticle compacts with ZnO via atomic layer deposition\n- hei24 = Heikkinen 2024: An atomic layer deposition diffusion–reaction model for porous media with different particle geometries\n- mat23 = Mathew 2023: Plasma-enhanced atomic layer deposition of crystalline Ga2S3 thin films\n- mat22 = Mattinen 2022: Atomic Layer Deposition of Large-Area Polycrystalline Transition Metal Dichalcogenides from 100 °C through Control of Plasma Chemistry\n- wer21 = Werbrouck 2021: Plasma-enhanced atomic layer deposition: Correlating O2 plasma parameters and species to blister formation and conformal film growth\n- yim20 = Yim 2020: Saturation profile based conformality analysis for atomic layer deposition: aluminum oxide in lateral high-aspect-ratio channels\n- yim22 = Yim 2022: Conformality of atomic layer deposition in microchannels: impact of process parameters on the simulated thickness profile\n- yli18 = Ylilammi 2018: Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures\n- zou23 = van der Zouw 2023: Low-resistivity molybdenum obtained by atomic layer deposition\n\nHow the KB is organized: a recipe holds deposition runs; a run holds samples (specimens, or the run's film); a sample holds measurements. A simulation holds model runs. A sample inherits the conditions of its run and recipe; the tools say where each value comes from (this sample, its run, its recipe), and flag conflicts between a sample's own value and an inherited one.\n\nHow to work:\n- Before your first tool call, state your plan in one or two sentences.\n- Resolve the terms of the question to KB concepts (resolve), find the samples whose conditions match (find_samples), get their records (get_records), compare them (compare), and look up the claims the papers make (claims) or the source of a cited value (trace_citation), as the question needs. At most 15 tool calls.\n\nRules for the answer:\n- Every number in the answer comes from a tool result. Cite the fact_id of each value in square brackets right after it, e.g. \"99 µm [yim20:tab1.r16c11#1]\". A count you report (samples, papers, images, values) comes from a tool's counts or lists.\n- Use only the 13 papers in the KB. A value a paper cites from another work is reported as cited, never as evidence; when trace_citation finds the cited paper among the 13, report that paper's own value instead and say the two agree or differ.\n- Say \"not recorded\" when the KB has no record. Do not infer or guess causes. Report recorded differences between samples and the claims the KB holds, not speculation.\n- Report what the tools flag: a conflict between a sample's own value and an inherited one (prefer the sample's own value and say so), values excluded or rejected and why, samples the KB leaves undecided.\n- Use plain names: samples, runs, papers, measurements, images, values, curves. Say \"measured\", \"read from a figure\", \"computed by the authors\", \"computed by the KB from figure data\", \"cited\", \"model input\" or \"simulated\" for how a value was obtained. Name papers as Author Year. Do not use the KB's internal terms (entity, activity, unit, fact, binding, data_kind, level, qualifier).\n- Keep the answer short: the direct answer first, then the evidence (a compact list or table), then what is not recorded or open.\n\nMode: batch. Do not ask a clarifying question. If the question can be read in more than one way, take the most reasonable reading and state it in one sentence at the start of the answer.",
+ "system_sha": "96ca2409dfd86ae0",
+ "tools_sha": "ac05241b7e86181e",
+ "turns": [
+  {
+   "user": "What sticking coefficient should the twin use for TMA at 300 °C?",
+   "started": "2026-10-26T00:16:28+00:00",
+   "steps": [
+    {
+     "type": "assistant",
+     "request": 1,
+     "ms": 2268,
+     "provider": "deepseek",
+     "model": "deepseek-flash",
+     "fallback_ran": false,
+     "request_id": "1bc02c3f-025f-408d-8a45-521241918465",
+     "stop_reason": "tool_use",
+     "stop_raw": "tool_calls",
+     "usage": {
+      "input_tokens": 182,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2816,
+      "output_tokens": 309,
+      "reasoning_tokens": 118
+     },
+     "usage_raw": {
+      "completion_tokens": 309,
+      "prompt_tokens": 2998,
+      "total_tokens": 3307,
+      "completion_tokens_details": {
+       "accepted_prediction_tokens": null,
+       "audio_tokens": null,
+       "reasoning_tokens": 118,
+       "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+       "audio_tokens": null,
+       "cached_tokens": 2816
+      },
+      "prompt_cache_hit_tokens": 2816,
+      "prompt_cache_miss_tokens": 182
+     },
+     "cost_usd_estimate": 0.000442,
+     "thinking": [
+      "We need answer from KB. Need find sticking coefficient TMA at 300 °C. Need plan one sentence before first tool call. We can resolve sticking coefficient, find samples conditions material? TMA is reactant, temperature 300 C. Need likely papers Yim 2020/2022, Ylilammi 2018, Gordon 2003. Need report values perhaps model inputs, measured? Let's plan.\n\nWe must use tools. Let's start resolve \"sticking coefficient\" quantity and species TMA? Maybe resolve also TMA, temperature. Parallel calls."
+     ],
+     "text": "I’ll treat “the twin” as the ALD simulation/model counterpart and look for the KB’s sticking-coefficient values for TMA at 300 °C, checking both measured and model-input records and any cited sources.",
+     "tool_calls": [
+      {
+       "id": "call_00_r5WwymR2YpBVZJNQLJBS3851",
+       "name": "resolve",
+       "input": {
+        "term": "sticking coefficient",
+        "kind": "quantity"
+       }
+      },
+      {
+       "id": "call_01_VZ9nWZ4SV3xe6VNA5bBm8350",
+       "name": "resolve",
+       "input": {
+        "term": "TMA",
+        "kind": "species"
+       }
+      },
+      {
+       "id": "call_02_90bER02tohLpzztezZMu2724",
+       "name": "resolve",
+       "input": {
+        "term": "deposition temperature",
+        "kind": "quantity"
+       }
+      }
+     ]
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_00_r5WwymR2YpBVZJNQLJBS3851",
+     "name": "resolve",
+     "input": {
+      "term": "sticking coefficient",
+      "kind": "quantity"
+     },
+     "call": 1,
+     "ms": 34,
+     "error": null,
+     "result": {
+      "term": "sticking coefficient",
+      "kind": "quantity",
+      "matches": [
+       {
+        "id": "initial_sticking_coefficient",
+        "type": "quantity",
+        "match": "exact",
+        "matched": [
+         "alias 'initial sticking coefficient'",
+         "alias 'lumped sticking coefficient'",
+         "alias 'sticking coefficient'",
+         "id 'initial_sticking_coefficient'"
+        ],
+        "name": "initial sticking coefficient",
+        "dimension": "dimensionless",
+        "unit": "1",
+        "printed_as": [
+         {
+          "label": "c",
+          "papers": [
+           "Yim 2022",
+           "Ylilammi 2018"
+          ]
+         },
+         {
+          "label": "reaction probability",
+          "papers": [
+           "Elam 2003",
+           "Gordon 2003"
+          ]
+         },
+         {
+          "label": "Initial sticking probability, \\beta_0",
+          "papers": [
+           "Heikkinen 2024"
+          ]
+         },
+         {
+          "label": "S",
+          "papers": [
+           "Elam 2003"
+          ]
+         },
+         {
+          "label": "\\beta_0",
+          "papers": [
+           "Heikkinen 2024"
+          ]
+         },
+         {
+          "label": "c (-)",
+          "papers": [
+           "Yim 2022"
+          ]
+         },
+         {
+          "label": "c_A",
+          "papers": [
+           "Yim 2020"
+          ]
+         },
+         {
+          "label": "c_H2O",
+          "papers": [
+           "Yim 2020"
+          ]
+         },
+         {
+          "label": "c_TMA",
+          "papers": [
+           "Yim 2020"
+          ]
+         },
+         {
+          "label": "c_{\\text{H}_2\\text{O}}",
+          "papers": [
+           "Yim 2020"
+          ]
+         },
+         {
+          "label": "c_{\\text{TMA}}",
+          "papers": [
+           "Yim 2020"
+          ]
+         },
+         {
+          "label": "c_{\\text{ext}}",
+          "papers": [
+           "Yim 2022"
+          ]
+         },
+         {
+          "label": "s_0",
+          "papers": [
+           "Arts 2019"
+          ]
+         },
+         {
+          "label": "sticking coefficient",
+          "papers": [
+           "Werbrouck 2021"
+          ]
+         },
+         {
+          "label": "sticking coefficient of TMA",
+          "papers": [
+           "Werbrouck 2021"
+          ]
+         }
+        ],
+        "qualifiers_in_kb": {
+         "species=model_reactant": 15,
+         "species=tma": 10,
+         "species=h2o": 5,
+         "species=o_atom": 2,
+         "species=hf_nme2_4": 1,
+         "species=al2o3": 1,
+         "species=sio2": 1
+        },
+        "same_category_other_concepts": [
+         "recombination_probability",
+         "surface_coverage",
+         "adsorption_equilibrium_constant",
+         "saturation_growth_per_cycle",
+         "saturation_density",
+         "b_film",
+         "p_d"
+        ]
+       }
+      ],
+      "n_matches": 1
+     },
+     "sent": "{\"term\":\"sticking coefficient\",\"kind\":\"quantity\",\"matches\":[{\"id\":\"initial_sticking_coefficient\",\"type\":\"quantity\",\"match\":\"exact\",\"matched\":[\"alias 'initial sticking coefficient'\",\"alias 'lumped sticking coefficient'\",\"alias 'sticking coefficient'\",\"id 'initial_sticking_coefficient'\"],\"name\":\"initial sticking coefficient\",\"dimension\":\"dimensionless\",\"unit\":\"1\",\"printed_as\":[{\"label\":\"c\",\"papers\":[\"Yim 2022\",\"Ylilammi 2018\"]},{\"label\":\"reaction probability\",\"papers\":[\"Elam 2003\",\"Gordon 2003\"]},{\"label\":\"Initial sticking probability, \\\\beta_0\",\"papers\":[\"Heikkinen 2024\"]},{\"label\":\"S\",\"papers\":[\"Elam 2003\"]},{\"label\":\"\\\\beta_0\",\"papers\":[\"Heikkinen 2024\"]},{\"label\":\"c (-)\",\"papers\":[\"Yim 2022\"]},{\"label\":\"c_A\",\"papers\":[\"Yim 2020\"]},{\"label\":\"c_H2O\",\"papers\":[\"Yim 2020\"]},{\"label\":\"c_TMA\",\"papers\":[\"Yim 2020\"]},{\"label\":\"c_{\\\\text{H}_2\\\\text{O}}\",\"papers\":[\"Yim 2020\"]},{\"label\":\"c_{\\\\text{TMA}}\",\"papers\":[\"Yim 2020\"]},{\"label\":\"c_{\\\\text{ext}}\",\"papers\":[\"Yim 2022\"]},{\"label\":\"s_0\",\"papers\":[\"Arts 2019\"]},{\"label\":\"sticking coefficient\",\"papers\":[\"Werbrouck 2021\"]},{\"label\":\"sticking coefficient of TMA\",\"papers\":[\"Werbrouck 2021\"]}],\"qualifiers_in_kb\":{\"species=model_reactant\":15,\"species=tma\":10,\"species=h2o\":5,\"species=o_atom\":2,\"species=hf_nme2_4\":1,\"species=al2o3\":1,\"species=sio2\":1},\"same_category_other_concepts\":[\"recombination_probability\",\"surface_coverage\",\"adsorption_equilibrium_constant\",\"saturation_growth_per_cycle\",\"saturation_density\",\"b_film\",\"p_d\"]}],\"n_matches\":1}",
+     "sent_chars": 1505
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_01_VZ9nWZ4SV3xe6VNA5bBm8350",
+     "name": "resolve",
+     "input": {
+      "term": "TMA",
+      "kind": "species"
+     },
+     "call": 2,
+     "ms": 27,
+     "error": null,
+     "result": {
+      "term": "TMA",
+      "kind": "species",
+      "matches": [
+       {
+        "id": "tma",
+        "type": "species",
+        "match": "exact",
+        "matched": [
+         "alias 'TMA'",
+         "id 'tma'"
+        ],
+        "species_kind": "molecule"
+       }
+      ],
+      "n_matches": 1
+     },
+     "sent": "{\"term\":\"TMA\",\"kind\":\"species\",\"matches\":[{\"id\":\"tma\",\"type\":\"species\",\"match\":\"exact\",\"matched\":[\"alias 'TMA'\",\"id 'tma'\"],\"species_kind\":\"molecule\"}],\"n_matches\":1}",
+     "sent_chars": 166
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_02_90bER02tohLpzztezZMu2724",
+     "name": "resolve",
+     "input": {
+      "term": "deposition temperature",
+      "kind": "quantity"
+     },
+     "call": 3,
+     "ms": 28,
+     "error": null,
+     "result": {
+      "term": "deposition temperature",
+      "kind": "quantity",
+      "matches": [
+       {
+        "id": "deposition_temperature",
+        "type": "quantity",
+        "match": "exact",
+        "matched": [
+         "alias 'Deposition temperature'",
+         "id 'deposition_temperature'",
+         "name 'deposition temperature'",
+         "printed as 'deposition temperature' on 40 records"
+        ],
+        "name": "deposition temperature",
+        "dimension": "temperature",
+        "unit": "°C",
+        "printed_as": [
+         {
+          "label": "T",
+          "papers": [
+           "Gordon 2003",
+           "Greenberg 2023",
+           "Heikkinen 2024",
+           "Mattinen 2022",
+           "Yim 2020",
+           "Yim 2022",
+           "Ylilammi 2018"
+          ]
+         },
+         {
+          "label": "temperature",
+          "papers": [
+           "Elam 2003",
+           "Heikkinen 2024",
+           "Mattinen 2022",
+           "Yim 2020",
+           "Yim 2022",
+           "Ylilammi 2018",
+           "van der Zouw 2023"
+          ]
+         },
+         {
+          "label": "deposition temperature",
+          "papers": [
+           "Elam 2003",
+           "Gordon 2003",
+           "Werbrouck 2021"
+          ]
+         },
+         {
+          "label": "substrate temperature",
+          "papers": [
+           "Mathew 2023",
+           "Mattinen 2022",
+           "Werbrouck 2021"
+          ]
+         },
+         {
+          "label": "deposition_temperature",
+          "papers": [
+           "Mattinen 2022",
+           "van der Zouw 2023"
+          ]
+         },
+         {
+          "label": "grown at",
+          "papers": [
+           "Gao 2015",
+           "Mattinen 2022"
+          ]
+         },
+         {
+          "label": "temperatures",
+          "papers": [
+           "Mattinen 2022",
+           "van der Zouw 2023"
+          ]
+         },
+         {
+          "label": "350 °C",
+          "papers": [
+           "van der Zouw 2023"
+          ]
+         },
+         {
+          "label": "ALD temperature",
+          "papers": [
+           "Gao 2015"
+          ]
+         },
+         {
+          "label": "K",
+          "papers": [
+           "Elam 2003"
+          ]
+         },
+         {
+          "label": "Sample (^∘C)",
+          "papers": [
+           "Greenberg 2023"
+          ]
+         },
+         {
+          "label": "T (°C)",
+          "papers": [
+           "Greenberg 2023"
+          ]
+         },
+         {
+          "label": "Temperature (°C)",
+          "papers": [
+           "Yim 2020"
+          ]
+         },
+         {
+          "label": "at",
+          "papers": [
+           "Mathew 2023"
+          ]
+         },
+         {
+          "label": "high temperature",
+          "papers": [
+           "Mattinen 2022"
+          ]
+         }
+        ],
+        "qualifiers_in_kb": {
+         "kind=set_point": 1
+        },
+        "same_category_other_concepts": [
+         "process_pressure",
+         "source_temperature",
+         "cycle_number",
+         "gas_flow_rate",
+         "precursor_purity",
+         "annealing_temperature",
+         "wall_temperature"
+        ]
+       }
+      ],
+      "n_matches": 1
+     },
+     "sent": "{\"term\":\"deposition temperature\",\"kind\":\"quantity\",\"matches\":[{\"id\":\"deposition_temperature\",\"type\":\"quantity\",\"match\":\"exact\",\"matched\":[\"alias 'Deposition temperature'\",\"id 'deposition_temperature'\",\"name 'deposition temperature'\",\"printed as 'deposition temperature' on 40 records\"],\"name\":\"deposition temperature\",\"dimension\":\"temperature\",\"unit\":\"°C\",\"printed_as\":[{\"label\":\"T\",\"papers\":[\"Gordon 2003\",\"Greenberg 2023\",\"Heikkinen 2024\",\"Mattinen 2022\",\"Yim 2020\",\"Yim 2022\",\"Ylilammi 2018\"]},{\"label\":\"temperature\",\"papers\":[\"Elam 2003\",\"Heikkinen 2024\",\"Mattinen 2022\",\"Yim 2020\",\"Yim 2022\",\"Ylilammi 2018\",\"van der Zouw 2023\"]},{\"label\":\"deposition temperature\",\"papers\":[\"Elam 2003\",\"Gordon 2003\",\"Werbrouck 2021\"]},{\"label\":\"substrate temperature\",\"papers\":[\"Mathew 2023\",\"Mattinen 2022\",\"Werbrouck 2021\"]},{\"label\":\"deposition_temperature\",\"papers\":[\"Mattinen 2022\",\"van der Zouw 2023\"]},{\"label\":\"grown at\",\"papers\":[\"Gao 2015\",\"Mattinen 2022\"]},{\"label\":\"temperatures\",\"papers\":[\"Mattinen 2022\",\"van der Zouw 2023\"]},{\"label\":\"350 °C\",\"papers\":[\"van der Zouw 2023\"]},{\"label\":\"ALD temperature\",\"papers\":[\"Gao 2015\"]},{\"label\":\"K\",\"papers\":[\"Elam 2003\"]},{\"label\":\"Sample (^∘C)\",\"papers\":[\"Greenberg 2023\"]},{\"label\":\"T (°C)\",\"papers\":[\"Greenberg 2023\"]},{\"label\":\"Temperature (°C)\",\"papers\":[\"Yim 2020\"]},{\"label\":\"at\",\"papers\":[\"Mathew 2023\"]},{\"label\":\"high temperature\",\"papers\":[\"Mattinen 2022\"]}],\"qualifiers_in_kb\":{\"kind=set_point\":1},\"same_category_other_concepts\":[\"process_pressure\",\"source_temperature\",\"cycle_number\",\"gas_flow_rate\",\"precursor_purity\",\"annealing_temperature\",\"wall_temperature\"]}],\"n_matches\":1}",
+     "sent_chars": 1636
+    },
+    {
+     "type": "assistant",
+     "request": 2,
+     "ms": 1874,
+     "provider": "deepseek",
+     "model": "deepseek-flash",
+     "fallback_ran": false,
+     "request_id": "16f47f87-98d7-40e8-8291-805dd6f8f757",
+     "stop_reason": "tool_use",
+     "stop_raw": "tool_calls",
+     "usage": {
+      "input_tokens": 1226,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 3200,
+      "output_tokens": 258,
+      "reasoning_tokens": 129
+     },
+     "usage_raw": {
+      "completion_tokens": 258,
+      "prompt_tokens": 4426,
+      "total_tokens": 4684,
+      "completion_tokens_details": {
+       "accepted_prediction_tokens": null,
+       "audio_tokens": null,
+       "reasoning_tokens": 129,
+       "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+       "audio_tokens": null,
+       "cached_tokens": 3200
+      },
+      "prompt_cache_hit_tokens": 3200,
+      "prompt_cache_miss_tokens": 1226
+     },
+     "cost_usd_estimate": 0.000697,
+     "thinking": [
+      "Now find samples with sticking coefficient? find_samples filters temperature 300, species tma? Filter concept initial_sticking_coefficient maybe numeric doesn't make sense. Need samples at 300 °C and TMA reactant. The twin maybe Yim 2022 simulation. Find samples with deposition_temperature 300 and reactant_A tma perhaps. Also include models true. vary initial_sticking_coefficient perhaps. Use find_samples filters deposition_temperature=300, reactant_A=tma? A sample at 300 with TMA. include_models true, vary initial_sticking_coefficient. Maybe feature structures? Let's call."
+     ],
+     "text": "",
+     "tool_calls": [
+      {
+       "id": "call_00_LzKVekzNgpMRVodJSjfJ9551",
+       "name": "find_samples",
+       "input": {
+        "filters": [
+         {
+          "concept": "deposition_temperature",
+          "value": 300,
+          "unit": "°C"
+         },
+         {
+          "concept": "reactant_A",
+          "value": "tma"
+         }
+        ],
+        "vary": [
+         "initial_sticking_coefficient",
+         "feature_width",
+         "process_mode"
+        ],
+        "include_models": true
+       }
+      }
+     ]
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_00_LzKVekzNgpMRVodJSjfJ9551",
+     "name": "find_samples",
+     "input": {
+      "filters": [
+       {
+        "concept": "deposition_temperature",
+        "value": 300,
+        "unit": "°C"
+       },
+       {
+        "concept": "reactant_A",
+        "value": "tma"
+       }
+      ],
+      "vary": [
+       "initial_sticking_coefficient",
+       "feature_width",
+       "process_mode"
+      ],
+      "include_models": true
+     },
+     "call": 4,
+     "ms": 403,
+     "error": null,
+     "result": {
+      "filters": [
+       "deposition_temperature = 300 °C",
+       "reactant_A in ['tma']"
+      ],
+      "vary": [
+       "initial_sticking_coefficient",
+       "feature_width",
+       "process_mode"
+      ],
+      "include_models": true,
+      "counts": {
+       "scanned": 515,
+       "matched": 23,
+       "undecided": 342,
+       "papers_matched": 3,
+       "per_paper": {
+        "Gordon 2003": {
+         "scanned": 4,
+         "matched": 0
+        },
+        "Mattinen 2022": {
+         "scanned": 44,
+         "matched": 0
+        },
+        "Arts 2019": {
+         "scanned": 10,
+         "matched": 0
+        },
+        "Elam 2003": {
+         "scanned": 45,
+         "matched": 0
+        },
+        "Yim 2020": {
+         "scanned": 30,
+         "matched": 21
+        },
+        "Yim 2022": {
+         "scanned": 78,
+         "matched": 0
+        },
+        "Heikkinen 2024": {
+         "scanned": 166,
+         "matched": 0
+        },
+        "Ylilammi 2018": {
+         "scanned": 12,
+         "matched": 1
+        },
+        "Gao 2015": {
+         "scanned": 13,
+         "matched": 1
+        },
+        "Werbrouck 2021": {
+         "scanned": 23,
+         "matched": 0
+        },
+        "van der Zouw 2023": {
+         "scanned": 69,
+         "matched": 0
+        },
+        "Mathew 2023": {
+         "scanned": 15,
+         "matched": 0
+        },
+        "Greenberg 2023": {
+         "scanned": 6,
+         "matched": 0
+        }
+       }
+      },
+      "not_matched_by_filter": {
+       "deposition_temperature = 300 °C": {
+        "several values": 323,
+        "not recorded": 14,
+        "mismatch": 135,
+        "recorded as a range": 9
+       },
+       "reactant_A in ['tma']": {
+        "mismatch": 74,
+        "not recorded": 360
+       }
+      },
+      "samples": [
+       {
+        "id": "yim20:ent:sample_1",
+        "paper": "Yim 2020",
+        "label": "1",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:fig4.cap#6] (run)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_ser_a:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r1c3#1] (this unit)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#12] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_2",
+        "paper": "Yim 2020",
+        "label": "2",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:fig4.cap#6] (run)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_ser_a:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r2c3#1] (this unit)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#12] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_3",
+        "paper": "Yim 2020",
+        "label": "3",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:fig4.cap#6] (run)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_ser_a:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r3c3#1] (this unit)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#12] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_4",
+        "paper": "Yim 2020",
+        "label": "4",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_ser_b:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r4c3#1] (this unit)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#13] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_5",
+        "paper": "Yim 2020",
+        "label": "5",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_ser_b:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r5c3#1] (this unit)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#13] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_6",
+        "paper": "Yim 2020",
+        "label": "6",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_ser_b:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r6c3#1] (this unit)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#13] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_7",
+        "paper": "Yim 2020",
+        "label": "7",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_7:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "100 nm [yim20:tab1.r7c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#14] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_8",
+        "paper": "Yim 2020",
+        "label": "8",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_8:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r8c3#1] (this unit)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#15] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_9",
+        "paper": "Yim 2020",
+        "label": "9",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_9:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "2000 nm [yim20:tab1.r9c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#16] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_10",
+        "paper": "Yim 2020",
+        "label": "10",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_10:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r10c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#17] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_11",
+        "paper": "Yim 2020",
+        "label": "11",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_11:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width[stage=initial]": "500 nm [yim20:fig5.cap#2] (run)",
+          "feature_width": "500 nm [yim20:tab1.r12c3#1] (run)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#18] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_12",
+        "paper": "Yim 2020",
+        "label": "12",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_12:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r13c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#19] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_13",
+        "paper": "Yim 2020",
+        "label": "13",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_13:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r14c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#20] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_14",
+        "paper": "Yim 2020",
+        "label": "14",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_14:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r15c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#21] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_15",
+        "paper": "Yim 2020",
+        "label": "15",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_15:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r16c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#22] (run)"
+        },
+        "conflicts": [
+         "preferred: purge_time = 1 s (run, yim20:fig11b#1) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)",
+         "preferred: purge_time = 1 s (run, yim20:fig11b#1) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)",
+         "preferred: purge_time[species=n2;step=purge_A] = 1 s (run, yim20:tab1.r16c2#2) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)",
+         "preferred: purge_time[species=n2;step=purge_B] = 1 s (run, yim20:tab1.r16c2#4) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)"
+        ]
+       },
+       {
+        "id": "yim20:ent:sample_16",
+        "paper": "Yim 2020",
+        "label": "16",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_16:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:tab1.r18c3#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#23] (run)"
+        },
+        "conflicts": [
+         "preferred: purge_time = 10 s (run, yim20:fig11b#3) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)",
+         "preferred: purge_time = 10 s (run, yim20:fig11b#3) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)",
+         "preferred: purge_time[species=n2;step=purge_A] = 10 s (run, yim20:tab1.r18c2#2) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)",
+         "preferred: purge_time[species=n2;step=purge_B] = 10 s (run, yim20:tab1.r18c2#4) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)"
+        ]
+       },
+       {
+        "id": "yim20:ent:sample_fig6",
+        "paper": "Yim 2020",
+        "label": "sample_fig6",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:fig6.cap#2] (run)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_fig6:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [yim20:fig6.cap#1] (run)",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:fig6.cap#4] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_8_l01",
+        "paper": "Yim 2020",
+        "label": "sample_8_l01",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_8:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#15] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_8_l05",
+        "paper": "Yim 2020",
+        "label": "sample_8_l05",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_8:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#15] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_8_l1",
+        "paper": "Yim 2020",
+        "label": "sample_8_l1",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_8:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#15] (run)"
+        }
+       },
+       {
+        "id": "yim20:ent:sample_8_l5",
+        "paper": "Yim 2020",
+        "label": "sample_8_l5",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yim20:s2.p13#1] (recipe)",
+         "reactant_A in ['tma']": "tma [yim20:recipe_fill:run_8:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]",
+          "feature_width[stage=initial]": "500 nm [yim20:s7.p2#2] (recipe)",
+          "feature_width[position=planar]": "500 nm [yim20:fig8.cap#1] (recipe)"
+         },
+         "process_mode": "thermal [yim20:s6.p1#15] (run)"
+        }
+       },
+       {
+        "id": "yli18:ent:specimen_al2o3",
+        "paper": "Ylilammi 2018",
+        "label": "Al2O3",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [yli18:s8.p21#4] (run)",
+         "reactant_A in ['tma']": "tma [yli18:s8.p21#2] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "0.5 µm [yli18:s8.p23#3] (run)",
+          "feature_width[kind=target;stage=initial]": "0.5 µm [yli18:fig6.cap#1] (run)"
+         },
+         "process_mode": "not recorded"
+        }
+       },
+       {
+        "id": "gao15:ent:specimen_al2o3_500nm",
+        "paper": "Gao 2015",
+        "label": "500 nm",
+        "kind": "specimen",
+        "structure_class": "lateral_channel",
+        "matched": {
+         "deposition_temperature = 300 °C": "300 °C [gao15:s6.p17#3] (run)",
+         "reactant_A in ['tma']": "tma [gao15:recipe_fill:run_al2o3_300c:reactant_A] (run)"
+        },
+        "vary": {
+         "initial_sticking_coefficient": "not recorded",
+         "feature_width": {
+          "feature_width": "500 nm [gao15:s6.p17#2] (run)",
+          "feature_width[stage=initial]": "500 nm [gao15:s6.x1#1] (recipe)"
+         },
+         "process_mode": "not recorded"
+        }
+       }
+      ],
+      "undecided": [
+       {
+        "id": "ela03:ent:spec_al2o3_sem_1s",
+        "paper": "Elam 2003",
+        "label": "1 s",
+        "kind": "specimen",
+        "structure_class": "nanopore_membrane",
+        "open": {
+         "deposition_temperature = 300 °C": "several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))"
+        }
+       },
+       {
+        "id": "ela03:ent:spec_al2o3_sem_3s",
+        "paper": "Elam 2003",
+        "label": "3 s",
+        "kind": "specimen",
+        "structure_class": "nanopore_membrane",
+        "open": {
+         "deposition_temperature = 300 °C": "several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))"
+        }
+       },
+       {
+        "id": "ela03:ent:spec_al2o3_sem_10s",
+        "paper": "Elam 2003",
+        "label": "10 s",
+        "kind": "specimen",
+        "structure_class": "nanopore_membrane",
+        "open": {
+         "deposition_temperature = 300 °C": "several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))"
+        }
+       },
+       {
+        "id": "ela03:ent:spec_al2o3_sem_30s",
+        "paper": "Elam 2003",
+        "label": "30 s",
+        "kind": "specimen",
+        "structure_class": "nanopore_membrane",
+        "open": {
+         "deposition_temperature = 300 °C": "several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_h100",
+        "paper": "Yim 2020",
+        "label": "100 nm",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_h200",
+        "paper": "Yim 2020",
+        "label": "200 nm",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_h500_n500",
+        "paper": "Yim 2020",
+        "label": "500 nm",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_h1000",
+        "paper": "Yim 2020",
+        "label": "1000 nm",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_h2000",
+        "paper": "Yim 2020",
+        "label": "2000 nm",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_n100",
+        "paper": "Yim 2020",
+        "label": "100 cycles",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_n250",
+        "paper": "Yim 2020",
+        "label": "250 cycles",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_n1000",
+        "paper": "Yim 2020",
+        "label": "1000 cycles",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim20:mrun:mr_n2000",
+        "paper": "Yim 2020",
+        "label": "2000 cycles",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "yim22:mrun:mr_fig4h_c5",
+        "paper": "Yim 2022",
+        "label": "T = 573.15 K",
+        "kind": "model run",
+        "open": {
+         "reactant_A in ['tma']": "not recorded"
+        }
+       },
+       {
+        "id": "wer21:ent:specimen_fig9a",
+        "paper": "Werbrouck 2021",
+        "label": "(a)",
+        "kind": "specimen",
+        "structure_class": "planar",
+        "open": {
+         "deposition_temperature = 300 °C": "several values: 120 °C [wer21:s18.p1#2] (recipe; several values at recipe (not inherited))"
+        }
+       }
+      ],
+      "note_undecided": "samples with no recorded mismatch whose match the KB does not settle (a value not recorded, recorded only as a range, or several values at a level); not matched"
+     },
+     "sent": "{\"filters\":[\"deposition_temperature = 300 °C\",\"reactant_A in ['tma']\"],\"vary\":[\"initial_sticking_coefficient\",\"feature_width\",\"process_mode\"],\"include_models\":true,\"counts\":{\"scanned\":515,\"matched\":23,\"undecided\":342,\"papers_matched\":3,\"per_paper\":{\"Gordon 2003\":{\"scanned\":4,\"matched\":0},\"Mattinen 2022\":{\"scanned\":44,\"matched\":0},\"Arts 2019\":{\"scanned\":10,\"matched\":0},\"Elam 2003\":{\"scanned\":45,\"matched\":0},\"Yim 2020\":{\"scanned\":30,\"matched\":21},\"Yim 2022\":{\"scanned\":78,\"matched\":0},\"Heikkinen 2024\":{\"scanned\":166,\"matched\":0},\"Ylilammi 2018\":{\"scanned\":12,\"matched\":1},\"Gao 2015\":{\"scanned\":13,\"matched\":1},\"Werbrouck 2021\":{\"scanned\":23,\"matched\":0},\"van der Zouw 2023\":{\"scanned\":69,\"matched\":0},\"Mathew 2023\":{\"scanned\":15,\"matched\":0},\"Greenberg 2023\":{\"scanned\":6,\"matched\":0}}},\"not_matched_by_filter\":{\"deposition_temperature = 300 °C\":{\"several values\":323,\"not recorded\":14,\"mismatch\":135,\"recorded as a range\":9},\"reactant_A in ['tma']\":{\"mismatch\":74,\"not recorded\":360}},\"samples\":[{\"id\":\"yim20:ent:sample_1\",\"paper\":\"Yim 2020\",\"label\":\"1\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:fig4.cap#6] (run)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_ser_a:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r1c3#1] (this unit)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#12] (run)\"}},{\"id\":\"yim20:ent:sample_2\",\"paper\":\"Yim 2020\",\"label\":\"2\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:fig4.cap#6] (run)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_ser_a:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r2c3#1] (this unit)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#12] (run)\"}},{\"id\":\"yim20:ent:sample_3\",\"paper\":\"Yim 2020\",\"label\":\"3\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:fig4.cap#6] (run)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_ser_a:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r3c3#1] (this unit)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#12] (run)\"}},{\"id\":\"yim20:ent:sample_4\",\"paper\":\"Yim 2020\",\"label\":\"4\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_ser_b:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r4c3#1] (this unit)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#13] (run)\"}},{\"id\":\"yim20:ent:sample_5\",\"paper\":\"Yim 2020\",\"label\":\"5\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_ser_b:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r5c3#1] (this unit)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#13] (run)\"}},{\"id\":\"yim20:ent:sample_6\",\"paper\":\"Yim 2020\",\"label\":\"6\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_ser_b:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r6c3#1] (this unit)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#13] (run)\"}},{\"id\":\"yim20:ent:sample_7\",\"paper\":\"Yim 2020\",\"label\":\"7\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_7:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"100 nm [yim20:tab1.r7c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#14] (run)\"}},{\"id\":\"yim20:ent:sample_8\",\"paper\":\"Yim 2020\",\"label\":\"8\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_8:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r8c3#1] (this unit)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#15] (run)\"}},{\"id\":\"yim20:ent:sample_9\",\"paper\":\"Yim 2020\",\"label\":\"9\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_9:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"2000 nm [yim20:tab1.r9c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#16] (run)\"}},{\"id\":\"yim20:ent:sample_10\",\"paper\":\"Yim 2020\",\"label\":\"10\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_10:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r10c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#17] (run)\"}},{\"id\":\"yim20:ent:sample_11\",\"paper\":\"Yim 2020\",\"label\":\"11\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_11:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width[stage=initial]\":\"500 nm [yim20:fig5.cap#2] (run)\",\"feature_width\":\"500 nm [yim20:tab1.r12c3#1] (run)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#18] (run)\"}},{\"id\":\"yim20:ent:sample_12\",\"paper\":\"Yim 2020\",\"label\":\"12\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_12:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r13c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#19] (run)\"}},{\"id\":\"yim20:ent:sample_13\",\"paper\":\"Yim 2020\",\"label\":\"13\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_13:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r14c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#20] (run)\"}},{\"id\":\"yim20:ent:sample_14\",\"paper\":\"Yim 2020\",\"label\":\"14\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_14:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r15c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#21] (run)\"}},{\"id\":\"yim20:ent:sample_15\",\"paper\":\"Yim 2020\",\"label\":\"15\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_15:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r16c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#22] (run)\"},\"conflicts\":[\"preferred: purge_time = 1 s (run, yim20:fig11b#1) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)\",\"preferred: purge_time = 1 s (run, yim20:fig11b#1) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)\",\"preferred: purge_time[species=n2;step=purge_A] = 1 s (run, yim20:tab1.r16c2#2) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)\",\"preferred: purge_time[species=n2;step=purge_B] = 1 s (run, yim20:tab1.r16c2#4) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)\"]},{\"id\":\"yim20:ent:sample_16\",\"paper\":\"Yim 2020\",\"label\":\"16\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_16:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:tab1.r18c3#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#23] (run)\"},\"conflicts\":[\"preferred: purge_time = 10 s (run, yim20:fig11b#3) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)\",\"preferred: purge_time = 10 s (run, yim20:fig11b#3) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)\",\"preferred: purge_time[species=n2;step=purge_A] = 10 s (run, yim20:tab1.r18c2#2) over purge_time[step=purge_A] = 4 s (recipe, yim20:s6.p1#9)\",\"preferred: purge_time[species=n2;step=purge_B] = 10 s (run, yim20:tab1.r18c2#4) over purge_time[step=purge_B] = 4 s (recipe, yim20:s6.p1#11)\"]},{\"id\":\"yim20:ent:sample_fig6\",\"paper\":\"Yim 2020\",\"label\":\"sample_fig6\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:fig6.cap#2] (run)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_fig6:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [yim20:fig6.cap#1] (run)\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:fig6.cap#4] (run)\"}},{\"id\":\"yim20:ent:sample_8_l01\",\"paper\":\"Yim 2020\",\"label\":\"sample_8_l01\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_8:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#15] (run)\"}},{\"id\":\"yim20:ent:sample_8_l05\",\"paper\":\"Yim 2020\",\"label\":\"sample_8_l05\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_8:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#15] (run)\"}},{\"id\":\"yim20:ent:sample_8_l1\",\"paper\":\"Yim 2020\",\"label\":\"sample_8_l1\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_8:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#15] (run)\"}},{\"id\":\"yim20:ent:sample_8_l5\",\"paper\":\"Yim 2020\",\"label\":\"sample_8_l5\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"reactant_A in ['tma']\":\"tma [yim20:recipe_fill:run_8:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"several values at recipe (not inherited): 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]\",\"feature_width[stage=initial]\":\"500 nm [yim20:s7.p2#2] (recipe)\",\"feature_width[position=planar]\":\"500 nm [yim20:fig8.cap#1] (recipe)\"},\"process_mode\":\"thermal [yim20:s6.p1#15] (run)\"}},{\"id\":\"yli18:ent:specimen_al2o3\",\"paper\":\"Ylilammi 2018\",\"label\":\"Al2O3\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [yli18:s8.p21#4] (run)\",\"reactant_A in ['tma']\":\"tma [yli18:s8.p21#2] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"0.5 µm [yli18:s8.p23#3] (run)\",\"feature_width[kind=target;stage=initial]\":\"0.5 µm [yli18:fig6.cap#1] (run)\"},\"process_mode\":\"not recorded\"}},{\"id\":\"gao15:ent:specimen_al2o3_500nm\",\"paper\":\"Gao 2015\",\"label\":\"500 nm\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"matched\":{\"deposition_temperature = 300 °C\":\"300 °C [gao15:s6.p17#3] (run)\",\"reactant_A in ['tma']\":\"tma [gao15:recipe_fill:run_al2o3_300c:reactant_A] (run)\"},\"vary\":{\"initial_sticking_coefficient\":\"not recorded\",\"feature_width\":{\"feature_width\":\"500 nm [gao15:s6.p17#2] (run)\",\"feature_width[stage=initial]\":\"500 nm [gao15:s6.x1#1] (recipe)\"},\"process_mode\":\"not recorded\"}}],\"undecided\":[{\"id\":\"ela03:ent:spec_al2o3_sem_1s\",\"paper\":\"Elam 2003\",\"label\":\"1 s\",\"kind\":\"specimen\",\"structure_class\":\"nanopore_membrane\",\"open\":{\"deposition_temperature = 300 °C\":\"several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))\"}},{\"id\":\"ela03:ent:spec_al2o3_sem_3s\",\"paper\":\"Elam 2003\",\"label\":\"3 s\",\"kind\":\"specimen\",\"structure_class\":\"nanopore_membrane\",\"open\":{\"deposition_temperature = 300 °C\":\"several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))\"}},{\"id\":\"ela03:ent:spec_al2o3_sem_10s\",\"paper\":\"Elam 2003\",\"label\":\"10 s\",\"kind\":\"specimen\",\"structure_class\":\"nanopore_membrane\",\"open\":{\"deposition_temperature = 300 °C\":\"several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))\"}},{\"id\":\"ela03:ent:spec_al2o3_sem_30s\",\"paper\":\"Elam 2003\",\"label\":\"30 s\",\"kind\":\"specimen\",\"structure_class\":\"nanopore_membrane\",\"open\":{\"deposition_temperature = 300 °C\":\"several values: 177 °C [ela03:s3.p2#1] (recipe; several values at recipe (not inherited))\"}},{\"id\":\"yim20:mrun:mr_h100\",\"paper\":\"Yim 2020\",\"label\":\"100 nm\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_h200\",\"paper\":\"Yim 2020\",\"label\":\"200 nm\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_h500_n500\",\"paper\":\"Yim 2020\",\"label\":\"500 nm\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_h1000\",\"paper\":\"Yim 2020\",\"label\":\"1000 nm\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_h2000\",\"paper\":\"Yim 2020\",\"label\":\"2000 nm\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_n100\",\"paper\":\"Yim 2020\",\"label\":\"100 cycles\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_n250\",\"paper\":\"Yim 2020\",\"label\":\"250 cycles\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_n1000\",\"paper\":\"Yim 2020\",\"label\":\"1000 cycles\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim20:mrun:mr_n2000\",\"paper\":\"Yim 2020\",\"label\":\"2000 cycles\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"yim22:mrun:mr_fig4h_c5\",\"paper\":\"Yim 2022\",\"label\":\"T = 573.15 K\",\"kind\":\"model run\",\"open\":{\"reactant_A in ['tma']\":\"not recorded\"}},{\"id\":\"wer21:ent:specimen_fig9a\",\"paper\":\"Werbrouck 2021\",\"label\":\"(a)\",\"kind\":\"specimen\",\"structure_class\":\"planar\",\"open\":{\"deposition_temperature = 300 °C\":\"several values: 120 °C [wer21:s18.p1#2] (recipe; several values at recipe (not inherited))\"}}],\"note_undecided\":\"samples with no recorded mismatch whose match the KB does not settle (a value not recorded, recorded only as a range, or several values at a level); not matched\"}",
+     "sent_chars": 18433
+    },
+    {
+     "type": "assistant",
+     "request": 3,
+     "ms": 1570,
+     "provider": "deepseek",
+     "model": "deepseek-flash",
+     "fallback_ran": false,
+     "request_id": "5a23475c-59fc-429c-be4e-5df414a5ebea",
+     "stop_reason": "tool_use",
+     "stop_raw": "tool_calls",
+     "usage": {
+      "input_tokens": 6865,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 4608,
+      "output_tokens": 198,
+      "reasoning_tokens": 113
+     },
+     "usage_raw": {
+      "completion_tokens": 198,
+      "prompt_tokens": 11473,
+      "total_tokens": 11671,
+      "completion_tokens_details": {
+       "accepted_prediction_tokens": null,
+       "audio_tokens": null,
+       "reasoning_tokens": 113,
+       "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+       "audio_tokens": null,
+       "cached_tokens": 4608
+      },
+      "prompt_cache_hit_tokens": 4608,
+      "prompt_cache_miss_tokens": 6865
+     },
+     "cost_usd_estimate": 0.002325,
+     "thinking": [
+      "We need \"twin\" may refer to \"digital twin\" in Yim 2022 maybe simulated thickness profile. Question wording: \"What sticking coefficient should the twin use for TMA at 300 °C?\" likely asking value from Yim 2020 saturation profile analysis. Need find actual sticking coefficient values. Search whole KB for initial_sticking_coefficient with species tma, maybe get_records. Need values and conditions at 300. get_records quantity initial_sticking_coefficient qualifiers species=tma maybe. Search whole KB."
+     ],
+     "text": "",
+     "tool_calls": [
+      {
+       "id": "call_00_mMWGg3PX0p2I08za62XH3945",
+       "name": "get_records",
+       "input": {
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": {
+         "species": "tma"
+        },
+        "include": [
+         "values"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_00_mMWGg3PX0p2I08za62XH3945",
+     "name": "get_records",
+     "input": {
+      "quantity": "initial_sticking_coefficient",
+      "qualifiers": {
+       "species": "tma"
+      },
+      "include": [
+       "values"
+      ]
+     },
+     "call": 5,
+     "ms": 32,
+     "error": null,
+     "result": {
+      "quantity": "initial_sticking_coefficient",
+      "qualifiers": "species=tma",
+      "units": "every unit",
+      "values": [
+       {
+        "fact_id": "yim20:s19.p4#1",
+        "paper": "Yim 2020",
+        "type": "derived",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_TMA",
+        "value": 0.004,
+        "method": "calculation",
+        "data_kind": "computed_by_authors",
+        "group": "own",
+        "statement": "Our extracted value of c_TMA, 4 × 10^-3, agrees with the literature values",
+        "unit_id": "yim20:recipe",
+        "unit_label": "recipe",
+        "key_conditions": {
+         "deposition_temperature": "300 °C [yim20:s2.p13#1] (recipe)",
+         "material": "al2o3 [yim20:s6.p1#1] (recipe)",
+         "structure": "pillarhall_3 [yim20:s5.p1#1] (recipe)",
+         "feature_width": "several values: 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]"
+        }
+       },
+       {
+        "fact_id": "yli18:tabI.r1c4#1",
+        "paper": "Ylilammi 2018",
+        "type": "derived",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "",
+        "label_as_printed": "c",
+        "value": 0.00572,
+        "method": "calculation",
+        "data_kind": "computed_by_authors",
+        "group": "own",
+        "statement": "0.00572",
+        "unit_id": "yli18:ent:specimen_al2o3:meas:measurement",
+        "unit_label": "measurement of Al2O3",
+        "sample_id": "yli18:ent:specimen_al2o3",
+        "sample_label": "Al2O3",
+        "key_conditions": {
+         "deposition_temperature": "300 °C [yli18:s8.p21#4] (run)",
+         "reactant_A": "tma [yli18:s8.p21#2] (run)",
+         "reactant_B": "h2o [yli18:s8.p21#3] (run)",
+         "material": "al2o3 [yli18:s5.p4#1] (run)",
+         "structure": "pillarhall_3 [yli18:s8.p23#2] (run)",
+         "feature_width": "0.5 µm [yli18:s8.p23#3] (run)"
+        },
+        "species_filled": "tma: the run's reactant A (yli18:s8.p21#2, Al2O3)"
+       },
+       {
+        "fact_id": "wer21:s25.p17#3",
+        "paper": "Werbrouck 2021",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "sticking coefficient of TMA",
+        "value_min": 0.0008,
+        "value_max": 0.002,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "Literature reports a TMA sticking coefficient of 0.0008-0.002 in the TMA-H2O process.",
+        "unit_id": "wer21",
+        "unit_label": "wer21"
+       },
+       {
+        "fact_id": "yim20:s18.p3#3",
+        "paper": "Yim 2020",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_TMA",
+        "value": 0.002,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "c_TMA of 2 × 10^-3 (temperature-independent) were reported in the follow-up work Vandalon et al. (2017)",
+        "unit_id": "yim20",
+        "unit_label": "yim20"
+       },
+       {
+        "fact_id": "yim20:tab2.r1c6#1",
+        "paper": "Yim 2020",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_{\\text{TMA}}",
+        "value": 0.1,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "Dendooven et al. (2009) reported a sticking coefficient for TMA of 0.1.",
+        "unit_id": "yim20",
+        "unit_label": "yim20"
+       },
+       {
+        "fact_id": "yim20:tab2.r2c6#1",
+        "paper": "Yim 2020",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_{\\text{TMA}}",
+        "value": 0.02,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "Schwille et al. (2016) reported a sticking coefficient for TMA of 2e-2.",
+        "unit_id": "yim20",
+        "unit_label": "yim20"
+       },
+       {
+        "fact_id": "yim20:tab2.r3c6#1",
+        "paper": "Yim 2020",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_{\\text{TMA}}",
+        "value": 0.001,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "Vandalon et al. (2016) reported a sticking coefficient for TMA of 1e-3.",
+        "unit_id": "yim20",
+        "unit_label": "yim20"
+       },
+       {
+        "fact_id": "yim20:tab2.r4c6#1",
+        "paper": "Yim 2020",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_{\\text{TMA}}",
+        "value": 0.00572,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "Ylilammi et al. (2018) reported a sticking coefficient for TMA of 5.72e-3.",
+        "unit_id": "yim20",
+        "unit_label": "yim20"
+       },
+       {
+        "fact_id": "yim20:tab2.r5c6#1",
+        "paper": "Yim 2020",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_{\\text{TMA}}",
+        "value_min": 0.0005,
+        "value_max": 0.002,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "Arts et al. (2019) reported a sticking coefficient for TMA between 0.5e-3 and 2e-3.",
+        "unit_id": "yim20",
+        "unit_label": "yim20"
+       },
+       {
+        "fact_id": "yim20:tab2.r6c6#1",
+        "paper": "Yim 2020",
+        "type": "cited",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_{\\text{TMA}}",
+        "value": 0.0001,
+        "method": "cited",
+        "data_kind": "cited",
+        "group": "cited",
+        "statement": "Arts et al. (2019) reported a sticking coefficient for TMA of 1e-4 in an OpAL reactor.",
+        "unit_id": "yim20",
+        "unit_label": "yim20"
+       },
+       {
+        "fact_id": "yim20:fig10.cap#15",
+        "paper": "Yim 2020",
+        "type": "model",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "species=tma",
+        "label_as_printed": "c_{\\text{TMA}}",
+        "value": 0.012,
+        "data_kind": "model_input",
+        "group": "model",
+        "statement": "c_{\\text{TMA}} = 0.012",
+        "unit_id": "yim20:sim:sim_ylilammi",
+        "unit_label": "Yilammi et al. diffusion–reaction model",
+        "key_conditions": {
+         "deposition_temperature": "300 °C [yim20:fig10.cap#1] (simulation)",
+         "structure": "several values at paper (not inherited): macroscopic_lateral_trench [yim20:tab2.r1c1#1], pillarhall_3 [yim20:tab2.r4c1#1]",
+         "feature_width": "500 nm [yim20:fig10d#1] (simulation)"
+        }
+       }
+      ],
+      "counts": {
+       "values": 11,
+       "by_data_kind": {
+        "computed_by_authors": 2,
+        "cited": 8,
+        "model_input": 1
+       },
+       "papers": [
+        "Werbrouck 2021",
+        "Yim 2020",
+        "Ylilammi 2018"
+       ],
+       "excluded": 68,
+       "rejected": 0
+      },
+      "excluded": [
+       {
+        "fact_id": "gor03:s6.p9#1",
+        "paper": "Gordon 2003",
+        "value": 0.07,
+        "qualifiers": "species=hf_nme2_4",
+        "data_kind": "measured",
+        "reason": "species=hf_nme2_4"
+       },
+       {
+        "fact_id": "art19:s4.p3#2",
+        "paper": "Arts 2019",
+        "value": 0.0001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "ela03:s5.p25#1",
+        "paper": "Elam 2003",
+        "value": 0.001,
+        "qualifiers": "",
+        "data_kind": "cited",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "ela03:s5.p26#1",
+        "paper": "Elam 2003",
+        "value": 1e-08,
+        "qualifiers": "",
+        "data_kind": "cited",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "ela03:s5.p12#2",
+        "paper": "Elam 2003",
+        "value": 0.001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "ela03:s5.p15#2",
+        "paper": "Elam 2003",
+        "value": 0.007,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "ela03:fig12.cap#3",
+        "paper": "Elam 2003",
+        "value": 0.007,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "ela03:s5.x2#2",
+        "paper": "Elam 2003",
+        "value": 0.0001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "ela03:abs.g5#1",
+        "paper": "Elam 2003",
+        "value": 0.001,
+        "qualifiers": "species=al2o3",
+        "data_kind": "stated",
+        "reason": "species al2o3 is a material, not a molecule (no reactant)"
+       },
+       {
+        "fact_id": "ela03:abs.g6#1",
+        "paper": "Elam 2003",
+        "value": 1e-08,
+        "qualifiers": "species=sio2",
+        "data_kind": "stated",
+        "reason": "species sio2 is a material, not a molecule (no reactant)"
+       },
+       {
+        "fact_id": "yim20:s18.p3#1",
+        "paper": "Yim 2020",
+        "value": 0.0001,
+        "qualifiers": "species=h2o",
+        "data_kind": "cited",
+        "reason": "species=h2o"
+       },
+       {
+        "fact_id": "yim20:s18.p3#2",
+        "paper": "Yim 2020",
+        "value": 1e-06,
+        "qualifiers": "species=h2o",
+        "data_kind": "cited",
+        "reason": "species=h2o"
+       },
+       {
+        "fact_id": "yim20:tab2.r5c7#1",
+        "paper": "Yim 2020",
+        "value_min": 8e-05,
+        "value_max": 0.0002,
+        "qualifiers": "species=h2o",
+        "data_kind": "cited",
+        "reason": "species=h2o"
+       },
+       {
+        "fact_id": "yim20:s19.p4#2",
+        "paper": "Yim 2020",
+        "value": 0.0003,
+        "qualifiers": "species=h2o",
+        "data_kind": "computed_by_authors",
+        "reason": "species=h2o"
+       },
+       {
+        "fact_id": "yim22:fig7.cap#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:s14.p6#10",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r1c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:tab3.r6c3#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r6c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0126,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:tab3.r7c3#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r7c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:tab3.r8c3#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r8c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:tab3.r9c3#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r9c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:tab3.r10c3#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r10c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:fig4g#1",
+        "paper": "Yim 2022",
+        "value": 0.0001,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r11c6#1",
+        "paper": "Yim 2022",
+        "value": 0.000126,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:fig4g#2",
+        "paper": "Yim 2022",
+        "value": 0.001,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r12c6#1",
+        "paper": "Yim 2022",
+        "value": 0.00125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:fig4g#3",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r13c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:fig4g#4",
+        "paper": "Yim 2022",
+        "value": 0.1,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r14c6#1",
+        "paper": "Yim 2022",
+        "value": 0.126,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:fig4g#5",
+        "paper": "Yim 2022",
+        "value": 1.0,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r15c6#1",
+        "paper": "Yim 2022",
+        "value": 1.25,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:tab3.r2c3#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r2c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0126,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "yim22:tab3.r3c3#1",
+        "paper": "Yim 2022",
+        "value": 0.01,
+        "qualifiers": "species=model_reactant",
+        "data_kind": "model_input",
+        "reason": "species=model_reactant"
+       },
+       {
+        "fact_id": "yim22:tab3.r3c6#1",
+        "paper": "Yim 2022",
+        "value": 0.0125,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated and no single reactant A on its run"
+       },
+       {
+        "fact_id": "hei24:tab2.r2c1#1",
+        "paper": "Heikkinen 2024",
+        "value": 0.02,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#42",
+        "paper": "Heikkinen 2024",
+        "value": 0.0001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#43",
+        "paper": "Heikkinen 2024",
+        "value": 0.001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#44",
+        "paper": "Heikkinen 2024",
+        "value": 0.01,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#45",
+        "paper": "Heikkinen 2024",
+        "value": 0.1,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#46",
+        "paper": "Heikkinen 2024",
+        "value": 1.0,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#47",
+        "paper": "Heikkinen 2024",
+        "value": 0.0001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#48",
+        "paper": "Heikkinen 2024",
+        "value": 0.001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#49",
+        "paper": "Heikkinen 2024",
+        "value": 0.01,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#50",
+        "paper": "Heikkinen 2024",
+        "value": 0.1,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig5.cap#51",
+        "paper": "Heikkinen 2024",
+        "value": 1.0,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#42",
+        "paper": "Heikkinen 2024",
+        "value": 0.0001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#43",
+        "paper": "Heikkinen 2024",
+        "value": 0.001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#44",
+        "paper": "Heikkinen 2024",
+        "value": 0.01,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#45",
+        "paper": "Heikkinen 2024",
+        "value": 0.1,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#46",
+        "paper": "Heikkinen 2024",
+        "value": 1.0,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#47",
+        "paper": "Heikkinen 2024",
+        "value": 0.0001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#48",
+        "paper": "Heikkinen 2024",
+        "value": 0.001,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#49",
+        "paper": "Heikkinen 2024",
+        "value": 0.01,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#50",
+        "paper": "Heikkinen 2024",
+        "value": 0.1,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "hei24:fig6.cap#51",
+        "paper": "Heikkinen 2024",
+        "value": 1.0,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "yli18:s8.p3#12",
+        "paper": "Ylilammi 2018",
+        "value": 0.01,
+        "qualifiers": "",
+        "data_kind": "model_input",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "yli18:tabI.r2c4#1",
+        "paper": "Ylilammi 2018",
+        "value": 0.1,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated; the run's reactant A is ticl4"
+       },
+       {
+        "fact_id": "wer21:s25.p6#1",
+        "paper": "Werbrouck 2021",
+        "value": 1.0,
+        "qualifiers": "",
+        "data_kind": "cited",
+        "reason": "species not stated (cited and model values are not filled)"
+       },
+       {
+        "fact_id": "wer21:s25.p17#4",
+        "paper": "Werbrouck 2021",
+        "value_min": 5e-05,
+        "value_max": 0.0002,
+        "qualifiers": "species=h2o",
+        "data_kind": "cited",
+        "reason": "species=h2o"
+       },
+       {
+        "fact_id": "wer21:s25.p17#1",
+        "paper": "Werbrouck 2021",
+        "value": 0.316,
+        "qualifiers": "species=o_atom",
+        "data_kind": "computed_by_authors",
+        "reason": "species=o_atom"
+       },
+       {
+        "fact_id": "wer21:s25.p17#2",
+        "paper": "Werbrouck 2021",
+        "value": 0.172,
+        "qualifiers": "species=o_atom",
+        "data_kind": "computed_by_authors",
+        "reason": "species=o_atom"
+       }
+      ]
+     },
+     "sent": "{\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"units\":\"every unit\",\"values\":[{\"fact_id\":\"yim20:s19.p4#1\",\"paper\":\"Yim 2020\",\"type\":\"derived\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_TMA\",\"value\":0.004,\"method\":\"calculation\",\"data_kind\":\"computed_by_authors\",\"group\":\"own\",\"statement\":\"Our extracted value of c_TMA, 4 × 10^-3, agrees with the literature values\",\"unit_id\":\"yim20:recipe\",\"unit_label\":\"recipe\",\"key_conditions\":{\"deposition_temperature\":\"300 °C [yim20:s2.p13#1] (recipe)\",\"material\":\"al2o3 [yim20:s6.p1#1] (recipe)\",\"structure\":\"pillarhall_3 [yim20:s5.p1#1] (recipe)\",\"feature_width\":\"several values: 100 nm [yim20:s5.p1#3], 500 nm [yim20:s5.p1#4], 2000 nm [yim20:s5.p1#5]\"}},{\"fact_id\":\"yli18:tabI.r1c4#1\",\"paper\":\"Ylilammi 2018\",\"type\":\"derived\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"\",\"label_as_printed\":\"c\",\"value\":0.00572,\"method\":\"calculation\",\"data_kind\":\"computed_by_authors\",\"group\":\"own\",\"statement\":\"0.00572\",\"unit_id\":\"yli18:ent:specimen_al2o3:meas:measurement\",\"unit_label\":\"measurement of Al2O3\",\"sample_id\":\"yli18:ent:specimen_al2o3\",\"sample_label\":\"Al2O3\",\"key_conditions\":{\"deposition_temperature\":\"300 °C [yli18:s8.p21#4] (run)\",\"reactant_A\":\"tma [yli18:s8.p21#2] (run)\",\"reactant_B\":\"h2o [yli18:s8.p21#3] (run)\",\"material\":\"al2o3 [yli18:s5.p4#1] (run)\",\"structure\":\"pillarhall_3 [yli18:s8.p23#2] (run)\",\"feature_width\":\"0.5 µm [yli18:s8.p23#3] (run)\"},\"species_filled\":\"tma: the run's reactant A (yli18:s8.p21#2, Al2O3)\"},{\"fact_id\":\"wer21:s25.p17#3\",\"paper\":\"Werbrouck 2021\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"sticking coefficient of TMA\",\"value_min\":0.0008,\"value_max\":0.002,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Literature reports a TMA sticking coefficient of 0.0008-0.002 in the TMA-H2O process.\",\"unit_id\":\"wer21\",\"unit_label\":\"wer21\"},{\"fact_id\":\"yim20:s18.p3#3\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_TMA\",\"value\":0.002,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"c_TMA of 2 × 10^-3 (temperature-independent) were reported in the follow-up work Vandalon et al. (2017)\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},{\"fact_id\":\"yim20:tab2.r1c6#1\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value\":0.1,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Dendooven et al. (2009) reported a sticking coefficient for TMA of 0.1.\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},{\"fact_id\":\"yim20:tab2.r2c6#1\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value\":0.02,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Schwille et al. (2016) reported a sticking coefficient for TMA of 2e-2.\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},{\"fact_id\":\"yim20:tab2.r3c6#1\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value\":0.001,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Vandalon et al. (2016) reported a sticking coefficient for TMA of 1e-3.\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},{\"fact_id\":\"yim20:tab2.r4c6#1\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value\":0.00572,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Ylilammi et al. (2018) reported a sticking coefficient for TMA of 5.72e-3.\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},{\"fact_id\":\"yim20:tab2.r5c6#1\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value_min\":0.0005,\"value_max\":0.002,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Arts et al. (2019) reported a sticking coefficient for TMA between 0.5e-3 and 2e-3.\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},{\"fact_id\":\"yim20:tab2.r6c6#1\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value\":0.0001,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Arts et al. (2019) reported a sticking coefficient for TMA of 1e-4 in an OpAL reactor.\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},{\"fact_id\":\"yim20:fig10.cap#15\",\"paper\":\"Yim 2020\",\"type\":\"model\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value\":0.012,\"data_kind\":\"model_input\",\"group\":\"model\",\"statement\":\"c_{\\\\text{TMA}} = 0.012\",\"unit_id\":\"yim20:sim:sim_ylilammi\",\"unit_label\":\"Yilammi et al. diffusion–reaction model\",\"key_conditions\":{\"deposition_temperature\":\"300 °C [yim20:fig10.cap#1] (simulation)\",\"structure\":\"several values at paper (not inherited): macroscopic_lateral_trench [yim20:tab2.r1c1#1], pillarhall_3 [yim20:tab2.r4c1#1]\",\"feature_width\":\"500 nm [yim20:fig10d#1] (simulation)\"}}],\"counts\":{\"values\":11,\"by_data_kind\":{\"computed_by_authors\":2,\"cited\":8,\"model_input\":1},\"papers\":[\"Werbrouck 2021\",\"Yim 2020\",\"Ylilammi 2018\"],\"excluded\":68,\"rejected\":0},\"excluded\":[{\"fact_id\":\"gor03:s6.p9#1\",\"paper\":\"Gordon 2003\",\"value\":0.07,\"qualifiers\":\"species=hf_nme2_4\",\"data_kind\":\"measured\",\"reason\":\"species=hf_nme2_4\"},{\"fact_id\":\"art19:s4.p3#2\",\"paper\":\"Arts 2019\",\"value\":0.0001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"ela03:s5.p25#1\",\"paper\":\"Elam 2003\",\"value\":0.001,\"qualifiers\":\"\",\"data_kind\":\"cited\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"ela03:s5.p26#1\",\"paper\":\"Elam 2003\",\"value\":1e-08,\"qualifiers\":\"\",\"data_kind\":\"cited\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"ela03:s5.p12#2\",\"paper\":\"Elam 2003\",\"value\":0.001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"ela03:s5.p15#2\",\"paper\":\"Elam 2003\",\"value\":0.007,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"ela03:fig12.cap#3\",\"paper\":\"Elam 2003\",\"value\":0.007,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"ela03:s5.x2#2\",\"paper\":\"Elam 2003\",\"value\":0.0001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"ela03:abs.g5#1\",\"paper\":\"Elam 2003\",\"value\":0.001,\"qualifiers\":\"species=al2o3\",\"data_kind\":\"stated\",\"reason\":\"species al2o3 is a material, not a molecule (no reactant)\"},{\"fact_id\":\"ela03:abs.g6#1\",\"paper\":\"Elam 2003\",\"value\":1e-08,\"qualifiers\":\"species=sio2\",\"data_kind\":\"stated\",\"reason\":\"species sio2 is a material, not a molecule (no reactant)\"},{\"fact_id\":\"yim20:s18.p3#1\",\"paper\":\"Yim 2020\",\"value\":0.0001,\"qualifiers\":\"species=h2o\",\"data_kind\":\"cited\",\"reason\":\"species=h2o\"},{\"fact_id\":\"yim20:s18.p3#2\",\"paper\":\"Yim 2020\",\"value\":1e-06,\"qualifiers\":\"species=h2o\",\"data_kind\":\"cited\",\"reason\":\"species=h2o\"},{\"fact_id\":\"yim20:tab2.r5c7#1\",\"paper\":\"Yim 2020\",\"value_min\":8e-05,\"value_max\":0.0002,\"qualifiers\":\"species=h2o\",\"data_kind\":\"cited\",\"reason\":\"species=h2o\"},{\"fact_id\":\"yim20:s19.p4#2\",\"paper\":\"Yim 2020\",\"value\":0.0003,\"qualifiers\":\"species=h2o\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species=h2o\"},{\"fact_id\":\"yim22:fig7.cap#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:s14.p6#10\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r1c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:tab3.r6c3#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r6c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0126,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:tab3.r7c3#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r7c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:tab3.r8c3#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r8c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:tab3.r9c3#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r9c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:tab3.r10c3#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r10c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:fig4g#1\",\"paper\":\"Yim 2022\",\"value\":0.0001,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r11c6#1\",\"paper\":\"Yim 2022\",\"value\":0.000126,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:fig4g#2\",\"paper\":\"Yim 2022\",\"value\":0.001,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r12c6#1\",\"paper\":\"Yim 2022\",\"value\":0.00125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:fig4g#3\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r13c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:fig4g#4\",\"paper\":\"Yim 2022\",\"value\":0.1,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r14c6#1\",\"paper\":\"Yim 2022\",\"value\":0.126,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:fig4g#5\",\"paper\":\"Yim 2022\",\"value\":1.0,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r15c6#1\",\"paper\":\"Yim 2022\",\"value\":1.25,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:tab3.r2c3#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r2c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0126,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"yim22:tab3.r3c3#1\",\"paper\":\"Yim 2022\",\"value\":0.01,\"qualifiers\":\"species=model_reactant\",\"data_kind\":\"model_input\",\"reason\":\"species=model_reactant\"},{\"fact_id\":\"yim22:tab3.r3c6#1\",\"paper\":\"Yim 2022\",\"value\":0.0125,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated and no single reactant A on its run\"},{\"fact_id\":\"hei24:tab2.r2c1#1\",\"paper\":\"Heikkinen 2024\",\"value\":0.02,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#42\",\"paper\":\"Heikkinen 2024\",\"value\":0.0001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#43\",\"paper\":\"Heikkinen 2024\",\"value\":0.001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#44\",\"paper\":\"Heikkinen 2024\",\"value\":0.01,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#45\",\"paper\":\"Heikkinen 2024\",\"value\":0.1,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#46\",\"paper\":\"Heikkinen 2024\",\"value\":1.0,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#47\",\"paper\":\"Heikkinen 2024\",\"value\":0.0001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#48\",\"paper\":\"Heikkinen 2024\",\"value\":0.001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#49\",\"paper\":\"Heikkinen 2024\",\"value\":0.01,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#50\",\"paper\":\"Heikkinen 2024\",\"value\":0.1,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig5.cap#51\",\"paper\":\"Heikkinen 2024\",\"value\":1.0,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#42\",\"paper\":\"Heikkinen 2024\",\"value\":0.0001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#43\",\"paper\":\"Heikkinen 2024\",\"value\":0.001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#44\",\"paper\":\"Heikkinen 2024\",\"value\":0.01,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#45\",\"paper\":\"Heikkinen 2024\",\"value\":0.1,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#46\",\"paper\":\"Heikkinen 2024\",\"value\":1.0,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#47\",\"paper\":\"Heikkinen 2024\",\"value\":0.0001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#48\",\"paper\":\"Heikkinen 2024\",\"value\":0.001,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#49\",\"paper\":\"Heikkinen 2024\",\"value\":0.01,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#50\",\"paper\":\"Heikkinen 2024\",\"value\":0.1,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"hei24:fig6.cap#51\",\"paper\":\"Heikkinen 2024\",\"value\":1.0,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"yli18:s8.p3#12\",\"paper\":\"Ylilammi 2018\",\"value\":0.01,\"qualifiers\":\"\",\"data_kind\":\"model_input\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"yli18:tabI.r2c4#1\",\"paper\":\"Ylilammi 2018\",\"value\":0.1,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated; the run's reactant A is ticl4\"},{\"fact_id\":\"wer21:s25.p6#1\",\"paper\":\"Werbrouck 2021\",\"value\":1.0,\"qualifiers\":\"\",\"data_kind\":\"cited\",\"reason\":\"species not stated (cited and model values are not filled)\"},{\"fact_id\":\"wer21:s25.p17#4\",\"paper\":\"Werbrouck 2021\",\"value_min\":5e-05,\"value_max\":0.0002,\"qualifiers\":\"species=h2o\",\"data_kind\":\"cited\",\"reason\":\"species=h2o\"},{\"fact_id\":\"wer21:s25.p17#1\",\"paper\":\"Werbrouck 2021\",\"value\":0.316,\"qualifiers\":\"species=o_atom\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species=o_atom\"},{\"fact_id\":\"wer21:s25.p17#2\",\"paper\":\"Werbrouck 2021\",\"value\":0.172,\"qualifiers\":\"species=o_atom\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species=o_atom\"}]}",
+     "sent_chars": 17154
+    },
+    {
+     "type": "assistant",
+     "request": 4,
+     "ms": 5384,
+     "provider": "deepseek",
+     "model": "deepseek-flash",
+     "fallback_ran": false,
+     "request_id": "c0424e5c-9ffa-43d7-943c-78298e84b418",
+     "stop_reason": "tool_use",
+     "stop_raw": "tool_calls",
+     "usage": {
+      "input_tokens": 5691,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11648,
+      "output_tokens": 778,
+      "reasoning_tokens": 700
+     },
+     "usage_raw": {
+      "completion_tokens": 778,
+      "prompt_tokens": 17339,
+      "total_tokens": 18117,
+      "completion_tokens_details": {
+       "accepted_prediction_tokens": null,
+       "audio_tokens": null,
+       "reasoning_tokens": 700,
+       "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+       "audio_tokens": null,
+       "cached_tokens": 11648
+      },
+      "prompt_cache_hit_tokens": 11648,
+      "prompt_cache_miss_tokens": 5691
+     },
+     "cost_usd_estimate": 0.002711,
+     "thinking": [
+      "Key: Yim 2020 own extracted c_TMA 0.004 at 300 °C. Question \"twin\" perhaps asks what sticking coefficient should the twin use for TMA at 300 °C. Likely use 4e-3. But we need resolve possible \"twin\" maybe Yim 2022 digital twin? There may be a paper claim about c_TMA. Let's inspect all values without species filter maybe model inputs / species=model_reactant at 300. The excluded list has Yim 2022 model_reactant values 0.01 etc. But question specifies TMA at 300; Yim 2020 extracted 0.004. Ylilammi 0.00572 at 300. Need choose? Maybe \"twin\" refers to \"digital twin\" in Yim 2020? Need determine intended. They ask singular \"the twin\". Could be context not present, but we take most reasonable reading. Could be from Yim 2022 \"Conformality of ALD in microchannels: impact of process parameters on simulated thickness profile\" uses simulation twin; model input c = .01 at 300? Let's investigate claims and records.\n\nWe need perhaps compare samples at 300 with Al2O3 TMA: Yim20, Ylilammi, Gao. Values: Yim20 0.004; Ylilammi 0.00572. Need explain difference. \"twin\" maybe simulation in Yim 2020 used Ylilammi model with c_TMA=0.012 [yim20:fig10.cap#15] at 300, but that's a model input and demonstrates simulated profile. Yet question \"What sticking coefficient should the twin use for TMA at 300 °C?\" Could be asking based on extracted values. It may expect answer from Yim 2020 4×10^-3. We need be precise: likely \"4×10^-3 (dimensionless)\" with evidence at 300 °C, Al2O3, TMA. Mention Ylilammi 2018 reports 5.72×10^-3 at 300, and Yim's own extracted value agrees with literature. But \"should use\" perhaps choose Yim20's extracted value because it is directly measured from saturation profiles in lateral channels at 300. Need maybe check claim in Yim 2020: extracted c_TMA 4e-3 agrees literature. Also H2O 3e-4. Could include model input 0.012 if a twin of Ylilammi model? Let's inspect the Yim 2020 records around c_TMA. get_records sample maybe sample_al2o3? Need identify sample associated with yim20:s19.p4#1. It says unit_id yim20:recipe, no sample_id perhaps own value attached recipe? Hmm.\n\nQuestion perhaps from an experiment context: \"twin\" maybe a person named Twin? No. \"What sticking coefficient should the twin use for TMA at 300 °C?\" This sounds digital twin. We should answer with recommended value and caveats.\n\nNeed maybe search claims for initial_sticking_coefficient, TMA. Claims can filter cause/effect concept. Search claims with cause initial_sticking_coefficient maybe."
+     ],
+     "text": "",
+     "tool_calls": [
+      {
+       "id": "call_00_XHC9BXM993UYU7435KNM5260",
+       "name": "claims",
+       "input": {
+        "cause": [
+         "initial_sticking_coefficient"
+        ]
+       }
+      },
+      {
+       "id": "call_01_xPNurWwLdQPFQMc95lrP7671",
+       "name": "claims",
+       "input": {
+        "effect": [
+         "initial_sticking_coefficient"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_00_XHC9BXM993UYU7435KNM5260",
+     "name": "claims",
+     "input": {
+      "cause": [
+       "initial_sticking_coefficient"
+      ]
+     },
+     "call": 6,
+     "ms": 36,
+     "error": null,
+     "result": {
+      "cause": [
+       "initial_sticking_coefficient"
+      ],
+      "effect": [],
+      "relation": [],
+      "claims": [
+       {
+        "fact_id": "ela03:abs.g4#1",
+        "paper": "Elam 2003",
+        "cause": "initial_sticking_coefficient",
+        "relation": "causes",
+        "effect": "reaction_diffusion",
+        "stance": "asserted",
+        "statement": "Monte Carlo simulations predict that lowering the reaction probability transitions the ALD process from diffusion-limited to reaction-limited behavior.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "ela03:s5.p18#1",
+        "paper": "Elam 2003",
+        "cause": "initial_sticking_coefficient;aspect_ratio",
+        "relation": "limits",
+        "effect": "step_coverage",
+        "stance": "asserted",
+        "statement": "The kinetic regime is governed by the reactive sticking coefficient and the nanopore aspect ratio.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "ela03:s5.p27#1",
+        "paper": "Elam 2003",
+        "cause": "initial_sticking_coefficient",
+        "relation": "no_effect",
+        "effect": "step_coverage",
+        "stance": "asserted",
+        "statement": "In the diffusion-limited regime, coverage profiles are insensitive to the exact sticking coefficient.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "yim22:s2.p10#1",
+        "paper": "Yim 2022",
+        "cause": "initial_sticking_coefficient",
+        "relation": "causes",
+        "effect": "penetration_depth",
+        "stance": "asserted",
+        "statement": "Low sticking coefficients cause reaction-limited regimes without clear termination fronts.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "yim22:s12.p3#5",
+        "paper": "Yim 2022",
+        "cause": "initial_sticking_coefficient",
+        "relation": "causes",
+        "effect": "front_slope",
+        "stance": "asserted",
+        "statement": "The initial sticking coefficient strongly impacts the slope and shape of the thickness profile.",
+        "links": [
+         {
+          "fact_id": "yim22:fig4g#1",
+          "type": "model",
+          "quantity": "initial_sticking_coefficient",
+          "value": 0.0001,
+          "data_kind": "model_input",
+          "sample_id": "yim22:mrun:mr_fig4g_c1"
+         },
+         {
+          "fact_id": "yim22:fig4g#2",
+          "type": "model",
+          "quantity": "initial_sticking_coefficient",
+          "value": 0.001,
+          "data_kind": "model_input",
+          "sample_id": "yim22:mrun:mr_fig4g_c2"
+         },
+         {
+          "fact_id": "yim22:fig4g#3",
+          "type": "model",
+          "quantity": "initial_sticking_coefficient",
+          "value": 0.01,
+          "data_kind": "model_input",
+          "sample_id": "yim22:mrun:mr_fig4g_c3"
+         },
+         {
+          "fact_id": "yim22:fig4g#4",
+          "type": "model",
+          "quantity": "initial_sticking_coefficient",
+          "value": 0.1,
+          "data_kind": "model_input",
+          "sample_id": "yim22:mrun:mr_fig4g_c4"
+         },
+         {
+          "fact_id": "yim22:fig4g#5",
+          "type": "model",
+          "quantity": "initial_sticking_coefficient",
+          "value": 1.0,
+          "data_kind": "model_input",
+          "sample_id": "yim22:mrun:mr_fig4g_c5"
+         },
+         {
+          "fact_id": "yim22:fig4g#6",
+          "type": "model",
+          "quantity": "other",
+          "points_ref": "yim22:fig4g#c1",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig4g_c1"
+         },
+         {
+          "fact_id": "yim22:fig4g#7",
+          "type": "model",
+          "quantity": "other",
+          "points_ref": "yim22:fig4g#c2",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig4g_c2"
+         },
+         {
+          "fact_id": "yim22:fig4g#8",
+          "type": "model",
+          "quantity": "other",
+          "points_ref": "yim22:fig4g#c3",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig4g_c3"
+         },
+         {
+          "fact_id": "yim22:fig4g#9",
+          "type": "model",
+          "quantity": "other",
+          "points_ref": "yim22:fig4g#c4",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig4g_c4"
+         },
+         {
+          "fact_id": "yim22:fig4g#10",
+          "type": "model",
+          "quantity": "other",
+          "points_ref": "yim22:fig4g#c5",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig4g_c5"
+         }
+        ],
+        "linked_samples": {
+         "yim22:mrun:mr_fig4g_c1": {
+          "id": "yim22:mrun:mr_fig4g_c1",
+          "paper": "Yim 2022",
+          "label": "c = 0.0001",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient[species=model_reactant]": "0.0001"
+          }
+         },
+         "yim22:mrun:mr_fig4g_c2": {
+          "id": "yim22:mrun:mr_fig4g_c2",
+          "paper": "Yim 2022",
+          "label": "c = 0.001",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient[species=model_reactant]": "0.001"
+          }
+         },
+         "yim22:mrun:mr_fig4g_c3": {
+          "id": "yim22:mrun:mr_fig4g_c3",
+          "paper": "Yim 2022",
+          "label": "c = 0.01",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient[species=model_reactant]": "0.01"
+          }
+         },
+         "yim22:mrun:mr_fig4g_c4": {
+          "id": "yim22:mrun:mr_fig4g_c4",
+          "paper": "Yim 2022",
+          "label": "c = 0.1",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient[species=model_reactant]": "0.1"
+          }
+         },
+         "yim22:mrun:mr_fig4g_c5": {
+          "id": "yim22:mrun:mr_fig4g_c5",
+          "paper": "Yim 2022",
+          "label": "c = 1",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient[species=model_reactant]": "1"
+          }
+         }
+        }
+       },
+       {
+        "fact_id": "yim22:tab2.r4c1#1",
+        "paper": "Yim 2022",
+        "cause": "initial_sticking_coefficient",
+        "relation": "increases",
+        "effect": "penetration_depth",
+        "stance": "asserted",
+        "statement": "In free molecular flow, increasing sticking coefficient slightly increases penetration depth.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "yim22:tab2.r4c2#1",
+        "paper": "Yim 2022",
+        "cause": "initial_sticking_coefficient",
+        "relation": "increases",
+        "effect": "front_slope",
+        "stance": "asserted",
+        "statement": "In free molecular flow, increasing sticking coefficient strongly increases front slope.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "yim22:tab3.cap#1",
+        "paper": "Yim 2022",
+        "cause": "deposition_temperature;molar_mass;initial_sticking_coefficient",
+        "relation": "causes",
+        "effect": "initial_sticking_coefficient",
+        "stance": "asserted",
+        "statement": "Table 3 compares sticking coefficient values extracted using the slope method with input values used in simulations across variations in temperature, molar mass, and sticking coefficient.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "hei24:abs.g4#1",
+        "paper": "Heikkinen 2024",
+        "cause": "molar_mass;growth_per_cycle;initial_sticking_coefficient;exposure;deposition_temperature",
+        "relation": "causes",
+        "effect": "surface_coverage",
+        "stance": "asserted",
+        "statement": "Process parameters and reactant properties determine the simulated diffusion and surface coverage profiles.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "hei24:s9.p6#1",
+        "paper": "Heikkinen 2024",
+        "cause": "initial_sticking_coefficient",
+        "relation": "no_effect",
+        "effect": "penetration_depth",
+        "stance": "asserted",
+        "statement": "Varying initial sticking coefficient beta_0 has no significant effect on the average penetration depth.",
+        "links": [
+         {
+          "fact_id": "hei24:fig5i#1",
+          "type": "setting",
+          "quantity": "structure",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c1"
+         },
+         {
+          "fact_id": "hei24:fig5i#2",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5i#c1",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c1"
+         },
+         {
+          "fact_id": "hei24:fig5i#3",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5i#c2",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c2"
+         },
+         {
+          "fact_id": "hei24:fig5i#4",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5i#c3",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c3"
+         },
+         {
+          "fact_id": "hei24:fig5i#5",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5i#c4",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c4"
+         },
+         {
+          "fact_id": "hei24:fig5i#6",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5i#c5",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c5"
+         },
+         {
+          "fact_id": "hei24:fig5j#1",
+          "type": "setting",
+          "quantity": "structure",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c1"
+         },
+         {
+          "fact_id": "hei24:fig5j#2",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5j#c1",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c1"
+         },
+         {
+          "fact_id": "hei24:fig5j#3",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5j#c2",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c2"
+         },
+         {
+          "fact_id": "hei24:fig5j#4",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5j#c3",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c3"
+         },
+         {
+          "fact_id": "hei24:fig5j#5",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5j#c4",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c4"
+         },
+         {
+          "fact_id": "hei24:fig5j#6",
+          "type": "model",
+          "quantity": "reactant_number_density",
+          "points_ref": "hei24:fig5j#c5",
+          "data_kind": "simulated",
+          "sample_id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c5"
+         }
+        ],
+        "linked_samples": {
+         "hei24:mrun:10_1039_d3cp05639b_fig5i_c1": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c1",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.0001",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.0001",
+           "structure": "porous_sphere"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5i_c2": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c2",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.001",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.001",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5i_c3": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c3",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.01",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.01",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5i_c4": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c4",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.1",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.1",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5i_c5": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5i_c5",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 1",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "1",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5j_c1": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c1",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.0001",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.0001",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5j_c2": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c2",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.001",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.001",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5j_c3": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c3",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.01",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.01",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5j_c4": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c4",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 0.1",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "0.1",
+           "structure": "porous_slab"
+          }
+         },
+         "hei24:mrun:10_1039_d3cp05639b_fig5j_c5": {
+          "id": "hei24:mrun:10_1039_d3cp05639b_fig5j_c5",
+          "paper": "Heikkinen 2024",
+          "label": "\\beta_0 = 1",
+          "kind": "model run",
+          "differing_conditions": {
+           "initial_sticking_coefficient": "1",
+           "structure": "porous_slab"
+          }
+         }
+        }
+       }
+      ],
+      "n_claims": 10,
+      "papers": [
+       "Elam 2003",
+       "Heikkinen 2024",
+       "Yim 2022"
+      ]
+     },
+     "sent": "{\"cause\":[\"initial_sticking_coefficient\"],\"effect\":[],\"relation\":[],\"claims\":[{\"fact_id\":\"ela03:abs.g4#1\",\"paper\":\"Elam 2003\",\"cause\":\"initial_sticking_coefficient\",\"relation\":\"causes\",\"effect\":\"reaction_diffusion\",\"stance\":\"asserted\",\"statement\":\"Monte Carlo simulations predict that lowering the reaction probability transitions the ALD process from diffusion-limited to reaction-limited behavior.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"ela03:s5.p18#1\",\"paper\":\"Elam 2003\",\"cause\":\"initial_sticking_coefficient;aspect_ratio\",\"relation\":\"limits\",\"effect\":\"step_coverage\",\"stance\":\"asserted\",\"statement\":\"The kinetic regime is governed by the reactive sticking coefficient and the nanopore aspect ratio.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"ela03:s5.p27#1\",\"paper\":\"Elam 2003\",\"cause\":\"initial_sticking_coefficient\",\"relation\":\"no_effect\",\"effect\":\"step_coverage\",\"stance\":\"asserted\",\"statement\":\"In the diffusion-limited regime, coverage profiles are insensitive to the exact sticking coefficient.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"yim22:s2.p10#1\",\"paper\":\"Yim 2022\",\"cause\":\"initial_sticking_coefficient\",\"relation\":\"causes\",\"effect\":\"penetration_depth\",\"stance\":\"asserted\",\"statement\":\"Low sticking coefficients cause reaction-limited regimes without clear termination fronts.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"yim22:s12.p3#5\",\"paper\":\"Yim 2022\",\"cause\":\"initial_sticking_coefficient\",\"relation\":\"causes\",\"effect\":\"front_slope\",\"stance\":\"asserted\",\"statement\":\"The initial sticking coefficient strongly impacts the slope and shape of the thickness profile.\",\"links\":[{\"fact_id\":\"yim22:fig4g#1\",\"type\":\"model\",\"quantity\":\"initial_sticking_coefficient\",\"value\":0.0001,\"data_kind\":\"model_input\",\"sample_id\":\"yim22:mrun:mr_fig4g_c1\"},{\"fact_id\":\"yim22:fig4g#2\",\"type\":\"model\",\"quantity\":\"initial_sticking_coefficient\",\"value\":0.001,\"data_kind\":\"model_input\",\"sample_id\":\"yim22:mrun:mr_fig4g_c2\"},{\"fact_id\":\"yim22:fig4g#3\",\"type\":\"model\",\"quantity\":\"initial_sticking_coefficient\",\"value\":0.01,\"data_kind\":\"model_input\",\"sample_id\":\"yim22:mrun:mr_fig4g_c3\"},{\"fact_id\":\"yim22:fig4g#4\",\"type\":\"model\",\"quantity\":\"initial_sticking_coefficient\",\"value\":0.1,\"data_kind\":\"model_input\",\"sample_id\":\"yim22:mrun:mr_fig4g_c4\"},{\"fact_id\":\"yim22:fig4g#5\",\"type\":\"model\",\"quantity\":\"initial_sticking_coefficient\",\"value\":1.0,\"data_kind\":\"model_input\",\"sample_id\":\"yim22:mrun:mr_fig4g_c5\"},{\"fact_id\":\"yim22:fig4g#6\",\"type\":\"model\",\"quantity\":\"other\",\"points_ref\":\"yim22:fig4g#c1\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig4g_c1\"},{\"fact_id\":\"yim22:fig4g#7\",\"type\":\"model\",\"quantity\":\"other\",\"points_ref\":\"yim22:fig4g#c2\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig4g_c2\"},{\"fact_id\":\"yim22:fig4g#8\",\"type\":\"model\",\"quantity\":\"other\",\"points_ref\":\"yim22:fig4g#c3\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig4g_c3\"},{\"fact_id\":\"yim22:fig4g#9\",\"type\":\"model\",\"quantity\":\"other\",\"points_ref\":\"yim22:fig4g#c4\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig4g_c4\"},{\"fact_id\":\"yim22:fig4g#10\",\"type\":\"model\",\"quantity\":\"other\",\"points_ref\":\"yim22:fig4g#c5\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig4g_c5\"}],\"linked_samples\":{\"yim22:mrun:mr_fig4g_c1\":{\"id\":\"yim22:mrun:mr_fig4g_c1\",\"paper\":\"Yim 2022\",\"label\":\"c = 0.0001\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient[species=model_reactant]\":\"0.0001\"}},\"yim22:mrun:mr_fig4g_c2\":{\"id\":\"yim22:mrun:mr_fig4g_c2\",\"paper\":\"Yim 2022\",\"label\":\"c = 0.001\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient[species=model_reactant]\":\"0.001\"}},\"yim22:mrun:mr_fig4g_c3\":{\"id\":\"yim22:mrun:mr_fig4g_c3\",\"paper\":\"Yim 2022\",\"label\":\"c = 0.01\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient[species=model_reactant]\":\"0.01\"}},\"yim22:mrun:mr_fig4g_c4\":{\"id\":\"yim22:mrun:mr_fig4g_c4\",\"paper\":\"Yim 2022\",\"label\":\"c = 0.1\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient[species=model_reactant]\":\"0.1\"}},\"yim22:mrun:mr_fig4g_c5\":{\"id\":\"yim22:mrun:mr_fig4g_c5\",\"paper\":\"Yim 2022\",\"label\":\"c = 1\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient[species=model_reactant]\":\"1\"}}}},{\"fact_id\":\"yim22:tab2.r4c1#1\",\"paper\":\"Yim 2022\",\"cause\":\"initial_sticking_coefficient\",\"relation\":\"increases\",\"effect\":\"penetration_depth\",\"stance\":\"asserted\",\"statement\":\"In free molecular flow, increasing sticking coefficient slightly increases penetration depth.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"yim22:tab2.r4c2#1\",\"paper\":\"Yim 2022\",\"cause\":\"initial_sticking_coefficient\",\"relation\":\"increases\",\"effect\":\"front_slope\",\"stance\":\"asserted\",\"statement\":\"In free molecular flow, increasing sticking coefficient strongly increases front slope.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"yim22:tab3.cap#1\",\"paper\":\"Yim 2022\",\"cause\":\"deposition_temperature;molar_mass;initial_sticking_coefficient\",\"relation\":\"causes\",\"effect\":\"initial_sticking_coefficient\",\"stance\":\"asserted\",\"statement\":\"Table 3 compares sticking coefficient values extracted using the slope method with input values used in simulations across variations in temperature, molar mass, and sticking coefficient.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"hei24:abs.g4#1\",\"paper\":\"Heikkinen 2024\",\"cause\":\"molar_mass;growth_per_cycle;initial_sticking_coefficient;exposure;deposition_temperature\",\"relation\":\"causes\",\"effect\":\"surface_coverage\",\"stance\":\"asserted\",\"statement\":\"Process parameters and reactant properties determine the simulated diffusion and surface coverage profiles.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"hei24:s9.p6#1\",\"paper\":\"Heikkinen 2024\",\"cause\":\"initial_sticking_coefficient\",\"relation\":\"no_effect\",\"effect\":\"penetration_depth\",\"stance\":\"asserted\",\"statement\":\"Varying initial sticking coefficient beta_0 has no significant effect on the average penetration depth.\",\"links\":[{\"fact_id\":\"hei24:fig5i#1\",\"type\":\"setting\",\"quantity\":\"structure\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c1\"},{\"fact_id\":\"hei24:fig5i#2\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5i#c1\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c1\"},{\"fact_id\":\"hei24:fig5i#3\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5i#c2\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c2\"},{\"fact_id\":\"hei24:fig5i#4\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5i#c3\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c3\"},{\"fact_id\":\"hei24:fig5i#5\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5i#c4\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c4\"},{\"fact_id\":\"hei24:fig5i#6\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5i#c5\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c5\"},{\"fact_id\":\"hei24:fig5j#1\",\"type\":\"setting\",\"quantity\":\"structure\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c1\"},{\"fact_id\":\"hei24:fig5j#2\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5j#c1\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c1\"},{\"fact_id\":\"hei24:fig5j#3\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5j#c2\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c2\"},{\"fact_id\":\"hei24:fig5j#4\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5j#c3\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c3\"},{\"fact_id\":\"hei24:fig5j#5\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5j#c4\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c4\"},{\"fact_id\":\"hei24:fig5j#6\",\"type\":\"model\",\"quantity\":\"reactant_number_density\",\"points_ref\":\"hei24:fig5j#c5\",\"data_kind\":\"simulated\",\"sample_id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c5\"}],\"linked_samples\":{\"hei24:mrun:10_1039_d3cp05639b_fig5i_c1\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c1\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.0001\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.0001\",\"structure\":\"porous_sphere\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5i_c2\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c2\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.001\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.001\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5i_c3\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c3\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.01\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.01\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5i_c4\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c4\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.1\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.1\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5i_c5\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5i_c5\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 1\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"1\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5j_c1\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c1\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.0001\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.0001\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5j_c2\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c2\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.001\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.001\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5j_c3\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c3\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.01\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.01\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5j_c4\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c4\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 0.1\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"0.1\",\"structure\":\"porous_slab\"}},\"hei24:mrun:10_1039_d3cp05639b_fig5j_c5\":{\"id\":\"hei24:mrun:10_1039_d3cp05639b_fig5j_c5\",\"paper\":\"Heikkinen 2024\",\"label\":\"\\\\beta_0 = 1\",\"kind\":\"model run\",\"differing_conditions\":{\"initial_sticking_coefficient\":\"1\",\"structure\":\"porous_slab\"}}}}],\"n_claims\":10,\"papers\":[\"Elam 2003\",\"Heikkinen 2024\",\"Yim 2022\"]}",
+     "sent_chars": 10569
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_01_xPNurWwLdQPFQMc95lrP7671",
+     "name": "claims",
+     "input": {
+      "effect": [
+       "initial_sticking_coefficient"
+      ]
+     },
+     "call": 7,
+     "ms": 4,
+     "error": null,
+     "result": {
+      "cause": [],
+      "effect": [
+       "initial_sticking_coefficient"
+      ],
+      "relation": [],
+      "claims": [
+       {
+        "fact_id": "yim22:s15.p5#1",
+        "paper": "Yim 2022",
+        "cause": "partial_pressure",
+        "relation": "increases",
+        "effect": "front_slope;initial_sticking_coefficient",
+        "stance": "asserted",
+        "statement": "The sharper pressure drop at the adsorption front in Model A causes an increased front slope and higher back-extracted sticking coefficient.",
+        "links": [
+         {
+          "fact_id": "yim22:fig7a#1",
+          "type": "model",
+          "quantity": "surface_coverage",
+          "value": 0.9933333333333333,
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig7_model_a"
+         },
+         {
+          "fact_id": "yim22:fig7a#2",
+          "type": "model",
+          "quantity": "surface_coverage",
+          "value": 0.9983333333333334,
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig7_model_b"
+         },
+         {
+          "fact_id": "yim22:fig7a#3",
+          "type": "model",
+          "quantity": "surface_coverage",
+          "points_ref": "yim22:fig7a#c1",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig7_model_a"
+         },
+         {
+          "fact_id": "yim22:fig7a#4",
+          "type": "model",
+          "quantity": "surface_coverage",
+          "points_ref": "yim22:fig7a#c2",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig7_model_b"
+         },
+         {
+          "fact_id": "yim22:fig7b#1",
+          "type": "model",
+          "quantity": "surface_coverage",
+          "value": 0.99,
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig7_model_b"
+         },
+         {
+          "fact_id": "yim22:fig7b#2",
+          "type": "model",
+          "quantity": "surface_coverage",
+          "points_ref": "yim22:fig7b#c1",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig7_model_a"
+         },
+         {
+          "fact_id": "yim22:fig7b#3",
+          "type": "model",
+          "quantity": "surface_coverage",
+          "points_ref": "yim22:fig7b#c2",
+          "data_kind": "simulated",
+          "sample_id": "yim22:mrun:mr_fig7_model_b"
+         }
+        ],
+        "linked_samples": {
+         "yim22:mrun:mr_fig7_model_a": {
+          "id": "yim22:mrun:mr_fig7_model_a",
+          "paper": "Yim 2022",
+          "label": "Model A",
+          "kind": "model run",
+          "differing_conditions": {
+           "adsorption_equilibrium_constant": "100 1/Pa",
+           "b_film": "1",
+           "cycle_number": "1 cycle",
+           "deposition_temperature": "250 °C",
+           "feature_extent": "10 mm",
+           "feature_width": "500 nm",
+           "film_density": "3500 kg/m3",
+           "initial_sticking_coefficient[species=model_reactant]": "0.01",
+           "knudsen_number": ">100",
+           "molar_mass": "100 g/mol",
+           "molar_mass[gas=n2]": "28 g/mol",
+           "molar_mass[species=model_reactant]": "0.1 kg/mol",
+           "molecule_diameter": "600 pm",
+           "molecule_diameter[gas=n2]": "374 pm",
+           "molecule_diameter[species=model_reactant]": "6e-10 m",
+           "other[stat=maximum]": "<3 %",
+           "p_d": "0.01 1/s",
+           "partial_pressure": "100 Pa",
+           "partial_pressure[gas=n2]": "500 Pa",
+           "partial_pressure[species=model_reactant]": "50 Pa",
+           "pulse_time[species=model_reactant;step=reactant_A]": "0.1 s",
+           "pulse_time[step=reactant_A]": "0.1 s",
+           "saturation_density": "4 nm-2",
+           "saturation_growth_per_cycle": "1.06e-10 m",
+           "structure": "pillarhall_3"
+          }
+         },
+         "yim22:mrun:mr_fig7_model_b": {
+          "id": "yim22:mrun:mr_fig7_model_b",
+          "paper": "Yim 2022",
+          "label": "Model B",
+          "kind": "model run",
+          "differing_conditions": {
+           "other[stat=maximum]": "<1 %"
+          }
+         }
+        }
+       },
+       {
+        "fact_id": "yim22:tab3.cap#1",
+        "paper": "Yim 2022",
+        "cause": "deposition_temperature;molar_mass;initial_sticking_coefficient",
+        "relation": "causes",
+        "effect": "initial_sticking_coefficient",
+        "stance": "asserted",
+        "statement": "Table 3 compares sticking coefficient values extracted using the slope method with input values used in simulations across variations in temperature, molar mass, and sticking coefficient.",
+        "links": [],
+        "linked_samples": {}
+       },
+       {
+        "fact_id": "yli18:s10.p3#1",
+        "paper": "Ylilammi 2018",
+        "cause": "reaction_diffusion",
+        "relation": "causes",
+        "effect": "initial_sticking_coefficient",
+        "stance": "asserted",
+        "statement": "Fitting the model to experimental thickness distributions yields reaction growth parameters.",
+        "links": [
+         {
+          "fact_id": "yli18:fig6#1",
+          "type": "observation",
+          "quantity": "film_thickness",
+          "value": 52.65,
+          "unit": "nm",
+          "data_kind": "read_from_figure",
+          "sample_id": "yli18:ent:specimen_al2o3"
+         },
+         {
+          "fact_id": "yli18:fig6#2",
+          "type": "observation",
+          "quantity": "penetration_depth",
+          "value": 134.4,
+          "unit": "µm",
+          "data_kind": "read_from_figure",
+          "sample_id": "yli18:ent:specimen_al2o3"
+         },
+         {
+          "fact_id": "yli18:fig6#3",
+          "type": "model",
+          "quantity": "film_thickness",
+          "value": 52.34,
+          "unit": "nm",
+          "data_kind": "simulated",
+          "sample_id": "yli18:ent:specimen_al2o3"
+         },
+         {
+          "fact_id": "yli18:fig6#4",
+          "type": "model",
+          "quantity": "penetration_depth",
+          "value": 133.7,
+          "unit": "µm",
+          "data_kind": "simulated",
+          "sample_id": "yli18:ent:specimen_al2o3"
+         },
+         {
+          "fact_id": "yli18:fig6#5",
+          "type": "model",
+          "quantity": "film_thickness",
+          "points_ref": "yli18:fig6#c1",
+          "data_kind": "computed_by_authors",
+          "sample_id": "yli18:ent:specimen_al2o3"
+         },
+         {
+          "fact_id": "yli18:fig6#6",
+          "type": "observation",
+          "quantity": "film_thickness",
+          "points_ref": "yli18:fig6#c2",
+          "data_kind": "read_from_figure",
+          "sample_id": "yli18:ent:specimen_al2o3"
+         },
+         {
+          "fact_id": "yli18:fig7#1",
+          "type": "model",
+          "quantity": "film_thickness",
+          "points_ref": "yli18:fig7#c1",
+          "data_kind": "computed_by_authors",
+          "sample_id": "yli18:ent:specimen_tio2"
+         },
+         {
+          "fact_id": "yli18:fig7#2",
+          "type": "observation",
+          "quantity": "film_thickness",
+          "points_ref": "yli18:fig7#c2",
+          "data_kind": "read_from_figure",
+          "sample_id": "yli18:ent:specimen_tio2"
+         },
+         {
+          "fact_id": "yli18:eq31#1",
+          "type": "model",
+          "quantity": ""
+         }
+        ],
+        "linked_samples": {
+         "yli18:ent:specimen_al2o3": {
+          "id": "yli18:ent:specimen_al2o3",
+          "paper": "Ylilammi 2018",
+          "label": "Al2O3",
+          "kind": "specimen",
+          "structure_class": "lateral_channel",
+          "differing_conditions": {
+           "aspect_ratio": "2–10000",
+           "aspect_ratio[stage=initial]": "2000",
+           "cycle_number": "500 cycle",
+           "deposition_temperature": "300 °C",
+           "feature_depth[stage=initial]": "1 mm",
+           "feature_width[kind=target;stage=initial]": "0.5 µm",
+           "material": "al2o3",
+           "partial_pressure[species=tma]": "147 Pa",
+           "pulse_time[species=h2o;step=reactant_B]": "0.1 s",
+           "pulse_time[species=tma;step=reactant_A]": "0.1 s",
+           "purge_time[step=purge_B]": "4 s",
+           "reactant_A": "tma",
+           "structure": "pillarhall_3"
+          }
+         },
+         "yli18:ent:specimen_tio2": {
+          "id": "yli18:ent:specimen_tio2",
+          "paper": "Ylilammi 2018",
+          "label": "TiO2",
+          "kind": "specimen",
+          "structure_class": "lateral_channel",
+          "differing_conditions": {
+           "aspect_ratio": "2000",
+           "cycle_number": "1000 cycle",
+           "deposition_temperature": "110 °C",
+           "material": "tio2",
+           "partial_pressure[species=ticl4]": "25.7 Pa",
+           "pulse_time[step=reactant_A]": "0.1 s",
+           "reactant_A": "ticl4"
+          }
+         }
+        }
+       }
+      ],
+      "n_claims": 3,
+      "papers": [
+       "Yim 2022",
+       "Ylilammi 2018"
+      ]
+     },
+     "sent": "{\"cause\":[],\"effect\":[\"initial_sticking_coefficient\"],\"relation\":[],\"claims\":[{\"fact_id\":\"yim22:s15.p5#1\",\"paper\":\"Yim 2022\",\"cause\":\"partial_pressure\",\"relation\":\"increases\",\"effect\":\"front_slope;initial_sticking_coefficient\",\"stance\":\"asserted\",\"statement\":\"The sharper pressure drop at the adsorption front in Model A causes an increased front slope and higher back-extracted sticking coefficient.\",\"links\":[{\"fact_id\":\"yim22:fig7a#1\",\"type\":\"model\",\"quantity\":\"surface_coverage\",\"value\":0.9933333333333333,\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig7_model_a\"},{\"fact_id\":\"yim22:fig7a#2\",\"type\":\"model\",\"quantity\":\"surface_coverage\",\"value\":0.9983333333333334,\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig7_model_b\"},{\"fact_id\":\"yim22:fig7a#3\",\"type\":\"model\",\"quantity\":\"surface_coverage\",\"points_ref\":\"yim22:fig7a#c1\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig7_model_a\"},{\"fact_id\":\"yim22:fig7a#4\",\"type\":\"model\",\"quantity\":\"surface_coverage\",\"points_ref\":\"yim22:fig7a#c2\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig7_model_b\"},{\"fact_id\":\"yim22:fig7b#1\",\"type\":\"model\",\"quantity\":\"surface_coverage\",\"value\":0.99,\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig7_model_b\"},{\"fact_id\":\"yim22:fig7b#2\",\"type\":\"model\",\"quantity\":\"surface_coverage\",\"points_ref\":\"yim22:fig7b#c1\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig7_model_a\"},{\"fact_id\":\"yim22:fig7b#3\",\"type\":\"model\",\"quantity\":\"surface_coverage\",\"points_ref\":\"yim22:fig7b#c2\",\"data_kind\":\"simulated\",\"sample_id\":\"yim22:mrun:mr_fig7_model_b\"}],\"linked_samples\":{\"yim22:mrun:mr_fig7_model_a\":{\"id\":\"yim22:mrun:mr_fig7_model_a\",\"paper\":\"Yim 2022\",\"label\":\"Model A\",\"kind\":\"model run\",\"differing_conditions\":{\"adsorption_equilibrium_constant\":\"100 1/Pa\",\"b_film\":\"1\",\"cycle_number\":\"1 cycle\",\"deposition_temperature\":\"250 °C\",\"feature_extent\":\"10 mm\",\"feature_width\":\"500 nm\",\"film_density\":\"3500 kg/m3\",\"initial_sticking_coefficient[species=model_reactant]\":\"0.01\",\"knudsen_number\":\">100\",\"molar_mass\":\"100 g/mol\",\"molar_mass[gas=n2]\":\"28 g/mol\",\"molar_mass[species=model_reactant]\":\"0.1 kg/mol\",\"molecule_diameter\":\"600 pm\",\"molecule_diameter[gas=n2]\":\"374 pm\",\"molecule_diameter[species=model_reactant]\":\"6e-10 m\",\"other[stat=maximum]\":\"<3 %\",\"p_d\":\"0.01 1/s\",\"partial_pressure\":\"100 Pa\",\"partial_pressure[gas=n2]\":\"500 Pa\",\"partial_pressure[species=model_reactant]\":\"50 Pa\",\"pulse_time[species=model_reactant;step=reactant_A]\":\"0.1 s\",\"pulse_time[step=reactant_A]\":\"0.1 s\",\"saturation_density\":\"4 nm-2\",\"saturation_growth_per_cycle\":\"1.06e-10 m\",\"structure\":\"pillarhall_3\"}},\"yim22:mrun:mr_fig7_model_b\":{\"id\":\"yim22:mrun:mr_fig7_model_b\",\"paper\":\"Yim 2022\",\"label\":\"Model B\",\"kind\":\"model run\",\"differing_conditions\":{\"other[stat=maximum]\":\"<1 %\"}}}},{\"fact_id\":\"yim22:tab3.cap#1\",\"paper\":\"Yim 2022\",\"cause\":\"deposition_temperature;molar_mass;initial_sticking_coefficient\",\"relation\":\"causes\",\"effect\":\"initial_sticking_coefficient\",\"stance\":\"asserted\",\"statement\":\"Table 3 compares sticking coefficient values extracted using the slope method with input values used in simulations across variations in temperature, molar mass, and sticking coefficient.\",\"links\":[],\"linked_samples\":{}},{\"fact_id\":\"yli18:s10.p3#1\",\"paper\":\"Ylilammi 2018\",\"cause\":\"reaction_diffusion\",\"relation\":\"causes\",\"effect\":\"initial_sticking_coefficient\",\"stance\":\"asserted\",\"statement\":\"Fitting the model to experimental thickness distributions yields reaction growth parameters.\",\"links\":[{\"fact_id\":\"yli18:fig6#1\",\"type\":\"observation\",\"quantity\":\"film_thickness\",\"value\":52.65,\"unit\":\"nm\",\"data_kind\":\"read_from_figure\",\"sample_id\":\"yli18:ent:specimen_al2o3\"},{\"fact_id\":\"yli18:fig6#2\",\"type\":\"observation\",\"quantity\":\"penetration_depth\",\"value\":134.4,\"unit\":\"µm\",\"data_kind\":\"read_from_figure\",\"sample_id\":\"yli18:ent:specimen_al2o3\"},{\"fact_id\":\"yli18:fig6#3\",\"type\":\"model\",\"quantity\":\"film_thickness\",\"value\":52.34,\"unit\":\"nm\",\"data_kind\":\"simulated\",\"sample_id\":\"yli18:ent:specimen_al2o3\"},{\"fact_id\":\"yli18:fig6#4\",\"type\":\"model\",\"quantity\":\"penetration_depth\",\"value\":133.7,\"unit\":\"µm\",\"data_kind\":\"simulated\",\"sample_id\":\"yli18:ent:specimen_al2o3\"},{\"fact_id\":\"yli18:fig6#5\",\"type\":\"model\",\"quantity\":\"film_thickness\",\"points_ref\":\"yli18:fig6#c1\",\"data_kind\":\"computed_by_authors\",\"sample_id\":\"yli18:ent:specimen_al2o3\"},{\"fact_id\":\"yli18:fig6#6\",\"type\":\"observation\",\"quantity\":\"film_thickness\",\"points_ref\":\"yli18:fig6#c2\",\"data_kind\":\"read_from_figure\",\"sample_id\":\"yli18:ent:specimen_al2o3\"},{\"fact_id\":\"yli18:fig7#1\",\"type\":\"model\",\"quantity\":\"film_thickness\",\"points_ref\":\"yli18:fig7#c1\",\"data_kind\":\"computed_by_authors\",\"sample_id\":\"yli18:ent:specimen_tio2\"},{\"fact_id\":\"yli18:fig7#2\",\"type\":\"observation\",\"quantity\":\"film_thickness\",\"points_ref\":\"yli18:fig7#c2\",\"data_kind\":\"read_from_figure\",\"sample_id\":\"yli18:ent:specimen_tio2\"},{\"fact_id\":\"yli18:eq31#1\",\"type\":\"model\",\"quantity\":\"\"}],\"linked_samples\":{\"yli18:ent:specimen_al2o3\":{\"id\":\"yli18:ent:specimen_al2o3\",\"paper\":\"Ylilammi 2018\",\"label\":\"Al2O3\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"differing_conditions\":{\"aspect_ratio\":\"2–10000\",\"aspect_ratio[stage=initial]\":\"2000\",\"cycle_number\":\"500 cycle\",\"deposition_temperature\":\"300 °C\",\"feature_depth[stage=initial]\":\"1 mm\",\"feature_width[kind=target;stage=initial]\":\"0.5 µm\",\"material\":\"al2o3\",\"partial_pressure[species=tma]\":\"147 Pa\",\"pulse_time[species=h2o;step=reactant_B]\":\"0.1 s\",\"pulse_time[species=tma;step=reactant_A]\":\"0.1 s\",\"purge_time[step=purge_B]\":\"4 s\",\"reactant_A\":\"tma\",\"structure\":\"pillarhall_3\"}},\"yli18:ent:specimen_tio2\":{\"id\":\"yli18:ent:specimen_tio2\",\"paper\":\"Ylilammi 2018\",\"label\":\"TiO2\",\"kind\":\"specimen\",\"structure_class\":\"lateral_channel\",\"differing_conditions\":{\"aspect_ratio\":\"2000\",\"cycle_number\":\"1000 cycle\",\"deposition_temperature\":\"110 °C\",\"material\":\"tio2\",\"partial_pressure[species=ticl4]\":\"25.7 Pa\",\"pulse_time[step=reactant_A]\":\"0.1 s\",\"reactant_A\":\"ticl4\"}}}}],\"n_claims\":3,\"papers\":[\"Yim 2022\",\"Ylilammi 2018\"]}",
+     "sent_chars": 5990
+    },
+    {
+     "type": "assistant",
+     "request": 5,
+     "ms": 1583,
+     "provider": "deepseek",
+     "model": "deepseek-flash",
+     "fallback_ran": false,
+     "request_id": "290764c1-554b-49db-8284-3c00a428004c",
+     "stop_reason": "tool_use",
+     "stop_raw": "tool_calls",
+     "usage": {
+      "input_tokens": 5683,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 18048,
+      "output_tokens": 91,
+      "reasoning_tokens": 25
+     },
+     "usage_raw": {
+      "completion_tokens": 91,
+      "prompt_tokens": 23731,
+      "total_tokens": 23822,
+      "completion_tokens_details": {
+       "accepted_prediction_tokens": null,
+       "audio_tokens": null,
+       "reasoning_tokens": 25,
+       "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+       "audio_tokens": null,
+       "cached_tokens": 18048
+      },
+      "prompt_cache_hit_tokens": 18048,
+      "prompt_cache_miss_tokens": 5683
+     },
+     "cost_usd_estimate": 0.001922,
+     "thinking": [
+      "Could search for \"twin\" in KB? resolve \"digital twin\" perhaps quantity? Let's resolve \"twin\"."
+     ],
+     "text": "",
+     "tool_calls": [
+      {
+       "id": "call_00_dCH9E4Tt9qKsfFW7s9ln8770",
+       "name": "resolve",
+       "input": {
+        "term": "twin"
+       }
+      },
+      {
+       "id": "call_01_Wi0CvvFC67nLZ0wm8JRw7220",
+       "name": "resolve",
+       "input": {
+        "term": "digital twin"
+       }
+      }
+     ]
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_00_dCH9E4Tt9qKsfFW7s9ln8770",
+     "name": "resolve",
+     "input": {
+      "term": "twin"
+     },
+     "call": 8,
+     "ms": 32,
+     "error": null,
+     "result": {
+      "term": "twin",
+      "kind": null,
+      "matches": [],
+      "n_matches": 0
+     },
+     "sent": "{\"term\":\"twin\",\"kind\":null,\"matches\":[],\"n_matches\":0}",
+     "sent_chars": 54
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_01_Wi0CvvFC67nLZ0wm8JRw7220",
+     "name": "resolve",
+     "input": {
+      "term": "digital twin"
+     },
+     "call": 9,
+     "ms": 31,
+     "error": null,
+     "result": {
+      "term": "digital twin",
+      "kind": null,
+      "matches": [],
+      "n_matches": 0
+     },
+     "sent": "{\"term\":\"digital twin\",\"kind\":null,\"matches\":[],\"n_matches\":0}",
+     "sent_chars": 62
+    },
+    {
+     "type": "assistant",
+     "request": 6,
+     "ms": 5844,
+     "provider": "deepseek",
+     "model": "deepseek-flash",
+     "fallback_ran": false,
+     "request_id": "60b7b83d-ebce-4f32-b013-0cbb37b055a6",
+     "stop_reason": "tool_use",
+     "stop_raw": "tool_calls",
+     "usage": {
+      "input_tokens": 200,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 23680,
+      "output_tokens": 936,
+      "reasoning_tokens": 885
+     },
+     "usage_raw": {
+      "completion_tokens": 936,
+      "prompt_tokens": 23880,
+      "total_tokens": 24816,
+      "completion_tokens_details": {
+       "accepted_prediction_tokens": null,
+       "audio_tokens": null,
+       "reasoning_tokens": 885,
+       "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+       "audio_tokens": null,
+       "cached_tokens": 23680
+      },
+      "prompt_cache_hit_tokens": 23680,
+      "prompt_cache_miss_tokens": 200
+     },
+     "cost_usd_estimate": 0.001325,
+     "thinking": [
+      "No digital twin concept. Could \"twin\" be \"the twin\" a reactor? Maybe an ALD \"twin\" maybe \"twin\" system? Search resolve term \"reactor\" maybe \"twin\" no. Could be user shorthand from prior conversation not in KB. We need still answer.\n\nLet's inspect records for Yim20 sample? get_records with quantity initial_sticking_coefficient and sample_ids maybe yim20 sample_16 etc. The 0.004 was attached to recipe not sample. But key_conditions at 300 and Al2O3. We can cite.\n\nNeed decide recommended value: 4×10^-3. Let's understand nuances. Yim 2020 extracted c_TMA 4e-3 using saturation profiles at 300 °C for Al2O3. Ylilammi 2018 5.72e-3 at 300. Yim states its extracted value agrees with literature. If a \"twin\" uses TMA at 300, the most directly applicable KB value is 4×10^-3. But maybe their model's input was 0.012 (Ylilammi model in Yim 2020 fig10) because \"twin\" could reproduce published simulated thickness. Hmm.\n\nQuestion phrasing: \"What sticking coefficient should the twin use for TMA at 300 °C?\" Maybe there is a known \"digital twin\" project and they expect \"0.004\" from Yim 2020. The words \"for TMA\" and \"at 300°C\" map exactly to yim20:s19.p4#1 (c_TMA, 4×10^-3 at 300, Al2O3). We'll answer that.\n\nBut rules: every number from tool result; cite fact_id. We can mention \"dimensionless\". Need maybe include alternative values: Ylilammi 2018 own 5.72×10^-3 [yli18:tabI.r1c4#1] at same 300 TMA Al2O3. Also Yim 2020 model input for Ylilammi model 0.012 [yim20:fig10.cap#15] at 300, but that is model input, not extracted. Cite that to avoid confusion if twin aims to reproduce that model. Need maybe say \"Use 4×10^-3 rather than 0.012.\" The question asks \"what should the twin use\" singular. We should answer direct.\n\nCould trace cited Ylilammi value from Yim20:tab2.r4c6#1 to confirm same. The rule says when trace_citation finds cited paper among 13, report that paper's own value and say agree or differ. We have a cited Yim20 value 0.00572 (Ylilammi 2018) and own Ylilammi 0.00572. We could trace. This would be exemplary. Also Werbrouck cited literature 0.0008-0.002 not found maybe. But not needed.\n\nMaybe trace_citation for yim20:tab2.r4c6#1 to say agrees. Also maybe yim20:s19.p4#1 is own so no. We have enough tool calls (we used 7? 3+1+2+2 =8? Actually first 3, second 1, third 1, fourth 2, fifth 2 =9). We have 6 left.\n\nNeed perhaps check exact statement of Yim 2020 regarding c_TMA: we have \"Our extracted value of c_TMA, 4 × 10^-3, agrees with the literature values\" [yim20:s19.p4#1]. This is computed by authors at 300. Good.\n\nMaybe fetch all own values for initial_sticking_coefficient in Yim 2020? get_records with paper yim20 quantity initial... might include c_H2O and c_TMA maybe. But we have sufficient.\n\nNeed maybe get records for yli18 specimen and yim20? Could compare but already has conditions. The question doesn't ask comparison. But answer can mention one cross-check.\n\nLet's trace citation."
+     ],
+     "text": "",
+     "tool_calls": [
+      {
+       "id": "call_00_8y3hy2cVeK32ZQuMTGv44232",
+       "name": "trace_citation",
+       "input": {
+        "fact_id": "yim20:tab2.r4c6#1"
+       }
+      }
+     ]
+    },
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_00_8y3hy2cVeK32ZQuMTGv44232",
+     "name": "trace_citation",
+     "input": {
+      "fact_id": "yim20:tab2.r4c6#1"
+     },
+     "call": 10,
+     "ms": 3,
+     "error": null,
+     "result": {
+      "cited": {
+       "fact_id": "yim20:tab2.r4c6#1",
+       "paper": "Yim 2020",
+       "type": "cited",
+       "quantity": "initial_sticking_coefficient",
+       "qualifiers": "species=tma",
+       "label_as_printed": "c_{\\text{TMA}}",
+       "value": 0.00572,
+       "method": "cited",
+       "data_kind": "cited",
+       "group": "cited",
+       "statement": "Ylilammi et al. (2018) reported a sticking coefficient for TMA of 5.72e-3.",
+       "unit_id": "yim20",
+       "unit_label": "yim20"
+      },
+      "searched_text": "Ylilammi et al. (2018) reported a sticking coefficient for TMA of 5.72e-3. c_{\\text{TMA}}",
+      "cited_paper": [
+       {
+        "key": "yli18",
+        "paper": "Ylilammi 2018",
+        "title": "Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures"
+       }
+      ],
+      "own_values": [
+       {
+        "fact_id": "yli18:tabI.r1c4#1",
+        "paper": "Ylilammi 2018",
+        "type": "derived",
+        "quantity": "initial_sticking_coefficient",
+        "qualifiers": "",
+        "label_as_printed": "c",
+        "value": 0.00572,
+        "method": "calculation",
+        "data_kind": "computed_by_authors",
+        "group": "own",
+        "statement": "0.00572",
+        "unit_id": "yli18:ent:specimen_al2o3:meas:measurement",
+        "unit_label": "measurement of Al2O3",
+        "sample_id": "yli18:ent:specimen_al2o3",
+        "sample_label": "Al2O3",
+        "key_conditions": {
+         "deposition_temperature": "300 °C [yli18:s8.p21#4] (run)",
+         "reactant_A": "tma [yli18:s8.p21#2] (run)",
+         "reactant_B": "h2o [yli18:s8.p21#3] (run)",
+         "material": "al2o3 [yli18:s5.p4#1] (run)",
+         "structure": "pillarhall_3 [yli18:s8.p23#2] (run)",
+         "feature_width": "0.5 µm [yli18:s8.p23#3] (run)"
+        },
+        "species_filled": "tma: the run's reactant A (yli18:s8.p21#2, Al2O3)",
+        "value_comparison": "match",
+        "conditions": [
+         {
+          "condition": "species",
+          "cited": "tma",
+          "own": "tma",
+          "status": "match"
+         },
+         {
+          "condition": "deposition_temperature",
+          "cited": "not recorded on the cited value",
+          "own": "300 °C",
+          "own_fact_id": "yli18:s8.p21#4"
+         },
+         {
+          "condition": "reactant_A",
+          "cited": "not recorded on the cited value",
+          "own": "tma",
+          "own_fact_id": "yli18:s8.p21#2"
+         },
+         {
+          "condition": "reactant_B",
+          "cited": "not recorded on the cited value",
+          "own": "h2o",
+          "own_fact_id": "yli18:s8.p21#3"
+         },
+         {
+          "condition": "material",
+          "cited": "not recorded on the cited value",
+          "own": "al2o3",
+          "own_fact_id": "yli18:s5.p4#1"
+         },
+         {
+          "condition": "structure",
+          "cited": "not recorded on the cited value",
+          "own": "pillarhall_3",
+          "own_fact_id": "yli18:s8.p23#2"
+         },
+         {
+          "condition": "feature_width",
+          "cited": "not recorded on the cited value",
+          "own": "0.5 µm",
+          "own_fact_id": "yli18:s8.p23#3"
+         }
+        ]
+       }
+      ],
+      "outcome": "found",
+      "excluded_in_cited_paper": [
+       {
+        "fact_id": "yli18:tabI.r2c4#1",
+        "paper": "Ylilammi 2018",
+        "value": 0.1,
+        "qualifiers": "",
+        "data_kind": "computed_by_authors",
+        "reason": "species not stated; the run's reactant A is ticl4"
+       }
+      ]
+     },
+     "sent": "{\"cited\":{\"fact_id\":\"yim20:tab2.r4c6#1\",\"paper\":\"Yim 2020\",\"type\":\"cited\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"species=tma\",\"label_as_printed\":\"c_{\\\\text{TMA}}\",\"value\":0.00572,\"method\":\"cited\",\"data_kind\":\"cited\",\"group\":\"cited\",\"statement\":\"Ylilammi et al. (2018) reported a sticking coefficient for TMA of 5.72e-3.\",\"unit_id\":\"yim20\",\"unit_label\":\"yim20\"},\"searched_text\":\"Ylilammi et al. (2018) reported a sticking coefficient for TMA of 5.72e-3. c_{\\\\text{TMA}}\",\"cited_paper\":[{\"key\":\"yli18\",\"paper\":\"Ylilammi 2018\",\"title\":\"Modeling growth kinetics of thin films made by atomic layer deposition in lateral high-aspect-ratio structures\"}],\"own_values\":[{\"fact_id\":\"yli18:tabI.r1c4#1\",\"paper\":\"Ylilammi 2018\",\"type\":\"derived\",\"quantity\":\"initial_sticking_coefficient\",\"qualifiers\":\"\",\"label_as_printed\":\"c\",\"value\":0.00572,\"method\":\"calculation\",\"data_kind\":\"computed_by_authors\",\"group\":\"own\",\"statement\":\"0.00572\",\"unit_id\":\"yli18:ent:specimen_al2o3:meas:measurement\",\"unit_label\":\"measurement of Al2O3\",\"sample_id\":\"yli18:ent:specimen_al2o3\",\"sample_label\":\"Al2O3\",\"key_conditions\":{\"deposition_temperature\":\"300 °C [yli18:s8.p21#4] (run)\",\"reactant_A\":\"tma [yli18:s8.p21#2] (run)\",\"reactant_B\":\"h2o [yli18:s8.p21#3] (run)\",\"material\":\"al2o3 [yli18:s5.p4#1] (run)\",\"structure\":\"pillarhall_3 [yli18:s8.p23#2] (run)\",\"feature_width\":\"0.5 µm [yli18:s8.p23#3] (run)\"},\"species_filled\":\"tma: the run's reactant A (yli18:s8.p21#2, Al2O3)\",\"value_comparison\":\"match\",\"conditions\":[{\"condition\":\"species\",\"cited\":\"tma\",\"own\":\"tma\",\"status\":\"match\"},{\"condition\":\"deposition_temperature\",\"cited\":\"not recorded on the cited value\",\"own\":\"300 °C\",\"own_fact_id\":\"yli18:s8.p21#4\"},{\"condition\":\"reactant_A\",\"cited\":\"not recorded on the cited value\",\"own\":\"tma\",\"own_fact_id\":\"yli18:s8.p21#2\"},{\"condition\":\"reactant_B\",\"cited\":\"not recorded on the cited value\",\"own\":\"h2o\",\"own_fact_id\":\"yli18:s8.p21#3\"},{\"condition\":\"material\",\"cited\":\"not recorded on the cited value\",\"own\":\"al2o3\",\"own_fact_id\":\"yli18:s5.p4#1\"},{\"condition\":\"structure\",\"cited\":\"not recorded on the cited value\",\"own\":\"pillarhall_3\",\"own_fact_id\":\"yli18:s8.p23#2\"},{\"condition\":\"feature_width\",\"cited\":\"not recorded on the cited value\",\"own\":\"0.5 µm\",\"own_fact_id\":\"yli18:s8.p23#3\"}]}],\"outcome\":\"found\",\"excluded_in_cited_paper\":[{\"fact_id\":\"yli18:tabI.r2c4#1\",\"paper\":\"Ylilammi 2018\",\"value\":0.1,\"qualifiers\":\"\",\"data_kind\":\"computed_by_authors\",\"reason\":\"species not stated; the run's reactant A is ticl4\"}]}",
+     "sent_chars": 2496
+    },
+    {
+     "type": "assistant",
+     "request": 7,
+     "ms": 17748,
+     "provider": "deepseek",
+     "model": "deepseek-flash",
+     "fallback_ran": false,
+     "request_id": "e4a77e7b-b8fd-49e6-99f0-173ae0ef4828",
+     "stop_reason": "end_turn",
+     "stop_raw": "stop",
+     "usage": {
+      "input_tokens": 976,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 24704,
+      "output_tokens": 2970,
+      "reasoning_tokens": 2605
+     },
+     "usage_raw": {
+      "completion_tokens": 2970,
+      "prompt_tokens": 25680,
+      "total_tokens": 28650,
+      "completion_tokens_details": {
+       "accepted_prediction_tokens": null,
+       "audio_tokens": null,
+       "reasoning_tokens": 2605,
+       "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+       "audio_tokens": null,
+       "cached_tokens": 24704
+      },
+      "prompt_cache_hit_tokens": 24704,
+      "prompt_cache_miss_tokens": 976
+     },
+     "cost_usd_estimate": 0.004005,
+     "thinking": [
+      "Now answer. Need no more tool calls. But let's ensure \"twin\" reading. Could say \"Reading 'the twin' as the simulation/digital-twin side, I'd use 4×10^-3.\" Then evidence.\n\nNeed report all values from tool. Direct answer: \"0.004 (dimensionless)\" [yim20:s19.p4#1], extracted by Yim 2020 for TMA at 300 °C on Al2O3. If applying to a model, use 4×10^-3. Alternative Ylilammi 0.00572. Also model input 0.012 was used in Yim 2020's Ylilammi-model comparison, not the extracted value. The question says \"should use\" — perhaps recommend 0.004 because extracted at exact conditions. We need not infer cause. We can say \"Yim 2020 states it agrees with literature values\" [yim20:s19.p4#1]. \"Ylilammi 2018's own computed value, 5.72e-3, is somewhat higher and is what Yim 2020 cites; citation trace shows exact match to Ylilammi's own value.\" That's evidence.\n\nNeed mention conditions: material Al2O3, TMA/H2O, PillarHall lateral channel, 300 °C. The 4e-3 fact key_conditions includes material al2o3, structure, feature widths, 300. Good.\n\nShould we mention not recorded for other twin-specific details? \"No 'twin' concept is recorded in the KB, so I take it to mean a model/digital twin.\" This is a statement about tool result? resolve returned no matches; can say. \"The KB does not record a distinct 'twin' concept or value.\" That's allowed. Need maybe mention no sample's initial_sticking_coefficient varies? We found sample values \"not recorded\" for Yim20 samples; but recipe-level extracted. In answer, evidence values.\n\nPotential issue: \"sticking coefficient should twin use for TMA at 300 °C\" maybe answer 0.01 because Yim 2022 model input, but specified TMA at 300? Let's inspect Yim 2022 table 3 maybe model input 0.01 at what temperature? It seems simulations varied c 0.0001–1 and temperature maybe 250? The model input c=0.01 is generic \"model reactant\", not TMA, and T=250 for fig7. Table 3 model inputs at various temperatures? Need maybe no. Yim 2020 own c_TMA at 300 is unambiguous.\n\nLet's think deeper. The \"twin\" might refer to an ALD \"digital twin\" in a separate context, but user asks based on KB. The KB's sole explicit TMA value at 300 is 4e-3 and 5.72e-3. Which \"should\" use? The latest Yim 2020 extracted value \"4e-3\" is specifically described as for Al2O3 at 300 and agrees with literature. So recommend 4e-3.\n\nNeed maybe mention \"If twin is meant to reproduce Yim 2020's comparison with Ylilammi's model, that model run used c_TMA = 0.012, a model input, not an extracted value.\" This is a useful caveat. But should we include because it could confuse? Yes, compact open note.\n\nThe final answer format: direct answer first, evidence compact list, what is not recorded/open. Cite fact_ids for every number. Use plain names. Avoid KB internal terms (entity etc.). No internal terms. Say \"computed by the authors\" etc. Fact ids okay.\n\nNeed ensure every number in answer has citation. Numbers like \"300 °C\", \"4×10^-3\", \"5.72×10^-3\", \"0.012\", \"0.5 µm\", \"100/500/2000 nm\" all need citations. We can minimize numbers.\n\nLet's craft:\n\n\"Use c_TMA = 4×10^-3 (dimensionless) [yim20:s19.p4#1]. This is Yim 2020's own extracted value for TMA in TMA/H2O Al2O3 at 300 °C [yim20:s19.p4#1, yim20:s2.p13#1, yim20:s6.p1#1]; the paper says it agrees with literature [yim20:s19.p4#1]. I read 'twin' as the simulation/digital-twin model; the KB has no separate 'twin' concept [resolve none].\"\n\n\"Cross-check: Ylilammi 2018 independently computed 5.72×10^-3 for the same TMA/Al2O3 system at 300 °C [yli18:tabI.r1c4#1]; Yim 2020 cites this exact figure [yim20:tab2.r4c6#1], and tracing it confirms the two agree [trace result].\"\n\n\"Open: Yim 2020's comparison simulation using Ylilammi's model was run with c_TMA = 0.012 [yim20:fig10.cap#15] — that is a model input, not a measured/derived value, so I would not use it as the TMA recommendation unless the goal is to reproduce that specific model run.\"\n\nNeed maybe include \"feature widths 100 nm/500 nm/2000 nm\" not necessary. Fine.\n\nPotential concern: \"twin\" could be \"the twin\" meaning model in a project. Say assumption at start. Good.\n\nNeed maybe not overdo. The question asks 1 value. Answer concise.\n\nBut rules: \"Every number in the answer comes from a tool result. Cite the fact_id of each value in square brackets right after it.\" We cite 4×10^-3, 300, 5.72e-3, 0.012. Fact ids after each number. \"TMA/H2O\" no numbers. \"Al2O3\" no. \"same\" no.\n\nWhen citing multiple IDs for condition, okay. For 300 °C condition fact ID: yim20:s2.p13#1, yes from get_records key_conditions. For material Al2O3 fact: yim20:s6.p1#1. The value's statement only says \"Our extracted value...\" with key_conditions. We can cite just [yim20:s19.p4#1] for the value and conditions, perhaps no need separate. But every number needs fact_id right after. Use [yim20:s19.p4#1] after 4e-3 and 300. Material no number. Good.\n\nThe Ylilammi 300 °C fact ID [yli18:s8.p21#4] maybe include. The value 5.72e-3 [yli18:tabI.r1c4#1] and 300 [yli18:s8.p21#4]. Fine.\n\n\"0.012 [yim20:fig10.cap#15]\" and 300 maybe not necessary if statement doesn't say 300? It does key_conditions 300. We can say model run at 300 °C [yim20:fig10.cap#1]. But 300 appears; cite either. Use \"the 300 °C comparison model [yim20:fig10.cap#1]\" if mention. The fact id yim20:fig10.cap#1 is in key_conditions from get_records, yes.\n\nCould mention \"not recorded\": \"No measured c_TMA value is recorded for the individual Yim 2020 samples; the extracted value sits at recipe level.\" Is that necessary? The rules say report samples KB leaves undecided. The user asks a global value, not samples. But maybe \"not recorded\" section: \"Individual Yim 2020 sample records do not carry their own sticking coefficient; it is a recipe-level extracted value.\" Is that accurate? find_samples showed initial_sticking_coefficient not recorded for Yim20 samples. But get_records returns own value with unit_id yim20:recipe (group own). Hmm, sample records didn't have it, but the value is attached to recipe. We can say \"The value is recorded for the recipe, not per specimen.\" That might be too internal? \"recipe\" is allowed? \"A sample inherits conditions of its run and recipe\"; papers, samples, runs. It's an ontology term but not internal? The instruction says use plain names: samples, runs, papers, measurements, images, values, curves. It didn't ban recipe but \"Do not use KB internal terms (entity, activity, unit, fact, binding, data_kind, level, qualifier).\" Recipe is okay. But no need.\n\nLet's formulate final with assumption sentence. Ensure concise.\n\nOne concern: \"Use 4×10^-3\" is recommendation; if \"twin\" expects model input, maybe this is an inference. We should phrase \"The best-supported value to use is...\" rather than absolute. And provide alternative. The direct answer first. Good.\n\nLet's draft:\n\n\"Assumption: 'the twin' means the simulation/digital-twin model; the KB has no separate twin object.\"\n\n\"Use c_TMA = 4×10^-3 [yim20:s19.p4#1] (dimensionless) for TMA at 300 °C [yim20:s2.p13#1]. Yim 2020 reports this as its own extracted value for Al2O3 from TMA/H2O saturation profiles and states it agrees with literature [yim20:s19.p4#1].\"\n\nEvidence:\n- Ylilammi 2018 own computed value: 5.72×10^-3 at 300 °C [yli18:tabI.r1c4#1; yli18:s8.p21#4]; Yim 2020 cites same 5.72×10^-3 [yim20:tab2.r4c6#1], trace confirms it matches Ylilammi's own value.\n- Yim 2020's comparison run of Ylilammi's model used c_TMA = 0.012 [yim20:fig10.cap#15], a model input.\n\nOpen: no per-specimen c_TMA recorded for Yim 2020 samples; the extracted value is recipe-level. If the twin is meant to reproduce that comparison model run, use its model input 0.012, not the extracted 4e-3. No other value at 300 for TMA? Wait Werbrouck citation 0.0008-0.002 is literature generic, not at 300. Arts 2019 1e-4 maybe at 300? Arts paper Al2O3 plasma? Not relevant. We don't need.\n\nShould we say \"no per-specimen c_TMA\" if get_records whole KB found own value but no sample_id; find_samples said not recorded for sample_1 etc. That's a valid flag. But maybe not \"open\" critical. Fine.\n\nNeed fact_id citations in square brackets. The trace citation \"trace confirms\" doesn't have fact_id of confirmation, but we can cite both fact ids. The rule isn't about trace result, it's okay.\n\nLet's ensure 4×10^-3 is exactly 0.004. We can say \"4 × 10^-3 (0.004)\" but then 0.004 also number needs citation; same fact. Fine but unnecessary.\n\n\"the paper says it agrees with literature values\" is a statement from same fact. Good.\n\nMaybe include \"temperature-independent\" cited literature c_TMA 2×10^-3? But not needed and may confuse. The user asks at 300. The key is a moderate value around 0.004–0.006. We can mention literature range 0.0008–0.002 [wer21:s25.p17#3]? No, that's a citation from Werbrouck and not specific to 300. Avoid.\n\nNeed not mention Yim 2022. Good.\n\nLet's answer."
+     ],
+     "text": "Assuming “the twin” means the simulation/digital-twin model, use **c_TMA = 4 × 10⁻³** [yim20:s19.p4#1] for TMA at 300 °C [yim20:s2.p13#1]. Yim 2020 reports this as its own extracted value for Al₂O₃ from TMA/H₂O saturation profiles and states that it agrees with literature values [yim20:s19.p4#1].\n\n**Evidence**\n- Ylilammi 2018’s own computed value is 5.72 × 10⁻³ for TMA/Al₂O₃ at 300 °C [yli18:tabI.r1c4#1; yli18:s8.p21#4].\n- Yim 2020 cites Ylilammi 2018 as 5.72 × 10⁻³ [yim20:tab2.r4c6#1], and tracing the citation confirms it matches Ylilammi’s own value.\n- Yim 2020’s comparison run using Ylilammi’s model used **c_TMA = 0.012** [yim20:fig10.cap#15], but that is a model input, not an extracted value.\n\n**Open:** the individual Yim 2020 specimens do not carry their own sticking-coefficient values; the 4 × 10⁻³ value is recorded at the recipe level [yim20:s19.p4#1]. If the twin is specifically meant to reproduce Yim 2020’s comparison model run, use its 0.012 model input rather than the extracted 4 × 10⁻³.",
+     "tool_calls": []
+    }
+   ],
+   "final_answer": "Assuming “the twin” means the simulation/digital-twin model, use **c_TMA = 4 × 10⁻³** [yim20:s19.p4#1] for TMA at 300 °C [yim20:s2.p13#1]. Yim 2020 reports this as its own extracted value for Al₂O₃ from TMA/H₂O saturation profiles and states that it agrees with literature values [yim20:s19.p4#1].\n\n**Evidence**\n- Ylilammi 2018’s own computed value is 5.72 × 10⁻³ for TMA/Al₂O₃ at 300 °C [yli18:tabI.r1c4#1; yli18:s8.p21#4].\n- Yim 2020 cites Ylilammi 2018 as 5.72 × 10⁻³ [yim20:tab2.r4c6#1], and tracing the citation confirms it matches Ylilammi’s own value.\n- Yim 2020’s comparison run using Ylilammi’s model used **c_TMA = 0.012** [yim20:fig10.cap#15], but that is a model input, not an extracted value.\n\n**Open:** the individual Yim 2020 specimens do not carry their own sticking-coefficient values; the 4 × 10⁻³ value is recorded at the recipe level [yim20:s19.p4#1]. If the twin is specifically meant to reproduce Yim 2020’s comparison model run, use its 0.012 model input rather than the extracted 4 × 10⁻³.",
+   "tool_calls": 10,
+   "requests": 7,
+   "stop": "end_turn",
+   "cap_reached": false
+  }
+ ],
+ "usage_total": {
+  "input_tokens": 20823,
+  "cache_creation_input_tokens": 0,
+  "cache_read_input_tokens": 88704,
+  "output_tokens": 5540,
+  "reasoning_tokens": 4575
+ },
+ "cost_usd_estimate": 0.013427,
+ "price_per_mtok": {
+  "input": 0.3,
+  "cache_write": 0.3,
+  "cache_read": 0.006,
+  "output": 1.2
+ }
+}
