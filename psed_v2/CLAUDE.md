@@ -367,6 +367,17 @@ psed_v2/
   where the value comes from first (kind_rank: text, table or caption; then figure panels only; then computed_by_kb), then nearness as
   A2 with P190 within a source (a nearest holder of several values gives none and the next source is tried), then the declared
   qualifiers exactly. The domain check and the DERIVED entries keep their order.
+- P208 (user): the final pipeline on the ten (0ax, the figures import of the thirteen, pass 0, pass 1 --form-version P206); adoption: a
+  paper adopts P206 with its new pass-0 line when every call of its run parsed, whatever its gold score (ela03, gre23, yim22 on their
+  P206 lines); every lost gold row is listed per paper, the user vetoes by name. mat22 and zou23 completed in P208b after the
+  provider's 402 (prepaid credits); all thirteen on P206.
+- P208b (user): compile.figure_quantity reads a user's decision on a figure label before the 0ax answer (compile.label_decision: the
+  last user alias / symbol / supersede row of history.csv naming the paper that matches the label; collect mode still asks 0ax for it).
+  history.csv action supersede (id the decision, target, parameters the labels, source_pids the paper): the decision no longer holds
+  for those labels; audit A1 checks such a row against the superseding target (yim22 'x̃₅₀%': the round-5 alias x superseded by
+  P194's symbol of coated_aspect_ratio). grow.retired_by reads, of the paper's version, the line compile reads for the element (the
+  latest answering it): a decided row it prints under another spelling (the symbol) with quantity other is dormant (P187), listed
+  with the version. audit.py traces a P204 A3 merge (audit.merged_into: the fuller fact whose evidence lists every source).
 - apply reads no free text (P175, user): besides decision, alias_target and never_category it reads the pending.csv columns class (model:
   analytical / computational), category (hierarchy leaf), slot (structure class), parameters (entry ids, ;-separated) and symbol_paper
   (paper keys, ;-separated: the printed labels become symbols of those papers, never aliases). decision_note is a memo, never parsed;

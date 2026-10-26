@@ -59,6 +59,14 @@ def same(x, f):
     return all(x[k] == f[k] for k in K.DEDUPE_KEY)
 
 
+def merged_into(x, f):
+    """P208b (user): x is the fact compile.Run.merge_subsets (P204 A3) merged f into: the same DEDUPE_KEY but the qualifiers, f's qualifiers a
+    strict subset of x's, and x's evidence listing every element of f's (the merge keeps all evidence)."""
+    q = lambda r: dict(p.split("=", 1) for p in (r.get("qualifiers") or "").split(";") if "=" in p)   # noqa: E731
+    return (K.text_key(f) is None and all(x[k] == f[k] for k in K.DEDUPE_KEY if k != "qualifiers") and q(f).items() < q(x).items()
+            and set(f["evidence"].split(";")) <= set(x["evidence"].split(";")))
+
+
 def traced_run(pid):
     """compile.Run in a temporary folder, with each record followed: {id(rec): ('drop', step, reason, field) | ('fact', row)}."""
     K.OUT = Path(tempfile.mkdtemp(prefix="audit_"))
@@ -83,7 +91,8 @@ def traced_run(pid):
                 rec = dict(type=f["type"], quantity=f["quantity"], source="figures.json", label_as_printed=f["label_as_printed"])
                 fig_records.append(dict(eid=f["evidence"].split(";")[0], rec=rec, evidence=f["evidence"].split(";")))
                 made[id(f)] = id(rec)
-            g = f if id(f) in kept else next(x for x in out if same(x, f) and set(f["evidence"].split(";")) <= set(x["evidence"].split(";")))
+            g = f if id(f) in kept else next((x for x in out if same(x, f) and set(f["evidence"].split(";")) <= set(x["evidence"].split(";"))), None) \
+                or next(x for x in out if merged_into(x, f))                    # P208b (user): a P204 A3 merge into the fact with the fuller qualifiers
             fate[made[id(f)]] = ("fact", g)
         return out
     run.drop, run.fact_row, run.dedupe = drop_t, fact_row_t, dedupe_t

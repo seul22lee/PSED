@@ -100,13 +100,15 @@ def retired_by(pid, element, label, unit=False):
     a row with the paper) whose pass-1 lines answer the element, none of its records there carrying the label as quantity other (the
     adopted re-extraction no longer prints it). '' when no such version, or when the adopted lines still give the label as other.
     P191 (user): unit=True, a unit row: retired when none of those records carries the label as other with a unit (no unit row printed).
-    P200 (user): the version is the one whose lines compile reads (paper_version: the paper's latest accepted version), no own list."""
+    P200 (user): the version is the one whose lines compile reads (paper_version: the paper's latest accepted version), no own list.
+    P208b (user): of that version, the line compile reads for the element (the latest line answering it): a decided row whose element
+    that line prints under another spelling (the symbol) with quantity other is dormant, like one it no longer prints."""
     key = PAPERS.get(pid, pid)
     acc = [paper_version(key)] if paper_version(key) else []
     path = RECORDS / f"{pid}.jsonl"
     if not acc or not path.exists():
         return ""
-    lab, seen = X.norm_label(label), ""
+    lab, last = X.norm_label(label), None
     for ln in path.read_text(encoding="utf-8").splitlines():
         x = json.loads(ln) if ln.strip() else {}
         if x.get("pass") != 1 or x.get("form_version") not in acc:
@@ -118,11 +120,13 @@ def retired_by(pid, element, label, unit=False):
             continue
         for a in resp.get("answers") or [] if isinstance(resp, dict) else []:
             if isinstance(a, dict) and a.get("id") == element:
-                seen = x["form_version"]
-                if any(isinstance(r, dict) and r.get("quantity") == "other" and X.norm_label(str(r.get("label_as_printed") or "")) == lab and (r.get("unit") or not unit)
-                       for r in a.get("records") or []):
-                    return ""
-    return seen
+                last = (x["form_version"], a)
+    if last is None:
+        return ""
+    if any(isinstance(r, dict) and r.get("quantity") == "other" and X.norm_label(str(r.get("label_as_printed") or "")) == lab and (r.get("unit") or not unit)
+           for r in last[1].get("records") or []):
+        return ""
+    return last[0]
 
 
 def rd(p):
@@ -1187,6 +1191,12 @@ def audit_round(n):
     for h in hist:
         if h["action"] in ("add", "alias", "never", "reject") and "back-fill" not in h["decided_by"]:
             decisions.setdefault(h["id"], h)
+    sup = {}                                                                    # P208b (user): (decision id, paper, label) -> a user's supersede row
+    for h in rd(HISTORY):
+        if h["action"] == "supersede" and h["decided_by"].startswith("user"):
+            for lab in (h.get("parameters") or "").split(";"):
+                m = re.match(r"^((?:fig|tab)\w+(?:\.\w+)?):\s*(.+)$", lab.strip())   # 'fig11a: Exposure Times': that element only
+                sup.update({(h["id"], p, m.group(1) if m else "", X.norm_label(m.group(2) if m else lab)): h for p in h["source_pids"].split(";") if p and lab.strip()})
     for cid, h in decisions.items():
         act = h["action"]
         if act == "never":
@@ -1225,9 +1235,13 @@ def audit_round(n):
             if r["pid"] not in a1p:
                 a1.append(dict(row, now="none", effect="n/a", reason=f"no compiled output for {r['pid']}"))
                 continue
+            s = sup.get((cid, r["pid"], r["element"], X.norm_label(r["label"]))) or sup.get((cid, r["pid"], "", X.norm_label(r["label"])))   # P208b (user): superseded
+            tgt = s["target"] if s else h["target"]
+            if s:
+                row["decision"] += f"; superseded for this label -> {tgt} ({s['date']}: {s['reason'][:90]})"
             if u is None and r["field"] == "axis":                              # P176: a figure label closes at import (kb/<pid>.figures.json)
                 fl = figure_label(r["pid"], r["element"], r["label"])
-                ok = bool(fl) and ((act == "alias" and fl["quantity"] == h["target"]) or (act == "add" and fl["quantity"] == cid))
+                ok = bool(fl) and ((act == "alias" and fl["quantity"] == tgt) or (act == "add" and fl["quantity"] == cid))
                 a1.append(dict(row, now=f"figure label: {fl['quantity']} ({fl['how']})" if fl else "not in unmapped.csv, no figure label",
                                effect="yes" if ok else "no effect", reason="" if ok else (f"resolves to {fl['quantity']}" if fl else "row not found")))
                 if not ok and act != "reject":
@@ -1238,7 +1252,7 @@ def audit_round(n):
                           and (X.norm_label(x["printed"]) == X.norm_label(r["label"]) or not r["label"]) and not x["outcome"].startswith("not promoted")), None)
                 if p:
                     taken_pro.add((r["pid"], pro[r["pid"]].index(p)))
-                ok = bool(p) and ((act == "alias" and p["id"] == h["target"]) or (act == "add" and p["id"] == cid))
+                ok = bool(p) and ((act == "alias" and p["id"] == tgt) or (act == "add" and p["id"] == cid))
                 ret = retired_by(r["pid"], r["element"], r["label"], unit=r["field"] == "unit") if not p else ""   # P187 (user): dormant, not a failure
                 if ret:
                     a1.append(dict(row, now="not in unmapped.csv, not promoted", effect="dormant",

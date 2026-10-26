@@ -322,6 +322,52 @@ def figure_axis_decisions(pid):
     return out
 
 
+_LABEL_DECISIONS = {}
+SUPERSEDE_AT = re.compile(r"^((?:fig|tab)\w+(?:\.\w+)?):\s*(.+)$")                # P208b: 'fig11a: Exposure Times
+
+
+def label_decisions(pid):
+    """P208b (user): the user's alias, symbol and supersede decisions of this paper on labels (ontology/history.csv rows decided by the user
+    whose source_pids or symbol_paper name the paper, the target a quantity or categorical entry), in file order -> [(match, target, how)]:
+    an alias matches a label whose grow key (casefold, the trailing unit bracket stripped, non-alphanumerics -> '_') is the decision id; a
+    symbol matches a label whose symbol key is the decision id; a supersede (P208b) matches the labels in its parameters (';'-separated,
+    'element: label' for one element only, SUPERSEDE_AT). The last matching row wins (figure_quantity)."""
+    if pid not in _LABEL_DECISIONS:
+        hist = C.V2 / "ontology" / "history.csv"
+        keys = {k: p for p, k in C.E.PAPERS.items()}
+        out = []
+        for h in csv.DictReader(hist.open(encoding="utf-8")) if hist.exists() else []:
+            if not h["decided_by"].startswith("user") or h["action"] not in ("alias", "symbol", "supersede") or V.ENTRIES.get(h["target"], {}).get("type") not in ("quantity", "categorical"):
+                continue
+            papers = set(h["source_pids"].split(";")) | {keys.get(k, k) for k in (h.get("symbol_paper") or "").split(";")}
+            if pid not in papers:
+                continue
+            how = f"the user's {h['action']} decision ({h['date']}, history.csv)"
+            if h["action"] == "alias":
+                out.append((("grow", h["id"]), h["target"], how))
+            elif h["action"] == "symbol":
+                out.append((("symbol", C.X.symbol_key(h["id"])), h["target"], how))
+            else:
+                for x in (h.get("parameters") or "").split(";"):
+                    m = SUPERSEDE_AT.match(x.strip())
+                    if x.strip():
+                        out.append((("label", C.X.norm_label(m.group(2) if m else x), m.group(1) if m else ""), h["target"], how))
+        _LABEL_DECISIONS[pid] = out
+    return _LABEL_DECISIONS[pid]
+
+
+def label_decision(pid, text, panel=""):
+    """P208b (user): (quantity, how) of the last user decision of this paper that matches the label (label_decisions; a supersede naming an
+    element only at that panel), else None."""
+    grow_key = re.sub(r"[^a-z0-9]+", "_", " ".join(C.X.strip_unit(text or "").casefold().split())).strip("_")
+    have = {("grow", grow_key), ("symbol", C.X.symbol_key(text or "")), ("label", C.X.norm_label(text or ""), ""), ("label", C.X.norm_label(text or ""), panel)}
+    hit = None
+    for m, target, how in label_decisions(pid):
+        if m in have:
+            hit = (target, how)
+    return hit
+
+
 def series_axis(pid):
     """P163: {panel: the series_axis label as printed} of the figure stage's ingest/final/<pid>/figures.json (kb/<pid>.figures.json keeps
     it only as a set's varied_raw, and a map's set names its axes instead); P191 (user): a user's figure_axis decision replaces it
@@ -375,7 +421,8 @@ def figure_quantity(pid, panel, text, kind, context=""):
     condition keys; classify_part: the axis key, a range symbol, a legend key before '=' / ':', a legend part naming a quantity). kind: x axis,
     y axis, denominator, series axis, series-axis part, condition key, legend key, legend part. Collect mode (COLLECT a dict, figure_axes.py):
     the label is recorded (context: a condition key's printed value) and answers other. Answer mode: a user's figure_axis decision gives a
-    series axis's quantity directly; else the 0ax answer of (panel, kind, text): a quantity id; a qualifier key (element, species, step) for a
+    series axis's quantity directly; P208b (user): else a user's alias, symbol or supersede decision on the label (label_decision; collect
+    mode still asks for the label); else the 0ax answer of (panel, kind, text): a quantity id; a qualifier key (element, species, step) for a
     series axis, series-axis part or legend key (id other, qualifier set); other. A label with no answer is other, listed in MISSES ('no 0ax
     answer'). An other keeps the never.csv handling of resolve_label and is written as an unresolved label (how ''). Returns dict(id, how,
     ambiguous, never, never_label, qualifier)."""
@@ -389,6 +436,9 @@ def figure_quantity(pid, panel, text, kind, context=""):
     if COLLECT is not None:
         COLLECT.setdefault((pid, panel, kind, text), context)
         return out
+    ld = label_decision(pid, text, panel)                                       # P208b (user): a user's decision wins over the 0ax answer
+    if ld:
+        return dict(out, id=ld[0], how=ld[1])
     answers, n = axes_answers(pid)
     a = answers.get((panel, kind, text))
     ans = str((a or {}).get("answer") or "")
