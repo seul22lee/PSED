@@ -78,11 +78,20 @@ def expected_case2(calls):
     gr = [c["input"] for c in calls if c["name"] == "get_records"]
     cl = [c["input"] for c in calls if c["name"] == "claims"]
     has = lambda concept, want: any(want in _vals(f.get(concept)) for f in fs)
-    num = lambda concept, want: any(str(want) in _vals(f.get(concept)) or str(float(want)) in _vals(f.get(concept)) for f in fs)
+
+    def num(concept, want, unit):                         # a filter value equal to want after converting its unit
+        U = T.kb().units
+        for f in fs:
+            g = f.get(concept) or {}
+            for v in (g.get("value") if isinstance(g.get("value"), list) else [g.get("value")]):
+                x = U.convert(float(v), g.get("unit") or unit, unit) if isinstance(v, (int, float)) else None
+                if x is not None and math.isclose(x, want, rel_tol=1e-6):
+                    return True
+        return False
     return [("find_samples reactant_A = tma", has("reactant_A", "tma")), ("find_samples reactant_B = h2o", has("reactant_B", "h2o")),
-            ("find_samples deposition_temperature = 300", num("deposition_temperature", 300)),
+            ("find_samples deposition_temperature = 300 °C", num("deposition_temperature", 300, "°C")),
             ("find_samples structure lateral_channel", any(_vals(f.get("structure")) for f in fs)),
-            ("find_samples feature_width = 500", num("feature_width", 500)),
+            ("find_samples feature_width = 500 nm", num("feature_width", 500, "nm")),
             ("cycle_number left free (vary)", "cycle_number" in vary),
             ("get_records penetration_depth with level=50%", any(g.get("quantity") == "penetration_depth" and
                                                                 (g.get("qualifiers") or {}).get("level") == "50%" for g in gr)),
@@ -231,6 +240,13 @@ def listing_case1(calls, ref):
     return out
 
 
+def unlevelled_cited(calls, answer):
+    """Penetration-depth values the answer cites that carry no level=50% (the directive: never a value without level)."""
+    cited = set(re.findall(CITE, answer))
+    rows = {v["fact_id"]: v for c in _ok(calls, "get_records") for v in c["result"].get("values", [])}
+    return sorted(f for f in cited if f in rows and rows[f]["quantity"] == "penetration_depth" and "level=50%" not in rows[f]["qualifiers"])
+
+
 def listing_case2(calls, ref):
     out = []
     for c in _ok(calls, "find_samples"):
@@ -299,6 +315,24 @@ def listing_case3(calls, ref):
 
 
 LISTINGS = {"case1": listing_case1, "case2": listing_case2, "case3": listing_case3}
+CITE = r"[a-z]+\d\d:[^\s\],;`()]+"
+
+
+def reference_calls(case):
+    """The expected path as logged tool calls (the tools on the directive's arguments), for the reference listing."""
+    mk = lambda i, name, inp: {"call": f"ref{i}", "name": name, "input": inp, "result": T.run_tool(name, inp)}
+    if case == "case1":
+        f = mk(1, "find_samples", {"filters": REF_CASE1})
+        return [f, mk(2, "get_records", {"sample_ids": [s["id"] for s in f["result"]["samples"]], "include": ["images"]})]
+    if case == "case2":
+        f = mk(1, "find_samples", {"filters": REF_CASE2, "vary": ["cycle_number"]})
+        return [f, mk(2, "get_records", {"sample_ids": [s["id"] for s in f["result"]["samples"]], "quantity": "penetration_depth",
+                                         "qualifiers": {"level": "50%"}, "include": ["values"]})]
+    if case == "case3":
+        g = mk(1, "get_records", {"quantity": "initial_sticking_coefficient", "qualifiers": {"species": "tma"}})
+        cited = [v["fact_id"] for v in g["result"]["values"] if v["data_kind"] == "cited"]
+        return [g] + [mk(2 + i, "trace_citation", {"fact_id": c}) for i, c in enumerate(cited)]
+    return []
 
 
 def key_result(c):
@@ -342,6 +376,12 @@ def report(paths):
     for case, ds in sorted(by_case.items()):
         ref = reference(case)
         out += [f"## {case}: {ds[0]['turns'][0]['user'] if ds[0]['turns'] else ''}", ""]
+        if case in LISTINGS:
+            rc = reference_calls(case)
+            out += ["### Reference: the expected path run on the tools (not an agent run)", "",
+                    "| # | tool | arguments | key result |", "|---|---|---|---|"]
+            out += [f"| {c['call']} | {c['name']} | `{_cell(json.dumps(c['input'], ensure_ascii=False))}` | {_cell(key_result(c))} |" for c in rc]
+            out += [""] + LISTINGS[case](rc, ref)
         runs = []
         for d in sorted(ds, key=lambda x: x["_path"]):
             if not d["turns"]:
@@ -352,7 +392,7 @@ def report(paths):
             nums = check_numbers(ans, [c["sent"] for c in calls])
             u = d.get("usage_total", {})
             runs.append({"name": d["_path"], "path": [c["name"] for c in calls], "nums": nums, "sets": run_sets(calls),
-                         "cites": set(re.findall(r"[a-z]+\d\d:[^\s\],;]+", ans)), "counts": figure_counts(calls)})
+                         "cites": set(re.findall(CITE, ans)), "counts": figure_counts(calls)})
             cost = f"${d['cost_usd_estimate']:.4f}" if d.get("price_per_mtok") else "no price"
             out += [f"### {d['_path']}", "",
                     f"{d.get('provider', 'anthropic')}:{d['model']} (effort {d['effort']}), {t['requests']} requests, {t['tool_calls']} tool calls, "
@@ -375,6 +415,9 @@ def report(paths):
             for name, v in EXPECTED_VALUES.get(case, []):
                 hit = any(math.isclose(n["value"], v, rel_tol=1e-9) for n in nums)
                 out.append(f"Expected value {name}: {'in the answer' if hit else 'NOT in the answer'}")
+            if case == "case2":
+                ul = unlevelled_cited(calls, ans)
+                out.append("Penetration depths cited without level=50%: " + (", ".join(ul) if ul else "none"))
             bad = [n["number"] for n in nums if n["found"] == "not found"]
             rnd = [n["number"] for n in nums if n["found"] == "rounded"]
             out += [f"Number check: {len(nums)} numbers in the answer; exact {sum(n['found'] == 'exact' for n in nums)}; "
