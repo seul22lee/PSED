@@ -1,0 +1,15 @@
+check,result
+compile the thirteen into kb/compiled,"done (13 papers; mat22 on P184, zou23 on P184-r1, the eleven on P206)"
+"binding.py --write --reason ""P208: final pipeline""",766 items written (P208.5_binding_write.csv)
+binding.py --check,"binding regression: 766 items, 0 lost their unit"
+grow.py audit 1,PASS
+grow.py audit 2,PASS
+grow.py audit 3,PASS
+grow.py audit 4,"FAIL (20): yim22 tabu2 decisions, row not found (P208.5_audit_failures.csv)"
+grow.py audit 5,FAIL (2): ela03 fig11a and yim22 fig5e axis labels resolve against the user aliases (P208.5_audit_failures.csv)
+export --check,vocab.py and schema/ up to date; 21 checks pass
+cards,total errors 0
+gold readability,"12 of 12 papers, 5357 rows"
+gates.py reference,ontology/gates.csv rewritten (P208.5_gates.csv)
+grow.py propose,not run (user: skip propose; no round is open)
+score.py P208 (not a listed check),crashed on yim20: kb/extract/audit.py dedupe_t (StopIteration): its trace assumes a removed fact is held by a kept fact with the same content; P204 A3 merge_subsets merges into a fuller fact. Partial P208.yli18 / P208.yim20 tables left out of the commit
