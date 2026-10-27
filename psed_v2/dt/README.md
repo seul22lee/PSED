@@ -18,12 +18,14 @@ This folder holds the model code, every change made to it, the fits to KB data, 
 ```
 reaction_model.py     Larry's reactor model, FlatModel, ChannelModel, ModelCoupling (+ logged changes)
 yli18_approx.py       analytic approximation of Ylilammi et al. 2018 (Eqs. 17-37), used for multi-cycle profile fits (A1)
-fitting/              fits of KB profiles: slope method (A3), literature campaign (A4), yim20/gao15 fits (A2), WALDO pressure fit script (A10)
+fitting/              fits of KB profiles: slope method (A3), literature campaign (A4), yim20/gao15 fits (A2), WALDO pressure fit (A10),
+                      WALDO per-cycle and purge-decay analysis (A12, A13), QCM identifiability with desorption (A14)
 demo/                 digital-twin demonstrations on a synthetic reactor B (A5, A6, A8, A9, A11)
 figures/              paper figure fig_dt_kb_control (concept + results, F2)
 tests/                12 tests + 1 strict xfail
 original/             Larry's notebook, untouched
 CHANGELOG.md          every change and known issue
+DESORPTION.md         WALDO desorption evidence, proposed sticky-precursor terms (not implemented), identifiability
 REPRODUCE.md          how to rerun everything, expected numbers
 run_all.sh            runs all steps (~15 min on 2 cores)
 ```
@@ -96,6 +98,12 @@ Collaborator data (QCM, pressure, temperature of two runs) were examined but are
 - The reactor model reproduces the measured H2O pressure spike at the exhaust gauge (gas transport + 0.33 s gauge lag).
   The TMA spike has a long tail that gas transport alone does not explain (wall desorption or delivery-line bleed).
 - `fitting/waldo_pressure_fit.py` needs `WALDO_PRESSURE` pointing to the data file.
+- Desorption (DESORPTION.md, A12-A14): the per-cycle QCM mass gains of the verification summary are reproduced from the raw logs
+  (mean abs difference 1.6 ng/cm2, QCM step 2.1). The QCM loses mass during every purge (TMA: fast 3 ng/cm2 in ~1 s + slow 14 ng/cm2,
+  tau ~58 s; H2O: 7 + 8 ng/cm2, tau ~24 s); the QCM does not read pressure and the TMA exhaust tail decays on a similar time scale
+  (31-42 s). Proposed model terms (sticky precursor, Yanguas-Gil 2021 Eqs. 21-22) are written out there but not implemented;
+  identifiability: the 7/02 run fixes only the reacted mass, kd (roughly) and the desorbing amount; a dose series with long purges
+  fixes all of them given c from the KB. Scripts need `WALDO_PRESSURE`, `WALDO_QCM`, `WALDO_TEMP`.
 
 ## Paper figure
 

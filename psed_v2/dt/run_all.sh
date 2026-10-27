@@ -17,5 +17,6 @@ step "A6b full-chain check (about 1 min)";           python demo/dt_qcm_fullchai
 python demo/plot_dt_qcm.py
 step "A11 QCM dose series (about 3 min)";         python demo/dt_qcm_doseseries.py
 step "A9 full recipe (about 4 min)";               python demo/dt_full_recipe.py
+step "A14 QCM identifiability with desorption (about 2 min)"; python fitting/qcm_sticky_identifiability.py
 step "F2 paper figure";                              python figures/fig_dt_kb_control.py
 echo; echo "done: figures/fig_dt_kb_control.pdf"

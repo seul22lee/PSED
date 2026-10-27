@@ -14,6 +14,9 @@ pip install -r requirements.txt
 KB files read: `kb/*.figures.json` (digitized curves). Reported c values used in figure panel c are from `kb/pilot/sticking_reported.csv` (yli18 5.72e-3, yim20 4e-3 and 3e-4), written into `figures/fig_dt_kb_control.py`.
 The committed results were produced against the KB at commit ba77854; later KB updates changed some digitized curves slightly.
 `fitting/waldo_pressure_fit.py` needs `WALDO_PRESSURE` (collaborator data, not in the repository); it is not part of `run_all.sh`.
+`fitting/waldo_cycles.py` (A12) and `fitting/waldo_purge_decay.py` (A13) need `WALDO_PRESSURE`, `WALDO_QCM`, `WALDO_TEMP` (optional
+`WALDO_PERCYCLE_REF`); not part of `run_all.sh`; their outputs are git-ignored. `fitting/qcm_sticky_identifiability.py` (A14) needs no
+data (~1.5 min) and is part of `run_all.sh`. Expected numbers: DESORPTION.md sections 2, 3, 6.
 The figure PDF is not tracked (the repository ignores `*.pdf`); `python figures/fig_dt_kb_control.py` writes it next to the PNG.
 
 ## 2. Run everything
